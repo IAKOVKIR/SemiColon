@@ -2,9 +2,6 @@ package com.example.semicolon
 
 import android.app.Activity
 import android.os.Bundle
-import android.widget.EditText
-
-
 
 class Registration : Activity() {
 
