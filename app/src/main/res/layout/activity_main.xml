@@ -7,4 +7,37 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         tools:context=".MainActivity">
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click"
+            android:id="@+id/button"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <DatePicker
+            android:id="@+id/datePickerExample"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:calendarViewShown="false"
+            android:spinnersShown="true"
+            android:startYear="1900"
+            android:endYear="2019"
+            android:maxDate="12/31/2019"
+            android:minDate="01/01/1900"
+            android:datePickerMode="spinner" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/button" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textt" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/datePickerExample" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+
 </android.support.constraint.ConstraintLayout>
