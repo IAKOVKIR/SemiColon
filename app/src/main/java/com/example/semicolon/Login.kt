@@ -55,7 +55,7 @@ class Login : Activity() {
 
         //"Sign Up" listener
         createBut.setOnClickListener {
-            val intent = Intent(this, FirstRegoList::class.java)
+            val intent = Intent(this, Main2Activity::class.java)
             startActivity(intent)
         }
 
