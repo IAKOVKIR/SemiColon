@@ -95,8 +95,6 @@ class Main2Activity : Activity() {
                     buttonNext!!.text = "finish"
 
                     buttonNext!!.setOnClickListener {
-                        val intent = Intent(this@Main2Activity, Login::class.java)
-                        startActivity(intent)
                         finish()
                     }
 
