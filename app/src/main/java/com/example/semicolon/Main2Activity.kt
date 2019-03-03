@@ -1,7 +1,6 @@
 package com.example.semicolon
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.widget.Button
@@ -72,7 +71,7 @@ class Main2Activity : Activity() {
 
                     buttonBack!!.isEnabled = true
                     buttonNext!!.isEnabled = true
-                    buttonBack!!.text = "back"
+                    buttonBack!!.text = "app"
                     buttonNext!!.text = "next"
 
                     buttonNext!!.setOnClickListener {

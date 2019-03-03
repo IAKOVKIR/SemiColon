@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SemiColon</string>
+    <string name="word_back">back</string>
+    <string name="word_next">next</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_one">1</string>
 </resources>

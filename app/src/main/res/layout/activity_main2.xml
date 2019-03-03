@@ -29,7 +29,7 @@
                 android:textSize="40sp"
                 android:gravity="center"
                 android:textColor="#FFF"
-                android:text="1"
+                android:text="@string/number_one"
                 android:background="@drawable/regupdatecircle"
                 android:layout_width="70dp"
                 android:layout_height="70dp"/>
@@ -41,7 +41,7 @@
                 android:textSize="40sp"
                 android:gravity="center"
                 android:textColor="#FFF"
-                android:text="2"
+                android:text="@string/number_two"
                 android:background="@drawable/regcircle"
                 android:layout_width="70dp"
                 android:layout_height="70dp"/>
@@ -53,7 +53,7 @@
                 android:textSize="40sp"
                 android:gravity="center"
                 android:textColor="#FFF"
-                android:text="3"
+                android:text="@string/number_three"
                 android:background="@drawable/regcircle"
                 android:layout_width="70dp"
                 android:layout_height="70dp"/>
@@ -84,11 +84,12 @@
 
         <Button
                 android:id="@+id/buttonNext"
-                android:text="next"
+                android:text="@string/word_next"
                 android:background="@android:color/transparent"
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:ignore="RelativeOverlap"/>
 
     </RelativeLayout>
 
