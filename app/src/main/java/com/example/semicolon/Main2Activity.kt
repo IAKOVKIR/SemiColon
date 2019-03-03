@@ -42,7 +42,7 @@ class Main2Activity : Activity() {
 
     }
 
-    var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
+    private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
 
             val drawCircle = getDrawable(R.drawable.regcircle)
@@ -57,7 +57,7 @@ class Main2Activity : Activity() {
                     buttonBack!!.isEnabled = false
                     buttonNext!!.isEnabled = true
                     buttonBack!!.text = ""
-                    buttonNext!!.text = "next"
+                    buttonNext!!.text = getString(R.string.word_next)
 
                     buttonNext!!.setOnClickListener {
                         mSlideViewPager!!.currentItem = 1
@@ -71,8 +71,8 @@ class Main2Activity : Activity() {
 
                     buttonBack!!.isEnabled = true
                     buttonNext!!.isEnabled = true
-                    buttonBack!!.text = "app"
-                    buttonNext!!.text = "next"
+                    buttonBack!!.text = getString(R.string.word_back)
+                    buttonNext!!.text = getString(R.string.word_next)
 
                     buttonNext!!.setOnClickListener {
                         mSlideViewPager!!.currentItem = 2
@@ -90,8 +90,8 @@ class Main2Activity : Activity() {
 
                     buttonBack!!.isEnabled = true
                     buttonNext!!.isEnabled = true
-                    buttonBack!!.text = "back"
-                    buttonNext!!.text = "finish"
+                    buttonBack!!.text = getString(R.string.word_back)
+                    buttonNext!!.text = getString(R.string.word_finish)
 
                     buttonNext!!.setOnClickListener {
                         finish()
