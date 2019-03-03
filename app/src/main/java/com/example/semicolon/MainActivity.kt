@@ -1,7 +1,6 @@
 package com.example.semicolon
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
@@ -63,16 +62,11 @@ class MainActivity : AppCompatActivity() {
                 // if the dialog is cancelable
                 .setCancelable(false)
                 // positive button text and action
-                .setPositiveButton("Proceed", DialogInterface.OnClickListener {
-                        dialog, id -> {
-                    /*finish()*/
-                    }
-                })
+                .setPositiveButton("Proceed") { _, _ -> finish()}
                 // negative button text and action
-                .setNegativeButton("Cancel", DialogInterface.OnClickListener {
-                        dialog, id -> dialog.cancel()
-                })
-            
+                .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel()
+                }
+
 
             // create dialog box
             val alert = dialogBuilder.create()

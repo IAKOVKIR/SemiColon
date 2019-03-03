@@ -14,8 +14,8 @@ import android.widget.TextView
 
 class SliderAdapter(private val context : Context) : PagerAdapter() {
 
-    val slideTexts = arrayOf("first name", "email", "phone number")
-    val slideEditTexts = arrayOf("Enter your first name", "Enter your email", "Enter your phone number")
+    private val slideTexts = arrayOf("first name", "email", "phone number")
+    private val slideEditTexts = arrayOf("Enter your first name", "Enter your email", "Enter your phone number")
     val texts = arrayOf("", "", "")
 
     override fun getCount(): Int {
@@ -31,7 +31,6 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.slide_layout, container, false)
 
-        val navBar = view.findViewById<TextView>(R.id.FirstCircle)
         val text = view.findViewById<TextView>(R.id.textView2)
         val editText = view.findViewById<EditText>(R.id.editText2)
 

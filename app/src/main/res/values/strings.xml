@@ -1,4 +1,5 @@
 <resources>
+    <!--words and numbers-->
     <string name="app_name">SemiColon</string>
     <string name="word_back">back</string>
     <string name="word_next">next</string>
@@ -6,4 +7,13 @@
     <string name="number_two">2</string>
     <string name="number_three">3</string>
     <string name="number_one">1</string>
+
+    <!--phrases-->
+    <string name="not_registered_yet">Not registered yet?</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="sign_in">sign in</string>
+    <string name="create_an_account">create an account</string>
+    <string name="enter_your_email_or_username">enter your email or username</string>
+
 </resources>

@@ -8,7 +8,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 
 
@@ -26,9 +25,6 @@ class Login : Activity() {
         val logBut = findViewById<Button>(R.id.logBut)
         val forgotBut = findViewById<Button>(R.id.forgotBut)
         val createBut = findViewById<Button>(R.id.createBut)
-
-        //TextViews
-        val textView = findViewById<TextView>(R.id.textView)
 
         //"Sign In" listener
         logBut.setOnClickListener {
@@ -73,6 +69,11 @@ class Login : Activity() {
                 val password = sEnter.text.toString()
 
                 if (userName.length < 8)
+                    fEnter.setTextColor(Color.RED)
+                else
+                    fEnter.setTextColor(Color.BLACK)
+
+                if (password.length < 8)
                     fEnter.setTextColor(Color.RED)
                 else
                     fEnter.setTextColor(Color.BLACK)

@@ -16,50 +16,75 @@
             android:textCursorDrawable="@drawable/black_cursor"
             android:textSize="22sp"
             android:ems="10"
-            android:id="@+id/fName" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:hint="Enter your email or username"
-            app:layout_constraintVertical_bias="0.317"/>
-
-    <Button
-            android:text="Create an account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:id="@+id/createBut" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.497"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/fName"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:hint="@string/enter_your_email_or_username"
+            app:layout_constraintVertical_bias="0.317"
+            tools:ignore="Autofill"
     />
 
     <Button
-            android:text="Sign In"
+            android:text="@string/create_an_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
-            android:id="@+id/logBut" app:layout_constraintEnd_toStartOf="@+id/forgotBut" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintHorizontal_bias="0.542" android:layout_marginTop="56dp"
-            app:layout_constraintTop_toBottomOf="@+id/lName"/>
+            android:id="@+id/createBut"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.497"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+    />
 
     <Button
-            android:text="Forgot password?"
+            android:text="@string/sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
-            android:id="@+id/forgotBut" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
-            android:layout_marginTop="56dp" app:layout_constraintTop_toBottomOf="@+id/lName"/>
+            android:id="@+id/logBut"
+            app:layout_constraintEnd_toStartOf="@+id/forgotBut"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintHorizontal_bias="0.542"
+            android:layout_marginTop="56dp"
+            app:layout_constraintTop_toBottomOf="@+id/lName"
+    />
+
+    <Button
+            android:text="@string/forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="22sp"
+            android:id="@+id/forgotBut"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="56dp"
+            app:layout_constraintTop_toBottomOf="@+id/lName"
+    />
+
     <TextView
-            android:text="Not registered yet?"
+            android:text="@string/not_registered_yet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
             android:textSize="22sp"
-            android:id="@+id/textView" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/createBut"/>
+            android:id="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/createBut"
+    />
 
     <EditText
             android:layout_width="322dp"
@@ -70,9 +95,14 @@
             android:ems="10"
             android:id="@+id/lName"
             android:layout_marginTop="28dp"
-            app:layout_constraintTop_toBottomOf="@+id/fName" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.506"
-            android:hint="Enter your password"/>
+            app:layout_constraintTop_toBottomOf="@+id/fName"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.506"
+            android:hint="@string/not_registered_yet"
+            tools:ignore="Autofill"
+    />
 
 </android.support.constraint.ConstraintLayout>
