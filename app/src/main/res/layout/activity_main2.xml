@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".Main2Activity">
+
+    <RelativeLayout
+            android:id="@+id/reg_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:paddingBottom="8dp"
+            android:gravity="center">
+
+        <View android:layout_width="match_parent"
+              android:padding="16dp"
+              android:layout_height="5dp"
+              android:layout_marginTop="35dp"
+              android:background="@color/BLACK"/>
+
+        <TextView
+                android:id="@+id/FirstCircle"
+                android:layout_alignParentStart="true"
+                android:padding="5dp"
+                android:textSize="40sp"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:text="1"
+                android:background="@drawable/regupdatecircle"
+                android:layout_width="70dp"
+                android:layout_height="70dp"/>
+
+        <TextView
+                android:id="@+id/SecondCircle"
+                android:layout_centerHorizontal="true"
+                android:padding="5dp"
+                android:textSize="40sp"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:text="2"
+                android:background="@drawable/regcircle"
+                android:layout_width="70dp"
+                android:layout_height="70dp"/>
+
+        <TextView
+                android:id="@+id/ThirdCircle"
+                android:layout_alignParentEnd="true"
+                android:padding="5dp"
+                android:textSize="40sp"
+                android:gravity="center"
+                android:textColor="#FFF"
+                android:text="3"
+                android:background="@drawable/regcircle"
+                android:layout_width="70dp"
+                android:layout_height="70dp"/>
+
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reg_nav"
+            android:layout_above="@id/footerLayout"
+            android:id="@+id/slideViewPager"/>
+
+    <RelativeLayout
+            android:id="@+id/footerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+        <Button
+                android:id="@+id/buttonBack"
+                android:background="@android:color/transparent"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <Button
+                android:id="@+id/buttonNext"
+                android:text="next"
+                android:background="@android:color/transparent"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
