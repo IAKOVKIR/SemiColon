@@ -10,7 +10,7 @@
 
     <!--phrases-->
     <string name="not_registered_yet">Not registered yet?</string>
-    <string name="enter_your_password">Enter your password</string>
+    <string name="enter_your_password">enter your password</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="sign_in">sign in</string>
     <string name="create_an_account">create an account</string>
