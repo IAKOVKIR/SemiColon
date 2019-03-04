@@ -5,7 +5,7 @@
             android:startColor="@color/WHITE"
             android:endColor="@color/BLACK"/>
     <stroke
-            android:color="@color/BLACK"
+            android:color="@color/WHITE"
             android:width="5dp"/>
 
 </shape>

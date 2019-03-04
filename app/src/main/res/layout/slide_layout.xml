@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        android:background="@color/colorPrimary">
+        android:background="@color/BLACK">
 
     <RelativeLayout
             android:id="@+id/MainLayout"
@@ -18,23 +18,28 @@
 
         <TextView
                 android:textSize="24sp"
+                android:textColor="@color/WHITE"
                 android:layout_marginTop="16dp"
                 android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView2"
-        />
+                android:id="@+id/textView2"/>
 
-        <EditText
+
+            <EditText
                 android:id="@+id/editText2"
                 android:textSize="23sp"
+                android:textCursorDrawable="@drawable/black_cursor"
+                android:backgroundTint="@color/WHITE"
+                android:textColorHint="#CAC2C2"
+                android:textColor="@color/WHITE"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_below="@+id/textView2"
                 android:inputType="text"
-                tools:ignore="Autofill,LabelFor"
-        />
+                tools:ignore="Autofill,LabelFor"/>
+
 
     </RelativeLayout>
 
@@ -56,6 +61,8 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/BLACK"
+                    android:layout_margin="8dp"
                     android:textSize="19sp"
                     android:text="@string/terms_and_conditions"
             />
@@ -65,7 +72,10 @@
         <CheckBox
                 android:text="@string/agree_with_terms"
                 android:textSize="19sp"
+                android:textColor="@color/WHITE"
+                android:buttonTint="@color/WHITE"
                 android:layout_alignParentBottom="true"
+                android:paddingTop="8dp"
                 android:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

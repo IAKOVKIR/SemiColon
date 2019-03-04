@@ -2,7 +2,7 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:background="@color/colorPrimary"
+        android:background="@color/BLACK"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
@@ -20,7 +20,7 @@
               android:padding="16dp"
               android:layout_height="5dp"
               android:layout_marginTop="35dp"
-              android:background="@color/BLACK"/>
+              android:background="@color/WHITE"/>
 
         <TextView
                 android:id="@+id/FirstCircle"
@@ -77,6 +77,7 @@
 
         <Button
                 android:id="@+id/buttonBack"
+                android:textColor="@color/WHITE"
                 android:background="@android:color/transparent"
                 android:layout_alignParentStart="true"
                 android:layout_width="wrap_content"
@@ -84,6 +85,7 @@
 
         <Button
                 android:id="@+id/buttonNext"
+                android:textColor="@color/WHITE"
                 android:text="@string/word_next"
                 android:background="@android:color/transparent"
                 android:layout_alignParentEnd="true"
