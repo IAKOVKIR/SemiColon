@@ -22,7 +22,8 @@
                 android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView2"/>
+                android:id="@+id/textView2"
+        />
 
         <EditText
                 android:id="@+id/editText2"
@@ -32,7 +33,45 @@
                 android:layout_margin="16dp"
                 android:layout_below="@+id/textView2"
                 android:inputType="text"
-                tools:ignore="Autofill,LabelFor"/>
+                tools:ignore="Autofill,LabelFor"
+        />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/TermsAndConditions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:layout_below="@id/reg_nav"
+            android:gravity="top">
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_above="@id/checkBox"
+                android:background="#A5A1A1"
+                android:id="@+id/ScrollText">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="19sp"
+                    android:text="@string/terms_and_conditions"
+            />
+
+        </ScrollView>
+
+        <CheckBox
+                android:text="@string/agree_with_terms"
+                android:textSize="19sp"
+                android:layout_alignParentBottom="true"
+                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:id="@+id/checkBox"
+        />
 
     </RelativeLayout>
 

@@ -7,10 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.RelativeLayout
-import android.widget.TextView
-
+import android.widget.*
 
 class SliderAdapter(private val context : Context) : PagerAdapter() {
 
@@ -33,6 +30,8 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
 
         val text = view.findViewById<TextView>(R.id.textView2)
         val editText = view.findViewById<EditText>(R.id.editText2)
+        val agreement = view.findViewById<RelativeLayout>(R.id.TermsAndConditions)
+        val mainLayout = view.findViewById<RelativeLayout>(R.id.MainLayout)
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -47,6 +46,13 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
                 texts[position] = editText.text.toString()
             }
         })
+
+        if (position == 2) {
+            agreement.visibility = View.VISIBLE
+            mainLayout.visibility = View.GONE
+            editText.visibility = View.GONE
+            text.visibility = View.GONE
+        }
 
         text.text = slideTexts[position]
         editText.setText(texts[position])
