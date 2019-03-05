@@ -3,7 +3,7 @@
        android:shape="oval">
     <gradient
             android:startColor="@color/WHITE"
-            android:endColor="@color/BLACK"/>
+            android:endColor="@color/WHITE"/>
     <stroke
             android:color="@color/WHITE"
             android:width="5dp"/>

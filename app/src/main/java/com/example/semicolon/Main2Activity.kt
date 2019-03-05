@@ -1,6 +1,7 @@
 package com.example.semicolon
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.widget.Button
@@ -51,8 +52,11 @@ class Main2Activity : Activity() {
             when (position) {
                 0 -> {
                     firstCircle!!.background = drawUpdatedCircle
+                    firstCircle!!.setTextColor(Color.BLACK)
                     secondCircle!!.background = drawCircle
                     thirdCircle!!.background = drawCircle
+                    secondCircle!!.setTextColor(Color.WHITE)
+                    thirdCircle!!.setTextColor(Color.WHITE)
 
                     buttonBack!!.isEnabled = false
                     buttonNext!!.isEnabled = true
@@ -66,8 +70,11 @@ class Main2Activity : Activity() {
                 }
                 1 -> {
                     secondCircle!!.background = drawUpdatedCircle
+                    secondCircle!!.setTextColor(Color.BLACK)
                     firstCircle!!.background = drawCircle
                     thirdCircle!!.background = drawCircle
+                    firstCircle!!.setTextColor(Color.WHITE)
+                    thirdCircle!!.setTextColor(Color.WHITE)
 
                     buttonBack!!.isEnabled = true
                     buttonNext!!.isEnabled = true
@@ -85,8 +92,11 @@ class Main2Activity : Activity() {
                 }
                 else -> {
                     thirdCircle!!.background = drawUpdatedCircle
+                    thirdCircle!!.setTextColor(Color.BLACK)
                     firstCircle!!.background = drawCircle
                     secondCircle!!.background = drawCircle
+                    firstCircle!!.setTextColor(Color.WHITE)
+                    secondCircle!!.setTextColor(Color.WHITE)
 
                     buttonBack!!.isEnabled = true
                     buttonNext!!.isEnabled = true
