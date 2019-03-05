@@ -7,6 +7,7 @@
         android:padding="16dp"
         android:background="@color/BLACK">
 
+    <!-- First Page -->
     <RelativeLayout
             android:id="@+id/MainLayout"
             android:layout_width="match_parent"
@@ -23,11 +24,11 @@
                 android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView2"/>
+                android:id="@+id/textFirstName"/>
 
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/editTextFirstName"
                 android:textSize="23sp"
                 android:textCursorDrawable="@drawable/black_cursor"
                 android:backgroundTint="@color/WHITE"
@@ -36,13 +37,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_below="@+id/textView2"
+                android:layout_below="@+id/textFirstName"
+                android:inputType="text"
+                tools:ignore="Autofill,LabelFor"/>
+
+        <TextView
+                android:textSize="24sp"
+                android:textColor="@color/WHITE"
+                android:layout_marginTop="24dp"
+                android:layout_below="@id/editTextFirstName"
+                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textSecondName"/>
+
+
+        <EditText
+                android:id="@+id/editTextSecondName"
+                android:textSize="23sp"
+                android:textCursorDrawable="@drawable/black_cursor"
+                android:backgroundTint="@color/WHITE"
+                android:textColorHint="#CAC2C2"
+                android:textColor="@color/WHITE"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:layout_below="@+id/textSecondName"
                 android:inputType="text"
                 tools:ignore="Autofill,LabelFor"/>
 
 
     </RelativeLayout>
 
+
+    <!--Third page(Terms & Conditions) -->
     <RelativeLayout
             android:id="@+id/TermsAndConditions"
             android:layout_width="match_parent"
@@ -55,7 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:layout_above="@id/checkBox"
-                android:background="#A5A1A1"
+                android:background="@color/WHITE"
                 android:id="@+id/ScrollText">
 
             <TextView
