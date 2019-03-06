@@ -129,7 +129,7 @@ class Login : Activity() {
             .edit()
             .putString(PREF_USERNAME, user)
             .putString(PREF_PASSWORD, password)
-            .commit()
+            .apply()
     }
 
 }
