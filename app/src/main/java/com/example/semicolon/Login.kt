@@ -3,7 +3,6 @@ package com.example.semicolon
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,24 +10,26 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.CheckBox
-import android.content.SharedPreferences
 
 
 
 class Login : Activity() {
 
-    var PREFS_NAME = "mypre"
-    var PREF_USERNAME = "username"
-    var PREF_PASSWORD = "password"
+    //variables (SharedPreferences)
+    var prefName = "myPreferences"
+    private var prefUsername = "username"
+    private var prefPassword = "password"
 
     //EditTexts
-    var fEnter : EditText ?= null
-    var sEnter : EditText ?= null
-    var CheckLog : CheckBox ?= null
+    private var fEnter : EditText ?= null //username
+    private var sEnter : EditText ?= null //password
+
+    //CheckBox
+    private var checkLog : CheckBox ?= null //"remember me"
 
     public override fun onStart() {
         super.onStart()
-        //read username and password from SharedPreferences
+        //reads username and password from SharedPreferences
         getUser()
     }
 
@@ -36,12 +37,11 @@ class Login : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        //EditTexts
         fEnter = findViewById(R.id.fName)
         sEnter = findViewById(R.id.lName)
 
         //checkbox
-        CheckLog = findViewById(R.id.checkLogin)
+        checkLog = findViewById(R.id.checkLogin)
 
         //Buttons
         val logBut = findViewById<Button>(R.id.logBut)
@@ -75,25 +75,27 @@ class Login : Activity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                /*val userName = fEnter!!.text.toString()
 
-                if (userName.length < 8)
-                    fEnter!!.setTextColor(Color.RED)
-                else
-                    fEnter!!.setTextColor(Color.BLACK)*/
             }
         })
 
     }
 
-    fun doLogin() {
-        val txtuser = fEnter!!.text.toString()
-        val txtpwd = sEnter!!.text.toString()
+    /**
+     * @function doLogin() retrieves data from two EditText's (txtUser - username, txtPassword - password)
+     * If txtUser equals to username and txtPassword equals to password, then HomeActivity will be started
+     * Else 'Toast' message will be displayed
+     * If checkBox ("remember me") will be checked, then username and password will be saved in SharedPreferences
+     */
+    private fun doLogin() {
+        val txtUser = fEnter!!.text.toString()
+        val txtPassword = sEnter!!.text.toString()
         val username = "MrQuery"
         val password = "12345678"
-        if (txtuser == username && txtpwd == password) {
-            if (CheckLog!!.isChecked)
-                rememberMe(username, password) //save username and password
+        if (txtUser == username && txtPassword == password) {
+            if (checkLog!!.isChecked)
+            //save username and password in  SharedPreferences
+                rememberMe(username, password)
             //show logout activity
             showLogout(username)
 
@@ -104,31 +106,41 @@ class Login : Activity() {
 
     }
 
-    fun showLogout(username: String) {
-        //display log out activity
+    /**
+     * @function showLogout() starts HomeActivity and sends username
+     */
+
+    private fun showLogout(username: String) {
         val intent = Intent(this, HomeActivity::class.java)
         intent.putExtra("user", username)
         startActivity(intent)
         finish()
     }
 
-    fun getUser() {
-        val pref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val username = pref.getString(PREF_USERNAME, null)
-        val password = pref.getString(PREF_PASSWORD, null)
+    /**
+     * @function getUser() checks username and password.
+     * If username or password contain something, then the logout activity will be opened directly
+     */
 
-        if (username != null || password != null) {
-            //directly show logout form
-            showLogout(username)
-        }
+    private fun getUser() {
+        val pref = getSharedPreferences(prefName, Context.MODE_PRIVATE)
+        val username = pref.getString(prefUsername, null)
+        val password = pref.getString(prefPassword, null)
+
+        if (username != null || password != null)
+            showLogout(username!!.toString())
     }
 
-    fun rememberMe(user: String, password: String) {
-        //save username and password in SharedPreferences
-        getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    /**
+     * @function rememberMe() saves username and password values in SharedPreferences
+     */
+
+    //rememberMe() function saves username and password in SharedPreferences
+    private fun rememberMe(user: String, password: String) {
+        getSharedPreferences(prefName, Context.MODE_PRIVATE)
             .edit()
-            .putString(PREF_USERNAME, user)
-            .putString(PREF_PASSWORD, password)
+            .putString(prefUsername, user)
+            .putString(prefPassword, password)
             .apply()
     }
 

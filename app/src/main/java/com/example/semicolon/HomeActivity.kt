@@ -10,7 +10,7 @@ import android.widget.TextView
 class HomeActivity : Activity() {
 
     private var user: String? = null
-    var log = Login()
+    private var log = Login()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -28,7 +28,8 @@ class HomeActivity : Activity() {
 
 
     fun logOut(view: View) {
-        val sharedPrefs = getSharedPreferences(log.PREFS_NAME, Context.MODE_PRIVATE)
+        val sharedPrefs = getSharedPreferences(log.prefName
+            , Context.MODE_PRIVATE)
         val editor = sharedPrefs.edit()
         editor.clear()
         editor.apply()
