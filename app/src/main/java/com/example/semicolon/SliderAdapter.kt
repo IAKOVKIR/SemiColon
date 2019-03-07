@@ -11,6 +11,7 @@ import android.widget.*
 
 class SliderAdapter(private val context : Context) : PagerAdapter() {
 
+    //arrays with strings for pages
     private val slideTexts = arrayOf("first name", "email", "phone number")
     private val slideTexts2 = arrayOf("second name", "city", "age")
     private val slideEditTexts = arrayOf("Enter your first name", "Enter your email", "Enter your phone number")
@@ -70,7 +71,7 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
             }
         })
 
-        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+        checkBox.setOnCheckedChangeListener { _, _ ->
             check = true
         }
 

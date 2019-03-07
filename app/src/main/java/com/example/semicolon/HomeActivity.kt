@@ -14,7 +14,7 @@ class HomeActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        
+
         //get username sent from the log in activity
         val intent = intent
         val b = intent.extras

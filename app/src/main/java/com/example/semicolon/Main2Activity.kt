@@ -12,10 +12,12 @@ class Main2Activity : Activity() {
     private var mSlideViewPager : ViewPager? = null
     private var sliderAdapter : SliderAdapter? = null
 
+    //TextViews (Three circles on navigation)
     var firstCircle : TextView? = null
     var secondCircle : TextView? = null
     var thirdCircle : TextView? = null
 
+    //Buttons
     var buttonNext : Button? = null
     var buttonBack : Button? = null
 
