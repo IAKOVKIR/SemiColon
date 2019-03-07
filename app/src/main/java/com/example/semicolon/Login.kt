@@ -55,7 +55,7 @@ class Login : Activity() {
 
         //"Recovery" listener
         forgotBut.setOnClickListener {
-            val intent = Intent(this, DataRecovery::class.java)
+            val intent = Intent(this, /*DataRecovery*/UserHomeActivity::class.java)
             startActivity(intent)
         }
 

@@ -50,5 +50,12 @@
         \n\nTo promote or sell Visual Content of another person unless you are expressly authorized to do so; or
         \n\nTo sell, assign or otherwise transfer your profile.
     </string>
+    <string name="title_activity_user_home">UserHomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
