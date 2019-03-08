@@ -11,8 +11,6 @@ import android.widget.EditText
 import android.widget.Toast
 import android.widget.CheckBox
 
-
-
 class Login : Activity() {
 
     //variables (SharedPreferences)
@@ -55,7 +53,7 @@ class Login : Activity() {
 
         //"Recovery" listener
         forgotBut.setOnClickListener {
-            val intent = Intent(this, /*DataRecovery*/UserHomeActivity::class.java)
+            val intent = Intent(this, DataRecovery::class.java)
             startActivity(intent)
         }
 
@@ -111,8 +109,9 @@ class Login : Activity() {
      */
 
     private fun showLogout(username: String) {
-        val intent = Intent(this, HomeActivity::class.java)
-        intent.putExtra("user", username)
+        val intent = Intent(this, UserHomeActivity::class.java)
+        intent.putExtra("user", "Chandra")
+        intent.putExtra("user1", username)
         startActivity(intent)
         finish()
     }
