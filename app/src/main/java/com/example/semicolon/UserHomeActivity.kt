@@ -7,7 +7,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import androidx.navigation.findNavController
-import com.example.semicolon.dummy.DummyContent
+import com.example.semicolon.event.EventContent
 import kotlinx.android.synthetic.main.activity_user_home.*
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener {
@@ -16,11 +16,14 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     private lateinit var user: String
     private var log = Login()
 
-    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+    override fun onListFragmentInteraction(item: EventContent.Event?) {
         Log.i("Navigation", "Selected $item")
         val args = Bundle()
         args.putString("param1", "Selected")
         args.putString("param2", item.toString())
+        args.putString("param3", item!!.details)
+        args.putInt("param4", item.image)
+
         findNavController(R.id.nav_host).navigate(R.id.action_to_params, args)
     }
 

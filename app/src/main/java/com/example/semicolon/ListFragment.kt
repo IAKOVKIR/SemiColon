@@ -10,14 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.example.semicolon.dummy.DummyContent
-import com.example.semicolon.dummy.DummyContent.DummyItem
+import com.example.semicolon.event.EventContent
+import com.example.semicolon.event.EventContent.Event
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
  * [ListFragment.OnListFragmentInteractionListener] interface.
  */
+
 class ListFragment : Fragment() {
 
     // TODO: Customize parameters
@@ -42,13 +43,14 @@ class ListFragment : Fragment() {
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
+                when {
+                    columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
+                    else -> layoutManager = GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                adapter = MyItemRecyclerViewAdapter(EventContent.EVENTS, listener)
             }
         }
+
         return view
     }
 
@@ -79,7 +81,7 @@ class ListFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: Event?)
     }
 
     companion object {

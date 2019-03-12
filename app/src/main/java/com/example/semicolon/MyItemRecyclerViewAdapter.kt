@@ -8,17 +8,17 @@ import android.widget.TextView
 
 
 import com.example.semicolon.ListFragment.OnListFragmentInteractionListener
-import com.example.semicolon.dummy.DummyContent.DummyItem
+import com.example.semicolon.event.EventContent.Event
 
 import kotlinx.android.synthetic.main.fragment_item.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [Event] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
 class MyItemRecyclerViewAdapter(
-    private val mValues: List<DummyItem>,
+    private val mValues: List<Event>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -26,7 +26,7 @@ class MyItemRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyItem
+            val item = v.tag as Event
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)

@@ -6,13 +6,40 @@
              android:layout_height="match_parent"
              tools:context=".ParamFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:id="@+id/name_text"
-            android:textColor="@color/WHITE"
-            android:textSize="24sp"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"/>
+            android:orientation="vertical">
+
+    <ImageView
+            android:id="@+id/place_for_image"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/burnes"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/name_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/WHITE"
+                android:textSize="22sp"
+                android:textAlignment="center"
+                android:padding="16dp"/>
+        <TextView
+                android:id="@+id/details_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/WHITE"
+                android:textSize="22sp"
+                android:textAlignment="center"
+                android:padding="16dp"/>
+
+    </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>

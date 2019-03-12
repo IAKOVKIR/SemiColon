@@ -20,8 +20,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class MainFragment : Fragment() {
 
-    private var param1: String? = null
-    private var param2: String? = null
+    private var param1 : String? = null
+    private var param2 : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +31,7 @@ class MainFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         val fullName = "$param1 $param2"
         val nameText = view.findViewById<TextView>(R.id.name)

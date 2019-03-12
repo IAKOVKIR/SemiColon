@@ -1,11 +1,13 @@
 package com.example.semicolon
 
-
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat.getDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 
 
@@ -13,6 +15,8 @@ import android.widget.TextView
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM3 = "param3"
+private const val ARG_PARAM4 = "param4"
 
 /**
  * A simple [Fragment] subclass.
@@ -24,12 +28,16 @@ class ParamFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var param3: String? = null
+    private var param4: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+            param3 = it.getString(ARG_PARAM3)
+            param4 = it.getInt(ARG_PARAM4)
         }
     }
 
@@ -39,9 +47,14 @@ class ParamFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_param, container, false)
-        val fullName = "$param1 $param2"
+        val fullName = param2
+        val detailsText = param3
         val nameText = view.findViewById<TextView>(R.id.name_text)
+        val image = view.findViewById<ImageView>(R.id.place_for_image)
+        val detText = view.findViewById<TextView>(R.id.details_text)
+        image.setImageDrawable(getDrawable(context as Context, param4 as Int))
         nameText.text = fullName
+        detText.text = detailsText
         return view
     }
 
@@ -53,15 +66,18 @@ class ParamFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
+         * @param param3 Parameter 3.
          * @return A new instance of fragment ParamFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String, param2: String, param3: String) =
             ParamFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
+                    putString(ARG_PARAM3, param3)
+                    putInt(ARG_PARAM4, param4 as Int)
                 }
             }
     }
