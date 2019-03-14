@@ -1,12 +1,13 @@
 package com.example.semicolon
 
-
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.ListView
+import android.widget.ArrayAdapter
+import android.widget.AdapterView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,13 +19,42 @@ import android.view.ViewGroup
  */
 class SettingsFragment : Fragment() {
 
+    var simpleList: ListView? = null
+    var countryList = arrayOf("Notifications", "Change Password", "Language", "Help", "About", "Log Out")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
+        simpleList = view.findViewById(R.id.settings_list) as ListView
+        val arrayAdapter = ArrayAdapter<String>(view.context, R.layout.fragment_chosen_settings, R.id.text_text, countryList)//ArrayAdapter<String>(view.context, R.layout.fragment_settings, R.id.settings_list, countryList)
+        simpleList!!.adapter = arrayAdapter
+
+        simpleList!!.onItemClickListener = AdapterView.OnItemClickListener { /*parent*/_, /*view*/_, position, /*id*/_ ->
+            //The position where the list item is clicked is obtained from the
+            //the parameter position of the android listview
+
+            //Get the String value of the item where the user clicked
+            val itemValue = simpleList!!.getItemAtPosition(position) as String
+
+            val args = Bundle()
+            args.putString("param1", "$position")
+            args.putString("param2", itemValue)
+
+            val fragment: Fragment = ChosenSettings()
+            fragment.arguments = args
+            val manager = fragmentManager
+            val transaction = manager!!.beginTransaction()
+            transaction.replace(R.id.nav_host, fragment)
+            transaction.addToBackStack(null)
+            // Commit the transaction
+            transaction.commit()
+        }
+
+        return view
+    }
 
 }
