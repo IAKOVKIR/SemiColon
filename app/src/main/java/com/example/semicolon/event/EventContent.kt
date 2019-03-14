@@ -23,7 +23,7 @@ object EventContent {
     private val event_details = arrayOf("2 persons joined the event", "2 persons joined the event", "4 persons joined the event", "Steven joined the event",
         "Steven joined the event", "Steven joined the event", "Steven joined the event", "Steven joined the event", "Steven joined the event", "Steven joined the event")
 
-    private val images : Array<Int> = arrayOf(R.drawable.meeting_with_aminul, R.drawable.date_with_aminul, R.drawable.control_the_planet, R.drawable.burnes,
+    private val images : Array<Int> = arrayOf(R.drawable.plan_with_aminul, R.drawable.date_with_aminul, R.drawable.control_the_planet, R.drawable.burnes,
         R.drawable.burnes, R.drawable.burnes, R.drawable.burnes, R.drawable.burnes, R.drawable.burnes, R.drawable.burnes)
 
     /**

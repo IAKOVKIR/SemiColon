@@ -40,6 +40,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
                 val args = Bundle()
                 args.putString("param1", name)
                 args.putString("param2", user)
+
                 findNavController(R.id.nav_host).navigate(R.id.main_dest, args)
                 return@OnNavigationItemSelectedListener true
             }
@@ -51,7 +52,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
                 val args = Bundle()
                 args.putString("param1", "Chandra")
                 args.putString("param2", "Lil Query")
-                findNavController(R.id.nav_host).navigate(R.id.action_global_params, args)
+                findNavController(R.id.nav_host).navigate(R.id.action_global_params_dest, args)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_logout -> {

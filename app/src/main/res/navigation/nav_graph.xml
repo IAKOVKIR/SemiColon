@@ -6,7 +6,9 @@
 
     <fragment android:id="@+id/main_dest"
               android:name="com.example.semicolon.MainFragment"
-              android:label="fragment_main" tools:layout="@layout/fragment_main"/>
+              android:label="fragment_main" tools:layout="@layout/fragment_main">
+        <action android:id="@+id/action_main_dest_to_settings_dest" app:destination="@id/settings_dest"/>
+    </fragment>
     <fragment android:id="@+id/list_dest" android:name="com.example.semicolon.ListFragment"
               android:label="fragment_item_list" tools:layout="@layout/fragment_item_list">
         <action android:id="@+id/action_to_params" app:destination="@id/params_dest"/>
@@ -16,5 +18,8 @@
         <argument android:name="param1" app:argType="string" android:defaultValue="Chandra"/>
         <argument android:name="param2" app:argType="string" android:defaultValue="MrQuery"/>
     </fragment>
-    <action android:id="@+id/action_global_params" app:destination="@id/params_dest"/>
+    <action android:id="@+id/action_global_params_dest" app:destination="@id/params_dest"/>
+    <fragment android:id="@+id/settings_dest" android:name="com.example.semicolon.SettingsFragment"
+              android:label="fragment_settings" tools:layout="@layout/fragment_settings"/>
+    <action android:id="@+id/action_global_main_dest" app:destination="@id/main_dest"/>
 </navigation>

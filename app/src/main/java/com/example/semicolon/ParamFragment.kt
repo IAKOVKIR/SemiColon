@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import java.lang.Exception
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,7 +53,9 @@ class ParamFragment : Fragment() {
         val nameText = view.findViewById<TextView>(R.id.name_text)
         val image = view.findViewById<ImageView>(R.id.place_for_image)
         val detText = view.findViewById<TextView>(R.id.details_text)
-        image.setImageDrawable(getDrawable(context as Context, param4 as Int))
+        try {
+            image.setImageDrawable(getDrawable(context as Context, param4 as Int))
+        } catch (e : Exception) {}
         nameText.text = fullName
         detText.text = detailsText
         return view
@@ -71,13 +74,13 @@ class ParamFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String, param3: String) =
+        fun newInstance(param1: String, param2: String, param3: String, param4: Int) =
             ParamFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                     putString(ARG_PARAM3, param3)
-                    putInt(ARG_PARAM4, param4 as Int)
+                    putInt(ARG_PARAM4, param4)
                 }
             }
     }

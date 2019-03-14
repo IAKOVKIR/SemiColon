@@ -5,6 +5,7 @@
              android:background="@color/BLACK"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:id="@+id/main_frag"
              tools:context=".MainFragment">
     <LinearLayout
             android:layout_width="match_parent"
@@ -18,12 +19,14 @@
             <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-                <TextView
+                <Button
+                        android:id="@+id/settings_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingTop="8dp"
-                        android:paddingRight="8dp"
-                        android:layout_alignParentRight="true"
+                        android:background="@drawable/reg_square"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_alignParentEnd="true"
                         android:text="settings"
                         android:textSize="22sp"
                         android:textColor="@color/WHITE"/>

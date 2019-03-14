@@ -1,9 +1,12 @@
 package com.example.semicolon
 
+import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 
 
@@ -41,6 +44,7 @@ class MyItemRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
+        holder.mImageView.setImageDrawable(ContextCompat.getDrawable(holder.mView.context, item.image))
         holder.mIdView.text = item.id
         holder.mContentView.text = item.content
 
@@ -53,6 +57,7 @@ class MyItemRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
+        val mImageView : ImageView = mView.image
         val mIdView: TextView = mView.item_number
         val mContentView: TextView = mView.content
 
