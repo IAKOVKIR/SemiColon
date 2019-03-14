@@ -40,7 +40,7 @@ class ChosenSettings : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_chosen_settings, container, false)
-        val textView = view.findViewById<TextView>(R.id.text_text)
+        val textView = view.findViewById<TextView>(R.id.chosen_heading)
         textView.text = "$param1 $param2"
         return view
     }

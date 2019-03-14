@@ -1,7 +1,5 @@
 package com.example.semicolon
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentActivity
@@ -14,7 +12,6 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
     private lateinit var name: String
     private lateinit var user: String
-    private var log = Login()
 
     override fun onListFragmentInteraction(item: EventContent.Event?) {
         Log.i("Navigation", "Selected $item")
@@ -53,18 +50,6 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
                 args.putString("param1", "Chandra")
                 args.putString("param2", "Lil Query")
                 findNavController(R.id.nav_host).navigate(R.id.action_global_params_dest, args)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_logout -> {
-                    val sharedPrefs = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-                    val editor = sharedPrefs.edit()
-                    editor.clear()
-                    editor.apply()
-                    user = ""
-
-                    val loginIntent = Intent(this, Login::class.java)
-                    startActivity(loginIntent)
-                    finish()
                 return@OnNavigationItemSelectedListener true
             }
         }

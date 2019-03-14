@@ -13,7 +13,6 @@
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
                 android:name=".UserHomeActivity"
-                android:label="@string/title_activity_user_home"
                 android:screenOrientation="portrait">
         </activity>
         <activity

@@ -1,5 +1,7 @@
 package com.example.semicolon
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +23,7 @@ class SettingsFragment : Fragment() {
 
     var simpleList: ListView? = null
     var countryList = arrayOf("Notifications", "Change Password", "Language", "Help", "About", "Log Out")
+    private var log = Login()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,14 +47,29 @@ class SettingsFragment : Fragment() {
             args.putString("param1", "$position")
             args.putString("param2", itemValue)
 
-            val fragment: Fragment = ChosenSettings()
-            fragment.arguments = args
-            val manager = fragmentManager
-            val transaction = manager!!.beginTransaction()
-            transaction.replace(R.id.nav_host, fragment)
-            transaction.addToBackStack(null)
-            // Commit the transaction
-            transaction.commit()
+            if (position != 5) {
+
+                val fragment: Fragment = ChosenSettings()
+                fragment.arguments = args
+                val manager = fragmentManager
+                val transaction = manager!!.beginTransaction()
+                transaction.replace(R.id.nav_host, fragment)
+                transaction.addToBackStack(null)
+                // Commit the transaction
+                transaction.commit()
+
+            } else {
+
+                val sharedPrefs = activity!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
+                val editor = sharedPrefs.edit()
+                editor.clear()
+                editor.apply()
+
+                val loginIntent = Intent(view.context, Login::class.java)
+                startActivity(loginIntent)
+                activity!!.finish()
+
+            }
         }
 
         return view
