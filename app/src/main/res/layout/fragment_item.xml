@@ -2,6 +2,7 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:background="@color/BLACK"
         android:layout_height="wrap_content"
@@ -11,9 +12,11 @@
             android:layout_width="match_parent"
             android:layout_gravity="center"
             android:layout_height="0dp"
-            app:srcCompat="@drawable/burnes"
+            app:srcCompat="@drawable/burns"
             android:id="@+id/image"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            tools:ignore="ContentDescription"/>
+
     <TextView
             android:id="@+id/item_number"
             android:textColor="@color/WHITE"
@@ -22,6 +25,7 @@
             android:layout_margin="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem"/>
 
+
     <TextView
             android:id="@+id/content"
             android:textColor="@color/WHITE"
@@ -29,4 +33,5 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem"/>
+
 </LinearLayout>

@@ -26,8 +26,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textFirstName"/>
 
-
-            <EditText
+        <EditText
                 android:id="@+id/editTextFirstName"
                 android:textSize="23sp"
                 android:textCursorDrawable="@drawable/black_cursor"
@@ -66,9 +65,7 @@
                 android:inputType="text"
                 tools:ignore="Autofill,LabelFor"/>
 
-
     </RelativeLayout>
-
 
     <!--Third page(Terms & Conditions) -->
     <RelativeLayout
@@ -92,8 +89,7 @@
                     android:textColor="@color/BLACK"
                     android:layout_margin="8dp"
                     android:textSize="19sp"
-                    android:text="@string/terms_and_conditions"
-            />
+                    android:text="@string/terms_and_conditions"/>
 
         </ScrollView>
 
@@ -108,8 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:id="@+id/checkBox"
-        />
+                android:id="@+id/checkBox"/>
 
     </RelativeLayout>
 

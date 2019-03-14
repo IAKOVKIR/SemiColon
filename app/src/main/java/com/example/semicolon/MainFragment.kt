@@ -2,13 +2,11 @@ package com.example.semicolon
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,7 +45,7 @@ class MainFragment : Fragment() {
             val transaction = manager!!.beginTransaction()
             transaction.replace(R.id.nav_host, fragment)
             transaction.addToBackStack(null)
-// Commit the transaction
+            // Commit the transaction
             transaction.commit()
         }
 

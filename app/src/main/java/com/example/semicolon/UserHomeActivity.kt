@@ -62,8 +62,8 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
                     editor.apply()
                     user = ""
 
-                    val intent = Intent(this, Login::class.java)
-                    startActivity(intent)
+                    val loginIntent = Intent(this, Login::class.java)
+                    startActivity(loginIntent)
                     finish()
                 return@OnNavigationItemSelectedListener true
             }
@@ -85,7 +85,6 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         args.putString("param2", user)
 
         findNavController(R.id.nav_host).navigate(R.id.main_dest, args)
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 }

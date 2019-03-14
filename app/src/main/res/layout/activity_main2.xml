@@ -16,11 +16,12 @@
             android:paddingBottom="8dp"
             android:gravity="center">
 
-        <View android:layout_width="match_parent"
-              android:padding="16dp"
-              android:layout_height="5dp"
-              android:layout_marginTop="35dp"
-              android:background="@color/WHITE"/>
+        <View
+                android:layout_width="match_parent"
+                android:padding="16dp"
+                android:layout_height="5dp"
+                android:layout_marginTop="35dp"
+                android:background="@color/WHITE"/>
 
         <TextView
                 android:id="@+id/FirstCircle"
@@ -30,7 +31,7 @@
                 android:gravity="center"
                 android:textColor="@color/BLACK"
                 android:text="@string/number_one"
-                android:background="@drawable/regupdatecircle"
+                android:background="@drawable/reg_update_circle"
                 android:layout_width="70dp"
                 android:layout_height="70dp"/>
 
@@ -42,7 +43,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:text="@string/number_two"
-                android:background="@drawable/regcircle"
+                android:background="@drawable/reg_circle"
                 android:layout_width="70dp"
                 android:layout_height="70dp"/>
 
@@ -54,7 +55,7 @@
                 android:gravity="center"
                 android:textColor="#FFF"
                 android:text="@string/number_three"
-                android:background="@drawable/regcircle"
+                android:background="@drawable/reg_circle"
                 android:layout_width="70dp"
                 android:layout_height="70dp"/>
 

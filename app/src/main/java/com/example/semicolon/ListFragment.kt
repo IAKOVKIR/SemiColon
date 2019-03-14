@@ -59,7 +59,7 @@ class ListFragment : Fragment() {
         if (context is OnListFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnListFragmentInteractionListener")
         }
     }
 
@@ -90,12 +90,13 @@ class ListFragment : Fragment() {
         const val ARG_COLUMN_COUNT = "column-count"
 
         // TODO: Customize parameter initialization
-        @JvmStatic
+        /*@JvmStatic
         fun newInstance(columnCount: Int) =
             ListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
+            */
     }
 }

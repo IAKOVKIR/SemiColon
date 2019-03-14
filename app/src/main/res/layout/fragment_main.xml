@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:background="@color/BLACK"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:id="@+id/main_frag"
-             tools:context=".MainFragment">
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/BLACK"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_frag"
+        tools:context=".MainFragment">
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
         <LinearLayout
-                android:background="@drawable/gradientbackground"
+                android:background="@drawable/gradient_background"
                 android:layout_width="match_parent"
                 android:layout_height="270dp"
                 android:orientation="vertical">
+
             <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                 <Button
                         android:id="@+id/settings_button"
                         android:layout_width="wrap_content"
@@ -27,17 +33,19 @@
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:layout_alignParentEnd="true"
-                        android:text="settings"
+                        android:text="@string/word_settings"
                         android:textSize="22sp"
                         android:textColor="@color/WHITE"/>
 
             </RelativeLayout>
+
             <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_marginTop="30dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="140dp"
                     android:layout_height="140dp"
-                    android:src="@drawable/burnes"/>
+                    android:src="@drawable/burns"/>
+
             <TextView
                     android:layout_marginTop="10dp"
                     android:id="@+id/name"
@@ -47,14 +55,16 @@
                     android:textColor="#fff"
                     android:textStyle="bold"
                     android:textSize="21sp"/>
+
         </LinearLayout>
+
         <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/gray_red">
 
             <TextView
-                    android:text="Friends"
+                    android:text="@string/word_friends"
                     android:textSize="22sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
@@ -66,8 +76,9 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toStartOf="@+id/textView5"/>
+
             <TextView
-                    android:text="0"
+                    android:text="@string/number_zero"
                     android:textSize="22sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
@@ -78,10 +89,13 @@
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textView4" app:layout_constraintVertical_bias="1.0"
-                    android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/textView7"/>
+                    app:layout_constraintTop_toBottomOf="@+id/textView4"
+                    app:layout_constraintVertical_bias="1.0"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/textView7"/>
+
             <TextView
-                    android:text="Events"
+                    android:text="@string/word_events"
                     android:textSize="22sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
@@ -97,8 +111,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintHorizontal_bias="0.763"
                     app:layout_constraintVertical_bias="0.0"/>
+
             <TextView
-                    android:text="0"
+                    android:text="@string/number_zero"
                     android:textSize="22sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
@@ -106,11 +121,17 @@
                     android:id="@+id/textView7"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textView5"
-                    android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintHorizontal_bias="0.763" app:layout_constraintVertical_bias="1.0"/>
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintHorizontal_bias="0.763"
+                    app:layout_constraintVertical_bias="1.0"/>
+
         </android.support.constraint.ConstraintLayout>
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,29 +140,32 @@
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Melbourne, Australia"
+                    android:text="@string/test_melbourne_australia"
                     android:textColor="@color/WHITE"
                     android:textSize="22sp"
                     android:textAlignment="center"
                     android:padding="16dp"/>
+
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="+61(949) 180 85 70"
+                    android:text="@string/test_phone_number"
                     android:textColor="@color/WHITE"
                     android:textSize="22sp"
                     android:textAlignment="center"
                     android:padding="16dp"/>
+
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="MrStealYourQuery@gmail.com"
+                    android:text="@string/test_email"
                     android:textColor="@color/WHITE"
                     android:textSize="22sp"
                     android:textAlignment="center"
                     android:padding="16dp"/>
 
         </LinearLayout>
+
     </LinearLayout>
 
 </FrameLayout>
