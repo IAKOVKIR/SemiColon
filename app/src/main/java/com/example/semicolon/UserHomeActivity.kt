@@ -21,7 +21,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         args.putString("param3", item!!.details)
         args.putInt("param4", item.image)
 
-        findNavController(R.id.nav_host).navigate(R.id.action_to_params, args)
+        findNavController(R.id.nav_host).navigate(R.id.params_dest, args)
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->

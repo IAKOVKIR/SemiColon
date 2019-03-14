@@ -53,7 +53,7 @@ class SettingsFragment : Fragment() {
                 fragment.arguments = args
                 val manager = fragmentManager
                 val transaction = manager!!.beginTransaction()
-                transaction.replace(R.id.nav_host, fragment)
+                transaction.add(R.id.nav_host, fragment)
                 transaction.addToBackStack(null)
                 // Commit the transaction
                 transaction.commit()
