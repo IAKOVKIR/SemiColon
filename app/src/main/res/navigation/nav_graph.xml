@@ -6,9 +6,7 @@
 
     <fragment android:id="@+id/main_dest"
               android:name="com.example.semicolon.MainFragment"
-              android:label="fragment_main" tools:layout="@layout/fragment_main">
-        <action android:id="@+id/action_main_dest_to_settings_dest2" app:destination="@id/settings_dest"/>
-    </fragment>
+              android:label="fragment_main" tools:layout="@layout/fragment_main"/>
     <fragment android:id="@+id/list_dest" android:name="com.example.semicolon.ListFragment"
               android:label="fragment_item_list" tools:layout="@layout/fragment_item_list">
         <action android:id="@+id/action_to_params" app:destination="@id/params_dest"/>
@@ -20,14 +18,13 @@
         <argument android:name="param2" app:argType="string" android:defaultValue="MrQuery"/>
     </fragment>
     <action android:id="@+id/action_global_params_dest" app:destination="@id/params_dest"/>
-    <fragment android:id="@+id/settings_dest" android:name="com.example.semicolon.SettingsFragment"
-              android:label="fragment_settings" tools:layout="@layout/fragment_settings">
-        <action android:id="@+id/action_settings_dest_to_chosenSettings" app:destination="@id/chosenSettings"/>
-    </fragment>
     <action android:id="@+id/action_global_main_dest" app:destination="@id/main_dest"/>
     <action android:id="@+id/action_global_list_dest" app:destination="@id/list_dest"/>
-    <action android:id="@+id/action_global_settings_dest" app:destination="@id/settings_dest"/>
-    <fragment android:id="@+id/chosenSettings" android:name="com.example.semicolon.ChosenSettings"
-              android:label="chosen_settings_dest" tools:layout="@layout/fragment_chosen_settings"/>
-    <action android:id="@+id/action_global_chosenSettings" app:destination="@id/chosenSettings"/>
+    <fragment android:id="@+id/setting_dest" android:name="com.example.semicolon.SettingFragment"
+              android:label="fragment_settings_list" tools:layout="@layout/fragment_settings_list"/>
+    <fragment android:id="@+id/setting_params_dest" android:name="com.example.semicolon.SettingParamsFragment"
+              android:label="fragment_setting_params" tools:layout="@layout/fragment_setting_params">
+        <argument android:name="param1" app:argType="string" android:defaultValue="Setting"/>
+        <argument android:name="param2" app:argType="string" android:defaultValue="Chandra"/>
+    </fragment>
 </navigation>

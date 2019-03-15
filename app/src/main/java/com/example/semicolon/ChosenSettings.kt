@@ -3,6 +3,7 @@ package com.example.semicolon
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,9 +42,12 @@ class ChosenSettings : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_chosen_settings, container, false)
         val textView = view.findViewById<TextView>(R.id.chosen_heading)
+        val contentView = view.findViewById<ConstraintLayout>(R.id.layoutForSettings)
+        contentView.visibility = View.VISIBLE
+
         textView.text = "$param1 $param2"
+
         return view
     }
-
 
 }

@@ -43,6 +43,13 @@ class SettingsFragment : Fragment() {
             //Get the String value of the item where the user clicked
             val itemValue = simpleList!!.getItemAtPosition(position) as String
 
+            val managerCount = fragmentManager
+            val count = managerCount!!.backStackEntryCount
+
+            while (managerCount.backStackEntryCount != count) {
+                getView()!!.visibility = View.GONE
+            }
+
             val args = Bundle()
             args.putString("param1", "$position")
             args.putString("param2", itemValue)

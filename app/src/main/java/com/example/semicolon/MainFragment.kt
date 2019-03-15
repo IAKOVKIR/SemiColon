@@ -40,7 +40,7 @@ class MainFragment : Fragment() {
 
         settingsButton = view.findViewById(R.id.settings_button)
         settingsButton!!.setOnClickListener {
-            val fragment: Fragment = SettingsFragment()
+            val fragment: Fragment = SettingFragment()
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()
             transaction.replace(R.id.nav_host, fragment)

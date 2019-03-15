@@ -80,5 +80,8 @@
     <string name="test_melbourne_australia">Melbourne, Australia</string>
     <string name="test_email">MrStealYourQuery@gmail.com</string>
     <string name="test_phone_number">+61(949)808 570</string>
+    <string name="phrase_current_password">current password</string>
+    <string name="phrase_new_password">new password</string>
+    <string name="phrase_repeat_password">repeat password</string>
 
 </resources>

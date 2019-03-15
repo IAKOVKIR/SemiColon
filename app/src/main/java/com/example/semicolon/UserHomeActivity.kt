@@ -4,14 +4,26 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentActivity
 import android.util.Log
+import android.widget.TextView
 import androidx.navigation.findNavController
+import com.example.semicolon.setting.Setting
 import com.example.semicolon.event.EventContent
 import kotlinx.android.synthetic.main.activity_user_home.*
 
-class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener {
+class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener {
 
     private lateinit var name: String
     private lateinit var user: String
+    var text : TextView? = null
+
+    override fun onListFragmentInteraction(item: Setting.SettingItem?) {
+        Log.i("Navigation", "Selected $item")
+        val args = Bundle()
+        args.putString("param1", "Selected")
+        args.putString("param2", item.toString())
+
+        findNavController(R.id.nav_host).navigate(R.id.setting_params_dest, args)
+    }
 
     override fun onListFragmentInteraction(item: EventContent.Event?) {
         Log.i("Navigation", "Selected $item")
