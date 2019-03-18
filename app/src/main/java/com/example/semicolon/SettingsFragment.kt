@@ -54,7 +54,7 @@ class SettingsFragment : Fragment() {
             args.putString("param1", "$position")
             args.putString("param2", itemValue)
 
-            if (position != 5) {
+            if (position != 6) {
 
                 val fragment: Fragment = ChosenSettings()
                 fragment.arguments = args
