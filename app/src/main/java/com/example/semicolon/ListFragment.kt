@@ -2,7 +2,6 @@ package com.example.semicolon
 
 import android.content.Context
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -39,9 +38,11 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val list = view.findViewById<RecyclerView>(R.id.list)
+
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view as RecyclerView) {
+        if (list is RecyclerView) {
+            with(list) {
                 when {
                     columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
                     else -> layoutManager = GridLayoutManager(context, columnCount)
@@ -89,13 +90,13 @@ class ListFragment : Fragment() {
         const val ARG_COLUMN_COUNT = "column-count"
 
         // TODO: Customize parameter initialization
-        @JvmStatic
+        /*@JvmStatic
         fun newInstance(columnCount: Int) =
             ListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
-
+            */
     }
 }
