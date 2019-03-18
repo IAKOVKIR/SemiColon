@@ -33,6 +33,7 @@
                         android:paddingStart="8dp"
                         android:paddingEnd="8dp"
                         android:layout_alignParentEnd="true"
+                        android:visibility="visible"
                         android:text="@string/word_settings"
                         android:textSize="22sp"
                         android:textColor="@color/WHITE"/>

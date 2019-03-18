@@ -1,5 +1,6 @@
 package com.example.semicolon
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -11,16 +12,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.example.semicolon.event.EventContent
-import com.example.semicolon.event.EventContent.Event
+import com.example.semicolon.setting.Setting
+import com.example.semicolon.setting.Setting.SettingItem
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [ListFragment.OnListFragmentInteractionListener] interface.
+ * [SettingFragment.OnListFragmentInteractionListener] interface.
  */
-
-class ListFragment : Fragment() {
+class SettingFragment : Fragment() {
 
     // TODO: Customize parameters
     private var columnCount = 1
@@ -29,6 +29,7 @@ class ListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
@@ -38,18 +39,19 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_settings_list, container, false)
+        val list = view.findViewById<RecyclerView>(R.id.list)
+
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view as RecyclerView) {
-                when {
-                    columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
-                    else -> layoutManager = GridLayoutManager(context, columnCount)
+        if (list is RecyclerView) {
+            with(list) {
+                layoutManager = when {
+                    columnCount <= 1 -> LinearLayoutManager(context)
+                    else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter(EventContent.EVENTS, listener)
+                adapter = SettingsRecyclerViewAdapter(Setting.SETTING, listener)
             }
         }
-
         return view
     }
 
@@ -80,7 +82,7 @@ class ListFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: Event?)
+        fun onListFragmentInteraction(item: SettingItem?)
     }
 
     companion object {
@@ -91,11 +93,10 @@ class ListFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            ListFragment().apply {
+            SettingFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
-
     }
 }
