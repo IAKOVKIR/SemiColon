@@ -1,5 +1,7 @@
 package com.example.semicolon
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentActivity
@@ -14,6 +16,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
     private lateinit var name: String
     private lateinit var user: String
+    private var log = Login()
     var text : TextView? = null
 
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
@@ -22,7 +25,10 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         args.putString("param1", "Selected")
         args.putString("param2", item.toString())
 
-        findNavController(R.id.nav_host).navigate(R.id.setting_params_dest, args)
+        if (item.toString() == "6")
+            logOut()
+        else
+            findNavController(R.id.nav_host).navigate(R.id.setting_params_dest, args)
     }
 
     override fun onListFragmentInteraction(item: EventContent.Event?) {
@@ -83,5 +89,16 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
         findNavController(R.id.nav_host).navigate(R.id.main_dest, args)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    }
+
+    private fun logOut() {
+        val sharedPrefs = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
+        val editor = sharedPrefs.edit()
+        editor.clear()
+        editor.apply()
+
+        val loginIntent = Intent(this, Login::class.java)
+        startActivity(loginIntent)
+        finish()
     }
 }
