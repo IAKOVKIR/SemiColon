@@ -89,12 +89,13 @@ class SettingFragment : Fragment() {
         const val ARG_COLUMN_COUNT = "column-count"
 
         // TODO: Customize parameter initialization
-        @JvmStatic
+        /*@JvmStatic
         fun newInstance(columnCount: Int) =
             SettingFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
+            */
     }
 }

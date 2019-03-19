@@ -15,8 +15,8 @@ class Login : Activity() {
 
     //variables (SharedPreferences)
     var prefName = "myPreferences"
-    private var prefUsername = "username"
-    private var prefPassword = "password"
+    var prefUsername = "username"
+    var prefPassword = "password"
 
     //EditTexts
     private var fEnter : EditText ?= null //username

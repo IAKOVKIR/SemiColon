@@ -83,5 +83,6 @@
     <string name="phrase_current_password">current password</string>
     <string name="phrase_new_password">new password</string>
     <string name="phrase_repeat_password">repeat password</string>
+    <string name="word_submit">submit</string>
 
 </resources>
