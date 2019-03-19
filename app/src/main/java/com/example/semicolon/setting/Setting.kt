@@ -4,7 +4,7 @@ import java.util.ArrayList
 import java.util.HashMap
 
 /**
- * Helper class for providing sample content for user interfaces created by
+ * Helper class for providing sample pos for user interfaces created by
  * Android template wizards.
  *
  * TODO: Replace all uses of this class before publishing your app.
@@ -41,16 +41,16 @@ object Setting {
         return SettingItem(setting_names[position - 1], "$position", "F")
     }
 
-    private fun makeDetails(position: Int): String {
+    /*private fun makeDetails(position: Int): String {
         val builder = StringBuilder()
         builder.append("Details about Item: ").append(position)
         return builder.toString()
-    }
+    }*/
 
     /**
-     * A dummy item representing a piece of content.
+     * A dummy item representing a piece of pos.
      */
-    data class SettingItem(val name: String, val content: String, val details: String) {
-        override fun toString(): String = content
+    data class SettingItem(val name: String, val pos: String, val details: String) {
+        override fun toString(): String = pos
     }
 }

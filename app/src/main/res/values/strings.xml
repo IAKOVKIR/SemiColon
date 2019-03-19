@@ -84,5 +84,8 @@
     <string name="phrase_new_password">new password</string>
     <string name="phrase_repeat_password">repeat password</string>
     <string name="word_submit">submit</string>
+    <string name="word_english">english</string>
+    <string name="word_spanish">spanish</string>
+    <string name="phrase_report_a_problem">report a problem</string>
 
 </resources>

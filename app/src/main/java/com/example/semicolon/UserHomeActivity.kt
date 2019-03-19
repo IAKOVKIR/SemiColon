@@ -23,9 +23,9 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         Log.i("Navigation", "Selected $item")
         val args = Bundle()
         args.putString("param1", item!!.name)
-        args.putString("param2", item.toString())
+        args.putString("param2", item.pos)
 
-        if (item.toString() == "6")
+        if (item.pos == "6")
             logOut()
         else
             findNavController(R.id.nav_host).navigate(R.id.setting_params_dest, args)

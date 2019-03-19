@@ -5,7 +5,7 @@ import java.util.ArrayList
 import java.util.HashMap
 
 /**
- * Helper class for providing sample content for user interfaces created by
+ * Helper class for providing sample pos for user interfaces created by
  * Android template wizards.
  *
  * TODO: Replace all uses of this class before publishing your app.
@@ -55,7 +55,7 @@ object EventContent {
     }
 
     /**
-     * An Event item representing a piece of content.
+     * An Event item representing a piece of pos.
      */
     data class Event(val id: String, val content: String, val details: String, val image: Int) {
         override fun toString(): String = content
