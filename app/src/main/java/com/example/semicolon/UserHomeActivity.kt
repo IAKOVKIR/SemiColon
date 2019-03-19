@@ -22,7 +22,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
         Log.i("Navigation", "Selected $item")
         val args = Bundle()
-        args.putString("param1", "Selected")
+        args.putString("param1", item!!.name)
         args.putString("param2", item.toString())
 
         if (item.toString() == "6")

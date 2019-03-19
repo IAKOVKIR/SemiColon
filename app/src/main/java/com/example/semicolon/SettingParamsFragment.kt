@@ -39,12 +39,15 @@ class SettingParamsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_setting_params, container, false)
-        val fullText = "$param1 $param2"
+        val fullText = "$param1"
         val nameText = view.findViewById<TextView>(R.id.name_text)
         val passwordLayout = view.findViewById<LinearLayout>(R.id.password_layout)
+        val notificationLayout = view.findViewById<LinearLayout>(R.id.notification_layout)
         nameText.text = fullText
 
-        if (param2 == "2") {
+        if (param2 == "1") {
+            notificationLayout.visibility = View.VISIBLE
+        } else if (param2 == "2") {
             passwordLayout.visibility = View.VISIBLE
             val currentPassword = view.findViewById<EditText>(R.id.current_password)
             val newPassword = view.findViewById<EditText>(R.id.new_password)
