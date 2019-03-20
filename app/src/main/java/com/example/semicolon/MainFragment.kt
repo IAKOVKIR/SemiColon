@@ -34,9 +34,29 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         val fullName = "$param1 $param2"
+
         val nameText = view.findViewById<TextView>(R.id.name)
+        val friendsLink = arrayOf<TextView>(view.findViewById(R.id.friends_word), view.findViewById(R.id.friends_number))
 
         nameText.text = fullName
+
+        friendsLink[0].setOnClickListener {
+            val fragment: Fragment = FriendsFragment()
+            val manager = fragmentManager
+            val transaction = manager!!.beginTransaction()
+            transaction.replace(R.id.nav_host, fragment)
+            // Commit the transaction
+            transaction.commit()
+        }
+
+        friendsLink[1].setOnClickListener {
+            val fragment: Fragment = FriendsFragment()
+            val manager = fragmentManager
+            val transaction = manager!!.beginTransaction()
+            transaction.replace(R.id.nav_host, fragment)
+            // Commit the transaction
+            transaction.commit()
+        }
 
         settingsButton = view.findViewById(R.id.settings_button)
         settingsButton!!.setOnClickListener {

@@ -8,19 +8,30 @@ import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.TextView
 import androidx.navigation.findNavController
+import com.example.semicolon.dummy.Friends
 import com.example.semicolon.setting.Setting
 import com.example.semicolon.event.EventContent
 import kotlinx.android.synthetic.main.activity_user_home.*
 
-class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener {
+class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener,
+                                       FriendsFragment.OnListFragmentInteractionListener {
 
     private lateinit var name: String
     private lateinit var user: String
     private var log = Login()
     var text : TextView? = null
 
+    override fun onListFragmentInteraction(item: Friends.FriendItem?) {
+        Log.i("Navigation", "Selected Friend $item")
+        val args = Bundle()
+        args.putString("param1", item!!.firstName)
+        args.putString("param1", item.secondName)
+
+        findNavController(R.id.nav_host).navigate(R.id.friend_params_dest, args)
+    }
+
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
-        Log.i("Navigation", "Selected $item")
+        Log.i("Navigation", "Selected Setting $item")
         val args = Bundle()
         args.putString("param1", item!!.name)
         args.putString("param2", item.pos)
@@ -32,7 +43,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     }
 
     override fun onListFragmentInteraction(item: EventContent.Event?) {
-        Log.i("Navigation", "Selected $item")
+        Log.i("Navigation", "Selected Event $item")
         val args = Bundle()
         args.putString("param1", "Selected")
         args.putString("param2", item.toString())

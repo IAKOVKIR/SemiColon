@@ -27,9 +27,8 @@ object Setting {
 
     init {
         // Add some sample items.
-        for (i in 1..COUNT) {
+        for (i in 1..COUNT)
             addSetting(createSettingItem(i))
-        }
     }
 
     private fun addSetting(setting: SettingItem) {

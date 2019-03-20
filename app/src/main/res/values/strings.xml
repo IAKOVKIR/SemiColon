@@ -87,5 +87,6 @@
     <string name="word_english">english</string>
     <string name="word_spanish">spanish</string>
     <string name="phrase_report_a_problem">report a problem</string>
+    <string name="number_five">5</string>
 
 </resources>
