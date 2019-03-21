@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.activity_user_home.*
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener,
                                        FriendsFragment.OnListFragmentInteractionListener {
 
-    private lateinit var name: String
-    private lateinit var user: String
+    //data from login activity
+    var list: ArrayList<String>? = null
     private var log = Login()
     var text : TextView? = null
 
@@ -56,16 +56,13 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val intent = intent
         val b : Bundle = intent.extras as Bundle
-        name = b.getString("user") as String
-        user = b.getString("user1") as String
-
+        list = b.getStringArrayList("user")
 
         when (item.itemId) {
             R.id.navigation_home -> {
                 //get username sent from the log in activity
                 val args = Bundle()
-                args.putString("param1", name)
-                args.putString("param2", user)
+                args.putStringArrayList("user", list)
 
                 findNavController(R.id.nav_host).navigate(R.id.main_dest, args)
                 return@OnNavigationItemSelectedListener true
@@ -91,12 +88,11 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
         val intent = intent
         val b : Bundle = intent.extras as Bundle
-        name = b.getString("user") as String
-        user = b.getString("user1") as String
+        list = b.getStringArrayList("user")
+
 
         val args = Bundle()
-        args.putString("param1", name)
-        args.putString("param2", user)
+        args.putStringArrayList("user", list)
 
         findNavController(R.id.nav_host).navigate(R.id.main_dest, args)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)

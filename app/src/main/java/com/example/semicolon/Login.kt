@@ -10,6 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.CheckBox
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Login : Activity() {
 
@@ -22,8 +24,10 @@ class Login : Activity() {
     private var fEnter : EditText ?= null //username
     private var sEnter : EditText ?= null //password
 
+    lateinit var usersDBHelper : DatabaseOpenHelper
+
     //CheckBox
-    private var checkLog : CheckBox ?= null //"remember me"
+    private var checkLog : CheckBox? = null //"remember me"
 
     public override fun onStart() {
         super.onStart()
@@ -34,6 +38,11 @@ class Login : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        usersDBHelper = DatabaseOpenHelper(this)
+        usersDBHelper.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678", "Melbourne", 1, 5.0F))
+        usersDBHelper.insertUser(User(2,"Abbas", "Ice Wallow", "0490000000", "12345678", "Melbourne", 1, 3.2F))
+        usersDBHelper.insertUser(User(3,"Carl", "Obama", "0490000001", "12345678", "Melbourne", 1, 5.0F))
 
         fEnter = findViewById(R.id.fName)
         sEnter = findViewById(R.id.lName)
@@ -88,30 +97,36 @@ class Login : Activity() {
     private fun doLogin() {
         val txtUser = fEnter!!.text.toString()
         val txtPassword = sEnter!!.text.toString()
-        val username = "MrQuery"
-        val password = "12345678"
-        if (txtUser == username && txtPassword == password) {
+
+        val list = usersDBHelper.readUser(txtUser, txtPassword)
+
+        if (list.size > 0) {
             if (checkLog!!.isChecked)
-            //save username and password in  SharedPreferences
-                rememberMe(username, password)
+            //save username and password in SharedPreferences
+                rememberMe(list[0].phone, list[0].password)
             //show logout activity
-            showLogout(username)
+            showHome(list[0])
 
-        } else {
+        } else
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_LONG).show()
-        }
-
 
     }
 
     /**
-     * @function showLogout() starts HomeActivity and sends username
+     * @function showHome() starts HomeActivity and sends username
      */
 
-    private fun showLogout(username: String) {
+    private fun showHome(list: User) {
         val intent = Intent(this, UserHomeActivity::class.java)
-        intent.putExtra("user", "Chandra")
-        intent.putExtra("user1", username)
+        val user = ArrayList<String>()
+        user.add(list.id.toString())
+        user.add(list.firstName)
+        user.add(list.lastName)
+        user.add(list.phone)
+        user.add(list.password)
+        user.add(list.city)
+        user.add(list.rating.toString())
+        intent.putStringArrayListExtra("user", user)
         startActivity(intent)
         finish()
     }
@@ -123,11 +138,13 @@ class Login : Activity() {
 
     private fun getUser() {
         val pref = getSharedPreferences(prefName, Context.MODE_PRIVATE)
-        val username = pref.getString(prefUsername, null)
-        val password = pref.getString(prefPassword, null)
+        val username = pref.getString(prefUsername, "user")
+        val password = pref.getString(prefPassword, "user")
 
-        if (username != null || password != null)
-            showLogout(username!!.toString())
+        val list = usersDBHelper.readUser(username, password)
+
+        if (list.size > 0)
+            showHome(list[0])
     }
 
     /**

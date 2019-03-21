@@ -10,8 +10,7 @@ import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM1 = "user"
 
 /**
  * A simple [Fragment] subclass.
@@ -19,21 +18,19 @@ private const val ARG_PARAM2 = "param2"
  */
 class MainFragment : Fragment() {
 
-    private var param1 : String? = null
-    private var param2 : String? = null
+    private var param1 : ArrayList<String>? = null
     private var settingsButton : Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            param1 = it.getStringArrayList(ARG_PARAM1)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
-        val fullName = "$param1 $param2"
+        val fullName = "${param1?.get(1)} ${param1?.get(2)}"
 
         val nameText = view.findViewById<TextView>(R.id.name)
         val friendsLink = arrayOf<TextView>(view.findViewById(R.id.friends_word), view.findViewById(R.id.friends_number))
