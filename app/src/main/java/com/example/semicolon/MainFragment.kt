@@ -34,7 +34,7 @@ class MainFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
 
         val fullName = "${param1?.get(1)} ${param1?.get(2)}"
-        val phoneImp = 0//"${param1?.get(3)?.get(0)}(${param1?.get(3)!!.substring(1, 4)})${param1?.get(3)!!.substring(4, 7)} ${param1?.get(3)!!.substring(7, 10)}"
+        val phoneImp = "${param1?.get(3)?.get(0)}(${param1?.get(3)!!.substring(1, 4)})${param1?.get(3)!!.substring(4, 7)} ${param1?.get(3)!!.substring(7, 10)}"
         val emailText = "${param1?.get(7)}".trim()
 
         val nameText = view.findViewById<TextView>(R.id.name)

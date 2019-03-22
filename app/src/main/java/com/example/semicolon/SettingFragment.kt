@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import com.example.semicolon.setting.Setting
 import com.example.semicolon.setting.Setting.SettingItem
 import android.content.Intent
-
+import android.view.KeyEvent
 
 
 /**
@@ -24,6 +24,7 @@ import android.content.Intent
 class SettingFragment : Fragment() {
 
     private var columnCount = 1
+    private var param1 : ArrayList<String>? = null
 
     private var listener: OnListFragmentInteractionListener? = null
 
@@ -32,8 +33,8 @@ class SettingFragment : Fragment() {
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
+            param1 = it.getStringArrayList("user")
         }
-
 
     }
 
@@ -64,6 +65,32 @@ class SettingFragment : Fragment() {
         } else {
             throw RuntimeException("$context must implement OnListFragmentInteractionListener")
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        view!!.isFocusableInTouchMode = true
+        view!!.requestFocus()
+        view!!.setOnKeyListener(object : View.OnKeyListener {
+            override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
+                return if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    val args = Bundle()
+                    args.putStringArrayList("user", param1)
+
+                    val fragment: Fragment = MainFragment()
+                    fragment.arguments = args
+                    val manager = fragmentManager
+                    val transaction = manager!!.beginTransaction()
+                    transaction.replace(R.id.nav_host, fragment)
+                    // Commit the transaction
+                    transaction.commit()
+
+                    true
+                } else
+                    false
+            }
+        })
     }
 
     override fun onDetach() {
