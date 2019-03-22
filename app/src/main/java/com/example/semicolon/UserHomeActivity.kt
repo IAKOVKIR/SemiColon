@@ -35,6 +35,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         val args = Bundle()
         args.putString("param1", item!!.name)
         args.putString("param2", item.pos)
+        args.putStringArrayList("param3", list)
 
         if (item.pos == "6")
             logOut()

@@ -50,6 +50,14 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     @Throws(SQLiteConstraintException::class)
+    fun setPassword(UserID: Int, newPassword: String): Boolean {
+        val db = writableDatabase
+        db.execSQL("UPDATE USER SET Password = '$newPassword' WHERE UserID = '$UserID'")
+
+        return true
+    }
+
+    @Throws(SQLiteConstraintException::class)
     fun deleteUser(UserID: String): Boolean {
         // Gets the data repository in write mode
         val db = writableDatabase

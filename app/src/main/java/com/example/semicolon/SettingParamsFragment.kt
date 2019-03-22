@@ -14,6 +14,7 @@ import android.widget.*
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM3 = "param3"
 
 /**
  * A simple [Fragment] subclass.
@@ -25,6 +26,7 @@ class SettingParamsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var param3: ArrayList<String>? = null
     private var log = Login()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +34,7 @@ class SettingParamsFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+            param3 = it.getStringArrayList(ARG_PARAM3)
         }
     }
 
@@ -74,6 +77,8 @@ class SettingParamsFragment : Fragment() {
                     if (password == curPas)
                         if (newPas == repeatPassword.text.toString())
                             if (newPas != curPas) {
+                                val db = DatabaseOpenHelper(activity!!.applicationContext)
+                                db.setPassword(param3?.get(0)!!.toInt(), newPas)
                                 changePassword(newPas)
                                 activity!!.onBackPressed()
                             } else
