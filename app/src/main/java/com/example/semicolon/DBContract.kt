@@ -26,6 +26,7 @@ object DBContract {
             const val FRIEND_COLUMN_RECEIVER_ID = "ReceiverID"
             const val FRIEND_COLUMN_DATE = "Date"
             const val FRIEND_COLUMN_TIME = "Time"
+            const val FRIEND_COLUMN_CONDITION = "Condition"
         }
     }
 }

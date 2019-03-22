@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.example.semicolon.dummy.Friends.FriendItem
 class FriendsFragment : Fragment() {
 
     private var columnCount = 1
+    private var param1 : ArrayList<String>? = null
 
     private var listener: OnListFragmentInteractionListener? = null
 
@@ -29,7 +31,9 @@ class FriendsFragment : Fragment() {
 
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
+            param1 = it.getStringArrayList("user")
         }
+
     }
 
     override fun onCreateView(
@@ -60,6 +64,32 @@ class FriendsFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        view!!.isFocusableInTouchMode = true
+        view!!.requestFocus()
+        view!!.setOnKeyListener(object : View.OnKeyListener {
+            override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
+                return if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    val args = Bundle()
+                    args.putStringArrayList("user", param1)
+
+                    val fragment: Fragment = MainFragment()
+                    fragment.arguments = args
+                    val manager = fragmentManager
+                    val transaction = manager!!.beginTransaction()
+                    transaction.replace(R.id.nav_host, fragment)
+                    // Commit the transaction
+                    transaction.commit()
+
+                    true
+                } else
+                    false
+            }
+        })
+    }
+
     override fun onDetach() {
         super.onDetach()
         listener = null
@@ -83,7 +113,6 @@ class FriendsFragment : Fragment() {
     companion object {
 
         const val ARG_COLUMN_COUNT = "column-count"
-
 
         /*@JvmStatic
         fun newInstance(columnCount: Int) =

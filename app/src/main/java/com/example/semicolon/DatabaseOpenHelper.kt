@@ -49,6 +49,25 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     @Throws(SQLiteConstraintException::class)
+    fun insertFriendship(friend: Friend): Boolean {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+
+        // Create a new map of values, where column names are the keys
+        val values = ContentValues()
+        values.put(DBContract.UserEntry.FRIEND_COLUMN_FRIEND_ID, friend.id)
+        values.put(DBContract.UserEntry.FRIEND_COLUMN_SENDER_ID, friend.SenderID)
+        values.put(DBContract.UserEntry.FRIEND_COLUMN_RECEIVER_ID, friend.ReceiverID)
+        values.put(DBContract.UserEntry.FRIEND_COLUMN_DATE, friend.date)
+        values.put(DBContract.UserEntry.FRIEND_COLUMN_TIME, friend.time)
+        values.put(DBContract.UserEntry.FRIEND_COLUMN_CONDITION, friend.condition)
+
+        db.insert(DBContract.UserEntry.FRIEND_TABLE_NAME, null, values)
+
+        return true
+    }
+
+    @Throws(SQLiteConstraintException::class)
     fun setPassword(UserID: Int, newPassword: String): Boolean {
         val db = writableDatabase
         val cv = ContentValues()
@@ -127,7 +146,8 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
                     DBContract.UserEntry.FRIEND_COLUMN_SENDER_ID + " REFERENCES " + DBContract.UserEntry.USER_TABLE_NAME + ", " +
                     DBContract.UserEntry.FRIEND_COLUMN_RECEIVER_ID + " INTEGER NOT NULL, " +
                     DBContract.UserEntry.FRIEND_COLUMN_DATE + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.FRIEND_COLUMN_TIME + " TEXT)"
+                    DBContract.UserEntry.FRIEND_COLUMN_TIME + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.FRIEND_COLUMN_CONDITION + " TEXT NOT NULL DEFAULT 'inProgress')"
 
         private const val SQL_DELETE_USER_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.USER_TABLE_NAME
         private const val SQL_DELETE_FRIEND_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME

@@ -10,7 +10,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.CheckBox
+import java.util.*
 import kotlin.collections.ArrayList
+import java.text.SimpleDateFormat
+
 
 class Login : Activity() {
 
@@ -38,6 +41,10 @@ class Login : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val c = Calendar.getInstance()
+        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+        val strDate = sdf.format(c.time).trim()
+
         usersDBHelper = DatabaseOpenHelper(this)
         usersDBHelper.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678",
             "Melbourne", 1, 5.0F, "MrStealYourQuery@gmail.com"))
@@ -45,6 +52,8 @@ class Login : Activity() {
             "Somewhere", 1, 3.2F, "BetterThanFather@gmail.com"))
         usersDBHelper.insertUser(User(3,"Carl", "Obama", "0490000001", "12345678",
             "Melbourne", 1, 5.0F, "CallMePresident@gmail.com"))
+        usersDBHelper.insertFriendship(Friend(1, 1, 2, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
+        usersDBHelper.insertFriendship(Friend(2, 1, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
 
         fEnter = findViewById(R.id.fName)
         sEnter = findViewById(R.id.lName)

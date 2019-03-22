@@ -12,6 +12,9 @@ import android.view.ViewGroup
 
 import com.example.semicolon.setting.Setting
 import com.example.semicolon.setting.Setting.SettingItem
+import android.content.Intent
+
+
 
 /**
  * A fragment representing a list of Items.
@@ -30,6 +33,8 @@ class SettingFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
+
+
     }
 
     override fun onCreateView(
