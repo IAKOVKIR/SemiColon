@@ -140,6 +140,7 @@
                 android:orientation="vertical">
 
             <TextView
+                    android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/test_melbourne_australia"
@@ -149,9 +150,10 @@
                     android:padding="16dp"/>
 
             <TextView
+                    android:id="@+id/phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/test_phone_number"
+                    android:text="+#(###)### ###"
                     android:textColor="@color/WHITE"
                     android:textSize="22sp"
                     android:textAlignment="center"

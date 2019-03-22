@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.CheckBox
-import java.util.*
 import kotlin.collections.ArrayList
 
 class Login : Activity() {
@@ -40,9 +39,9 @@ class Login : Activity() {
         setContentView(R.layout.activity_login)
 
         usersDBHelper = DatabaseOpenHelper(this)
-        //usersDBHelper.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678", "Melbourne", 1, 5.0F))
-        //usersDBHelper.insertUser(User(2,"Abbas", "Ice Wallow", "0490000000", "12345678", "Melbourne", 1, 3.2F))
-        //usersDBHelper.insertUser(User(3,"Carl", "Obama", "0490000001", "12345678", "Melbourne", 1, 5.0F))
+        usersDBHelper.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678", "Melbourne", 1, 5.0F))
+        usersDBHelper.insertUser(User(2,"Abbas", "Ice Wallow", "0490000000", "12345678", "Somewhere", 1, 3.2F))
+        usersDBHelper.insertUser(User(3,"Carl", "Obama", "0490000001", "12345678", "Melbourne", 1, 5.0F))
 
         fEnter = findViewById(R.id.fName)
         sEnter = findViewById(R.id.lName)

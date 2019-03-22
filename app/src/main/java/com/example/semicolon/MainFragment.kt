@@ -1,5 +1,6 @@
 package com.example.semicolon
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -28,14 +29,22 @@ class MainFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         val fullName = "${param1?.get(1)} ${param1?.get(2)}"
+        val phone = param1?.get(3)
+        val phoneImp = "${phone?.get(0)}(${phone!!.substring(1, 4)})${phone.substring(4, 7)} ${phone.substring(7, 10)}"
 
         val nameText = view.findViewById<TextView>(R.id.name)
+        val phoneNum = view.findViewById<TextView>(R.id.phone_number)
+        val location = view.findViewById<TextView>(R.id.location)
+
         val friendsLink = arrayOf<TextView>(view.findViewById(R.id.friends_word), view.findViewById(R.id.friends_number))
 
         nameText.text = fullName
+        phoneNum.text = phoneImp
+        location.text = "${param1?.get(5)}, Australia"
 
         friendsLink[0].setOnClickListener {
             val fragment: Fragment = FriendsFragment()
