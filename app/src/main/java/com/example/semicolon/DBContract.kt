@@ -7,15 +7,24 @@ object DBContract {
     /* Inner class that defines the table contents */
     class UserEntry : BaseColumns {
         companion object {
-            const val TABLE_NAME = "USER"
-            const val COLUMN_USER_ID = "UserId"
-            const val COLUMN_FIRST_NAME = "UserFirstName"
-            const val COLUMN_LAST_NAME = "UserLastName"
-            const val COLUMN_PHONE = "Phone"
-            const val COLUMN_PASSWORD = "Password"
-            const val COLUMN_CITY = "City"
-            const val COLUMN_AGREEMENT_CHECK = "AgreementCheck"
-            const val COLUMN_RATING = "Rating"
+            //User table
+            const val USER_TABLE_NAME = "USER"
+            const val USER_COLUMN_USER_ID = "UserId"
+            const val USER_COLUMN_FIRST_NAME = "UserFirstName"
+            const val USER_COLUMN_LAST_NAME = "UserLastName"
+            const val USER_COLUMN_PHONE = "Phone"
+            const val USER_COLUMN_PASSWORD = "Password"
+            const val USER_COLUMN_CITY = "City"
+            const val USER_COLUMN_AGREEMENT_CHECK = "AgreementCheck"
+            const val USER_COLUMN_RATING = "Rating"
+
+            //Friend table
+            const val FRIEND_TABLE_NAME = "FRIEND"
+            const val FRIEND_COLUMN_FRIEND_ID = "FriendshipID"
+            const val FRIEND_COLUMN_SENDER_ID = "SenderID"
+            const val FRIEND_COLUMN_RECEIVER_ID = "ReceiverID"
+            const val FRIEND_COLUMN_DATE = "Date"
+            const val FRIEND_COLUMN_TIME = "Time"
         }
     }
 }
