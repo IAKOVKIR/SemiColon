@@ -143,29 +143,27 @@
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/test_melbourne_australia"
+                    android:text="@string/test_location"
                     android:textColor="@color/WHITE"
-                    android:textSize="22sp"
-                    android:textAlignment="center"
+                    android:textSize="21sp"
                     android:padding="16dp"/>
 
             <TextView
                     android:id="@+id/phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="+#(###)### ###"
+                    android:text="Phone: +#(###)### ###"
                     android:textColor="@color/WHITE"
-                    android:textSize="22sp"
-                    android:textAlignment="center"
+                    android:textSize="21sp"
                     android:padding="16dp"/>
 
             <TextView
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/test_email"
                     android:textColor="@color/WHITE"
-                    android:textSize="22sp"
-                    android:textAlignment="center"
+                    android:textSize="21sp"
                     android:padding="16dp"/>
 
         </LinearLayout>

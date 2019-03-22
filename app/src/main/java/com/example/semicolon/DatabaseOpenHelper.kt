@@ -41,6 +41,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         values.put(DBContract.UserEntry.USER_COLUMN_CITY, user.city)
         values.put(DBContract.UserEntry.USER_COLUMN_AGREEMENT_CHECK, user.agreementCheck)
         values.put(DBContract.UserEntry.USER_COLUMN_RATING, user.rating)
+        values.put(DBContract.UserEntry.USER_COLUMN_EMAIL, user.email)
 
         // Insert the new row, returning the primary key value of the new row
         val newRowId = db.insert(DBContract.UserEntry.USER_TABLE_NAME, null, values)
@@ -81,6 +82,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         var city: String
         var agreementCheck: Byte
         var rating: Float
+        var email: String
 
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {
@@ -92,8 +94,9 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
                 city = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_CITY))
                 agreementCheck = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_AGREEMENT_CHECK)).toByte()
                 rating = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_RATING)).toFloat()
+                email = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
 
-                users.add(User(id, firstName, lastName, phone, password, city, agreementCheck, rating))
+                users.add(User(id, firstName, lastName, phone, password, city, agreementCheck, rating, email))
                 cursor.moveToNext()
             }
         }
@@ -141,7 +144,8 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
                     DBContract.UserEntry.USER_COLUMN_PASSWORD + " TEXT NOT NULL, " +
                     DBContract.UserEntry.USER_COLUMN_CITY + " TEXT NOT NULL, " +
                     DBContract.UserEntry.USER_COLUMN_AGREEMENT_CHECK + " NUMERIC NOT NULL DEFAULT 1, " +
-                    DBContract.UserEntry.USER_COLUMN_RATING + " NUMERIC NOT NULL DEFAULT 5.0)"
+                    DBContract.UserEntry.USER_COLUMN_RATING + " NUMERIC NOT NULL DEFAULT 5.0, " +
+                    DBContract.UserEntry.USER_COLUMN_EMAIL + " TEXT)"
 
         private val SQL_CREATE_FRIEND_TABLE =
             "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME + " (" +

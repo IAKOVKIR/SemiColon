@@ -17,6 +17,7 @@ object DBContract {
             const val USER_COLUMN_CITY = "City"
             const val USER_COLUMN_AGREEMENT_CHECK = "AgreementCheck"
             const val USER_COLUMN_RATING = "Rating"
+            const val USER_COLUMN_EMAIL = "Email"
 
             //Friend table
             const val FRIEND_TABLE_NAME = "FRIEND"
