@@ -11,8 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import java.lang.Exception
 
-
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -26,7 +24,6 @@ private const val ARG_PARAM4 = "param4"
  *
  */
 class ParamFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var param3: String? = null
@@ -72,7 +69,6 @@ class ParamFragment : Fragment() {
          * @param param3 Parameter 3.
          * @return A new instance of fragment ParamFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String, param3: String, param4: Int) =
             ParamFragment().apply {

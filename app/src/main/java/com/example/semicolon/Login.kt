@@ -141,8 +141,8 @@ class Login : Activity() {
 
     private fun getUser() {
         val pref = getSharedPreferences(prefName, Context.MODE_PRIVATE)
-        val username = pref.getString(prefUsername, "user")
-        val password = pref.getString(prefPassword, "user")
+        val username = pref.getString(prefUsername, "user") as String
+        val password = pref.getString(prefPassword, "user") as String
 
         val list = usersDBHelper.readUser(username, password)
 

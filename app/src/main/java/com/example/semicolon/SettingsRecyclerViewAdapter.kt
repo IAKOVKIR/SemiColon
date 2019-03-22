@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.fragment_setting.view.*
 /**
  * [RecyclerView.Adapter] that can display a [SettingItem] and makes a call to the
  * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
  */
 class SettingsRecyclerViewAdapter(
     private val mValues: List<SettingItem>,

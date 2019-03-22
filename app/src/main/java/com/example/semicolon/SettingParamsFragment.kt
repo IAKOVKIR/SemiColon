@@ -3,14 +3,12 @@ package com.example.semicolon
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat.getSystemService
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -23,7 +21,6 @@ private const val ARG_PARAM3 = "param3"
  *
  */
 class SettingParamsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var param3: ArrayList<String>? = null
@@ -120,7 +117,6 @@ class SettingParamsFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment SettingParamsFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             SettingParamsFragment().apply {

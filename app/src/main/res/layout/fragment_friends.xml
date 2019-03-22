@@ -62,7 +62,8 @@
                         android:textSize="16sp"
                         android:textColor="@color/WHITE"
                         android:layout_margin="@dimen/text_margin"
-                        android:textAppearance="?attr/textAppearanceListItem"/>
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        tools:ignore="HardcodedText"/>
 
             </LinearLayout>
 

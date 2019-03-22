@@ -158,16 +158,16 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
             return ArrayList()
         }
 
-        var userid: String
+        var userId: String
         var name: String
         var age: String
         if (cursor!!.moveToFirst()) {
             while (!cursor.isAfterLast) {
-                userid = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_USER_ID))
+                userId = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_USER_ID))
                 name = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_NAME))
                 age = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.COLUMN_AGE))
 
-                users.add(User(userid, name, age))
+                users.add(User(userId, name, age))
                 cursor.moveToNext()
             }
         }

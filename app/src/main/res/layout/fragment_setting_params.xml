@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/BLACK"
@@ -240,7 +241,8 @@
                     android:padding="8dp"
                     android:text="founders"
                     android:textColor="@color/WHITE"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp"
+                    tools:ignore="HardcodedText"/>
 
             <TextView
                     android:layout_width="match_parent"
@@ -248,7 +250,8 @@
                     android:textColor="@color/WHITE"
                     android:textSize="20sp"
                     android:padding="8dp"
-                    android:text="CEO - Carl Karama\nCMO - Mateo Merin\nCTO - Kirill Iakovlev"/>
+                    android:text="CEO - Carl Karama\nCMO - Mateo Merin\nCTO - Kirill Iakovlev"
+                    tools:ignore="HardcodedText"/>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -256,7 +259,8 @@
                     android:padding="8dp"
                     android:text="co - founders"
                     android:textColor="@color/WHITE"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp"
+                    tools:ignore="HardcodedText"/>
 
             <TextView
                     android:layout_width="match_parent"
@@ -264,7 +268,9 @@
                     android:textColor="@color/WHITE"
                     android:textSize="20sp"
                     android:padding="8dp"
-                    android:text="CWO / Executive Vise President - (Web Development Department) - George Myat Thu\nCIO / Executive Vise President (Mobile App Development Department) - Kynan Brown"/>
+                    android:text="CWO / Executive Vise President - (Web Development Department) - George Myat Thu\nCIO / Executive Vise President (Mobile App Development Department) - Kynan Brown"
+                    tools:ignore="HardcodedText"/>
+
 
         </LinearLayout>
 

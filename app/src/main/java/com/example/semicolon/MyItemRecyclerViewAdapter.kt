@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.fragment_item.view.*
 /**
  * [RecyclerView.Adapter] that can display a [Event] and makes a call to the
  * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
  */
 class MyItemRecyclerViewAdapter(
     private val mValues: List<Event>,

@@ -12,12 +12,12 @@ import java.util.HashMap
 object Friends {
 
     /**
-     * An array of sample (dummy) items.
+     * An array of sample (Friends) items.
      */
     val FRIEND: MutableList<FriendItem> = ArrayList()
 
     /**
-     * A map of sample (dummy) items, by ID.
+     * A map of sample (Friends) items, by ID.
      */
     val FRIEND_MAP: MutableMap<String, FriendItem> = HashMap()
 

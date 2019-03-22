@@ -155,7 +155,8 @@
                     android:text="Phone: +#(###)### ###"
                     android:textColor="@color/WHITE"
                     android:textSize="21sp"
-                    android:padding="16dp"/>
+                    android:padding="16dp"
+                    tools:ignore="HardcodedText"/>
 
             <TextView
                     android:id="@+id/email"
