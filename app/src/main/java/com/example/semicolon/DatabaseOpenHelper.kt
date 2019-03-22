@@ -43,8 +43,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         values.put(DBContract.UserEntry.USER_COLUMN_RATING, user.rating)
         values.put(DBContract.UserEntry.USER_COLUMN_EMAIL, user.email)
 
-        // Insert the new row, returning the primary key value of the new row
-        val newRowId = db.insert(DBContract.UserEntry.USER_TABLE_NAME, null, values)
+        db.insert(DBContract.UserEntry.USER_TABLE_NAME, null, values)
 
         return true
     }
@@ -52,21 +51,13 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
     @Throws(SQLiteConstraintException::class)
     fun setPassword(UserID: Int, newPassword: String): Boolean {
         val db = writableDatabase
-        db.execSQL("UPDATE USER SET Password = '$newPassword' WHERE UserID = '$UserID'")
+        val cv = ContentValues()
+        cv.put("Password", newPassword)
 
-        return true
-    }
+        db.update(DBContract.UserEntry.USER_TABLE_NAME, cv, "UserID = $UserID", null)
 
-    @Throws(SQLiteConstraintException::class)
-    fun deleteUser(UserID: String): Boolean {
-        // Gets the data repository in write mode
-        val db = writableDatabase
-        // Define 'where' part of query.
-        val selection = DBContract.UserEntry.USER_COLUMN_USER_ID + " LIKE ?"
-        // Specify arguments in placeholder order.
-        val selectionArgs = arrayOf(UserID)
-        // Issue SQL statement.
-        db.delete(DBContract.UserEntry.USER_TABLE_NAME, selection, selectionArgs)
+        //alternative way
+        //db.execSQL("UPDATE USER SET Password = '$newPassword' WHERE UserID = '$UserID'")
 
         return true
     }
@@ -75,9 +66,9 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         val users = ArrayList<User>()
         val db = writableDatabase
         val cursor: Cursor
+
         try {
-            cursor = db.rawQuery("select * from " + DBContract.UserEntry.USER_TABLE_NAME + " WHERE " + DBContract.UserEntry.USER_COLUMN_PHONE + " = \"" + Phone + "\" AND " + DBContract.UserEntry.USER_COLUMN_PASSWORD + " = " +
-                    "\"" + Password + "\"", null)
+            cursor = db.rawQuery("select * from ${DBContract.UserEntry.USER_TABLE_NAME} WHERE ${DBContract.UserEntry.USER_COLUMN_PHONE} = '$Phone' AND ${DBContract.UserEntry.USER_COLUMN_PASSWORD} = '$Password'", null)
         } catch (e: SQLiteException) {
             return ArrayList()
         }
@@ -108,8 +99,53 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
                 cursor.moveToNext()
             }
         }
+        cursor.close()
         return users
     }
+
+    companion object {
+        // If you change the database schema, you must increment the database version.
+        var DATABASE_VERSION = 1
+        const val DATABASE_NAME = "SemiColon"
+
+        private const val SQL_CREATE_USER_TABLE =
+            "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.USER_TABLE_NAME + " (" +
+                    DBContract.UserEntry.USER_COLUMN_USER_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    DBContract.UserEntry.USER_COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.USER_COLUMN_LAST_NAME + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.USER_COLUMN_PHONE + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.USER_COLUMN_PASSWORD + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.USER_COLUMN_CITY + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.USER_COLUMN_AGREEMENT_CHECK + " NUMERIC NOT NULL DEFAULT 1, " +
+                    DBContract.UserEntry.USER_COLUMN_RATING + " NUMERIC NOT NULL DEFAULT 5.0, " +
+                    DBContract.UserEntry.USER_COLUMN_EMAIL + " TEXT)"
+
+        private const val SQL_CREATE_FRIEND_TABLE =
+            "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME + " (" +
+                    DBContract.UserEntry.FRIEND_COLUMN_FRIEND_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    DBContract.UserEntry.FRIEND_COLUMN_SENDER_ID + " INTEGER NOT NULL CONSTRAINT " +
+                    DBContract.UserEntry.FRIEND_COLUMN_SENDER_ID + " REFERENCES " + DBContract.UserEntry.USER_TABLE_NAME + ", " +
+                    DBContract.UserEntry.FRIEND_COLUMN_RECEIVER_ID + " INTEGER NOT NULL, " +
+                    DBContract.UserEntry.FRIEND_COLUMN_DATE + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.FRIEND_COLUMN_TIME + " TEXT)"
+
+        private const val SQL_DELETE_USER_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.USER_TABLE_NAME
+        private const val SQL_DELETE_FRIEND_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME
+    }
+
+    /*@Throws(SQLiteConstraintException::class)
+    fun deleteUser(UserID: String): Boolean {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+        // Define 'where' part of query.
+        val selection = DBContract.UserEntry.USER_COLUMN_USER_ID + " LIKE ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs = arrayOf(UserID)
+        // Issue SQL statement.
+        db.delete(DBContract.UserEntry.USER_TABLE_NAME, selection, selectionArgs)
+
+        return true
+    }*/
 
     /*fun readAllUsers(): ArrayList<User> {
         val users = ArrayList<User>()
@@ -137,35 +173,5 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
         return users
     }*/
-
-    companion object {
-        // If you change the database schema, you must increment the database version.
-        var DATABASE_VERSION = 1
-        const val DATABASE_NAME = "SemiColon"
-
-        private val SQL_CREATE_USER_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.USER_TABLE_NAME + " (" +
-                    DBContract.UserEntry.USER_COLUMN_USER_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                    DBContract.UserEntry.USER_COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.USER_COLUMN_LAST_NAME + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.USER_COLUMN_PHONE + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.USER_COLUMN_PASSWORD + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.USER_COLUMN_CITY + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.USER_COLUMN_AGREEMENT_CHECK + " NUMERIC NOT NULL DEFAULT 1, " +
-                    DBContract.UserEntry.USER_COLUMN_RATING + " NUMERIC NOT NULL DEFAULT 5.0, " +
-                    DBContract.UserEntry.USER_COLUMN_EMAIL + " TEXT)"
-
-        private val SQL_CREATE_FRIEND_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME + " (" +
-                    DBContract.UserEntry.FRIEND_COLUMN_FRIEND_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                    DBContract.UserEntry.FRIEND_COLUMN_SENDER_ID + " INTEGER NOT NULL CONSTRAINT " +
-                    DBContract.UserEntry.FRIEND_COLUMN_SENDER_ID + " REFERENCES " + DBContract.UserEntry.USER_TABLE_NAME + ", " +
-                    DBContract.UserEntry.FRIEND_COLUMN_RECEIVER_ID + " INTEGER NOT NULL, " +
-                    DBContract.UserEntry.FRIEND_COLUMN_DATE + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.FRIEND_COLUMN_TIME + " TEXT)"
-
-        private val SQL_DELETE_USER_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.USER_TABLE_NAME
-        private val SQL_DELETE_FRIEND_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME
-    }
 
 }
