@@ -12,7 +12,6 @@ import android.view.ViewGroup
 
 import com.example.semicolon.setting.Setting
 import com.example.semicolon.setting.Setting.SettingItem
-import android.content.Intent
 import android.view.KeyEvent
 
 
@@ -73,7 +72,7 @@ class SettingFragment : Fragment() {
         view!!.requestFocus()
         view!!.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-                return if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                return if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
                     val args = Bundle()
                     args.putStringArrayList("user", param1)

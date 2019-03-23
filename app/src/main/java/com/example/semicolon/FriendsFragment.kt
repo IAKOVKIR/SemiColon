@@ -1,6 +1,7 @@
 package com.example.semicolon
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -10,6 +11,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 
 /**
  * A fragment representing a list of Items.
@@ -40,6 +42,9 @@ class FriendsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_friends_list, container, false)
         val list = view.findViewById<RecyclerView>(R.id.list)
+        val followers = view.findViewById<TextView>(R.id.followers_view)
+        val requests = view.findViewById<TextView>(R.id.requests_view)
+
         data = context?.let { DatabaseOpenHelper(it) }
 
         // Set the adapter
@@ -49,19 +54,55 @@ class FriendsFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0]), listener)
+                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed"), listener)
             }
         }
+
+        followers.setOnClickListener{
+            followers.setTextColor(Color.BLACK)
+            followers.setBackgroundColor(Color.WHITE)
+
+            requests.setTextColor(Color.WHITE)
+            requests.setBackgroundColor(Color.BLACK)
+
+            if (list is RecyclerView) {
+                with(list) {
+                    layoutManager = when {
+                        columnCount <= 1 -> LinearLayoutManager(context)
+                        else -> GridLayoutManager(context, columnCount)
+                    }
+                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed"), listener)
+                }
+            }
+        }
+
+        requests.setOnClickListener {
+            followers.setTextColor(Color.WHITE)
+            followers.setBackgroundColor(Color.BLACK)
+
+            requests.setTextColor(Color.BLACK)
+            requests.setBackgroundColor(Color.WHITE)
+
+            if (list is RecyclerView) {
+                with(list) {
+                    layoutManager = when {
+                        columnCount <= 1 -> LinearLayoutManager(context)
+                        else -> GridLayoutManager(context, columnCount)
+                    }
+                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "inProgress"), listener)
+                }
+            }
+        }
+
         return view
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
+        if (context is OnListFragmentInteractionListener)
             listener = context
-        } else {
+        else
             throw RuntimeException("$context must implement OnListFragmentInteractionListener")
-        }
     }
 
     override fun onResume() {
@@ -70,7 +111,7 @@ class FriendsFragment : Fragment() {
         view!!.requestFocus()
         view!!.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-                return if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                return if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
                     val args = Bundle()
                     args.putStringArrayList("user", param1)

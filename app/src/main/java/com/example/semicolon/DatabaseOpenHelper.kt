@@ -153,12 +153,12 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         private const val SQL_DELETE_FRIEND_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME
     }
 
-    fun readAllRequests(UserID: String): ArrayList<User> {
+    fun readAllRequests(UserID: String, condition: String): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase
         val cursor: Cursor?
         try {
-            cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Password, USER.City, USER.AgreementCheck, USER.Rating, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = 'inProgress'", null)
+            cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Password, USER.City, USER.AgreementCheck, USER.Rating, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition'", null)
         } catch (e: SQLiteException) {
             return ArrayList()
         }

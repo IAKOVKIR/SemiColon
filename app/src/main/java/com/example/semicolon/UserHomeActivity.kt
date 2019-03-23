@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.TextView
 import androidx.navigation.findNavController
-import com.example.semicolon.dummy.Friends
 import com.example.semicolon.setting.Setting
 import com.example.semicolon.event.EventContent
 import kotlinx.android.synthetic.main.activity_user_home.*

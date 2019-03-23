@@ -19,7 +19,9 @@
                 android:id="@+id/followers_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/WHITE"
+                android:textColor="@color/BLACK"
+                android:padding="8dp"
+                android:background="@color/WHITE"
                 android:textSize="26sp"
                 android:textAlignment="center"
                 android:text="followers"
@@ -28,20 +30,24 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/requests_view"/>
+                app:layout_constraintEnd_toStartOf="@+id/requests_view"
+                tools:ignore="HardcodedText"/>
 
         <TextView
                 android:id="@+id/requests_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/WHITE"
+                android:padding="8dp"
+                android:background="@color/BLACK"
                 android:textSize="26sp"
                 android:textAlignment="center"
                 android:text="requests"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText"/>
 
     </android.support.constraint.ConstraintLayout>
 

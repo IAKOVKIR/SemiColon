@@ -1,4 +1,4 @@
-package com.example.semicolon.dummy
+package com.example.semicolon.friend
 
 import com.example.semicolon.User
 import java.util.ArrayList
