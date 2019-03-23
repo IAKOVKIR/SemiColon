@@ -39,11 +39,12 @@ class FriendsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_friends_list, container, false)
+        val list = view.findViewById<RecyclerView>(R.id.list)
         data = context?.let { DatabaseOpenHelper(it) }
 
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
+        if (list is RecyclerView) {
+            with(list) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)

@@ -52,8 +52,9 @@ class Login : Activity() {
             "Somewhere", 1, 3.2F, "BetterThanFather@gmail.com"))
         usersDBHelper.insertUser(User(3,"Carl", "Obama", "0490000001", "12345678",
             "Melbourne", 1, 5.0F, "CallMePresident@gmail.com"))
-        usersDBHelper.insertFriendship(Friend(1, 1, 2, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
-        usersDBHelper.insertFriendship(Friend(2, 1, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
+        usersDBHelper.insertRequest(Friend(1, 1, 2, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
+        usersDBHelper.insertRequest(Friend(2, 1, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
+        usersDBHelper.insertRequest(Friend(3, 2, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
 
         fEnter = findViewById(R.id.fName)
         sEnter = findViewById(R.id.lName)

@@ -49,7 +49,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     @Throws(SQLiteConstraintException::class)
-    fun insertFriendship(friend: Friend): Boolean {
+    fun insertRequest(friend: Friend): Boolean {
         // Gets the data repository in write mode
         val db = writableDatabase
 
@@ -153,20 +153,6 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         private const val SQL_DELETE_FRIEND_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME
     }
 
-    /*@Throws(SQLiteConstraintException::class)
-    fun deleteUser(UserID: String): Boolean {
-        // Gets the data repository in write mode
-        val db = writableDatabase
-        // Define 'where' part of query.
-        val selection = DBContract.UserEntry.USER_COLUMN_ID + " LIKE ?"
-        // Specify arguments in placeholder order.
-        val selectionArgs = arrayOf(UserID)
-        // Issue SQL statement.
-        db.delete(DBContract.UserEntry.USER_TABLE_NAME, selection, selectionArgs)
-
-        return true
-    }*/
-
     fun readAllRequests(UserID: String): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase
@@ -205,5 +191,19 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         cursor.close()
         return users
     }
+
+    /*@Throws(SQLiteConstraintException::class)
+    fun deleteUser(UserID: String): Boolean {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+        // Define 'where' part of query.
+        val selection = DBContract.UserEntry.USER_COLUMN_ID + " LIKE ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs = arrayOf(UserID)
+        // Issue SQL statement.
+        db.delete(DBContract.UserEntry.USER_TABLE_NAME, selection, selectionArgs)
+
+        return true
+    }*/
 
 }
