@@ -3,6 +3,7 @@ package com.example.semicolon
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,32 @@ class MainFragment : Fragment() {
         arguments?.let {
             param1 = it.getStringArrayList(ARG_PARAM1)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        view!!.isFocusableInTouchMode = true
+        view!!.requestFocus()
+        view!!.setOnKeyListener(object : View.OnKeyListener {
+            override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
+                return if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK ) {
+
+                    val args = Bundle()
+                    args.putStringArrayList("user", param1)
+
+                    val fragment: Fragment = MainFragment()
+                    fragment.arguments = args
+                    val manager = fragmentManager
+                    val transaction = manager!!.beginTransaction()
+                    transaction.replace(R.id.nav_host, fragment)
+                    // Commit the transaction
+                    transaction.commit()
+
+                    true
+                } else
+                    false
+            }
+        })
     }
 
     @SuppressLint("SetTextI18n")

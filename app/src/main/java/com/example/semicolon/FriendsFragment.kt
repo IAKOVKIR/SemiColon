@@ -11,6 +11,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 
 /**
@@ -54,7 +55,7 @@ class FriendsFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed"), listener)
+                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed"), listener, param1!![0], false)
             }
         }
 
@@ -71,7 +72,7 @@ class FriendsFragment : Fragment() {
                         columnCount <= 1 -> LinearLayoutManager(context)
                         else -> GridLayoutManager(context, columnCount)
                     }
-                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed"), listener)
+                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed"), listener, param1!![0], false)
                 }
             }
         }
@@ -89,7 +90,7 @@ class FriendsFragment : Fragment() {
                         columnCount <= 1 -> LinearLayoutManager(context)
                         else -> GridLayoutManager(context, columnCount)
                     }
-                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "inProgress"), listener)
+                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "inProgress"), listener, param1!![0], true)
                 }
             }
         }

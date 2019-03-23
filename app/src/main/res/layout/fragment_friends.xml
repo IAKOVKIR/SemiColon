@@ -69,6 +69,44 @@
 
         </LinearLayout>
 
+        <LinearLayout
+                android:id="@+id/request_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:paddingTop="30dp">
+
+            <TextView
+                    android:id="@+id/button_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="15sp"
+                    android:textColor="@color/WHITE"
+                    android:text="Confirmed"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/request_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+            <Button
+                    android:id="@+id/confirm_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="confirm"/>
+
+            <Button
+                    android:id="@+id/decline_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="decline"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -81,6 +81,20 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         return true
     }
 
+    @Throws(SQLiteConstraintException::class)
+    fun updateRequest(SenderID: String, ReceiverID: String, condition: String): Boolean {
+        val db = writableDatabase
+        val cv = ContentValues()
+        cv.put("Condition", condition)
+
+        db.update(DBContract.UserEntry.FRIEND_TABLE_NAME, cv, "SenderID = $SenderID AND ReceiverID = $ReceiverID", null)
+
+        //alternative way
+        //db.execSQL("UPDATE USER SET Password = '$newPassword' WHERE UserID = '$UserID'")
+
+        return true
+    }
+
     fun readUser(Phone: String, Password: String): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase
