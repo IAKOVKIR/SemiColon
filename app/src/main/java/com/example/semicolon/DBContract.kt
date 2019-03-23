@@ -9,7 +9,7 @@ object DBContract {
         companion object {
             //User table
             const val USER_TABLE_NAME = "USER"
-            const val USER_COLUMN_USER_ID = "UserId"
+            const val USER_COLUMN_ID = "UserId"
             const val USER_COLUMN_FIRST_NAME = "UserFirstName"
             const val USER_COLUMN_LAST_NAME = "UserLastName"
             const val USER_COLUMN_PHONE = "Phone"

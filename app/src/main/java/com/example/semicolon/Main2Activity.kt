@@ -23,7 +23,7 @@ class Main2Activity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2)
+        setContentView(R.layout.activity_registration)
 
         mSlideViewPager = findViewById(R.id.slideViewPager)
 

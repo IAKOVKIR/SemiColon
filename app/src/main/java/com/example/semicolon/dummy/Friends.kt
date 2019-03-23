@@ -1,5 +1,6 @@
 package com.example.semicolon.dummy
 
+import com.example.semicolon.User
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -14,12 +15,12 @@ object Friends {
     /**
      * An array of sample (Friends) items.
      */
-    val FRIEND: MutableList<FriendItem> = ArrayList()
+    val FRIEND: MutableList<User> = ArrayList()
 
     /**
      * A map of sample (Friends) items, by ID.
      */
-    val FRIEND_MAP: MutableMap<String, FriendItem> = HashMap()
+    val FRIEND_MAP: MutableMap<Int, User> = HashMap()
 
     private val COUNT = 5
 
@@ -29,13 +30,13 @@ object Friends {
             addItem(createFriendItem(i))
     }
 
-    private fun addItem(item: FriendItem) {
+    private fun addItem(item: User) {
         FRIEND.add(item)
         FRIEND_MAP[item.id] = item
     }
 
-    private fun createFriendItem(position: Int): FriendItem {
-        return FriendItem("Aminul", "Islam", position.toString(), "Item $position", makeDetails(position))
+    private fun createFriendItem(position: Int): User {
+        return User(1, "", "", "21/03/2019", "16:52:36", "inProgress", 2, 5.0F, "")
     }
 
     private fun makeDetails(position: Int): String {
@@ -44,10 +45,4 @@ object Friends {
         return builder.toString()
     }
 
-    /**
-     * A dummy item representing a piece of content.
-     */
-    data class FriendItem(val firstName: String, val secondName: String, val id: String, val content: String, val details: String) {
-        override fun toString(): String = content
-    }
 }

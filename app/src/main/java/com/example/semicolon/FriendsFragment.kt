@@ -11,9 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.example.semicolon.dummy.Friends
-import com.example.semicolon.dummy.Friends.FriendItem
-
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
@@ -25,6 +22,7 @@ class FriendsFragment : Fragment() {
     private var param1 : ArrayList<String>? = null
 
     private var listener: OnListFragmentInteractionListener? = null
+    private var data: DatabaseOpenHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +39,7 @@ class FriendsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_friends_list, container, false)
+        data = context?.let { DatabaseOpenHelper(it) }
 
         // Set the adapter
         if (view is RecyclerView) {
@@ -49,7 +48,7 @@ class FriendsFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyFriendsRecyclerViewAdapter(Friends.FRIEND, listener)
+                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0]), listener)
             }
         }
         return view
@@ -107,7 +106,7 @@ class FriendsFragment : Fragment() {
      * for more information.
      */
     interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: FriendItem?)
+        fun onListFragmentInteraction(item: User?)
     }
 
     companion object {

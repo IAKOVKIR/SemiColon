@@ -21,11 +21,11 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     private var log = Login()
     var text : TextView? = null
 
-    override fun onListFragmentInteraction(item: Friends.FriendItem?) {
+    override fun onListFragmentInteraction(item: User?) {
         Log.i("Navigation", "Selected Friend $item")
         val args = Bundle()
         args.putString("param1", item!!.firstName)
-        args.putString("param2", item.secondName)
+        args.putString("param2", item.lastName)
         args.putStringArrayList("param3", list)
 
         findNavController(R.id.nav_host).navigate(R.id.friend_params_dest, args)
