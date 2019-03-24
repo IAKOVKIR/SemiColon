@@ -115,7 +115,7 @@ class Login : Activity() {
         if (list.size > 0) {
             if (checkLog!!.isChecked)
             //save username and password in SharedPreferences
-                rememberMe(list[0].phone, list[0].password)
+                rememberMe(list[0])
             //show logout activity
             showHome(list[0])
 
@@ -165,11 +165,17 @@ class Login : Activity() {
      */
 
     //rememberMe() function saves username and password in SharedPreferences
-    private fun rememberMe(user: String, password: String) {
+    private fun rememberMe(user: User) {
         getSharedPreferences(prefName, Context.MODE_PRIVATE)
             .edit()
-            .putString(prefUsername, user)
-            .putString(prefPassword, password)
+            .putString("id", user.id.toString())
+            .putString("firstName", user.firstName)
+            .putString("lastName", user.lastName)
+            .putString(prefUsername, user.phone)
+            .putString(prefPassword, user.password)
+            .putString("city", user.city)
+            .putString("rating", user.rating.toString())
+            .putString("email", user.email)
             .apply()
     }
 

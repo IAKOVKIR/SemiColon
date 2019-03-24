@@ -1,6 +1,7 @@
 package com.example.semicolon
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.KeyEvent
@@ -21,38 +22,15 @@ class MainFragment : Fragment() {
 
     private var param1 : ArrayList<String>? = null
     private var settingsButton : Button? = null
+    private var log = Login()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getStringArrayList(ARG_PARAM1)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        view!!.isFocusableInTouchMode = true
-        view!!.requestFocus()
-        view!!.setOnKeyListener(object : View.OnKeyListener {
-            override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-                return if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK ) {
-
-                    val args = Bundle()
-                    args.putStringArrayList("user", param1)
-
-                    val fragment: Fragment = MainFragment()
-                    fragment.arguments = args
-                    val manager = fragmentManager
-                    val transaction = manager!!.beginTransaction()
-                    transaction.replace(R.id.nav_host, fragment)
-                    // Commit the transaction
-                    transaction.commit()
-
-                    true
-                } else
-                    false
-            }
-        })
+        var n = context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
+        param1 = arrayListOf(n.getString("id", "") as String, n.getString("firstName", "") as String,
+            n.getString("lastName", "") as String, n.getString(log.prefUsername, "") as String,
+            n.getString(log.prefPassword, "") as String, n.getString("city", "") as String,
+            n.getString("rating", "") as String, n.getString("email", "") as String)
     }
 
     @SuppressLint("SetTextI18n")
@@ -88,7 +66,7 @@ class MainFragment : Fragment() {
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()
-            transaction.replace(R.id.nav_host, fragment)
+            transaction.add(R.id.nav_host, fragment)
             // Commit the transaction
             transaction.commit()
         }
@@ -98,7 +76,7 @@ class MainFragment : Fragment() {
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()
-            transaction.replace(R.id.nav_host, fragment)
+            transaction.add(R.id.nav_host, fragment)
             // Commit the transaction
             transaction.commit()
         }
@@ -109,7 +87,7 @@ class MainFragment : Fragment() {
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()
-            transaction.replace(R.id.nav_host, fragment)
+            transaction.add(R.id.nav_host, fragment)
             //transaction.addToBackStack(null)
             // Commit the transaction
             transaction.commit()

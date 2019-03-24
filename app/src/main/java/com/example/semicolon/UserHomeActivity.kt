@@ -86,16 +86,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_home)
-
-        val intent = intent
-        val b : Bundle = intent.extras as Bundle
-        list = b.getStringArrayList("user")
-
-
-        val args = Bundle()
-        args.putStringArrayList("user", list)
-
-        findNavController(R.id.nav_host).navigate(R.id.main_dest, args)
+        
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
