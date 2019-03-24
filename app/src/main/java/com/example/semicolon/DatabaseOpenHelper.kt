@@ -73,6 +73,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         val cv = ContentValues()
         cv.put("Password", newPassword)
 
+        //updates the record in USER table
         db.update(DBContract.UserEntry.USER_TABLE_NAME, cv, "UserID = $UserID", null)
 
         //alternative way

@@ -15,11 +15,15 @@ import kotlinx.android.synthetic.main.activity_user_home.*
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener,
                                        FriendsFragment.OnListFragmentInteractionListener {
 
-    //data from login activity
+    /*
+    variable list contains ArrayList<String> array with user's data from shared preferences
+    log is an object from Login Class
+     */
     var list: ArrayList<String>? = null
     private var log = Login()
     var text : TextView? = null
 
+    //listener for users list
     override fun onListFragmentInteraction(item: User?) {
         Log.i("Navigation", "Selected Friend $item")
         val args = Bundle()
@@ -30,6 +34,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         findNavController(R.id.nav_host).navigate(R.id.friend_params_dest, args)
     }
 
+    //listener for settings list
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
         Log.i("Navigation", "Selected Setting $item")
         val args = Bundle()
@@ -43,6 +48,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
             findNavController(R.id.nav_host).navigate(R.id.setting_params_dest, args)
     }
 
+    //listener for events list
     override fun onListFragmentInteraction(item: EventContent.Event?) {
         Log.i("Navigation", "Selected Event $item")
         val args = Bundle()
@@ -54,28 +60,31 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         findNavController(R.id.nav_host).navigate(R.id.params_dest, args)
     }
 
+    //listener for bottom navigation
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        val intent = intent
-        val b : Bundle = intent.extras as Bundle
-        list = b.getStringArrayList("user")
+        val n = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
+        list = arrayListOf(n.getString(log.prefVar[0], "") as String, n.getString(log.prefVar[1], "") as String,
+            n.getString(log.prefVar[2], "") as String, n.getString(log.prefVar[3], "") as String,
+            n.getString(log.prefVar[4], "") as String, n.getString(log.prefVar[5], "") as String,
+            n.getString(log.prefVar[6], "") as String, n.getString(log.prefVar[7], "") as String)
 
         when (item.itemId) {
             R.id.navigation_home -> {
-                //get username sent from the log in activity
-                val args = Bundle()
-                args.putStringArrayList("user", list)
-
-                findNavController(R.id.nav_host).navigate(R.id.main_dest, args)
+                //opens main fragment
+                findNavController(R.id.nav_host).navigate(R.id.main_dest)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
+                //opens event list fragment
                 findNavController(R.id.nav_host).navigate(R.id.list_dest)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
                 val args = Bundle()
-                args.putString("param1", "Chandra")
-                args.putString("param2", "Lil Query")
+                args.putString("param1", n.getString(log.prefVar[1], ""))
+                args.putString("param2", n.getString(log.prefVar[2], ""))
+
+                //opens notifications fragment and sends arguments
                 findNavController(R.id.nav_host).navigate(R.id.action_global_params_dest, args)
                 return@OnNavigationItemSelectedListener true
             }
@@ -87,9 +96,13 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_home)
 
+        //add navigation listener
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 
+    /**
+     * @function [logOut] removes all data from SharedPreferences and starts Login activity
+     */
     private fun logOut() {
         val sharedPrefs = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
         val editor = sharedPrefs.edit()

@@ -4,7 +4,7 @@ import android.provider.BaseColumns
 
 object DBContract {
 
-    /* Inner class that defines the table contents */
+    // Inner class that defines the table contents
     class UserEntry : BaseColumns {
         companion object {
             //User table
