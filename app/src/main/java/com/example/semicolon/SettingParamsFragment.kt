@@ -64,7 +64,7 @@ class SettingParamsFragment : Fragment() {
                 val buttonSubmit = view.findViewById<Button>(R.id.submit_button)
                 buttonSubmit.setOnClickListener {
                     val pref = context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-                    val password = pref.getString(log.prefPassword, null)
+                    val password = pref.getString(log.prefVar[4], null)
                     val curPas = currentPassword.text.toString()
                     val newPas = newPassword.text.toString()
 
@@ -104,7 +104,7 @@ class SettingParamsFragment : Fragment() {
     private fun changePassword(password: String) {
         context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
             .edit()
-            .putString(log.prefPassword, password)
+            .putString(log.prefVar[4], password)
             .apply()
     }
 

@@ -4,29 +4,24 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.CheckBox
 import java.util.*
-import kotlin.collections.ArrayList
 import java.text.SimpleDateFormat
-
 
 class Login : Activity() {
 
     //variables (SharedPreferences)
     var prefName = "myPreferences"
-    var prefUsername = "username"
-    var prefPassword = "password"
+    var prefVar = arrayOf("id", "firstName", "lastName", "phone", "password", "city", "rating", "email")
 
     //EditTexts
     private var fEnter : EditText ?= null //username
     private var sEnter : EditText ?= null //password
 
-    lateinit var usersDBHelper : DatabaseOpenHelper
+    private lateinit var usersDBHelper : DatabaseOpenHelper
 
     //CheckBox
     private var checkLog : CheckBox? = null //"remember me"
@@ -42,7 +37,7 @@ class Login : Activity() {
         setContentView(R.layout.activity_login)
 
         val c = Calendar.getInstance()
-        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
         val strDate = sdf.format(c.time).trim()
 
         usersDBHelper = DatabaseOpenHelper(this)
@@ -84,40 +79,26 @@ class Login : Activity() {
             startActivity(intent)
         }
 
-        fEnter!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-        })
-
     }
 
     /**
-     * @function doLogin() retrieves data from two EditText's (txtUser - username, txtPassword - password)
-     * If txtUser equals to username and txtPassword equals to password, then HomeActivity will be started
+     * @function doLogin() retrieves data from two EditText's (txtPhone - phone number, txtPassword - password)
+     * If txtPhone equals to username and txtPassword equals to password, then HomeActivity will be started
      * Else 'Toast' message will be displayed
      * If checkBox ("remember me") will be checked, then username and password will be saved in SharedPreferences
      */
     private fun doLogin() {
-        val txtUser = fEnter!!.text.toString()
+        val txtPhone = fEnter!!.text.toString()
         val txtPassword = sEnter!!.text.toString()
 
-        val list = usersDBHelper.readUser(txtUser, txtPassword)
+        val list = usersDBHelper.readUser(txtPhone, txtPassword)
 
         if (list.size > 0) {
             if (checkLog!!.isChecked)
             //save username and password in SharedPreferences
                 rememberMe(list[0])
             //show logout activity
-            showHome(list[0])
+            showHome()
 
         } else
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_LONG).show()
@@ -128,18 +109,8 @@ class Login : Activity() {
      * @function showHome() starts HomeActivity and sends username
      */
 
-    private fun showHome(list: User) {
+    private fun showHome() {
         val intent = Intent(this, UserHomeActivity::class.java)
-        val user = ArrayList<String>()
-        user.add(list.id.toString())
-        user.add(list.firstName)
-        user.add(list.lastName)
-        user.add(list.phone)
-        user.add(list.password)
-        user.add(list.city)
-        user.add(list.rating.toString())
-        user.add(list.email)
-        intent.putStringArrayListExtra("user", user)
         startActivity(intent)
         finish()
     }
@@ -151,13 +122,13 @@ class Login : Activity() {
 
     private fun getUser() {
         val pref = getSharedPreferences(prefName, Context.MODE_PRIVATE)
-        val username = pref.getString(prefUsername, "user") as String
-        val password = pref.getString(prefPassword, "user") as String
+        val username = pref.getString(prefVar[3], "") as String
+        val password = pref.getString(prefVar[4], "") as String
 
         val list = usersDBHelper.readUser(username, password)
 
         if (list.size > 0)
-            showHome(list[0])
+            showHome()
     }
 
     /**
@@ -168,14 +139,14 @@ class Login : Activity() {
     private fun rememberMe(user: User) {
         getSharedPreferences(prefName, Context.MODE_PRIVATE)
             .edit()
-            .putString("id", user.id.toString())
-            .putString("firstName", user.firstName)
-            .putString("lastName", user.lastName)
-            .putString(prefUsername, user.phone)
-            .putString(prefPassword, user.password)
-            .putString("city", user.city)
-            .putString("rating", user.rating.toString())
-            .putString("email", user.email)
+            .putString(prefVar[0], user.id.toString())
+            .putString(prefVar[1], user.firstName)
+            .putString(prefVar[2], user.lastName)
+            .putString(prefVar[3], user.phone)
+            .putString(prefVar[4], user.password)
+            .putString(prefVar[5], user.city)
+            .putString(prefVar[6], user.rating.toString())
+            .putString(prefVar[7], user.email)
             .apply()
     }
 

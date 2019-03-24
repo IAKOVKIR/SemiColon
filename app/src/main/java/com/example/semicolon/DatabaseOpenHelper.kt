@@ -146,7 +146,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
                     DBContract.UserEntry.USER_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     DBContract.UserEntry.USER_COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
                     DBContract.UserEntry.USER_COLUMN_LAST_NAME + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.USER_COLUMN_PHONE + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.USER_COLUMN_PHONE + " TEXT NOT NULL UNIQUE, " +
                     DBContract.UserEntry.USER_COLUMN_PASSWORD + " TEXT NOT NULL, " +
                     DBContract.UserEntry.USER_COLUMN_CITY + " TEXT NOT NULL, " +
                     DBContract.UserEntry.USER_COLUMN_AGREEMENT_CHECK + " NUMERIC NOT NULL DEFAULT 1, " +

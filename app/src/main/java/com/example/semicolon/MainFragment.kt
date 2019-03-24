@@ -4,74 +4,77 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
-
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "user"
 
 /**
  * A simple [Fragment] subclass.
- *
  */
+
 class MainFragment : Fragment() {
 
+    /*
+    variable param1 contains ArrayList<String> array with user's data from shared preferences
+    log is an object from Login Class
+     */
     private var param1 : ArrayList<String>? = null
     private var settingsButton : Button? = null
     private var log = Login()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var n = context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-        param1 = arrayListOf(n.getString("id", "") as String, n.getString("firstName", "") as String,
-            n.getString("lastName", "") as String, n.getString(log.prefUsername, "") as String,
-            n.getString(log.prefPassword, "") as String, n.getString("city", "") as String,
-            n.getString("rating", "") as String, n.getString("email", "") as String)
+        val n = context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
+
+        //assigning values to ArrayList<String>
+        param1 = arrayListOf(n.getString(log.prefVar[0], "") as String, n.getString(log.prefVar[1], "") as String,
+            n.getString(log.prefVar[2], "") as String, n.getString(log.prefVar[3], "") as String,
+            n.getString(log.prefVar[4], "") as String, n.getString(log.prefVar[5], "") as String,
+            n.getString(log.prefVar[6], "") as String, n.getString(log.prefVar[7], "") as String)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         val view = inflater.inflate(R.layout.fragment_main, container, false)
 
-        val fullName = "${param1?.get(1)} ${param1?.get(2)}"
-        val phoneImp = "${param1?.get(3)?.get(0)}(${param1?.get(3)!!.substring(1, 4)})${param1?.get(3)!!.substring(4, 7)} ${param1?.get(3)!!.substring(7, 10)}"
-        val emailText = "${param1?.get(7)}".trim()
+        //variable fullName contains a string with user's first and last names ("firstName lastName")
+        val fullName = "${param1!![1]} ${param1!![2]}"
 
+        //variable phoneImp contains a string of phone number ("#(###)### ###")
+        val phoneImp = "${param1!![3][0]}(${param1!![3].substring(1, 4)})${param1!![3].substring(4, 7)} ${param1!![3].substring(7, 10)}"
+
+        //variable emailText contains email user's address
+        val emailText = param1!![7].trim()
+
+        //TextView representing user's full name
         val nameText = view.findViewById<TextView>(R.id.name)
-        val phoneNum = view.findViewById<TextView>(R.id.phone_number)
-        val location = view.findViewById<TextView>(R.id.location)
-        val email = view.findViewById<TextView>(R.id.email)
-
-        val friendsLink = arrayOf<TextView>(view.findViewById(R.id.friends_word), view.findViewById(R.id.friends_number))
-
         nameText.text = fullName
+
+        //TextView representing user's phone number
+        val phoneNum = view.findViewById<TextView>(R.id.phone_number)
         phoneNum.text = "Phone: $phoneImp"
+
+        //TextView representing user's location
+        val location = view.findViewById<TextView>(R.id.location)
         location.text = "Location: ${param1?.get(5)}, Australia"
 
+        //TextView representing user's email
+        val email = view.findViewById<TextView>(R.id.email)
         if (emailText == "")
             email.visibility = View.GONE
         else
             email.text = "Email: $emailText"
 
+        val followersLink = view.findViewById<LinearLayout>(R.id.linear_layout_followers)
+
+        //create args list for Friends and Settings fragments
         val args = Bundle()
         args.putStringArrayList("user", param1)
 
-        friendsLink[0].setOnClickListener {
-            val fragment: Fragment = FriendsFragment()
-            fragment.arguments = args
-            val manager = fragmentManager
-            val transaction = manager!!.beginTransaction()
-            transaction.add(R.id.nav_host, fragment)
-            // Commit the transaction
-            transaction.commit()
-        }
-
-        friendsLink[1].setOnClickListener {
+        followersLink.setOnClickListener {
             val fragment: Fragment = FriendsFragment()
             fragment.arguments = args
             val manager = fragmentManager
