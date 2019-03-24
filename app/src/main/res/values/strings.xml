@@ -89,5 +89,7 @@
     <string name="number_five">5</string>
     <string name="word_followers">followers</string>
     <string name="word_following">following</string>
+    <string name="phrase_phone_number">phone number</string>
+    <string name="word_password">password</string>
 
 </resources>

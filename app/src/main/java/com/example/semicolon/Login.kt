@@ -51,8 +51,8 @@ class Login : Activity() {
         usersDBHelper.insertRequest(Friend(2, 1, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
         usersDBHelper.insertRequest(Friend(3, 2, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
 
-        fEnter = findViewById(R.id.fName)
-        sEnter = findViewById(R.id.lName)
+        fEnter = findViewById(R.id.userName)
+        sEnter = findViewById(R.id.password)
 
         //checkbox
         checkLog = findViewById(R.id.checkLogin)
