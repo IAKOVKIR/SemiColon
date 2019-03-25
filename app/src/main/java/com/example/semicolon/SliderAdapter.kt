@@ -1,12 +1,15 @@
 package com.example.semicolon
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
+import android.support.design.widget.TextInputEditText
 import android.support.v4.view.PagerAdapter
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 
 class SliderAdapter(private val context : Context) : PagerAdapter() {
@@ -33,17 +36,19 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.slide_layout, container, false)
 
-        val text = view.findViewById<TextView>(R.id.textFirstName)
-        val editText = view.findViewById<EditText>(R.id.editTextFirstName)
+        //layouts
+        val firstLayout = view.findViewById<ScrollView>(R.id.first_layout)
+        val secondLayout = view.findViewById<ScrollView>(R.id.second_layout)
+        val thirdLayout = view.findViewById<RelativeLayout>(R.id.third_layout)
 
-        val text2 = view.findViewById<TextView>(R.id.textSecondName)
-        val editText2 = view.findViewById<EditText>(R.id.editTextSecondName)
+        //EditTexts
+        val firstName = view.findViewById<TextInputEditText>(R.id.first_name)
+        val lastName = view.findViewById<TextInputEditText>(R.id.last_name)
+        val phone = view.findViewById<TextInputEditText>(R.id.phone)
 
-        val agreement = view.findViewById<RelativeLayout>(R.id.TermsAndConditions)
-        val mainLayout = view.findViewById<RelativeLayout>(R.id.MainLayout)
         val checkBox = view.findViewById<CheckBox>(R.id.checkBox)
 
-        editText.addTextChangedListener(object : TextWatcher {
+        firstName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -53,11 +58,11 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                texts[position] = editText.text.toString()
+
             }
         })
 
-        editText2.addTextChangedListener(object : TextWatcher {
+        lastName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -67,7 +72,7 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                texts2[position] = editText2.text.toString()
+
             }
         })
 
@@ -75,24 +80,25 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
             check = true
         }
 
-        if (position == 2) {
-            agreement.visibility = View.VISIBLE
-            mainLayout.visibility = View.GONE
-            editText.visibility = View.GONE
-            text.visibility = View.GONE
-            editText2.visibility = View.GONE
-            text2.visibility = View.GONE
+        when (position) {
+            0 -> {
+                firstLayout.visibility = View.VISIBLE
+                secondLayout.visibility = View.GONE
+                thirdLayout.visibility = View.GONE
+            }
+            1 -> {
+                firstLayout.visibility = View.GONE
+                secondLayout.visibility = View.VISIBLE
+                thirdLayout.visibility = View.GONE
+            }
+            2 -> {
+                firstLayout.visibility = View.GONE
+                secondLayout.visibility = View.GONE
+                thirdLayout.visibility = View.VISIBLE
+            }
         }
 
-        text.text = slideTexts[position]
-        text2.text = slideTexts2[position]
         checkBox.isChecked = check
-
-        editText.setText(texts[position])
-        editText2.setText(texts2[position])
-
-        editText.hint = slideEditTexts[position]
-        editText2.hint = slideEditTexts2[position]
 
         container.addView(view)
 

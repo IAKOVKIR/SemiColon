@@ -75,7 +75,7 @@ class SettingParamsFragment : Fragment() {
                         if (newPas == repeatPassword.text.toString())
                             if (newPas != curPas) {
                                 val db = DatabaseOpenHelper(activity!!.applicationContext)
-                                db.setPassword(param3?.get(0)!!.toInt(), newPas)
+                                db.setPassword(param3!![0].toInt(), newPas)
                                 changePassword(newPas)
                                 activity!!.onBackPressed()
                             } else

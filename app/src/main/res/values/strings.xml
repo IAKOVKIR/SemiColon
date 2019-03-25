@@ -91,5 +91,10 @@
     <string name="word_following">following</string>
     <string name="phrase_phone_number">phone number</string>
     <string name="word_password">password</string>
+    <string name="phrase_first_word">first name</string>
+    <string name="phrase_last_name">last name</string>
+    <string name="word_city">city</string>
+    <string name="word_country">country</string>
+    <string name="phrase_email_not_required">email (not required)</string>
 
 </resources>

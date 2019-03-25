@@ -4,10 +4,12 @@ import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
+import android.view.View
 
-class Main2Activity : Activity() {
+class Registration : Activity() {
 
     private var mSlideViewPager : ViewPager? = null
     private var sliderAdapter : SliderAdapter? = null
@@ -21,6 +23,8 @@ class Main2Activity : Activity() {
     var buttonNext : Button? = null
     var buttonBack : Button? = null
 
+    var imm: InputMethodManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
@@ -33,6 +37,8 @@ class Main2Activity : Activity() {
         buttonNext!!.setOnClickListener {
             mSlideViewPager!!.currentItem = 1
         }
+
+        imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
         firstCircle = findViewById(R.id.FirstCircle)
         secondCircle = findViewById(R.id.SecondCircle)
@@ -61,7 +67,6 @@ class Main2Activity : Activity() {
                     thirdCircle!!.setTextColor(Color.WHITE)
 
                     buttonBack!!.isEnabled = false
-                    buttonNext!!.isEnabled = true
                     buttonBack!!.text = ""
                     buttonNext!!.text = getString(R.string.word_next)
 
@@ -79,7 +84,6 @@ class Main2Activity : Activity() {
                     thirdCircle!!.setTextColor(Color.WHITE)
 
                     buttonBack!!.isEnabled = true
-                    buttonNext!!.isEnabled = true
                     buttonBack!!.text = getString(R.string.word_back)
                     buttonNext!!.text = getString(R.string.word_next)
 
@@ -93,6 +97,13 @@ class Main2Activity : Activity() {
 
                 }
                 else -> {
+
+                    var view = currentFocus
+                    if (view == null) {
+                        view = View(applicationContext)
+                    }
+                    imm!!.hideSoftInputFromWindow(view.windowToken, 0)
+
                     thirdCircle!!.background = drawUpdatedCircle
                     thirdCircle!!.setTextColor(Color.BLACK)
                     firstCircle!!.background = drawCircle
@@ -101,7 +112,6 @@ class Main2Activity : Activity() {
                     secondCircle!!.setTextColor(Color.WHITE)
 
                     buttonBack!!.isEnabled = true
-                    buttonNext!!.isEnabled = true
                     buttonBack!!.text = getString(R.string.word_back)
                     buttonNext!!.text = getString(R.string.word_finish)
 
