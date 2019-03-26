@@ -37,6 +37,17 @@ object EventContent {
         // Add some sample items.
         for (i in 1..COUNT)
             addItem(createEvent(i))
+        addItem(createEvent(COUNT))
+    }
+
+    fun getList(frag: String): MutableList<Event> {
+        val SEARCH_EVENTS: MutableList<Event> = ArrayList()
+        for (i in 1..COUNT) {
+            val item = createEvent(i)
+            if (item.content.toLowerCase().contains(frag))
+                SEARCH_EVENTS.add(item)
+        }
+        return SEARCH_EVENTS
     }
 
     private fun addItem(event : Event) {
