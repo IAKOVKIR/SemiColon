@@ -49,6 +49,10 @@ class MyFriendsRecyclerViewAdapter(
 
         if (buttonsVisibility) {
             holder.mRequestButtons.visibility = View.VISIBLE
+            holder.mUnFollowButtons.visibility = View.GONE
+        } else {
+            holder.mRequestButtons.visibility = View.GONE
+            holder.mUnFollowButtons.visibility = View.VISIBLE
         }
 
         holder.mConfirmButton.setOnClickListener {
@@ -80,6 +84,7 @@ class MyFriendsRecyclerViewAdapter(
         val mDeclineButton: Button = mView.decline_button
         val mRequestResult: LinearLayout = mView.request_result
         val mRequestButtons: LinearLayout = mView.request_buttons
+        val mUnFollowButtons: LinearLayout = mView.follow_un_follow_buttons
         val mResultText: TextView = mView.button_result
 
         override fun toString(): String {

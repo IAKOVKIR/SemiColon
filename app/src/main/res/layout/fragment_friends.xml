@@ -107,6 +107,23 @@
 
         </LinearLayout>
 
+        <LinearLayout
+                android:id="@+id/follow_un_follow_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                android:orientation="vertical">
+
+            <Button
+                    android:id="@+id/un_follow_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="unfollow"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

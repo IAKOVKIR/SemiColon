@@ -1,7 +1,6 @@
 package com.example.semicolon
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.support.design.widget.TextInputEditText
 import android.support.v4.view.PagerAdapter
 import android.text.Editable
@@ -9,7 +8,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 
 class SliderAdapter(private val context : Context) : PagerAdapter() {
@@ -47,6 +45,7 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
         val phone = view.findViewById<TextInputEditText>(R.id.phone)
 
         val checkBox = view.findViewById<CheckBox>(R.id.checkBox)
+
 
         firstName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
