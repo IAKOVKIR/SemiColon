@@ -25,23 +25,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-                <Button
+
+                <ImageButton
                         android:id="@+id/settings_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/reg_square"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="8dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/settings"
                         android:layout_alignParentEnd="true"
-                        android:visibility="visible"
-                        android:text="@string/word_settings"
-                        android:textSize="22sp"
-                        android:textColor="@color/WHITE"/>
+                        tools:ignore="ContentDescription,RtlSymmetry"
+                        android:layout_alignParentTop="true"/>
+
 
             </RelativeLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="22dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="140dp"
                     android:layout_height="140dp"
@@ -138,7 +138,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/linearLayout3">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/linearLayout3">
 
                 <TextView
                         android:text="@string/word_events"
@@ -167,33 +168,80 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <TextView
-                    android:id="@+id/location"
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/test_location"
-                    android:textColor="@color/WHITE"
-                    android:textSize="21sp"
-                    android:padding="16dp"/>
+                    android:padding="8dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
 
-            <TextView
-                    android:id="@+id/phone_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Phone: +#(###)### ###"
-                    android:textColor="@color/WHITE"
-                    android:textSize="21sp"
-                    android:padding="16dp"
-                    tools:ignore="HardcodedText"/>
+                <ImageView
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/cityscape"
+                        tools:ignore="ContentDescription"/>
 
-            <TextView
-                    android:id="@+id/email"
+                <TextView
+                        android:id="@+id/location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/WHITE"
+                        android:text="@string/city_melbourne"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/test_email"
-                    android:textColor="@color/WHITE"
-                    android:textSize="21sp"
-                    android:padding="16dp"/>
+                    android:padding="8dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/smartphone"
+                        tools:ignore="ContentDescription"/>
+
+                <TextView
+                        android:id="@+id/phone_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/WHITE"
+                        android:text="@string/phone_number"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/envelope"
+                        tools:ignore="ContentDescription"/>
+
+                <TextView
+                        android:id="@+id/email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="20sp"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/WHITE"
+                        android:text="@string/email_gmail"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

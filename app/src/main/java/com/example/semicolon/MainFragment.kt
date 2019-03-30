@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 
@@ -22,7 +22,7 @@ class MainFragment : Fragment() {
     log is an object from Login Class
      */
     private var param1 : ArrayList<String>? = null
-    private var settingsButton : Button? = null
+    private var settingsButton : ImageButton? = null
     private var log = Login()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,18 +55,18 @@ class MainFragment : Fragment() {
 
         //TextView representing user's phone number
         val phoneNum = view.findViewById<TextView>(R.id.phone_number)
-        phoneNum.text = "Phone: $phoneImp"
+        phoneNum.text = phoneImp
 
         //TextView representing user's location
         val location = view.findViewById<TextView>(R.id.location)
-        location.text = "Location: ${param1?.get(5)}, Australia"
+        location.text = param1!![5]
 
         //TextView representing user's email
         val email = view.findViewById<TextView>(R.id.email)
         if (emailText == "")
             email.visibility = View.GONE
         else
-            email.text = "Email: $emailText"
+            email.text = emailText
 
         val followersLink = view.findViewById<LinearLayout>(R.id.linear_layout_followers)
 

@@ -96,6 +96,20 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         return true
     }
 
+    @Throws(SQLiteConstraintException::class)
+    fun deleteUser(UserID: String): Boolean {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+        // Define 'where' part of query.
+        val selection = DBContract.UserEntry.USER_COLUMN_ID + " LIKE ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs = arrayOf(UserID)
+        // Issue SQL statement.
+        db.delete(DBContract.UserEntry.USER_TABLE_NAME, selection, selectionArgs)
+
+        return true
+    }
+
     fun readUser(Phone: String, Password: String): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase
@@ -206,19 +220,5 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         cursor.close()
         return users
     }
-
-    /*@Throws(SQLiteConstraintException::class)
-    fun deleteUser(UserID: String): Boolean {
-        // Gets the data repository in write mode
-        val db = writableDatabase
-        // Define 'where' part of query.
-        val selection = DBContract.UserEntry.USER_COLUMN_ID + " LIKE ?"
-        // Specify arguments in placeholder order.
-        val selectionArgs = arrayOf(UserID)
-        // Issue SQL statement.
-        db.delete(DBContract.UserEntry.USER_TABLE_NAME, selection, selectionArgs)
-
-        return true
-    }*/
 
 }

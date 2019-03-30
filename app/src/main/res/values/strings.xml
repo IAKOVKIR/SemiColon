@@ -71,11 +71,11 @@
     </string>
     <string name="title_activity_user_home">UserHomeActivity</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_notifications">notifications</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="log_out">logout</string>
-    <string name="title_events">Events</string>
+    <string name="title_events">events</string>
     <string name="test_location">Location: Melbourne, Australia</string>
     <string name="test_email">Email: email@gmail.com</string>
     <string name="test_phone_number">+61(949)808 570</string>
@@ -96,5 +96,7 @@
     <string name="word_city">city</string>
     <string name="word_country">country</string>
     <string name="phrase_email_not_required">email (not required)</string>
+    <string name="email_gmail">email@gmail.com</string>
+    <string name="phone_number">+#(###)### ###</string>
 
 </resources>

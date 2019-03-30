@@ -8,61 +8,88 @@
         android:background="@color/BLACK"
         tools:context=".Login">
 
-    <android.support.design.widget.TextInputLayout
-            android:id="@+id/layout1"
-            android:layout_width="wrap_content"
+    <LinearLayout
+            android:id="@+id/phone_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
-            android:hint="@string/phrase_phone_number"
-            android:textColorHint="@color/GREY"
+            android:orientation="horizontal"
+            android:layout_marginTop="128dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/createBut"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintVertical_bias="0.39">
+            android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp">
 
-        <android.support.design.widget.TextInputEditText
-                android:id="@+id/userName"
+        <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                android:layout_gravity="center"
+                android:src="@drawable/login"
+                android:id="@+id/imageView"
+                tools:ignore="ContentDescription"/>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout1"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="322dp"
-                android:inputType="text"
-                android:backgroundTint="@color/GREY"
-                android:maxLines="1"
-                android:textColorHint="@color/GREY"
-                android:textColor="@color/WHITE"/>
+                android:hint="@string/phrase_phone_number"
+                android:textColorHint="@color/GREY">
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputEditText
+                    android:id="@+id/userName"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:inputType="text"
+                    android:backgroundTint="@color/GREY"
+                    android:maxLines="1"
+                    android:textColorHint="@color/GREY"
+                    android:textColor="@color/WHITE"/>
 
-    <android.support.design.widget.TextInputLayout
-            android:id="@+id/layout2"
-            android:layout_width="wrap_content"
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
-            android:hint="@string/word_password"
-            android:textColorHint="@color/GREY"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/layout1"
-            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/phone_layout"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.493">
+            android:layout_marginStart="16dp"
+            android:id="@+id/linearLayout2">
 
-        <android.support.design.widget.TextInputEditText
-                android:id="@+id/password"
+        <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/padlock"
+                android:layout_gravity="center"
+                tools:ignore="ContentDescription"/>
+
+        <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout2"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="322dp"
-                android:inputType="textPassword"
-                android:backgroundTint="@color/GREY"
-                android:maxLines="1"
-                android:textColorHint="@color/GREY"
-                android:textColor="@color/WHITE"/>
+                android:hint="@string/word_password"
+                android:textColorHint="@color/GREY">
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:inputType="textPassword"
+                    android:backgroundTint="@color/GREY"
+                    android:maxLines="1"
+                    android:textColorHint="@color/GREY"
+                    android:textColor="@color/WHITE"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
 
     <Button
             android:text="@string/create_an_account"
@@ -125,7 +152,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/createBut"/>
 
     <CheckBox
@@ -137,7 +165,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/checkLogin"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="44dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/layout2"/>
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"/>
 
 </android.support.constraint.ConstraintLayout>

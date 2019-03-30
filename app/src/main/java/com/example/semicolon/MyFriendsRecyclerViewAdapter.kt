@@ -63,7 +63,7 @@ class MyFriendsRecyclerViewAdapter(
         }
 
         holder.mDeclineButton.setOnClickListener {
-            db!!.updateRequest(item.id.toString(), mUser, "declined")
+            db!!.deleteUser(mUser)
             holder.mResultText.text = "Declined"
             holder.mRequestButtons.visibility = View.GONE
             holder.mRequestResult.visibility = View.VISIBLE
