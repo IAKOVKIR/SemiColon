@@ -8,61 +8,50 @@
         android:layout_height="match_parent"
         tools:context=".SettingFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <TabHost
+            android:id="@+id/tabHost"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearLayout"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
 
-        <TextView
-                android:id="@+id/followers_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/BLACK"
-                android:padding="8dp"
-                android:background="@color/WHITE"
-                android:textSize="26sp"
-                android:textAlignment="center"
-                android:text="followers"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/requests_view"
-                tools:ignore="HardcodedText"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-                android:id="@+id/requests_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/WHITE"
-                android:padding="8dp"
-                android:background="@color/BLACK"
-                android:textSize="26sp"
-                android:textAlignment="center"
-                android:text="requests"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="HardcodedText"/>
+            <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-    </android.support.constraint.ConstraintLayout>
+            <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
 
-    <android.support.v7.widget.RecyclerView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/list"
-            android:name="com.example.semicolon.FriendsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="LinearLayoutManager"
-            tools:context=".FriendsFragment"
-            tools:listitem="@layout/fragment_friends"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            android:layout_marginTop="8dp"/>
+                <TextView
+                        android:id="@+id/ss"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+            </FrameLayout>
+
+                <android.support.v7.widget.RecyclerView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:id="@+id/list"
+                        android:name="com.example.semicolon.FriendsFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="LinearLayoutManager"
+                        tools:context=".FriendsFragment"
+                        tools:listitem="@layout/fragment_friends"/>
+
+        </LinearLayout>
+
+    </TabHost>
 
 </android.support.constraint.ConstraintLayout>

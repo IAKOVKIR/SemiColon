@@ -11,7 +11,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.TabHost
 import android.widget.TextView
 
 /**
@@ -43,8 +43,22 @@ class FriendsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_friends_list, container, false)
         val list = view.findViewById<RecyclerView>(R.id.list)
-        val followers = view.findViewById<TextView>(R.id.followers_view)
-        val requests = view.findViewById<TextView>(R.id.requests_view)
+
+        val host = view.findViewById<TabHost>(R.id.tabHost)
+        host.setup()
+
+        var spec = host.newTabSpec("Tab One")
+        spec.setContent(R.id.ss)
+        spec.setIndicator("Followers")
+        host.addTab(spec)
+
+        spec = host.newTabSpec("Tab Two")
+        spec.setContent(R.id.ss)
+        spec.setIndicator("Requests")
+        host.addTab(spec)
+
+        val tv: TextView = host?.currentTabView!!.findViewById(android.R.id.title) //for Selected Tab
+        tv.setTextColor(Color.WHITE)
 
         data = context?.let { DatabaseOpenHelper(it) }
 
@@ -59,30 +73,24 @@ class FriendsFragment : Fragment() {
             }
         }
 
-        followers.setOnClickListener{
-            followers.setTextColor(Color.BLACK)
-            followers.setBackgroundColor(Color.WHITE)
-
-            requests.setTextColor(Color.WHITE)
-            requests.setBackgroundColor(Color.BLACK)
-
-            if (list is RecyclerView) {
-                with(list) {
-                    layoutManager = when {
-                        columnCount <= 1 -> LinearLayoutManager(context)
-                        else -> GridLayoutManager(context, columnCount)
-                    }
-                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed"), listener, param1!![0], false)
-                }
+        host.setOnTabChangedListener { tabId ->
+            val result: String
+            val buttonsVisibility: Boolean
+            if (tabId == "Tab One") {
+                result = "confirmed"
+                buttonsVisibility = false
+            } else {
+                result = "inProgress"
+                buttonsVisibility = true
             }
-        }
 
-        requests.setOnClickListener {
-            followers.setTextColor(Color.WHITE)
-            followers.setBackgroundColor(Color.BLACK)
+            for (i in 0 until host.tabWidget.childCount) {
+                val tv: TextView = host.tabWidget.getChildAt(i).findViewById(android.R.id.title) //Unselected Tabs
+                tv.setTextColor(Color.GRAY)
+            }
 
-            requests.setTextColor(Color.BLACK)
-            requests.setBackgroundColor(Color.WHITE)
+            val tv: TextView = host?.currentTabView!!.findViewById(android.R.id.title) //for Selected Tab
+            tv.setTextColor(Color.WHITE)
 
             if (list is RecyclerView) {
                 with(list) {
@@ -90,7 +98,7 @@ class FriendsFragment : Fragment() {
                         columnCount <= 1 -> LinearLayoutManager(context)
                         else -> GridLayoutManager(context, columnCount)
                     }
-                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "inProgress"), listener, param1!![0], true)
+                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], result), listener, param1!![0], buttonsVisibility)
                 }
             }
         }
