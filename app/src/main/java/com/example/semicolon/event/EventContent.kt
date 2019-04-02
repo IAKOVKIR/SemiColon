@@ -17,7 +17,7 @@ object EventContent {
      */
     val EVENTS: MutableList<Event> = ArrayList()
 
-    private val event_names = arrayOf("Meeting with Amunil", "Talking about Inner join", "Global Query", "Sleep at RMIT", "Sleep at RMIT", "Sleep at RMIT",
+    private val event_names = arrayOf("Meeting with Aminul", "Talking about Inner join", "Global Query", "Sleep at RMIT", "Sleep at RMIT", "Sleep at RMIT",
         "Sleep at RMIT", "Sleep at RMIT", "Sleep at RMIT", "Sleep at RMIT")
 
     private val event_details = arrayOf("2 persons joined the event", "2 persons joined the event", "4 persons joined the event", "Steven joined the event",
@@ -41,13 +41,13 @@ object EventContent {
     }
 
     fun getList(frag: String): MutableList<Event> {
-        val SEARCH_EVENTS: MutableList<Event> = ArrayList()
+        val searchEvents: MutableList<Event> = ArrayList()
         for (i in 1..COUNT) {
             val item = createEvent(i)
             if (item.content.toLowerCase().contains(frag))
-                SEARCH_EVENTS.add(item)
+                searchEvents.add(item)
         }
-        return SEARCH_EVENTS
+        return searchEvents
     }
 
     private fun addItem(event : Event) {

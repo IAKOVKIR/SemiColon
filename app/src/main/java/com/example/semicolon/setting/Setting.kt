@@ -21,7 +21,7 @@ object Setting {
     /**
      * A map of sample (dummy) items, by ID.
      */
-    val SETTINGS_MAP: MutableMap<String, SettingItem> = HashMap()
+    private val SETTINGS_MAP: MutableMap<String, SettingItem> = HashMap()
 
     private const val COUNT = 6
 

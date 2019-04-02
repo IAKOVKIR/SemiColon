@@ -57,13 +57,22 @@ class FriendsFragment : Fragment() {
         spec.setIndicator("Requests")
         host.addTab(spec)
 
-        val tv: TextView = host?.currentTabView!!.findViewById(android.R.id.title) //for Selected Tab
+        var tv: TextView
+
+        //set gray color for unselected tabs
+        for (i in 0 until host.tabWidget.childCount) {
+            tv = host.tabWidget.getChildAt(i).findViewById(android.R.id.title)
+            tv.setTextColor(Color.GRAY)
+        }
+
+        //set white color for selected tab
+        tv = host?.currentTabView!!.findViewById(android.R.id.title) //for Selected Tab
         tv.setTextColor(Color.WHITE)
 
         data = context?.let { DatabaseOpenHelper(it) }
 
         // Set the adapter
-        if (list is RecyclerView) {
+        if (list is RecyclerView)
             with(list) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
@@ -71,7 +80,6 @@ class FriendsFragment : Fragment() {
                 }
                 adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed"), listener, param1!![0], false)
             }
-        }
 
         host.setOnTabChangedListener { tabId ->
             val result: String
@@ -84,15 +92,17 @@ class FriendsFragment : Fragment() {
                 buttonsVisibility = true
             }
 
+            //set gray color for unselected tabs
             for (i in 0 until host.tabWidget.childCount) {
-                val tv: TextView = host.tabWidget.getChildAt(i).findViewById(android.R.id.title) //Unselected Tabs
+                tv = host.tabWidget.getChildAt(i).findViewById(android.R.id.title) //Unselected Tabs
                 tv.setTextColor(Color.GRAY)
             }
 
-            val tv: TextView = host?.currentTabView!!.findViewById(android.R.id.title) //for Selected Tab
+            //set white color for selected tab
+            tv = host.currentTabView!!.findViewById(android.R.id.title)
             tv.setTextColor(Color.WHITE)
 
-            if (list is RecyclerView) {
+            if (list is RecyclerView)
                 with(list) {
                     layoutManager = when {
                         columnCount <= 1 -> LinearLayoutManager(context)
@@ -100,7 +110,6 @@ class FriendsFragment : Fragment() {
                     }
                     adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], result), listener, param1!![0], buttonsVisibility)
                 }
-            }
         }
 
         return view
@@ -134,6 +143,7 @@ class FriendsFragment : Fragment() {
                     transaction.commit()
 
                     true
+
                 } else
                     false
             }
