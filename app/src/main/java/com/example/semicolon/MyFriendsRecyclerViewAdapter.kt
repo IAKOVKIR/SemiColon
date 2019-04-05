@@ -1,12 +1,12 @@
 package com.example.semicolon
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.example.semicolon.FriendsFragment.OnListFragmentInteractionListener
 
 import kotlinx.android.synthetic.main.fragment_friends.view.*
@@ -17,13 +17,16 @@ import kotlinx.android.synthetic.main.fragment_friends.view.*
  */
 class MyFriendsRecyclerViewAdapter(
     private val mValues: List<User>,
+    private val mContext: Context,
     private val mListener: OnListFragmentInteractionListener?,
     private val mUser: String,
     private val buttonsVisibility: Boolean
+    /*private val follower: Boolean*/
 ) : RecyclerView.Adapter<MyFriendsRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
     private var db: DatabaseOpenHelper? = null
+    private var n: SharedPreferences? = null
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -37,8 +40,8 @@ class MyFriendsRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_friends, parent, false)
+        n = mContext.getSharedPreferences(Login().prefName, Context.MODE_PRIVATE)
         db = DatabaseOpenHelper(parent.context)
-
         return ViewHolder(view)
     }
 
@@ -46,6 +49,12 @@ class MyFriendsRecyclerViewAdapter(
         val item = mValues[position]
         holder.mIdView.text = item.firstName
         holder.mContentView.text = item.lastName
+        val bool = db!!.checkFollower(n!!.getString(Login().prefVar[0], "") as String, item.id.toString())
+
+        if (bool)
+            holder.mFollowUnFollowButton.text = "unfollow"
+        else
+            holder.mFollowUnFollowButton.text = "follow"
 
         if (buttonsVisibility) {
             holder.mRequestButtons.visibility = View.VISIBLE
@@ -85,6 +94,7 @@ class MyFriendsRecyclerViewAdapter(
         val mRequestResult: LinearLayout = mView.request_result
         val mRequestButtons: LinearLayout = mView.request_buttons
         val mUnFollowButtons: LinearLayout = mView.follow_un_follow_buttons
+        val mFollowUnFollowButton: Button = mView.un_follow_button
         val mResultText: TextView = mView.button_result
 
         override fun toString(): String {

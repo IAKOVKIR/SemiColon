@@ -23,6 +23,7 @@ class FriendsFragment : Fragment() {
 
     private var columnCount = 1
     private var param1 : ArrayList<String>? = null
+    private var param2 : Int = 0
 
     private var listener: OnListFragmentInteractionListener? = null
     private var data: DatabaseOpenHelper? = null
@@ -33,6 +34,7 @@ class FriendsFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
             param1 = it.getStringArrayList("user")
+            param2 = it.getInt("block")
         }
 
     }
@@ -42,6 +44,8 @@ class FriendsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_friends_list, container, false)
+        data = context?.let { DatabaseOpenHelper(it) }
+
         val list = view.findViewById<RecyclerView>(R.id.list)
 
         val host = view.findViewById<TabHost>(R.id.tabHost)
@@ -49,12 +53,18 @@ class FriendsFragment : Fragment() {
 
         var spec = host.newTabSpec("Tab One")
         spec.setContent(R.id.ss)
-        spec.setIndicator("Followers")
+        if (param2 == 1) {
+            spec.setIndicator("Followers")
+        } else
+            spec.setIndicator("Following")
         host.addTab(spec)
 
         spec = host.newTabSpec("Tab Two")
         spec.setContent(R.id.ss)
-        spec.setIndicator("Requests")
+        if (param2 == 1)
+            spec.setIndicator("Requests")
+        else
+            spec.setIndicator("Find")
         host.addTab(spec)
 
         var tv: TextView
@@ -69,8 +79,6 @@ class FriendsFragment : Fragment() {
         tv = host?.currentTabView!!.findViewById(android.R.id.title) //for Selected Tab
         tv.setTextColor(Color.WHITE)
 
-        data = context?.let { DatabaseOpenHelper(it) }
-
         // Set the adapter
         if (list is RecyclerView)
             with(list) {
@@ -78,7 +86,7 @@ class FriendsFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed"), listener, param1!![0], false)
+                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed", param2), context, listener, param1!![0], false)
             }
 
         host.setOnTabChangedListener { tabId ->
@@ -88,7 +96,10 @@ class FriendsFragment : Fragment() {
                 result = "confirmed"
                 buttonsVisibility = false
             } else {
-                result = "inProgress"
+                if (param2 == 1)
+                    result = "inProgress"
+                else
+                    result = ""
                 buttonsVisibility = true
             }
 
@@ -108,8 +119,9 @@ class FriendsFragment : Fragment() {
                         columnCount <= 1 -> LinearLayoutManager(context)
                         else -> GridLayoutManager(context, columnCount)
                     }
-                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], result), listener, param1!![0], buttonsVisibility)
+                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], result, param2), context, listener, param1!![0], buttonsVisibility)
                 }
+
         }
 
         return view
@@ -181,6 +193,6 @@ class FriendsFragment : Fragment() {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
-            */
+          */
     }
 }

@@ -23,6 +23,7 @@ class MainFragment : Fragment() {
      */
     private var param1 : ArrayList<String>? = null
     private var settingsButton : ImageButton? = null
+    private var data: DatabaseOpenHelper? = null
     private var log = Login()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +40,7 @@ class MainFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
+        data = context?.let { DatabaseOpenHelper(it) }
 
         //variable fullName contains a string with user's first and last names ("firstName lastName")
         val fullName = "${param1!![1]} ${param1!![2]}"
@@ -57,6 +59,11 @@ class MainFragment : Fragment() {
         val phoneNum = view.findViewById<TextView>(R.id.phone_number)
         phoneNum.text = phoneImp
 
+        val numOfFollowers = view.findViewById<TextView>(R.id.followers_number)
+        val numOfFollowing = view.findViewById<TextView>(R.id.following_number)
+        numOfFollowers.text = "${data!!.countFollowers(param1!![0])}"
+        numOfFollowing.text = "${data!!.countFollowing(param1!![0])}"
+
         //TextView representing user's location
         val location = view.findViewById<TextView>(R.id.location)
         location.text = param1!![5]
@@ -69,6 +76,7 @@ class MainFragment : Fragment() {
             email.text = emailText
 
         val followersLink = view.findViewById<LinearLayout>(R.id.linear_layout_followers)
+        val followingLink = view.findViewById<LinearLayout>(R.id.linear_layout_following)
 
         //create args list for Friends and Settings fragments
         val args = Bundle()
@@ -76,6 +84,18 @@ class MainFragment : Fragment() {
 
         followersLink.setOnClickListener {
             val fragment: Fragment = FriendsFragment()
+            args.putInt("block", 1)
+            fragment.arguments = args
+            val manager = fragmentManager
+            val transaction = manager!!.beginTransaction()
+            transaction.add(R.id.nav_host, fragment)
+            // Commit the transaction
+            transaction.commit()
+        }
+
+        followingLink.setOnClickListener {
+            val fragment: Fragment = FriendsFragment()
+            args.putInt("block", 2)
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()

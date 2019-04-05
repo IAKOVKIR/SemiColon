@@ -182,12 +182,19 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         private const val SQL_DELETE_FRIEND_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME
     }
 
-    fun readAllRequests(UserID: String, condition: String): ArrayList<User> {
+    fun readAllRequests(UserID: String, condition: String, num: Int): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase
         val cursor: Cursor?
         try {
-            cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Password, USER.City, USER.AgreementCheck, USER.Rating, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition'", null)
+            if (num == 1) {
+                cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Password, USER.City, USER.AgreementCheck, USER.Rating, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition'",
+                    null
+                )
+            } else {
+                cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Password, USER.City, USER.AgreementCheck, USER.Rating, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = '$condition'",
+                    null)
+            }
         } catch (e: SQLiteException) {
             return ArrayList()
         }
@@ -219,6 +226,51 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
         cursor.close()
         return users
+    }
+
+    fun countFollowers(UserID: String): Int {
+        var total = 0
+        val db = writableDatabase
+        val cursor: Cursor?
+        try {
+            cursor = db.rawQuery("SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = 'confirmed'", null)
+            if (cursor!!.moveToFirst()) total = cursor.getInt(0)
+        } catch (e: SQLiteException) {
+            return 0
+        }
+
+        cursor.close()
+        return total
+    }
+
+    fun countFollowing(UserID: String): Int {
+        var total = 0
+        val db = writableDatabase
+        val cursor: Cursor?
+        try {
+            cursor = db.rawQuery("SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = 'confirmed'", null)
+            if (cursor!!.moveToFirst()) total = cursor.getInt(0)
+        } catch (e: SQLiteException) {
+            return 0
+        }
+
+        cursor.close()
+        return total
+    }
+
+    fun checkFollower(SenderID: String, ReceiverID: String): Boolean {
+        var total = 0
+        val db = writableDatabase
+        val cursor: Cursor?
+        try {
+            cursor = db.rawQuery("SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$SenderID' AND FRIEND.ReceiverID = '$ReceiverID' AND FRIEND.Condition = 'confirmed'", null)
+            if (cursor!!.moveToFirst()) total = cursor.getInt(0)
+        } catch (e: SQLiteException) {
+            return false
+        }
+
+        cursor.close()
+        return (total > 0)
     }
 
 }
