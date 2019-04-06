@@ -10,6 +10,8 @@ import android.widget.*
 import com.example.semicolon.FriendsFragment.OnListFragmentInteractionListener
 
 import kotlinx.android.synthetic.main.fragment_friends.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
@@ -51,10 +53,25 @@ class MyFriendsRecyclerViewAdapter(
         holder.mContentView.text = item.lastName
         val bool = db!!.checkFollower(n!!.getString(Login().prefVar[0], "") as String, item.id.toString())
 
+        val c = Calendar.getInstance()
+        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+        val strDate = sdf.format(c.time).trim()
+
         if (bool)
             holder.mFollowUnFollowButton.text = "unfollow"
         else
             holder.mFollowUnFollowButton.text = "follow"
+
+        holder.mFollowUnFollowButton.setOnClickListener {
+            if (bool) {
+                holder.mFollowUnFollowButton.text = "follow"
+                db!!.deleteFollowing(n!!.getString(Login().prefVar[0], "") as String, item.id.toString())
+            } else {
+                holder.mFollowUnFollowButton.text = "unfollow"
+                db!!.insertRequest(Friend(db!!.countFriendTable(), (n!!.getString(Login().prefVar[0], "") as String).toInt(), item.id,
+                    strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
+            }
+        }
 
         if (buttonsVisibility) {
             holder.mRequestButtons.visibility = View.VISIBLE

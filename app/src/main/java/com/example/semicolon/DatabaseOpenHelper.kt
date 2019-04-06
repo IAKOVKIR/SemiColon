@@ -243,6 +243,21 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         return total
     }
 
+    fun countFriendTable(): Int {
+        var total = 0
+        val db = writableDatabase
+        val cursor: Cursor?
+        try {
+            cursor = db.rawQuery("SELECT * FROM FRIEND WHERE FriendshipID = (SELECT MAX(FriendshipID) FROM FRIEND)", null)
+            if (cursor!!.moveToFirst()) total = cursor.getInt(0)
+        } catch (e: SQLiteException) {
+            return 0
+        }
+
+        cursor.close()
+        return (total + 1)
+    }
+
     fun countFollowing(UserID: String): Int {
         var total = 0
         val db = writableDatabase
@@ -256,6 +271,19 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
 
         cursor.close()
         return total
+    }
+
+    fun deleteFollowing(SenderID: String, ReceiverID: String): Boolean {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+        // Define 'where' part of query.
+        val selection = DBContract.UserEntry.FRIEND_COLUMN_SENDER_ID + " LIKE ? AND " + DBContract.UserEntry.FRIEND_COLUMN_RECEIVER_ID + " LIKE ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs = arrayOf(SenderID, ReceiverID)
+        // Issue SQL statement.
+        db.delete(DBContract.UserEntry.FRIEND_TABLE_NAME, selection, selectionArgs)
+
+        return true
     }
 
     fun checkFollower(SenderID: String, ReceiverID: String): Boolean {
