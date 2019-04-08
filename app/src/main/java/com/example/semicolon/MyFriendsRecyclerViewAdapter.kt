@@ -51,25 +51,30 @@ class MyFriendsRecyclerViewAdapter(
         val item = mValues[position]
         holder.mIdView.text = item.firstName
         holder.mContentView.text = item.lastName
-        val bool = db!!.checkFollower(n!!.getString(Login().prefVar[0], "") as String, item.id.toString())
+        val yourID = n!!.getString(Login().prefVar[0], "") as String
+        var bool = db!!.checkFollower(yourID, item.id.toString())
 
         val c = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
         val strDate = sdf.format(c.time).trim()
 
-        if (bool)
-            holder.mFollowUnFollowButton.text = "unfollow"
-        else
-            holder.mFollowUnFollowButton.text = "follow"
+        when (bool) {
+            "confirmed" -> holder.mFollowUnFollowButton.text = "unfollow"
+            "" -> holder.mFollowUnFollowButton.text = "follow"
+            else -> holder.mFollowUnFollowButton.text = "in progress"
+        }
 
         holder.mFollowUnFollowButton.setOnClickListener {
-            if (bool) {
+            if (bool == "confirmed") {
                 holder.mFollowUnFollowButton.text = "follow"
-                db!!.deleteFollowing(n!!.getString(Login().prefVar[0], "") as String, item.id.toString())
-            } else {
-                holder.mFollowUnFollowButton.text = "unfollow"
-                db!!.insertRequest(Friend(db!!.countFriendTable(), (n!!.getString(Login().prefVar[0], "") as String).toInt(), item.id,
-                    strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
+                bool = ""
+                db!!.deleteFollowing(yourID, item.id.toString())
+            } else if (bool == "") {
+                holder.mFollowUnFollowButton.text = "in progress"
+                bool = "inProgress"
+                val friend = Friend(db!!.countFriendTable(), yourID.toInt(), item.id,
+                    strDate.substring(11, 19), strDate.substring(0, 10), bool)
+                db!!.insertRequest(friend)
             }
         }
 

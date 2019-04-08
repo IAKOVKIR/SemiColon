@@ -41,7 +41,8 @@ class Login : Activity() {
         val strDate = sdf.format(c.time).trim()
 
         usersDBHelper = DatabaseOpenHelper(this)
-        usersDBHelper.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678",
+
+        /*usersDBHelper.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678",
             "Melbourne", 1, 5.0F, "MrStealYourQuery@gmail.com"))
         usersDBHelper.insertUser(User(2,"Abbas", "Ice Wallow", "0490000000", "12345678",
             "Somewhere", 1, 3.2F, "BetterThanFather@gmail.com"))
@@ -57,7 +58,7 @@ class Login : Activity() {
         usersDBHelper.insertRequest(Friend(5, 1, 4, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
         usersDBHelper.insertRequest(Friend(6, 2, 4, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
         usersDBHelper.insertRequest(Friend(7, 3, 4, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
-        usersDBHelper.insertRequest(Friend(8, 4, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
+        usersDBHelper.insertRequest(Friend(8, 4, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))*/
 
         fEnter = findViewById(R.id.userName)
         sEnter = findViewById(R.id.password)

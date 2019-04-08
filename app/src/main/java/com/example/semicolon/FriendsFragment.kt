@@ -86,11 +86,12 @@ class FriendsFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], "confirmed", param2), context, listener, param1!![0], false)
+                val listA = data!!.readAllFollowers(param1!![0], "confirmed", param2)
+                adapter = MyFriendsRecyclerViewAdapter(listA, context, listener, param1!![0], false)
             }
 
         host.setOnTabChangedListener { tabId ->
-            val result: String
+            var result = ""
             val buttonsVisibility: Boolean
             if (tabId == "Tab One") {
                 result = "confirmed"
@@ -98,8 +99,6 @@ class FriendsFragment : Fragment() {
             } else {
                 if (param2 == 1)
                     result = "inProgress"
-                else
-                    result = ""
                 buttonsVisibility = true
             }
 
@@ -119,7 +118,8 @@ class FriendsFragment : Fragment() {
                         columnCount <= 1 -> LinearLayoutManager(context)
                         else -> GridLayoutManager(context, columnCount)
                     }
-                    adapter = MyFriendsRecyclerViewAdapter(data!!.readAllRequests(param1!![0], result, param2), context, listener, param1!![0], buttonsVisibility)
+                    val listB = data!!.readAllFollowers(param1!![0], result, param2)
+                    adapter = MyFriendsRecyclerViewAdapter(listB, context, listener, param1!![0], buttonsVisibility)
                 }
 
         }
