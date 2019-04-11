@@ -80,11 +80,10 @@ class MainFragment : Fragment() {
 
         //create args list for Friends and Settings fragments
         val args = Bundle()
-        args.putStringArrayList("user", param1)
 
         followersLink.setOnClickListener {
-            val fragment: Fragment = FriendsFragment()
-            args.putInt("block", 1)
+            val fragment: Fragment = FollowingFragment()
+            args.putStringArrayList("user", param1)
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()
@@ -94,8 +93,8 @@ class MainFragment : Fragment() {
         }
 
         followingLink.setOnClickListener {
-            val fragment: Fragment = FriendsFragment()
-            args.putInt("block", 2)
+            val fragment: Fragment = TabLayout()
+            args.putStringArrayList("user", param1)
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()
@@ -107,6 +106,7 @@ class MainFragment : Fragment() {
         settingsButton = view.findViewById(R.id.settings_button)
         settingsButton!!.setOnClickListener {
             val fragment: Fragment = SettingFragment()
+            args.putStringArrayList("user", param1)
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()

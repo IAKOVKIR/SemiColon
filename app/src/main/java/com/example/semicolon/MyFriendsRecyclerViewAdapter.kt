@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.semicolon.FriendsFragment.OnListFragmentInteractionListener
+import com.example.semicolon.FollowingFragment.OnListFragmentInteractionListener
 
 import kotlinx.android.synthetic.main.fragment_friends.view.*
 import java.text.SimpleDateFormat

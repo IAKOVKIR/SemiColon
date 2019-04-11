@@ -1,7 +1,6 @@
 package com.example.semicolon
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -11,19 +10,17 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TabHost
-import android.widget.TextView
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [FriendsFragment.OnListFragmentInteractionListener] interface.
+ * [FollowingFragment.OnListFragmentInteractionListener] interface.
  */
-class FriendsFragment : Fragment() {
+class FollowingFragment : Fragment() {
 
     private var columnCount = 1
     private var param1 : ArrayList<String>? = null
-    private var param2 : Int = 0
+
 
     private var listener: OnListFragmentInteractionListener? = null
     private var data: DatabaseOpenHelper? = null
@@ -34,7 +31,6 @@ class FriendsFragment : Fragment() {
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
             param1 = it.getStringArrayList("user")
-            param2 = it.getInt("block")
         }
 
     }
@@ -48,37 +44,6 @@ class FriendsFragment : Fragment() {
 
         val list = view.findViewById<RecyclerView>(R.id.list)
 
-        val host = view.findViewById<TabHost>(R.id.tabHost)
-        host.setup()
-
-        var spec = host.newTabSpec("Tab One")
-        spec.setContent(R.id.ss)
-        if (param2 == 1) {
-            spec.setIndicator("Followers")
-        } else
-            spec.setIndicator("Following")
-        host.addTab(spec)
-
-        spec = host.newTabSpec("Tab Two")
-        spec.setContent(R.id.ss)
-        if (param2 == 1)
-            spec.setIndicator("Requests")
-        else
-            spec.setIndicator("Find")
-        host.addTab(spec)
-
-        var tv: TextView
-
-        //set gray color for unselected tabs
-        for (i in 0 until host.tabWidget.childCount) {
-            tv = host.tabWidget.getChildAt(i).findViewById(android.R.id.title)
-            tv.setTextColor(Color.GRAY)
-        }
-
-        //set white color for selected tab
-        tv = host?.currentTabView!!.findViewById(android.R.id.title) //for Selected Tab
-        tv.setTextColor(Color.WHITE)
-
         // Set the adapter
         if (list is RecyclerView)
             with(list) {
@@ -86,43 +51,8 @@ class FriendsFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                val listA = data!!.readAllFollowers(param1!![0], "confirmed", param2)
-                adapter = MyFriendsRecyclerViewAdapter(listA, context, listener, param1!![0], false)
+                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllFollowers(param1!![0]), context, listener, param1!![0], false)
             }
-
-        host.setOnTabChangedListener { tabId ->
-            var result = ""
-            val buttonsVisibility: Boolean
-            if (tabId == "Tab One") {
-                result = "confirmed"
-                buttonsVisibility = false
-            } else {
-                if (param2 == 1)
-                    result = "inProgress"
-                buttonsVisibility = true
-            }
-
-            //set gray color for unselected tabs
-            for (i in 0 until host.tabWidget.childCount) {
-                tv = host.tabWidget.getChildAt(i).findViewById(android.R.id.title) //Unselected Tabs
-                tv.setTextColor(Color.GRAY)
-            }
-
-            //set white color for selected tab
-            tv = host.currentTabView!!.findViewById(android.R.id.title)
-            tv.setTextColor(Color.WHITE)
-
-            if (list is RecyclerView)
-                with(list) {
-                    layoutManager = when {
-                        columnCount <= 1 -> LinearLayoutManager(context)
-                        else -> GridLayoutManager(context, columnCount)
-                    }
-                    val listB = data!!.readAllFollowers(param1!![0], result, param2)
-                    adapter = MyFriendsRecyclerViewAdapter(listB, context, listener, param1!![0], buttonsVisibility)
-                }
-
-        }
 
         return view
     }
@@ -188,11 +118,12 @@ class FriendsFragment : Fragment() {
 
         /*@JvmStatic
         fun newInstance(columnCount: Int) =
-            FriendsFragment().apply {
+            FollowingFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
           */
     }
+
 }

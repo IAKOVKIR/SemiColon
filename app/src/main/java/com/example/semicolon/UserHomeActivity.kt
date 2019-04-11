@@ -13,7 +13,7 @@ import com.example.semicolon.event.EventContent
 import kotlinx.android.synthetic.main.activity_user_home.*
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
-    SettingFragment.OnListFragmentInteractionListener, FriendsFragment.OnListFragmentInteractionListener {
+    SettingFragment.OnListFragmentInteractionListener, FollowingFragment.OnListFragmentInteractionListener {
 
     /*
     variable list contains ArrayList<String> array with user's data from shared preferences
