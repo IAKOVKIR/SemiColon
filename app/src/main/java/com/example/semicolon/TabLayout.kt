@@ -5,8 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -129,30 +127,6 @@ class TabLayout : Fragment() {
             }
 
         }
-    }
-
-    class SectionsPagerAdapter(fm : FragmentManager) : FragmentPagerAdapter(fm) {
-
-        private val mFragmentList : MutableList<Fragment> = ArrayList(2)
-        private val titles = arrayOf("Following", "Search")
-
-
-        override fun getItem(p0: Int): Fragment {
-            return mFragmentList[p0]
-        }
-
-        override fun getCount(): Int {
-            return mFragmentList.size
-        }
-
-        override fun getPageTitle(p0: Int): CharSequence {
-            return titles[p0]
-        }
-
-        fun addFragment(fragment: Fragment) {
-            mFragmentList.add(fragment)
-        }
-
     }
 
 }

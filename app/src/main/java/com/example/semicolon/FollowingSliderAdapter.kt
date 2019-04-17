@@ -11,11 +11,10 @@ import android.view.ViewGroup
 import android.widget.*
 
 class FollowingSliderAdapter(private val context : Context, var data : DatabaseOpenHelper,
-                             var listener: OnListFragmentInteractionListener,
+                             private var listener: OnListFragmentInteractionListener,
                              var param1 : ArrayList<String>) : PagerAdapter() {
 
     //arrays with strings for pages
-    private val slideTexts = arrayOf("first name", "email", "phone number")
     private var columnCount = 1
 
     override fun getCount(): Int {
