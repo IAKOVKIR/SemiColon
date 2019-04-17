@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_user_home.*
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     SettingFragment.OnListFragmentInteractionListener, FollowingFragment.OnListFragmentInteractionListener,
-       FollowingSliderAdapter.OnListFragmentInteractionListener, com.example.semicolon.TabLayout.OnListFragmentInteractionListener {
+       FollowingSliderAdapter.OnListFragmentInteractionListener, TabLayout.OnListFragmentInteractionListener {
 
     /*
     variable list contains ArrayList<String> array with user's data from shared preferences

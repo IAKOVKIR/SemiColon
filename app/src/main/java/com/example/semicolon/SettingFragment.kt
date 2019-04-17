@@ -70,26 +70,24 @@ class SettingFragment : Fragment() {
         super.onResume()
         view!!.isFocusableInTouchMode = true
         view!!.requestFocus()
-        view!!.setOnKeyListener(object : View.OnKeyListener {
-            override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-                return if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+        view!!.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                    val args = Bundle()
-                    args.putStringArrayList("user", param1)
+                val args = Bundle()
+                args.putStringArrayList("user", param1)
 
-                    val fragment: Fragment = MainFragment()
-                    fragment.arguments = args
-                    val manager = fragmentManager
-                    val transaction = manager!!.beginTransaction()
-                    transaction.replace(R.id.nav_host, fragment)
-                    // Commit the transaction
-                    transaction.commit()
+                val fragment: Fragment = MainFragment()
+                fragment.arguments = args
+                val manager = fragmentManager
+                val transaction = manager!!.beginTransaction()
+                transaction.replace(R.id.nav_host, fragment)
+                // Commit the transaction
+                transaction.commit()
 
-                    true
-                } else
-                    false
-            }
-        })
+                true
+            } else
+                false
+        }
     }
 
     override fun onDetach() {
