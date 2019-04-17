@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.TextView
@@ -13,7 +14,8 @@ import com.example.semicolon.event.EventContent
 import kotlinx.android.synthetic.main.activity_user_home.*
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
-    SettingFragment.OnListFragmentInteractionListener, FollowingFragment.OnListFragmentInteractionListener {
+    SettingFragment.OnListFragmentInteractionListener, FollowingFragment.OnListFragmentInteractionListener,
+       FollowingSliderAdapter.OnListFragmentInteractionListener, com.example.semicolon.TabLayout.OnListFragmentInteractionListener {
 
     /*
     variable list contains ArrayList<String> array with user's data from shared preferences

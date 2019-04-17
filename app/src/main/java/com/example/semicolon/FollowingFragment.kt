@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +50,7 @@ class FollowingFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyFriendsRecyclerViewAdapter(data!!.readAllFollowers(param1!![0]), context, listener, param1!![0], false)
+                //adapter = MyFriendsRecyclerViewAdapter(data!!.readAllFollowers(param1!![0]), context, listener, param1!![0], false)
             }
 
         return view
@@ -65,32 +64,30 @@ class FollowingFragment : Fragment() {
             throw RuntimeException("$context must implement OnListFragmentInteractionListener")
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         view!!.isFocusableInTouchMode = true
         view!!.requestFocus()
-        view!!.setOnKeyListener(object : View.OnKeyListener {
-            override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-                return if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+        view!!.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                    val args = Bundle()
-                    args.putStringArrayList("user", param1)
+                val args = Bundle()
+                args.putStringArrayList("user", param1)
 
-                    val fragment: Fragment = MainFragment()
-                    fragment.arguments = args
-                    val manager = fragmentManager
-                    val transaction = manager!!.beginTransaction()
-                    transaction.replace(R.id.nav_host, fragment)
-                    // Commit the transaction
-                    transaction.commit()
+                val fragment: Fragment = TabLayout()
+                fragment.arguments = args
+                val manager = fragmentManager
+                val transaction = manager!!.beginTransaction()
+                transaction.replace(R.id.nav_host, fragment)
+                // Commit the transaction
+                transaction.commit()
 
-                    true
+                true
 
-                } else
-                    false
-            }
-        })
-    }
+            } else
+                false
+        }
+    }*/
 
     override fun onDetach() {
         super.onDetach()
@@ -108,6 +105,7 @@ class FollowingFragment : Fragment() {
      * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
+
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }

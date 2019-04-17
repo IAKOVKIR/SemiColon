@@ -233,7 +233,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         val db = writableDatabase
         val cursor: Cursor?
         try {
-            cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Password, USER.City, USER.AgreementCheck, USER.Rating, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = 'confirmed'", null)
+            cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = 'confirmed'", null)
         } catch (e: SQLiteException) {
             return ArrayList()
         }
@@ -241,14 +241,12 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         var id: Int
         var firstName: String
         var lastName: String
-        var city: String
         if (cursor!!.moveToFirst()) {
             while (!cursor.isAfterLast) {
                 id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
                 firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
                 lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
-                city = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_CITY))
-                users.add(User(id, firstName, lastName, "", "", city, 1, 0F, ""))
+                users.add(User(id, firstName, lastName, "", "", "Melbourne", 1, 0F, ""))
                 cursor.moveToNext()
             }
         }

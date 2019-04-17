@@ -2,12 +2,15 @@ package com.example.semicolon
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.FollowingFragment.OnListFragmentInteractionListener
+import de.hdodenhof.circleimageview.CircleImageView
 
 import kotlinx.android.synthetic.main.fragment_friends.view.*
 import java.text.SimpleDateFormat
@@ -20,7 +23,7 @@ import java.util.*
 class MyFriendsRecyclerViewAdapter(
     private val mValues: List<User>,
     private val mContext: Context,
-    private val mListener: OnListFragmentInteractionListener?,
+    private val mListener: TabLayout.OnListFragmentInteractionListener?,
     private val mUser: String,
     private val buttonsVisibility: Boolean
     /*private val follower: Boolean*/
@@ -53,6 +56,12 @@ class MyFriendsRecyclerViewAdapter(
         holder.mContentView.text = item.lastName
         val yourID = n!!.getString(Login().prefVar[0], "") as String
         var bool = db!!.checkFollower(yourID, item.id.toString())
+
+        val bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.smithers)
+        val height = bitmap.height
+        val width = bitmap.width
+        val dif = height.toDouble() / width
+        holder.mUserImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 200, (200 * dif).toInt(), true))
 
         val c = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
@@ -110,6 +119,7 @@ class MyFriendsRecyclerViewAdapter(
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mIdView: TextView = mView.friend_first_name
+        val mUserImage: CircleImageView = mView.userImage
         val mContentView: TextView = mView.friend_second_name
         val mConfirmButton: Button = mView.confirm_button
         val mDeclineButton: Button = mView.decline_button

@@ -38,7 +38,7 @@ class Registration : Activity() {
             mSlideViewPager!!.currentItem = 1
         }
 
-        imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         firstCircle = findViewById(R.id.FirstCircle)
         secondCircle = findViewById(R.id.SecondCircle)

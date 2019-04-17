@@ -82,7 +82,7 @@ class MainFragment : Fragment() {
         val args = Bundle()
 
         followersLink.setOnClickListener {
-            val fragment: Fragment = FollowingFragment()
+            val fragment = Fragment()
             args.putStringArrayList("user", param1)
             fragment.arguments = args
             val manager = fragmentManager
