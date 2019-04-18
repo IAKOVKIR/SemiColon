@@ -24,8 +24,7 @@ class MyFollowingRecyclerViewAdapter(
     private val mValues: List<User>,
     private val mContext: Context,
     private val mListener: OnListFragmentInteractionListener?,
-    private val mUser: String,
-    private val buttonsVisibility: Boolean
+    private val mUser: String
     /*private val follower: Boolean*/
 ) : RecyclerView.Adapter<MyFollowingRecyclerViewAdapter.ViewHolder>() {
 
@@ -67,14 +66,6 @@ class MyFollowingRecyclerViewAdapter(
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
         val strDate = sdf.format(c.time).trim()
 
-        if (buttonsVisibility) {
-            holder.mRequestButtons.visibility = View.VISIBLE
-            holder.mUnFollowButtons.visibility = View.GONE
-        } else {
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mUnFollowButtons.visibility = View.VISIBLE
-        }
-
         when (bool) {
             "confirmed" -> holder.mFollowUnFollowButton.text = "unfollow"
             "" -> holder.mFollowUnFollowButton.text = "follow"
@@ -95,20 +86,6 @@ class MyFollowingRecyclerViewAdapter(
             }
         }
 
-        holder.mConfirmButton.setOnClickListener {
-            db!!.updateRequest(item.id.toString(), mUser, "confirmed")
-            holder.mResultText.text = "Confirmed"
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mRequestResult.visibility = View.VISIBLE
-        }
-
-        holder.mDeclineButton.setOnClickListener {
-            db!!.deleteUser(mUser)
-            holder.mResultText.text = "Declined"
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mRequestResult.visibility = View.VISIBLE
-        }
-
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)
@@ -121,13 +98,8 @@ class MyFollowingRecyclerViewAdapter(
         val mIdView: TextView = mView.friend_first_name
         val mUserImage: CircleImageView = mView.userImage
         val mContentView: TextView = mView.friend_second_name
-        val mConfirmButton: Button = mView.confirm_button
-        val mDeclineButton: Button = mView.decline_button
-        val mRequestResult: LinearLayout = mView.request_result
-        val mRequestButtons: LinearLayout = mView.request_buttons
         val mUnFollowButtons: LinearLayout = mView.follow_un_follow_buttons
         val mFollowUnFollowButton: Button = mView.un_follow_button
-        val mResultText: TextView = mView.button_result
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView.text + "'"
