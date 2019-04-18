@@ -20,14 +20,14 @@ import java.util.*
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  */
-class MyFriendsRecyclerViewAdapter(
+class MyFollowingRecyclerViewAdapter(
     private val mValues: List<User>,
     private val mContext: Context,
-    private val mListener: TabLayout.OnListFragmentInteractionListener?,
+    private val mListener: OnListFragmentInteractionListener?,
     private val mUser: String,
     private val buttonsVisibility: Boolean
     /*private val follower: Boolean*/
-) : RecyclerView.Adapter<MyFriendsRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MyFollowingRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
     private var db: DatabaseOpenHelper? = null
@@ -67,6 +67,14 @@ class MyFriendsRecyclerViewAdapter(
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
         val strDate = sdf.format(c.time).trim()
 
+        if (buttonsVisibility) {
+            holder.mRequestButtons.visibility = View.VISIBLE
+            holder.mUnFollowButtons.visibility = View.GONE
+        } else {
+            holder.mRequestButtons.visibility = View.GONE
+            holder.mUnFollowButtons.visibility = View.VISIBLE
+        }
+
         when (bool) {
             "confirmed" -> holder.mFollowUnFollowButton.text = "unfollow"
             "" -> holder.mFollowUnFollowButton.text = "follow"
@@ -85,14 +93,6 @@ class MyFriendsRecyclerViewAdapter(
                     strDate.substring(11, 19), strDate.substring(0, 10), bool)
                 db!!.insertRequest(friend)
             }
-        }
-
-        if (buttonsVisibility) {
-            holder.mRequestButtons.visibility = View.VISIBLE
-            holder.mUnFollowButtons.visibility = View.GONE
-        } else {
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mUnFollowButtons.visibility = View.VISIBLE
         }
 
         holder.mConfirmButton.setOnClickListener {

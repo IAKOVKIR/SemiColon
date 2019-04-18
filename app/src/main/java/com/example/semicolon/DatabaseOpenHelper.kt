@@ -228,7 +228,41 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         return users
     }
 
-    fun readAllFollowers(UserID: String): ArrayList<User> {
+    fun readAllFollowers(UserID: String, num: Int): ArrayList<User> {
+        val users = ArrayList<User>()
+        val db = writableDatabase
+        val cursor: Cursor?
+
+        val condition: String = if (num == 1)
+            "confirmed"
+        else
+            "inProgress"
+
+        try {
+            cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition'", null)
+        } catch (e: SQLiteException) {
+            return ArrayList()
+        }
+
+        var id: Int
+        var firstName: String
+        var lastName: String
+        if (cursor!!.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
+                firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
+                lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
+                users.add(User(id, firstName, lastName, "", "", "Melbourne", 1, 0F, ""))
+                cursor.moveToNext()
+            }
+        }
+
+
+        cursor.close()
+        return users
+    }
+
+    fun readAllFollowing(UserID: String): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase
         val cursor: Cursor?

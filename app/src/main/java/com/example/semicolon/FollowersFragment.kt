@@ -11,22 +11,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class TabLayout : Fragment() {
+class FollowersFragment : Fragment() {
 
     private var columnCount = 1
     private var param1 : ArrayList<String>? = null
     private var data: DatabaseOpenHelper? = null
     private var listener: OnListFragmentInteractionListener? = null
 
-    var tabLayout: TabLayout? = null
+    private var tabLayout: TabLayout? = null
     //private var adapter: SectionsPagerAdapter? = null
-    private var adapter: FollowingSliderAdapter? = null
+    private var adapter: FollowersSliderAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            columnCount = it.getInt(FollowingFragment.ARG_COLUMN_COUNT)
+            columnCount = it.getInt(ARG_COLUMN_COUNT)
             param1 = it.getStringArrayList("user")
         }
 
@@ -40,17 +40,7 @@ class TabLayout : Fragment() {
         data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
 
         //adapter = SectionsPagerAdapter(fragmentManager as FragmentManager)
-        adapter = FollowingSliderAdapter(view.context, data!!, listener as FollowingSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>)
-        val args = Bundle()
-
-        val fragment: Fragment = FollowingFragment()
-        args.putStringArrayList("user", param1)
-        fragment.arguments = args
-
-        /*if (adapter!!.count == 0) {
-            adapter!!.addFragment(fragment)
-            adapter!!.addFragment(Fragment())
-        }*/
+        adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>)
 
         val vp = view.findViewById<ViewPager>(R.id.viewpager)
 
@@ -61,8 +51,8 @@ class TabLayout : Fragment() {
         tabLayout!!.setupWithViewPager(vp)
         tabLayout!!.setBackgroundColor(Color.BLACK)
         tabLayout!!.setTabTextColors(resources.getColor(R.color.GREY), resources.getColor(R.color.WHITE))
-        tabLayout!!.getTabAt(0)!!.text = "Following"
-        tabLayout!!.getTabAt(1)!!.text = "Search"
+        tabLayout!!.getTabAt(0)!!.text = "Followers"
+        tabLayout!!.getTabAt(1)!!.text = "Requests"
 
         return view
     }
@@ -101,8 +91,6 @@ class TabLayout : Fragment() {
                 val manager = fragmentManager
                 val transaction = manager!!.beginTransaction()
                 transaction.replace(R.id.nav_host, fragment)
-                transaction.remove(Fragment())
-                transaction.remove(FollowingFragment())
                 // Commit the transaction
                 transaction.commit()
 
@@ -127,6 +115,20 @@ class TabLayout : Fragment() {
             }
 
         }
+    }
+
+    companion object {
+
+        const val ARG_COLUMN_COUNT = "column-count"
+
+        /*@JvmStatic
+        fun newInstance(columnCount: Int) =
+            FollowingFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_COLUMN_COUNT, columnCount)
+                }
+            }
+          */
     }
 
 }

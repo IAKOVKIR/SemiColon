@@ -82,7 +82,7 @@ class MainFragment : Fragment() {
         val args = Bundle()
 
         followersLink.setOnClickListener {
-            val fragment = Fragment()
+            val fragment = FollowersFragment()
             args.putStringArrayList("user", param1)
             fragment.arguments = args
             val manager = fragmentManager
@@ -93,7 +93,7 @@ class MainFragment : Fragment() {
         }
 
         followingLink.setOnClickListener {
-            val fragment: Fragment = TabLayout()
+            val fragment: Fragment = FollowingFragment()
             args.putStringArrayList("user", param1)
             fragment.arguments = args
             val manager = fragmentManager

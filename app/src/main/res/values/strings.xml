@@ -98,5 +98,6 @@
     <string name="phrase_email_not_required">email (not required)</string>
     <string name="email_gmail">email@gmail.com</string>
     <string name="phone_number">+#(###)### ###</string>
+    <string name="title_activity_followers_fragment">FollowersFragment</string>
 
 </resources>

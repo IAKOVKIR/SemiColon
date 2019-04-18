@@ -1,28 +1,26 @@
 package com.example.semicolon
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.support.v4.view.ViewPager
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-/**
- * A fragment representing a list of Items.
- * Activities containing this fragment MUST implement the
- * [FollowingFragment.OnListFragmentInteractionListener] interface.
- */
 class FollowingFragment : Fragment() {
 
     private var columnCount = 1
     private var param1 : ArrayList<String>? = null
-
-
-    private var listener: OnListFragmentInteractionListener? = null
     private var data: DatabaseOpenHelper? = null
+    private var listener: OnListFragmentInteractionListener? = null
+
+    private var tabLayout: TabLayout? = null
+    //private var adapter: SectionsPagerAdapter? = null
+    private var adapter: FollowingSliderAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,20 +36,23 @@ class FollowingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_friends_list, container, false)
-        data = context?.let { DatabaseOpenHelper(it) }
+        val view = inflater.inflate(R.layout.activity_tab_layout, container, false)
+        data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
 
-        val list = view.findViewById<RecyclerView>(R.id.list)
+        //adapter = SectionsPagerAdapter(fragmentManager as FragmentManager)
+        adapter = FollowingSliderAdapter(view.context, data!!, listener as FollowingSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>)
 
-        // Set the adapter
-        if (list is RecyclerView)
-            with(list) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                //adapter = MyFriendsRecyclerViewAdapter(data!!.readAllFollowers(param1!![0]), context, listener, param1!![0], false)
-            }
+        val vp = view.findViewById<ViewPager>(R.id.viewpager)
+
+        vp.adapter = adapter
+        vp.addOnPageChangeListener(pageChangeListener)
+
+        tabLayout = view.findViewById(R.id.tabs)
+        tabLayout!!.setupWithViewPager(vp)
+        tabLayout!!.setBackgroundColor(Color.BLACK)
+        tabLayout!!.setTabTextColors(resources.getColor(R.color.GREY), resources.getColor(R.color.WHITE))
+        tabLayout!!.getTabAt(0)!!.text = "Following"
+        tabLayout!!.getTabAt(1)!!.text = "Search"
 
         return view
     }
@@ -64,17 +65,28 @@ class FollowingFragment : Fragment() {
             throw RuntimeException("$context must implement OnListFragmentInteractionListener")
     }
 
-    /*override fun onResume() {
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    interface OnListFragmentInteractionListener {
+        fun onListFragmentInteraction(item: User?)
+    }
+
+    override fun onResume() {
         super.onResume()
         view!!.isFocusableInTouchMode = true
         view!!.requestFocus()
         view!!.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                tabLayout!!.removeAllTabs()
+                adapter = null
 
                 val args = Bundle()
                 args.putStringArrayList("user", param1)
 
-                val fragment: Fragment = TabLayout()
+                val fragment: Fragment = MainFragment()
                 fragment.arguments = args
                 val manager = fragmentManager
                 val transaction = manager!!.beginTransaction()
@@ -87,27 +99,22 @@ class FollowingFragment : Fragment() {
             } else
                 false
         }
-    }*/
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson
-     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
 
-    interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: User?)
+    private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+
+            when (position) {
+                0 -> {
+
+                }
+                else -> {
+
+                }
+            }
+
+        }
     }
 
     companion object {
