@@ -83,7 +83,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     @Throws(SQLiteConstraintException::class)
-    fun updateRequest(SenderID: String, ReceiverID: String, condition: String): Boolean {
+    fun updateRequest(SenderID: String, ReceiverID: String, condition: Int): Boolean {
         val db = writableDatabase
         val cv = ContentValues()
         cv.put("Condition", condition)
@@ -176,56 +176,10 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
                     DBContract.UserEntry.FRIEND_COLUMN_RECEIVER_ID + " INTEGER NOT NULL, " +
                     DBContract.UserEntry.FRIEND_COLUMN_DATE + " TEXT NOT NULL, " +
                     DBContract.UserEntry.FRIEND_COLUMN_TIME + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.FRIEND_COLUMN_CONDITION + " TEXT NOT NULL DEFAULT 'inProgress')"
+                    DBContract.UserEntry.FRIEND_COLUMN_CONDITION + " INTEGER NOT NULL DEFAULT 1)"
 
         private const val SQL_DELETE_USER_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.USER_TABLE_NAME
         private const val SQL_DELETE_FRIEND_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME
-    }
-
-    fun readAllRequests(UserID: String, condition: String, num: Int): ArrayList<User> {
-        val users = ArrayList<User>()
-        val db = writableDatabase
-        val cursor: Cursor?
-        cursor = try {
-            if (num == 1) {
-                db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Password, USER.City, USER.AgreementCheck, USER.Rating, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition'",
-                    null
-                )
-            } else {
-                db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Password, USER.City, USER.AgreementCheck, USER.Rating, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = '$condition'",
-                    null)
-            }
-        } catch (e: SQLiteException) {
-            return ArrayList()
-        }
-
-        var id: Int
-        var firstName: String
-        var lastName: String
-        var phone: String
-        var password: String
-        var city: String
-        var agreementCheck: Byte
-        var rating: Float
-        var email: String
-        if (cursor!!.moveToFirst()) {
-            while (!cursor.isAfterLast) {
-                id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
-                firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
-                lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
-                phone = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
-                password = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PASSWORD))
-                city = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_CITY))
-                agreementCheck = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_AGREEMENT_CHECK)).toByte()
-                rating = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_RATING)).toFloat()
-                email = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
-
-                users.add(User(id, firstName, lastName, phone, password, city, agreementCheck, rating, email))
-                cursor.moveToNext()
-            }
-        }
-        cursor.close()
-        return users
     }
 
     fun readAllFollowers(UserID: String, num: Int): ArrayList<User> {
@@ -233,10 +187,10 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         val db = writableDatabase
         val cursor: Cursor?
 
-        val condition: String = if (num == 1)
-            "confirmed"
+        val condition: Int = if (num == 1)
+            1//confirmed
         else
-            "inProgress"
+            3//inProgress
 
         try {
             cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition'", null)
@@ -267,7 +221,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         val db = writableDatabase
         val cursor: Cursor?
         try {
-            cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = 'confirmed'", null)
+            cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = 1", null)
         } catch (e: SQLiteException) {
             return ArrayList()
         }
@@ -293,7 +247,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         val db = writableDatabase
         val cursor: Cursor?
         try {
-            cursor = db.rawQuery("SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = 'confirmed'", null)
+            cursor = db.rawQuery("SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = 1", null)
             if (cursor!!.moveToFirst()) total = cursor.getInt(0)
         } catch (e: SQLiteException) {
             return 0
@@ -323,7 +277,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         val db = writableDatabase
         val cursor: Cursor?
         try {
-            cursor = db.rawQuery("SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = 'confirmed'", null)
+            cursor = db.rawQuery("SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = 1", null)
             if (cursor!!.moveToFirst()) total = cursor.getInt(0)
         } catch (e: SQLiteException) {
             return 0
@@ -346,45 +300,16 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         return true
     }
 
-    /*fun checkFollower(SenderID: String, ReceiverID: String): Int {
-        var totalConfirmed = 0
-        var totalInProgress = 0
-        val db = writableDatabase
-        var cursor: Cursor?
-
-        try {
-            cursor = db.rawQuery("SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$SenderID' AND FRIEND.ReceiverID = '$ReceiverID' AND FRIEND.Condition = 'confirmed'", null)
-            if (cursor!!.moveToFirst()) totalConfirmed = cursor.getInt(0)
-        } catch (e: SQLiteException) {
-            return 0
-        }
-
-        try {
-            cursor = db.rawQuery("SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$SenderID' AND FRIEND.ReceiverID = '$ReceiverID' AND FRIEND.Condition = 'inProgress'", null)
-            if (cursor!!.moveToFirst()) totalInProgress = cursor.getInt(0)
-        } catch (e: SQLiteException) {
-            return 0
-        }
-
-        cursor.close()
-        return if (totalConfirmed == 0 && totalInProgress == 0)
-            1
-        else if (totalConfirmed > 0)
-            2
-        else
-            3
-    }*/
-
-    fun checkFollower(SenderID: String, ReceiverID: String): String {
-        var condition = ""
+    fun checkFollower(SenderID: String, ReceiverID: String): Int {
+        var condition = 0
         val db = writableDatabase
         val cursor: Cursor?
 
         try {
             cursor = db.rawQuery("SELECT Condition FROM FRIEND WHERE SenderID = '$SenderID' AND ReceiverID = '$ReceiverID'", null)
-            if (cursor!!.moveToFirst()) condition = cursor.getString(0)
+            if (cursor!!.moveToFirst()) condition = cursor.getInt(0)
         } catch (e: SQLiteException) {
-            return ""
+            return 1
         }
 
         cursor.close()

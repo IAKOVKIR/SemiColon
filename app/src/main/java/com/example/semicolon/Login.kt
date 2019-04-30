@@ -51,14 +51,14 @@ class Login : Activity() {
         usersDBHelper.insertUser(User(4,"Matt", "Merin", "0490000002", "12345678",
             "Melbourne", 1, 5.0F, "MattMerinOnTheBeat@gmail.com"))
 
-        usersDBHelper.insertRequest(Friend(1, 1, 2, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
-        usersDBHelper.insertRequest(Friend(2, 1, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
-        usersDBHelper.insertRequest(Friend(3, 2, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
-        usersDBHelper.insertRequest(Friend(4, 3, 1, strDate.substring(11, 19), strDate.substring(0, 10), "confirmed"))
-        usersDBHelper.insertRequest(Friend(5, 1, 4, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
-        usersDBHelper.insertRequest(Friend(6, 2, 4, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
-        usersDBHelper.insertRequest(Friend(7, 3, 4, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))
-        usersDBHelper.insertRequest(Friend(8, 4, 3, strDate.substring(11, 19), strDate.substring(0, 10), "inProgress"))*/
+        usersDBHelper.insertRequest(Friend(1, 1, 2, strDate.substring(11, 19), strDate.substring(0, 10), 3))
+        usersDBHelper.insertRequest(Friend(2, 1, 3, strDate.substring(11, 19), strDate.substring(0, 10), 3))
+        usersDBHelper.insertRequest(Friend(3, 2, 3, strDate.substring(11, 19), strDate.substring(0, 10), 3))
+        usersDBHelper.insertRequest(Friend(4, 3, 1, strDate.substring(11, 19), strDate.substring(0, 10), 1))
+        usersDBHelper.insertRequest(Friend(5, 1, 4, strDate.substring(11, 19), strDate.substring(0, 10), 3))
+        usersDBHelper.insertRequest(Friend(6, 2, 4, strDate.substring(11, 19), strDate.substring(0, 10), 3))
+        usersDBHelper.insertRequest(Friend(7, 3, 4, strDate.substring(11, 19), strDate.substring(0, 10), 3))
+        usersDBHelper.insertRequest(Friend(8, 4, 3, strDate.substring(11, 19), strDate.substring(0, 10), 3))*/
 
         fEnter = findViewById(R.id.userName)
         sEnter = findViewById(R.id.password)

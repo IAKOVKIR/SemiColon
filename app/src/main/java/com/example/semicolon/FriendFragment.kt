@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -32,7 +33,10 @@ class FriendFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friend, container, false)
+        val view = inflater.inflate(R.layout.fragment_friend, container, false)
+        val name = view.findViewById<TextView>(R.id.name)
+        name.text = "$param1 $param2"
+        return view
     }
 
 }

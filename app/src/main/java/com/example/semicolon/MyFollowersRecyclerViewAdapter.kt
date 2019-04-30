@@ -76,27 +76,27 @@ class MyFollowersRecyclerViewAdapter(
         }
 
         when (bool) {
-            "confirmed" -> holder.mFollowUnFollowButton.text = "unfollow"
-            "" -> holder.mFollowUnFollowButton.text = "follow"
+            1 -> holder.mFollowUnFollowButton.text = "unfollow"
+            2 -> holder.mFollowUnFollowButton.text = "follow"
             else -> holder.mFollowUnFollowButton.text = "in progress"
         }
 
         holder.mFollowUnFollowButton.setOnClickListener {
-            if (bool == "confirmed") {
-                holder.mFollowUnFollowButton.text = "follow"
-                bool = ""
-                db!!.deleteFollowing(yourID, item.id.toString())
-            } else if (bool == "") {
+            if (bool == 2) {
                 holder.mFollowUnFollowButton.text = "in progress"
-                bool = "inProgress"
+                bool = 3
                 val friend = Friend(db!!.countFriendTable(), yourID.toInt(), item.id,
                     strDate.substring(11, 19), strDate.substring(0, 10), bool)
                 db!!.insertRequest(friend)
+            } else {
+                holder.mFollowUnFollowButton.text = "follow"
+                bool = 2
+                db!!.deleteFollowing(yourID, item.id.toString())
             }
         }
 
         holder.mConfirmButton.setOnClickListener {
-            db!!.updateRequest(item.id.toString(), mUser, "confirmed")
+            db!!.updateRequest(item.id.toString(), mUser, 1)
             holder.mResultText.text = "Confirmed"
             holder.mRequestButtons.visibility = View.GONE
             holder.mRequestResult.visibility = View.VISIBLE

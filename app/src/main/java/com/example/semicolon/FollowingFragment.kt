@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -50,7 +51,7 @@ class FollowingFragment : Fragment() {
         tabLayout = view.findViewById(R.id.tabs)
         tabLayout!!.setupWithViewPager(vp)
         tabLayout!!.setBackgroundColor(Color.BLACK)
-        tabLayout!!.setTabTextColors(resources.getColor(R.color.GREY), resources.getColor(R.color.WHITE))
+        tabLayout!!.setTabTextColors(ContextCompat.getColor(view.context, R.color.GREY), ContextCompat.getColor(view.context, R.color.WHITE))
         tabLayout!!.getTabAt(0)!!.text = "Following"
         tabLayout!!.getTabAt(1)!!.text = "Search"
 

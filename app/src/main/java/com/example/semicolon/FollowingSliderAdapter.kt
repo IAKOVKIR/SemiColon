@@ -43,7 +43,7 @@ class FollowingSliderAdapter(private val context : Context, var data : DatabaseO
                             else -> GridLayoutManager(context, columnCount)
                         }
                         adapter = MyFollowingRecyclerViewAdapter(data.readAllFollowing(param1[0]), context,
-                            listener as FollowingFragment.OnListFragmentInteractionListener, param1[0])
+                            listener as FollowingFragment.OnListFragmentInteractionListener)
                     }
 
             }
@@ -55,7 +55,7 @@ class FollowingSliderAdapter(private val context : Context, var data : DatabaseO
                             else -> GridLayoutManager(context, columnCount)
                         }
                         adapter = MyFollowingRecyclerViewAdapter(listOf(), context,
-                            listener as FollowingFragment.OnListFragmentInteractionListener, param1[0])
+                            listener as FollowingFragment.OnListFragmentInteractionListener)
                     }
 
             }

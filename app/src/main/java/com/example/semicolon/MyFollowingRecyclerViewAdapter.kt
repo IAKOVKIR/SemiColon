@@ -1,5 +1,6 @@
 package com.example.semicolon
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -23,9 +24,9 @@ import java.util.*
 class MyFollowingRecyclerViewAdapter(
     private val mValues: List<User>,
     private val mContext: Context,
-    private val mListener: OnListFragmentInteractionListener?,
-    private val mUser: String
-    /*private val follower: Boolean*/
+    private val mListener: OnListFragmentInteractionListener?
+    //private val mUser: String
+    //private val follower: Boolean
 ) : RecyclerView.Adapter<MyFollowingRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
@@ -49,6 +50,7 @@ class MyFollowingRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         holder.mIdView.text = item.firstName
@@ -67,22 +69,22 @@ class MyFollowingRecyclerViewAdapter(
         val strDate = sdf.format(c.time).trim()
 
         when (bool) {
-            "confirmed" -> holder.mFollowUnFollowButton.text = "unfollow"
-            "" -> holder.mFollowUnFollowButton.text = "follow"
+            1 -> holder.mFollowUnFollowButton.text = "unfollow"
+            2 -> holder.mFollowUnFollowButton.text = "follow"
             else -> holder.mFollowUnFollowButton.text = "in progress"
         }
 
         holder.mFollowUnFollowButton.setOnClickListener {
-            if (bool == "confirmed") {
-                holder.mFollowUnFollowButton.text = "follow"
-                bool = ""
-                db!!.deleteFollowing(yourID, item.id.toString())
-            } else if (bool == "") {
+            if (bool == 2) {
                 holder.mFollowUnFollowButton.text = "in progress"
-                bool = "inProgress"
+                bool = 3
                 val friend = Friend(db!!.countFriendTable(), yourID.toInt(), item.id,
                     strDate.substring(11, 19), strDate.substring(0, 10), bool)
                 db!!.insertRequest(friend)
+            } else {
+                holder.mFollowUnFollowButton.text = "follow"
+                bool = 2
+                db!!.deleteFollowing(yourID, item.id.toString())
             }
         }
 
@@ -98,7 +100,6 @@ class MyFollowingRecyclerViewAdapter(
         val mIdView: TextView = mView.friend_first_name
         val mUserImage: CircleImageView = mView.userImage
         val mContentView: TextView = mView.friend_second_name
-        val mUnFollowButtons: LinearLayout = mView.follow_un_follow_buttons
         val mFollowUnFollowButton: Button = mView.un_follow_button
 
         override fun toString(): String {

@@ -42,7 +42,7 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
         //EditTexts
         val firstName = view.findViewById<TextInputEditText>(R.id.first_name)
         val lastName = view.findViewById<TextInputEditText>(R.id.last_name)
-        val phone = view.findViewById<TextInputEditText>(R.id.phone)
+        //val phone = view.findViewById<TextInputEditText>(R.id.phone)
 
         val checkBox = view.findViewById<CheckBox>(R.id.checkBox)
 
