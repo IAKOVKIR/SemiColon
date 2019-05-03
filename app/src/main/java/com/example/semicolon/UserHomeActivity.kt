@@ -32,6 +32,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         args.putString("param1", item!!.firstName)
         args.putString("param2", item.lastName)
         args.putStringArrayList("param3", list)
+        args.putStringArrayList("param4", item.getList())
 
         findNavController(R.id.nav_host).navigate(R.id.friend_params_dest, args)
     }
