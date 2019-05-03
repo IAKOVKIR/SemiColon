@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +37,11 @@ class FriendFragment : Fragment() {
         val location = view.findViewById<TextView>(R.id.location)
         val phone = view.findViewById<TextView>(R.id.phone_number)
         val email = view.findViewById<TextView>(R.id.email)
+
+        val backButton = view.findViewById<ImageButton>(R.id.back_button)
+        backButton.setOnClickListener {
+            fragmentManager!!.popBackStack()
+        }
 
         val fullName = "${param4!![1]} ${param4!![2]}"
         val phoneNum = "${param4!![3][0]}(${param4!![3].substring(1, 4)})${param4!![3].substring(4, 7)} ${param4!![3].substring(7, 10)}"
