@@ -42,7 +42,7 @@ class UserFollowersFragment : Fragment() {
         data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
 
         //adapter = SectionsPagerAdapter(fragmentManager as FragmentManager)
-        adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>)
+        adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>, 1)
 
         val vp = view.findViewById<ViewPager>(R.id.viewpager)
 
@@ -54,7 +54,6 @@ class UserFollowersFragment : Fragment() {
         tabLayout!!.setBackgroundColor(Color.BLACK)
         tabLayout!!.setTabTextColors(ContextCompat.getColor(view.context, R.color.GREY), ContextCompat.getColor(view.context, R.color.WHITE))
         tabLayout!!.getTabAt(0)!!.text = "Followers"
-        tabLayout!!.getTabAt(1)!!.text = "Requests"
 
         return view
     }

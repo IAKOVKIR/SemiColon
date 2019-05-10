@@ -12,13 +12,13 @@ import android.widget.*
 
 class FollowersSliderAdapter(private val context : Context, var data : DatabaseOpenHelper,
                              private var listener: OnListFragmentInteractionListener,
-                             var param1 : ArrayList<String>) : PagerAdapter() {
+                             var param1 : ArrayList<String>, val numOfTabs: Int) : PagerAdapter() {
 
     //arrays with strings for pages
     private var columnCount = 1
 
     override fun getCount(): Int {
-        return 2
+        return numOfTabs
     }
 
     override fun isViewFromObject(p0: View, p1: Any): Boolean {
