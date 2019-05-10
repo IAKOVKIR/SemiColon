@@ -4,18 +4,20 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.TextView
 import androidx.navigation.findNavController
 import com.example.semicolon.setting.Setting
 import com.example.semicolon.event.EventContent
+import com.example.semicolon.users.UserFollowersFragment
 import kotlinx.android.synthetic.main.activity_user_home.*
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     SettingFragment.OnListFragmentInteractionListener, FollowingFragment.OnListFragmentInteractionListener,
     FollowingSliderAdapter.OnListFragmentInteractionListener, FollowersFragment.OnListFragmentInteractionListener,
-    FollowersSliderAdapter.OnListFragmentInteractionListener {
+    FollowersSliderAdapter.OnListFragmentInteractionListener, UserFollowersFragment.OnListFragmentInteractionListener {
 
     /*
     variable list contains ArrayList<String> array with user's data from shared preferences

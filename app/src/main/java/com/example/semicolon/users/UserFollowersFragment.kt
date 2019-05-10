@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.users
 
 import android.content.Context
 import android.graphics.Color
@@ -11,8 +11,9 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.semicolon.*
 
-class FollowersFragment : Fragment() {
+class UserFollowersFragment : Fragment() {
 
     private var columnCount = 1
     private var param1 : ArrayList<String>? = null

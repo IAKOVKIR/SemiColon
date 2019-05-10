@@ -29,8 +29,8 @@
         <argument android:name="param1" app:argType="string" android:defaultValue="Setting"/>
         <argument android:name="param2" app:argType="string" android:defaultValue="Chandra"/>
     </fragment>
-    <fragment android:id="@+id/friends_dest" android:name="com.example.semicolon.FollowingFragment"
-              android:label="fragment_friends_list" tools:layout="@layout/fragment_friends_list"/>
+    <fragment android:id="@+id/friends_dest" android:name="com.example.semicolon.FollowersFragment"
+              android:label="fragment_friends_list" tools:layout="@layout/content_followers_fragment"/>
     <fragment android:id="@+id/friend_params_dest" android:name="com.example.semicolon.FriendFragment"
               android:label="fragment_friend" tools:layout="@layout/fragment_friend"/>
 </navigation>
