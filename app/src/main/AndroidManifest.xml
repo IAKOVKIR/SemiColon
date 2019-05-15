@@ -12,16 +12,6 @@
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-                android:name=".users.NewFollowersFragment"
-                android:label="@string/title_activity_new_followers_fragment"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
-                android:name=".FollowersFragment"
-                android:label="@string/title_activity_followers_fragment"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
                 android:name=".UserHomeActivity"
                 android:screenOrientation="portrait">
         </activity>

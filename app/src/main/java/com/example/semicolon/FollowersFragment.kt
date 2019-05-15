@@ -104,32 +104,11 @@ class FollowersFragment : Fragment() {
 
 
     private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-
-            when (position) {
-                0 -> {
-
-                }
-                else -> {
-
-                }
-            }
-
-        }
+        override fun onPageSelected(position: Int) {}
     }
 
     companion object {
-
         const val ARG_COLUMN_COUNT = "column-count"
-
-        /*@JvmStatic
-        fun newInstance(columnCount: Int) =
-            FollowingFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
-          */
     }
 
 }

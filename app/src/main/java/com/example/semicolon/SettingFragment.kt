@@ -24,7 +24,6 @@ class SettingFragment : Fragment() {
 
     private var columnCount = 1
     private var param1 : ArrayList<String>? = null
-
     private var listener: OnListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,16 +110,6 @@ class SettingFragment : Fragment() {
     }
 
     companion object {
-
         const val ARG_COLUMN_COUNT = "column-count"
-
-        /*@JvmStatic
-        fun newInstance(columnCount: Int) =
-            SettingFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
-            */
     }
 }

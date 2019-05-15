@@ -8,8 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import android.widget.CheckBox
-import java.util.*
-import java.text.SimpleDateFormat
 
 class Login : Activity() {
 
@@ -36,13 +34,13 @@ class Login : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val c = Calendar.getInstance()
+        usersDBHelper = DatabaseOpenHelper(this)
+
+        /*val c = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
         val strDate = sdf.format(c.time).trim()
 
-        usersDBHelper = DatabaseOpenHelper(this)
-
-        /*usersDBHelper.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678",
+        usersDBHelper.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678",
             "Melbourne", 1, 5.0F, "MrStealYourQuery@gmail.com"))
         usersDBHelper.insertUser(User(2,"Abbas", "Ice Wallow", "0490000000", "12345678",
             "Somewhere", 1, 3.2F, "BetterThanFather@gmail.com"))

@@ -84,6 +84,7 @@ class MyFollowersRecyclerViewAdapter(
         holder.mFollowUnFollowButton.setOnClickListener {
             if (bool == 2) {
                 holder.mFollowUnFollowButton.text = "in progress"
+                //getString(R.id...)
                 bool = 3
                 val friend = Friend(db!!.countFriendTable(), yourID.toInt(), item.id,
                     strDate.substring(11, 19), strDate.substring(0, 10), bool)
