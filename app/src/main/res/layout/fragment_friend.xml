@@ -24,7 +24,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
-
                 <ImageButton
                         android:id="@+id/back_button"
                         android:layout_width="38dp"
@@ -35,7 +34,6 @@
                         android:layout_alignParentStart="true"
                         tools:ignore="ContentDescription,RtlSymmetry"
                         android:layout_alignParentTop="true"/>
-
 
             </RelativeLayout>
 
@@ -202,7 +200,7 @@
                 <ImageView
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:src="@drawable/smartphone"
+                        android:src="@drawable/smartPhone"
                         tools:ignore="ContentDescription"/>
 
                 <TextView

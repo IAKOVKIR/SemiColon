@@ -32,6 +32,7 @@ class MyFollowersRecyclerViewAdapter(
     private val mOnClickListener: View.OnClickListener
     private var db: DatabaseOpenHelper? = null
     private var n: SharedPreferences? = null
+    private val str = arrayOf("Confirmed", "Declined", "in progress", "follow", "unfollow")
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -76,21 +77,20 @@ class MyFollowersRecyclerViewAdapter(
         }
 
         when (bool) {
-            1 -> holder.mFollowUnFollowButton.text = "unfollow"
-            2 -> holder.mFollowUnFollowButton.text = "follow"
-            else -> holder.mFollowUnFollowButton.text = "in progress"
+            1 -> holder.mFollowUnFollowButton.text = str[4]
+            2 -> holder.mFollowUnFollowButton.text = str[3]
+            else -> holder.mFollowUnFollowButton.text = str[2]
         }
 
         holder.mFollowUnFollowButton.setOnClickListener {
             if (bool == 2) {
-                holder.mFollowUnFollowButton.text = "in progress"
-                //getString(R.id...)
+                holder.mFollowUnFollowButton.text = str[2]
                 bool = 3
                 val friend = Friend(db!!.countFriendTable(), yourID.toInt(), item.id,
                     strDate.substring(11, 19), strDate.substring(0, 10), bool)
                 db!!.insertRequest(friend)
             } else {
-                holder.mFollowUnFollowButton.text = "follow"
+                holder.mFollowUnFollowButton.text = str[3]
                 bool = 2
                 db!!.deleteFollowing(yourID, item.id.toString())
             }
@@ -98,14 +98,14 @@ class MyFollowersRecyclerViewAdapter(
 
         holder.mConfirmButton.setOnClickListener {
             db!!.updateRequest(item.id.toString(), mUser, 1)
-            holder.mResultText.text = "Confirmed"
+            holder.mResultText.text = str[0]
             holder.mRequestButtons.visibility = View.GONE
             holder.mRequestResult.visibility = View.VISIBLE
         }
 
         holder.mDeclineButton.setOnClickListener {
             db!!.deleteUser(mUser)
-            holder.mResultText.text = "Declined"
+            holder.mResultText.text = str[1]
             holder.mRequestButtons.visibility = View.GONE
             holder.mRequestResult.visibility = View.VISIBLE
         }

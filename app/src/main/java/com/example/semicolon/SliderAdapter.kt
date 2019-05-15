@@ -79,22 +79,14 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
             check = true
         }
 
+        firstLayout.visibility = View.GONE
+        secondLayout.visibility = View.GONE
+        thirdLayout.visibility = View.GONE
+
         when (position) {
-            0 -> {
-                firstLayout.visibility = View.VISIBLE
-                secondLayout.visibility = View.GONE
-                thirdLayout.visibility = View.GONE
-            }
-            1 -> {
-                firstLayout.visibility = View.GONE
-                secondLayout.visibility = View.VISIBLE
-                thirdLayout.visibility = View.GONE
-            }
-            2 -> {
-                firstLayout.visibility = View.GONE
-                secondLayout.visibility = View.GONE
-                thirdLayout.visibility = View.VISIBLE
-            }
+            0 -> firstLayout.visibility = View.VISIBLE
+            1 -> secondLayout.visibility = View.VISIBLE
+            2 -> thirdLayout.visibility = View.VISIBLE
         }
 
         checkBox.isChecked = check
