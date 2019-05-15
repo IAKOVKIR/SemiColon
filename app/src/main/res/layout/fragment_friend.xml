@@ -200,7 +200,7 @@
                 <ImageView
                         android:layout_width="42dp"
                         android:layout_height="42dp"
-                        android:src="@drawable/smartPhone"
+                        android:src="@drawable/smart_phone"
                         tools:ignore="ContentDescription"/>
 
                 <TextView

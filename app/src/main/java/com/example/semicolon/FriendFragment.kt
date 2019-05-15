@@ -21,6 +21,7 @@ private const val ARG_PARAM4 = "param4"
 class FriendFragment : Fragment() {
 
     private var param4: ArrayList<String>? = null
+    private var data: DatabaseOpenHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,9 @@ class FriendFragment : Fragment() {
         val phone = view.findViewById<TextView>(R.id.phone_number)
         val email = view.findViewById<TextView>(R.id.email)
 
+        val numOfFollowers = view.findViewById<TextView>(R.id.followers_number)
+        val numOfFollowing = view.findViewById<TextView>(R.id.following_number)
+
         linearFollowers.setOnClickListener {
             val fragment = UserFollowersFragment()
             val args = Bundle()
@@ -62,11 +66,14 @@ class FriendFragment : Fragment() {
 
         val fullName = "${param4!![1]} ${param4!![2]}"
         val phoneNum = "${param4!![3][0]}(${param4!![3].substring(1, 4)})${param4!![3].substring(4, 7)} ${param4!![3].substring(7, 10)}"
+        data = context?.let { DatabaseOpenHelper(it) }
 
         name.text = fullName
         location.text = param4!![4]
         phone.text = phoneNum
         email.text = param4!![6]
+        numOfFollowers.text = "${data!!.countFollowers(param4!![0])}"
+        numOfFollowing.text = "${data!!.countFollowing(param4!![0])}"
 
         return view
     }
