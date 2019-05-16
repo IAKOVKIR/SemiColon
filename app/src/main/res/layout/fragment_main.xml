@@ -18,7 +18,7 @@
         <LinearLayout
                 android:background="@drawable/gradient_background"
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             <RelativeLayout
@@ -28,10 +28,11 @@
 
                 <ImageButton
                         android:id="@+id/settings_button"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
                         android:background="@drawable/settings"
                         android:layout_alignParentEnd="true"
                         tools:ignore="ContentDescription,RtlSymmetry"
@@ -41,21 +42,22 @@
             </RelativeLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_marginTop="22dp"
+                    android:layout_marginTop="8dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:src="@drawable/burns"/>
 
             <TextView
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:id="@+id/name"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#fff"
                     android:textStyle="bold"
-                    android:textSize="21sp"/>
+                    android:textSize="19sp"/>
 
         </LinearLayout>
 
@@ -78,7 +80,7 @@
 
                 <TextView
                         android:text="@string/word_followers"
-                        android:textSize="19sp"
+                        android:textSize="17sp"
                         android:textColor="@color/BLACK"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -113,7 +115,7 @@
                 <TextView
                         android:id="@+id/following_word"
                         android:text="@string/word_following"
-                        android:textSize="19sp"
+                        android:textSize="17sp"
                         android:textColor="@color/BLACK"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -143,7 +145,7 @@
 
                 <TextView
                         android:text="@string/word_events"
-                        android:textSize="19sp"
+                        android:textSize="17sp"
                         android:textColor="@color/BLACK"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -176,8 +178,8 @@
                     tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:src="@drawable/cityscape"
                         tools:ignore="ContentDescription"/>
 
@@ -186,7 +188,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:layout_marginStart="8dp"
                         android:textColor="@color/WHITE"
                         android:text="@string/city_melbourne"/>
@@ -201,8 +203,8 @@
                     tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:src="@drawable/smart_phone"
                         tools:ignore="ContentDescription"/>
 
@@ -211,7 +213,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:layout_marginStart="8dp"
                         android:textColor="@color/WHITE"
                         android:text="@string/phone_number"/>
@@ -226,8 +228,8 @@
                     tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:src="@drawable/envelope"
                         tools:ignore="ContentDescription"/>
 
@@ -236,7 +238,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:layout_marginStart="8dp"
                         android:textColor="@color/WHITE"
                         android:text="@string/email_gmail"/>
