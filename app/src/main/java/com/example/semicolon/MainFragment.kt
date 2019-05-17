@@ -43,7 +43,7 @@ class MainFragment : Fragment() {
         data = context?.let { DatabaseOpenHelper(it) }
 
         //variable fullName contains a string with user's first and last names ("firstName lastName")
-        val fullName = "${param1!![1]} ${param1!![2]}"
+        val fullName = "${param1!![1]}\n${param1!![2]}"
 
         //variable phoneImp contains a string of phone number ("#(###)### ###")
         val phoneImp = "${param1!![3][0]}(${param1!![3].substring(1, 4)})${param1!![3].substring(4, 7)} ${param1!![3].substring(7, 10)}"

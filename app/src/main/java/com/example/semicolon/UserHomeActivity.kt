@@ -28,6 +28,13 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
     //listener for users list
     override fun onListFragmentInteraction(item: User?) {
+
+        val n = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
+        list = arrayListOf(n.getString(log.prefVar[0], "") as String, n.getString(log.prefVar[1], "") as String,
+            n.getString(log.prefVar[2], "") as String, n.getString(log.prefVar[3], "") as String,
+            n.getString(log.prefVar[4], "") as String, n.getString(log.prefVar[5], "") as String,
+            n.getString(log.prefVar[6], "") as String, n.getString(log.prefVar[7], "") as String)
+
         Log.i("Navigation", "Selected Friend $item")
         val args = Bundle()
         args.putString("param1", item!!.firstName)
@@ -66,6 +73,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
     //listener for bottom navigation
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+
         val n = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
         list = arrayListOf(n.getString(log.prefVar[0], "") as String, n.getString(log.prefVar[1], "") as String,
             n.getString(log.prefVar[2], "") as String, n.getString(log.prefVar[3], "") as String,

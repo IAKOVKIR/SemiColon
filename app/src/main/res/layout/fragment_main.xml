@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:background="@drawable/blue_white"
             tools:ignore="UselessParent">
 
         <LinearLayout
@@ -24,7 +25,6 @@
             <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
-
 
                 <ImageButton
                         android:id="@+id/settings_button"
@@ -41,23 +41,43 @@
 
             </RelativeLayout>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_marginTop="8dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/burns"/>
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:id="@+id/name"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:textSize="19sp"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageView"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/burns"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="32dp"/>
+
+                <TextView
+                        android:id="@+id/name"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#fff"
+                        android:textStyle="bold"
+                        android:textSize="19sp"
+                        android:text="Chandra\nMrQuery"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"/>
+
+            </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
 

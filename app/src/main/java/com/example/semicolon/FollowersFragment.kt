@@ -50,8 +50,9 @@ class FollowersFragment : Fragment() {
 
         tabLayout = view.findViewById(R.id.tabs)
         tabLayout!!.setupWithViewPager(vp)
-        tabLayout!!.setBackgroundColor(Color.BLACK)
-        tabLayout!!.setTabTextColors(ContextCompat.getColor(view.context, R.color.GREY), ContextCompat.getColor(view.context, R.color.WHITE))
+        tabLayout!!.setBackgroundColor(Color.WHITE)
+        tabLayout!!.setTabTextColors(ContextCompat.getColor(view.context, R.color.SPECIAL), ContextCompat.getColor(view.context, R.color.BLUE))
+        tabLayout!!.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
         tabLayout!!.getTabAt(0)!!.text = "Followers"
         tabLayout!!.getTabAt(1)!!.text = "Requests"
 
