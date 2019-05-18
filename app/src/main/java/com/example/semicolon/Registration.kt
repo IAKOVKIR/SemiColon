@@ -12,7 +12,6 @@ import android.view.View
 class Registration : Activity() {
 
     private var mSlideViewPager : ViewPager? = null
-    private var sliderAdapter : SliderAdapter? = null
 
     //TextViews (Three circles on navigation)
     var firstCircle : TextView? = null
@@ -29,6 +28,8 @@ class Registration : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
+        val sliderAdapter = SliderAdapter(this)
+
         mSlideViewPager = findViewById(R.id.slideViewPager)
 
         buttonBack = findViewById(R.id.buttonBack)
@@ -43,8 +44,6 @@ class Registration : Activity() {
         firstCircle = findViewById(R.id.FirstCircle)
         secondCircle = findViewById(R.id.SecondCircle)
         thirdCircle = findViewById(R.id.ThirdCircle)
-
-        sliderAdapter = SliderAdapter(this)
 
         mSlideViewPager?.adapter = sliderAdapter
         mSlideViewPager!!.addOnPageChangeListener(pageChangeListener)

@@ -20,11 +20,11 @@
     <action android:id="@+id/action_global_params_dest" app:destination="@id/params_dest"/>
     <action android:id="@+id/action_global_main_dest" app:destination="@id/main_dest"/>
     <action android:id="@+id/action_global_list_dest" app:destination="@id/list_dest"/>
-    <fragment android:id="@+id/setting_dest" android:name="com.example.semicolon.SettingFragment"
+    <fragment android:id="@+id/setting_dest" android:name="com.example.semicolon.semi_settings.SettingFragment"
               android:label="fragment_settings_list" tools:layout="@layout/fragment_settings_list">
         <action android:id="@+id/action_setting_dest_to_setting_params_dest" app:destination="@id/setting_params_dest"/>
     </fragment>
-    <fragment android:id="@+id/setting_params_dest" android:name="com.example.semicolon.SettingParamsFragment"
+    <fragment android:id="@+id/setting_params_dest" android:name="com.example.semicolon.semi_settings.SettingParamsFragment"
               android:label="fragment_setting_params" tools:layout="@layout/fragment_setting_params">
         <argument android:name="param1" app:argType="string" android:defaultValue="Setting"/>
         <argument android:name="param2" app:argType="string" android:defaultValue="Chandra"/>

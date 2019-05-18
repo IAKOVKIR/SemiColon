@@ -2,7 +2,6 @@ package com.example.semicolon
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,6 @@ class FriendFragment : Fragment() {
 
     private var param3: ArrayList<String>? = null
     private var param4: ArrayList<String>? = null
-    private var db: DatabaseOpenHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +50,7 @@ class FriendFragment : Fragment() {
         val numOfFollowing = view.findViewById<TextView>(R.id.following_number)
 
         val followButton = view.findViewById<Button>(R.id.followButton)
-        db = context?.let { DatabaseOpenHelper(it) }
+        val db = context?.let { DatabaseOpenHelper(it) }
 
         var bool = db!!.checkFollower(param3!![0], param4!![0])
         val str = arrayOf("in progress", "follow", "unfollow")
@@ -83,13 +81,13 @@ class FriendFragment : Fragment() {
             if (bool == 2) {
                 followButton.text = str[0]
                 bool = 3
-                val friend = Friend(db!!.countFriendTable(), param4!![0].toInt(), param3!![0].toInt(),
+                val friend = Friend(db.countFriendTable(), param4!![0].toInt(), param3!![0].toInt(),
                     strDate.substring(11, 19), strDate.substring(0, 10), bool)
-                db!!.insertRequest(friend)
+                db.insertRequest(friend)
             } else {
                 followButton.text = str[1]
                 bool = 2
-                db!!.deleteFollowing(param4!![0], param3!![0])
+                db.deleteFollowing(param4!![0], param3!![0])
             }
         }
 
@@ -100,14 +98,13 @@ class FriendFragment : Fragment() {
 
         val fullName = "${param4!![1]}\n${param4!![2]}"
         val phoneNum = "${param4!![3][0]}(${param4!![3].substring(1, 4)})${param4!![3].substring(4, 7)} ${param4!![3].substring(7, 10)}"
-        val data = context?.let { DatabaseOpenHelper(it) }
 
         name.text = fullName
         location.text = param4!![4]
         phone.text = phoneNum
         email.text = param4!![6]
-        numOfFollowers.text = "${data!!.countFollowers(param4!![0])}"
-        numOfFollowing.text = "${data.countFollowing(param4!![0])}"
+        numOfFollowers.text = "${db.countFollowers(param4!![0])}"
+        numOfFollowing.text = "${db.countFollowing(param4!![0])}"
 
         return view
     }

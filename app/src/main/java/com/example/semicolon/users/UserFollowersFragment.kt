@@ -1,7 +1,6 @@
 package com.example.semicolon.users
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -15,31 +14,21 @@ import com.example.semicolon.*
 
 class UserFollowersFragment : Fragment() {
 
-    private var columnCount = 1
     private var param1 : ArrayList<String>? = null
     private var data: DatabaseOpenHelper? = null
     private var listener: OnListFragmentInteractionListener? = null
 
     private var tabLayout: TabLayout? = null
-    //private var adapter: SectionsPagerAdapter? = null
     private var adapter: FollowersSliderAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-            param1 = it.getStringArrayList("user")
-        }
-
+        arguments?.let { param1 = it.getStringArrayList("user") }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.activity_tab_layout, container, false)
-        data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
+        data = context?.let { DatabaseOpenHelper(it) }
 
         //adapter = SectionsPagerAdapter(fragmentManager as FragmentManager)
         adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>, 1)
@@ -51,7 +40,6 @@ class UserFollowersFragment : Fragment() {
 
         tabLayout = view.findViewById(R.id.tabs)
         tabLayout!!.setupWithViewPager(vp)
-        tabLayout!!.setBackgroundColor(Color.BLACK)
         tabLayout!!.setTabTextColors(ContextCompat.getColor(view.context, R.color.GREY), ContextCompat.getColor(view.context, R.color.WHITE))
         tabLayout!!.getTabAt(0)!!.text = "Followers"
 
@@ -81,9 +69,6 @@ class UserFollowersFragment : Fragment() {
         view!!.requestFocus()
         view!!.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                tabLayout!!.removeAllTabs()
-                adapter = null
-
                 val args = Bundle()
                 args.putStringArrayList("user", param1)
 
@@ -91,8 +76,7 @@ class UserFollowersFragment : Fragment() {
                 fragment.arguments = args
                 val manager = fragmentManager
                 val transaction = manager!!.beginTransaction()
-                transaction.remove(this)//replace(R.id.nav_host, fragment)
-                // Commit the transaction
+                transaction.remove(this)
                 transaction.commit()
 
                 true
@@ -102,34 +86,20 @@ class UserFollowersFragment : Fragment() {
         }
     }
 
-
     private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
-        override fun onPageSelected(position: Int) {
-
-            when (position) {
-                0 -> {
-
-                }
-                else -> {
-
-                }
-            }
-
-        }
+        override fun onPageSelected(position: Int) {}
     }
 
-    companion object {
-
+    /*companion object {
         const val ARG_COLUMN_COUNT = "column-count"
 
-        /*@JvmStatic
+        @JvmStatic
         fun newInstance(columnCount: Int) =
             FollowingFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
-          */
-    }
+    }*/
 
 }

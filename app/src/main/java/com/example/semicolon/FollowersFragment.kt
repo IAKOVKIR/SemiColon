@@ -14,31 +14,21 @@ import android.view.ViewGroup
 
 class FollowersFragment : Fragment() {
 
-    private var columnCount = 1
     private var param1 : ArrayList<String>? = null
     private var data: DatabaseOpenHelper? = null
     private var listener: OnListFragmentInteractionListener? = null
 
     private var tabLayout: TabLayout? = null
-    //private var adapter: SectionsPagerAdapter? = null
     private var adapter: FollowersSliderAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-            param1 = it.getStringArrayList("user")
-        }
-
+        arguments?.let { param1 = it.getStringArrayList("user") }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.activity_tab_layout, container, false)
-        data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
+        data = context?.let { DatabaseOpenHelper(it) }
 
         //adapter = SectionsPagerAdapter(fragmentManager as FragmentManager)
         adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>, 2)
@@ -50,7 +40,6 @@ class FollowersFragment : Fragment() {
 
         tabLayout = view.findViewById(R.id.tabs)
         tabLayout!!.setupWithViewPager(vp)
-        tabLayout!!.setBackgroundColor(Color.WHITE)
         tabLayout!!.setTabTextColors(ContextCompat.getColor(view.context, R.color.SPECIAL), ContextCompat.getColor(view.context, R.color.BLUE))
         tabLayout!!.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
         tabLayout!!.getTabAt(0)!!.text = "Followers"
@@ -82,9 +71,6 @@ class FollowersFragment : Fragment() {
         view!!.requestFocus()
         view!!.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                tabLayout!!.removeAllTabs()
-                adapter = null
-
                 val args = Bundle()
                 args.putStringArrayList("user", param1)
 
@@ -92,8 +78,7 @@ class FollowersFragment : Fragment() {
                 fragment.arguments = args
                 val manager = fragmentManager
                 val transaction = manager!!.beginTransaction()
-                transaction.remove(this)//replace(R.id.nav_host, fragment)
-                // Commit the transaction
+                transaction.remove(this)
                 transaction.commit()
 
                 true
@@ -103,13 +88,8 @@ class FollowersFragment : Fragment() {
         }
     }
 
-
     private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {}
-    }
-
-    companion object {
-        const val ARG_COLUMN_COUNT = "column-count"
     }
 
 }

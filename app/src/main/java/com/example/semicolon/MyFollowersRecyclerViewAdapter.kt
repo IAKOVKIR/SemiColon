@@ -32,7 +32,6 @@ class MyFollowersRecyclerViewAdapter(
     private val mOnClickListener: View.OnClickListener
     private var db: DatabaseOpenHelper? = null
     private var n: SharedPreferences? = null
-    private val str = arrayOf("Confirmed", "Declined", "in progress", "follow", "unfollow")
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -59,6 +58,7 @@ class MyFollowersRecyclerViewAdapter(
         var bool = db!!.checkFollower(yourID, item.id.toString())
 
         val bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.smithers)
+        val str = arrayOf("Confirmed", "Declined", "in progress", "follow", "unfollow")
         val height = bitmap.height
         val width = bitmap.width
         val dif = height.toDouble() / width

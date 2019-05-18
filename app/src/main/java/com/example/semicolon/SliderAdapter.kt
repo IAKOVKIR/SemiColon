@@ -14,11 +14,11 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
 
     //arrays with strings for pages
     private val slideTexts = arrayOf("first name", "email", "phone number")
-    private val slideTexts2 = arrayOf("second name", "city", "age")
+    /*private val slideTexts2 = arrayOf("second name", "city", "age")
     private val slideEditTexts = arrayOf("Enter your first name", "Enter your email", "Enter your phone number")
     private val slideEditTexts2 = arrayOf("enter your second name", "enter your city", "enter your age")
     val texts = arrayOf("", "", "")
-    val texts2 = arrayOf("", "", "")
+    val texts2 = arrayOf("", "", "")*/
     private var check = false
 
     override fun getCount(): Int {

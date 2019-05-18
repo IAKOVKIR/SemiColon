@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.semi_settings
 
 import android.content.Context
 import android.os.Bundle
@@ -10,9 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.example.semicolon.setting.Setting
-import com.example.semicolon.setting.Setting.SettingItem
+import com.example.semicolon.semi_settings.Setting.SettingItem
 import android.view.KeyEvent
+import com.example.semicolon.MainFragment
+import com.example.semicolon.R
 
 
 /**
@@ -58,11 +59,10 @@ class SettingFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
+        if (context is OnListFragmentInteractionListener)
             listener = context
-        } else {
+        else
             throw RuntimeException("$context must implement OnListFragmentInteractionListener")
-        }
     }
 
     override fun onResume() {
@@ -71,7 +71,6 @@ class SettingFragment : Fragment() {
         view!!.requestFocus()
         view!!.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-
                 val args = Bundle()
                 args.putStringArrayList("user", param1)
 
@@ -94,17 +93,6 @@ class SettingFragment : Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson
-     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: SettingItem?)
     }

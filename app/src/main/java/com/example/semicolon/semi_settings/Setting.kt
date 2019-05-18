@@ -1,4 +1,4 @@
-package com.example.semicolon.setting
+package com.example.semicolon.semi_settings
 
 import java.util.ArrayList
 import java.util.HashMap
@@ -28,7 +28,11 @@ object Setting {
     init {
         // Add some sample items.
         for (i in 1..COUNT)
-            addSetting(createSettingItem(i))
+            addSetting(
+                createSettingItem(
+                    i
+                )
+            )
     }
 
     private fun addSetting(setting: SettingItem) {
@@ -37,7 +41,11 @@ object Setting {
     }
 
     private fun createSettingItem(position: Int): SettingItem {
-        return SettingItem(setting_names[position - 1], "$position", "F")
+        return SettingItem(
+            setting_names[position - 1],
+            "$position",
+            "F"
+        )
     }
 
     /*private fun makeDetails(position: Int): String {

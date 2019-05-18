@@ -1,6 +1,5 @@
 package com.example.semicolon
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.semicolon.semi_settings.SettingFragment
 
 /**
  * A simple [Fragment] subclass.
@@ -17,17 +17,13 @@ import android.widget.TextView
 
 class MainFragment : Fragment() {
 
-    /*
-    variable param1 contains ArrayList<String> array with user's data from shared preferences
-    log is an object from Login Class
-     */
+    //variable param1 contains ArrayList<String> array with user's data from shared preferences
+
     private var param1 : ArrayList<String>? = null
-    private var settingsButton : ImageButton? = null
-    private var data: DatabaseOpenHelper? = null
-    private var log = Login()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val log = Login()
         val n = context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
 
         //assigning values to ArrayList<String>
@@ -37,10 +33,9 @@ class MainFragment : Fragment() {
             n.getString(log.prefVar[6], "") as String, n.getString(log.prefVar[7], "") as String)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
-        data = context?.let { DatabaseOpenHelper(it) }
+        val data = context?.let { DatabaseOpenHelper(it) }
 
         //variable fullName contains a string with user's first and last names ("firstName lastName")
         val fullName = "${param1!![1]}\n${param1!![2]}"
@@ -62,7 +57,7 @@ class MainFragment : Fragment() {
         val numOfFollowers = view.findViewById<TextView>(R.id.followers_number)
         val numOfFollowing = view.findViewById<TextView>(R.id.following_number)
         numOfFollowers.text = "${data!!.countFollowers(param1!![0])}"
-        numOfFollowing.text = "${data!!.countFollowing(param1!![0])}"
+        numOfFollowing.text = "${data.countFollowing(param1!![0])}"
 
         //TextView representing user's location
         val location = view.findViewById<TextView>(R.id.location)
@@ -103,16 +98,14 @@ class MainFragment : Fragment() {
             transaction.commit()
         }
 
-        settingsButton = view.findViewById(R.id.settings_button)
-        settingsButton!!.setOnClickListener {
+        val settingsButton : ImageButton = view.findViewById(R.id.settings_button)
+        settingsButton.setOnClickListener {
             val fragment: Fragment = SettingFragment()
             args.putStringArrayList("user", param1)
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()
             transaction.add(R.id.nav_host, fragment)
-            //transaction.addToBackStack(null)
-            // Commit the transaction
             transaction.commit()
         }
 

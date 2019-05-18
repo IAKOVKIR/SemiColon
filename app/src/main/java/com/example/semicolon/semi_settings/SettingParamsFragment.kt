@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.semi_settings
 
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import com.example.semicolon.DatabaseOpenHelper
+import com.example.semicolon.Login
+import com.example.semicolon.R
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"

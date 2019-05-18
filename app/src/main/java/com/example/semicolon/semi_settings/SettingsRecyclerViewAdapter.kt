@@ -1,14 +1,15 @@
-package com.example.semicolon
+package com.example.semicolon.semi_settings
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.semicolon.R
 
 
-import com.example.semicolon.SettingFragment.OnListFragmentInteractionListener
-import com.example.semicolon.setting.Setting.SettingItem
+import com.example.semicolon.semi_settings.SettingFragment.OnListFragmentInteractionListener
+import com.example.semicolon.semi_settings.Setting.SettingItem
 
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 

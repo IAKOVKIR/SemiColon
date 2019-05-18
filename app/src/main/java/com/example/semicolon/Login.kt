@@ -16,8 +16,8 @@ class Login : Activity() {
     var prefVar = arrayOf("id", "firstName", "lastName", "phone", "password", "city", "rating", "email")
 
     //EditTexts
-    private var fEnter : EditText ?= null //username
-    private var sEnter : EditText ?= null //password
+    private lateinit var fEnter : EditText //username
+    private lateinit var sEnter : EditText //password
 
     private lateinit var usersDBHelper : DatabaseOpenHelper
 
@@ -95,8 +95,8 @@ class Login : Activity() {
      * If checkBox ("remember me") will be checked, then username and password will be saved in SharedPreferences
      */
     private fun doLogin() {
-        val txtPhone = fEnter!!.text.toString()
-        val txtPassword = sEnter!!.text.toString()
+        val txtPhone = fEnter.text.toString()
+        val txtPassword = sEnter.text.toString()
 
         val list = usersDBHelper.readUser(txtPhone, txtPassword)
 
