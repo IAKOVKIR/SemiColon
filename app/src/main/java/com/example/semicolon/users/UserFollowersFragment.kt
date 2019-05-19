@@ -14,7 +14,8 @@ import com.example.semicolon.*
 
 class UserFollowersFragment : Fragment() {
 
-    private var param1 : ArrayList<String>? = null
+    private var param1: ArrayList<String>? = null
+    private var param2: Int? = null
     private var data: DatabaseOpenHelper? = null
     private var listener: OnListFragmentInteractionListener? = null
 
@@ -23,7 +24,10 @@ class UserFollowersFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { param1 = it.getStringArrayList("user") }
+        arguments?.let {
+            param1 = it.getStringArrayList("user")
+            param2 = it.getInt("id")
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,7 +35,7 @@ class UserFollowersFragment : Fragment() {
         data = context?.let { DatabaseOpenHelper(it) }
 
         //adapter = SectionsPagerAdapter(fragmentManager as FragmentManager)
-        adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>, 1)
+        adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>, 1, param2!!)
 
         val vp = view.findViewById<ViewPager>(R.id.viewpager)
 

@@ -63,6 +63,7 @@ class FriendFragment : Fragment() {
             val fragment = UserFollowersFragment()
             val args = Bundle()
             args.putStringArrayList("user", param4)
+            args.putInt("id", param3!![0].toInt())
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()

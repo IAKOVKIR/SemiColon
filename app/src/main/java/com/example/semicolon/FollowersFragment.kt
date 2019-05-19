@@ -31,7 +31,7 @@ class FollowersFragment : Fragment() {
         data = context?.let { DatabaseOpenHelper(it) }
 
         //adapter = SectionsPagerAdapter(fragmentManager as FragmentManager)
-        adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>, 2)
+        adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>, 2, param1!![0].toInt())
 
         val vp = view.findViewById<ViewPager>(R.id.viewpager)
 

@@ -10,9 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 
-class FollowersSliderAdapter(private val context : Context, var data : DatabaseOpenHelper,
+class FollowersSliderAdapter(private val context: Context, var data: DatabaseOpenHelper,
                              private var listener: OnListFragmentInteractionListener,
-                             var param1 : ArrayList<String>, private val numOfTabs: Int) : PagerAdapter() {
+                             var param1: ArrayList<String>, private val numOfTabs: Int,
+                             private val except: Int) : PagerAdapter() {
 
     //arrays with strings for pages
     private var columnCount = 1
@@ -42,10 +43,9 @@ class FollowersSliderAdapter(private val context : Context, var data : DatabaseO
                             columnCount <= 1 -> LinearLayoutManager(context)
                             else -> GridLayoutManager(context, columnCount)
                         }
-                        adapter = MyFollowersRecyclerViewAdapter(data.readAllFollowers(param1[0], 1), context,
+                        adapter = MyFollowersRecyclerViewAdapter(data.readAllFollowers(param1[0], 1, except), context,
                             listener as FollowersFragment.OnListFragmentInteractionListener, param1[0], false)
                     }
-
             }
             else -> {
                 if (list is RecyclerView)
@@ -54,10 +54,9 @@ class FollowersSliderAdapter(private val context : Context, var data : DatabaseO
                             columnCount <= 1 -> LinearLayoutManager(context)
                             else -> GridLayoutManager(context, columnCount)
                         }
-                        adapter = MyFollowersRecyclerViewAdapter(data.readAllFollowers(param1[0], 2), context,
+                        adapter = MyFollowersRecyclerViewAdapter(data.readAllFollowers(param1[0], 2, except!!), context,
                             listener as FollowersFragment.OnListFragmentInteractionListener, param1[0], true)
                     }
-
             }
         }
 

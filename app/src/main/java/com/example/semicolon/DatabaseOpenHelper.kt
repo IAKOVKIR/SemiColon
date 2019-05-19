@@ -129,7 +129,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         return users
     }
 
-    fun readAllFollowers(UserID: String, num: Int): ArrayList<User> {
+    fun readAllFollowers(UserID: String, num: Int, except: Int): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase
         val cursor: Cursor?
@@ -140,7 +140,8 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
             3//inProgress
 
         try {
-            cursor = db.rawQuery("SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition'", null)
+            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition' AND FRIEND.SenderID != '$except'"
+            cursor = db.rawQuery(line, null)
         } catch (e: SQLiteException) {
             return ArrayList()
         }
@@ -163,7 +164,6 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
                 cursor.moveToNext()
             }
         }
-
 
         cursor.close()
         return users
