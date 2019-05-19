@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import android.widget.CheckBox
 
 class Login : Activity() {
 
@@ -20,9 +19,6 @@ class Login : Activity() {
     private lateinit var sEnter : EditText //password
 
     private lateinit var usersDBHelper : DatabaseOpenHelper
-
-    //CheckBox
-    private var checkLog : CheckBox? = null //"remember me"
 
     public override fun onStart() {
         super.onStart()
@@ -61,9 +57,6 @@ class Login : Activity() {
         fEnter = findViewById(R.id.userName)
         sEnter = findViewById(R.id.password)
 
-        //checkbox
-        checkLog = findViewById(R.id.checkLogin)
-
         //Buttons
         val logBut = findViewById<Button>(R.id.logBut)
         val forgotBut = findViewById<Button>(R.id.forgotBut)
@@ -101,12 +94,10 @@ class Login : Activity() {
         val list = usersDBHelper.readUser(txtPhone, txtPassword)
 
         if (list.size > 0) {
-            if (checkLog!!.isChecked)
             //save username and password in SharedPreferences
-                rememberMe(list[0])
+            rememberMe(list[0])
             //show logout activity
             showHome()
-
         } else
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_LONG).show()
 

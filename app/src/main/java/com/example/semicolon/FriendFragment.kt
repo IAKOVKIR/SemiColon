@@ -109,29 +109,4 @@ class FriendFragment : Fragment() {
         return view
     }
 
-    /*override fun onResume() {
-        super.onResume()
-        view!!.isFocusableInTouchMode = true
-        view!!.requestFocus()
-        view!!.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-
-                fragmentManager!!.popBackStack()
-                /*val args = Bundle()
-                args.putStringArrayList("user", param4)
-
-                val fragment: Fragment = MainFragment()
-                fragment.arguments = args
-                val manager = fragmentManager
-                val transaction = manager!!.beginTransaction()
-                transaction.replace(R.id.nav_host, fragment)
-                // Commit the transaction
-                transaction.commit()*/
-
-                true
-            } else
-                false
-        }
-    }*/
-
 }
