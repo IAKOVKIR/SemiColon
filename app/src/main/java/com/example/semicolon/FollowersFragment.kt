@@ -1,5 +1,6 @@
 package com.example.semicolon
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -11,12 +12,16 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
+
 
 class FollowersFragment : Fragment() {
 
     private var param1 : ArrayList<String>? = null
     private var data: DatabaseOpenHelper? = null
     private var listener: OnListFragmentInteractionListener? = null
+    var imm: InputMethodManager? = null
 
     private var tabLayout: TabLayout? = null
     private var adapter: FollowersSliderAdapter? = null
@@ -24,10 +29,12 @@ class FollowersFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { param1 = it.getStringArrayList("user") }
+        imm = activity!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.activity_tab_layout, container, false)
+        val backButton = view.findViewById<ImageButton>(R.id.back_button)
         data = context?.let { DatabaseOpenHelper(it) }
 
         //adapter = SectionsPagerAdapter(fragmentManager as FragmentManager)
@@ -44,6 +51,18 @@ class FollowersFragment : Fragment() {
         tabLayout!!.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
         tabLayout!!.getTabAt(0)!!.text = "Followers"
         tabLayout!!.getTabAt(1)!!.text = "Requests"
+
+        backButton.setOnClickListener {
+            val args = Bundle()
+            args.putStringArrayList("user", param1)
+
+            val fragment: Fragment = MainFragment()
+            fragment.arguments = args
+            val manager = fragmentManager
+            val transaction = manager!!.beginTransaction()
+            transaction.remove(this)
+            transaction.commit()
+        }
 
         return view
     }
@@ -71,17 +90,21 @@ class FollowersFragment : Fragment() {
         view!!.requestFocus()
         view!!.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                val args = Bundle()
-                args.putStringArrayList("user", param1)
 
-                val fragment: Fragment = MainFragment()
-                fragment.arguments = args
-                val manager = fragmentManager
-                val transaction = manager!!.beginTransaction()
-                transaction.remove(this)
-                transaction.commit()
+                if (imm!!.isAcceptingText) {
+                    imm!!.hideSoftInputFromWindow(view!!.windowToken, 0)
+                } else {
+                    val args = Bundle()
+                    args.putStringArrayList("user", param1)
 
-                true
+                    val fragment: Fragment = MainFragment()
+                    fragment.arguments = args
+                    val manager = fragmentManager
+                    val transaction = manager!!.beginTransaction()
+                    transaction.remove(this)
+                    transaction.commit()
+                    true
+                }
 
             } else
                 false

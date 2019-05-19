@@ -8,7 +8,7 @@
         android:layout_height="wrap_content">
 
     <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/search_follower"
             android:textSize="22sp"
             android:textColor="@color/WHITE"
             android:textCursorDrawable="@drawable/black_cursor"
@@ -32,6 +32,6 @@
             tools:listitem="@layout/fragment_friends"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_below="@id/editText4"/>
+            android:layout_below="@id/search_follower"/>
 
 </RelativeLayout>

@@ -169,6 +169,46 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         return users
     }
 
+    fun searchAllFollowers(UserID: String, num: Int, except: Int, searchLine: String): ArrayList<User> {
+        val users = ArrayList<User>()
+        val db = writableDatabase
+        val cursor: Cursor?
+
+        val condition: Int = if (num == 1)
+            1//confirmed
+        else
+            3//inProgress
+
+        try {
+            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition' AND FRIEND.SenderID != '$except' AND (USER.UserFirstName LIKE '$searchLine%' OR USER.UserLastName LIKE '$searchLine%')"
+            cursor = db.rawQuery(line, null)
+        } catch (e: SQLiteException) {
+            return ArrayList()
+        }
+
+        var id: Int
+        var firstName: String
+        var lastName: String
+        var phoneNum: String
+        var city: String
+        var email: String
+        if (cursor!!.moveToFirst()) {
+            while (!cursor.isAfterLast) {
+                id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
+                firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
+                lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
+                phoneNum = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                city = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_CITY))
+                email = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                users.add(User(id, firstName, lastName, phoneNum, "", city, 1, 0F, email))
+                cursor.moveToNext()
+            }
+        }
+
+        cursor.close()
+        return users
+    }
+
     fun readAllFollowing(UserID: String): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase

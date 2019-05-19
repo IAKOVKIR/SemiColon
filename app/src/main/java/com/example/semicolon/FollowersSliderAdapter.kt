@@ -5,6 +5,8 @@ import android.support.v4.view.PagerAdapter
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,31 +36,47 @@ class FollowersSliderAdapter(private val context: Context, var data: DatabaseOpe
 
         val list = view.findViewById<RecyclerView>(R.id.list)
 
-        when (position) {
-            0 -> {
-                // Set the adapter
-                if (list is RecyclerView)
-                    with(list) {
-                        layoutManager = when {
-                            columnCount <= 1 -> LinearLayoutManager(context)
-                            else -> GridLayoutManager(context, columnCount)
-                        }
-                        adapter = MyFollowersRecyclerViewAdapter(data.readAllFollowers(param1[0], 1, except), context,
-                            listener as FollowersFragment.OnListFragmentInteractionListener, param1[0], false)
-                    }
-            }
-            else -> {
-                if (list is RecyclerView)
-                    with(list) {
-                        layoutManager = when {
-                            columnCount <= 1 -> LinearLayoutManager(context)
-                            else -> GridLayoutManager(context, columnCount)
-                        }
-                        adapter = MyFollowersRecyclerViewAdapter(data.readAllFollowers(param1[0], 2, except!!), context,
-                            listener as FollowersFragment.OnListFragmentInteractionListener, param1[0], true)
-                    }
+        // Set the adapter
+        if (list is RecyclerView) {
+            with(list) {
+                layoutManager = when {
+                    columnCount <= 1 -> LinearLayoutManager(context)
+                    else -> GridLayoutManager(context, columnCount)
+                }
+                adapter = if (position == 0) {
+                    MyFollowersRecyclerViewAdapter(
+                        data.readAllFollowers(param1[0], 1, except), context,
+                        listener as FollowersFragment.OnListFragmentInteractionListener, param1[0], false
+                    )
+                } else {
+                    MyFollowersRecyclerViewAdapter(data.readAllFollowers(param1[0], 2, except), context,
+                        listener as FollowersFragment.OnListFragmentInteractionListener, param1[0], true)
+                }
             }
         }
+
+        val search = view.findViewById<EditText>(R.id.search_follower)
+
+        search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+                val line = search.text.toString()
+                if (position == 0) {
+                    list.adapter = MyFollowersRecyclerViewAdapter(
+                        data.searchAllFollowers(param1[0], 1, except, line), context,
+                        listener as FollowersFragment.OnListFragmentInteractionListener, param1[0], false
+                    )
+                } else {
+                    list.adapter = MyFollowersRecyclerViewAdapter(
+                        data.searchAllFollowers(param1[0], 2, except, line), context,
+                        listener as FollowersFragment.OnListFragmentInteractionListener, param1[0], true)
+                }
+
+            }
+        })
 
         container.addView(view)
 
