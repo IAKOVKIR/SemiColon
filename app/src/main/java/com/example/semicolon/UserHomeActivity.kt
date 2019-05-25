@@ -1,11 +1,13 @@
 package com.example.semicolon
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentActivity
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.navigation.findNavController
 import com.example.semicolon.semi_settings.Setting
@@ -26,6 +28,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     var list: ArrayList<String>? = null
     private var log = Login()
     var text : TextView? = null
+    var imm: InputMethodManager? = null
 
     //listener for users list
     override fun onListFragmentInteraction(item: User?) {
@@ -108,6 +111,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_home)
+        imm = applicationContext!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
         //add navigation listener
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)

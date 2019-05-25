@@ -340,7 +340,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         private const val SQL_DELETE_FRIEND_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME
     }
 
-    /*@Throws(SQLiteConstraintException::class)
+    @Throws(SQLiteConstraintException::class)
    fun insertUser(user: User): Boolean {
        // Gets the data repository in write mode
        val db = writableDatabase
@@ -360,6 +360,6 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
        db.insert(DBContract.UserEntry.USER_TABLE_NAME, null, values)
 
        return true
-   }*/
+   }
 
 }

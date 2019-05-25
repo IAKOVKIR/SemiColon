@@ -11,6 +11,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".FriendActivity">
+        </activity>
+        <activity android:name=".FollowersActivity">
+        </activity>
         <activity
                 android:name=".UserHomeActivity"
                 android:screenOrientation="portrait">

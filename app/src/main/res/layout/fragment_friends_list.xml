@@ -5,33 +5,17 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:background="@drawable/gray_red"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <EditText
-            android:id="@+id/search_follower"
-            android:textSize="22sp"
-            android:textColor="@color/WHITE"
-            android:textCursorDrawable="@drawable/black_cursor"
-            android:backgroundTint="@color/WHITE"
-            android:textColorHint="#CAC2C2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:inputType="text"
-            tools:ignore="Autofill,LabelFor"/>
+        android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
             android:name="com.example.semicolon.FriendsFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
-            tools:context=".FollowingFragment"
+            tools:context=".FollowersFragment"
             tools:listitem="@layout/fragment_friends"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_below="@id/search_follower"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
 </RelativeLayout>

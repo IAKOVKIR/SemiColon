@@ -14,7 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            android:layout_below="@id/reg_nav"
             tools:ignore="ScrollViewCount,UselessParent">
 
         <android.support.constraint.ConstraintLayout
@@ -158,7 +157,6 @@
             android:id="@+id/second_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/reg_nav"
             tools:ignore="ScrollViewCount,UselessParent">
 
         <android.support.constraint.ConstraintLayout

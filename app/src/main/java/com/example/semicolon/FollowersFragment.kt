@@ -6,14 +6,21 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageButton
+import android.view.MotionEvent
+
 
 
 class FollowersFragment : Fragment() {
@@ -21,6 +28,7 @@ class FollowersFragment : Fragment() {
     private var param1 : ArrayList<String>? = null
     private var data: DatabaseOpenHelper? = null
     private var listener: OnListFragmentInteractionListener? = null
+    private var etText: EditText? = null
     var imm: InputMethodManager? = null
 
     private var tabLayout: TabLayout? = null
@@ -34,25 +42,26 @@ class FollowersFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.activity_tab_layout, container, false)
-        val backButton = view.findViewById<ImageButton>(R.id.back_button)
+        //val backButton = view.findViewById<ImageButton>(R.id.back_button)
         data = context?.let { DatabaseOpenHelper(it) }
-
+        //etText = view.findViewById(R.id.lineET)
+/*
         //adapter = SectionsPagerAdapter(fragmentManager as FragmentManager)
         adapter = FollowersSliderAdapter(view.context, data!!, listener as FollowersSliderAdapter.OnListFragmentInteractionListener, param1 as ArrayList<String>, 2, param1!![0].toInt())
 
         val vp = view.findViewById<ViewPager>(R.id.viewpager)
-
         vp.adapter = adapter
-        vp.addOnPageChangeListener(pageChangeListener)
+        vp.addOnPageChangeListener(pageChangeListener)*/
 
-        tabLayout = view.findViewById(R.id.tabs)
+
+        /*tabLayout = view.findViewById(R.id.tabs)
         tabLayout!!.setupWithViewPager(vp)
         tabLayout!!.setTabTextColors(ContextCompat.getColor(view.context, R.color.SPECIAL), ContextCompat.getColor(view.context, R.color.BLUE))
         tabLayout!!.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
         tabLayout!!.getTabAt(0)!!.text = "Followers"
-        tabLayout!!.getTabAt(1)!!.text = "Requests"
+        tabLayout!!.getTabAt(1)!!.text = "Requests"*/
 
-        backButton.setOnClickListener {
+        /**backButton.setOnClickListener {
             val args = Bundle()
             args.putStringArrayList("user", param1)
 
@@ -62,7 +71,7 @@ class FollowersFragment : Fragment() {
             val transaction = manager!!.beginTransaction()
             transaction.remove(this)
             transaction.commit()
-        }
+        }*/
 
         return view
     }
@@ -86,29 +95,38 @@ class FollowersFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         view!!.isFocusableInTouchMode = true
         view!!.requestFocus()
         view!!.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
-                if (imm!!.isAcceptingText) {
-                    imm!!.hideSoftInputFromWindow(view!!.windowToken, 0)
-                } else {
-                    val args = Bundle()
-                    args.putStringArrayList("user", param1)
+                val args = Bundle()
+                args.putStringArrayList("user", param1)
 
-                    val fragment: Fragment = MainFragment()
-                    fragment.arguments = args
-                    val manager = fragmentManager
-                    val transaction = manager!!.beginTransaction()
-                    transaction.remove(this)
-                    transaction.commit()
-                    true
-                }
+                Log.e("wow", "shit")
+
+                val fragment: Fragment = MainFragment()
+                fragment.arguments = args
+                val manager = fragmentManager
+                val transaction = manager!!.beginTransaction()
+                transaction.remove(this)
+                transaction.commit()
+                true
 
             } else
                 false
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e("wow", "paused")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e("wow", "stopped")
     }
 
     private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {

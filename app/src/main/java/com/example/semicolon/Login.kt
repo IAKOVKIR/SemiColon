@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Login : Activity() {
 
@@ -32,7 +34,7 @@ class Login : Activity() {
 
         usersDBHelper = DatabaseOpenHelper(this)
 
-        /*val c = Calendar.getInstance()
+        val c = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
         val strDate = sdf.format(c.time).trim()
 
@@ -52,7 +54,7 @@ class Login : Activity() {
         usersDBHelper.insertRequest(Friend(5, 1, 4, strDate.substring(11, 19), strDate.substring(0, 10), 3))
         usersDBHelper.insertRequest(Friend(6, 2, 4, strDate.substring(11, 19), strDate.substring(0, 10), 3))
         usersDBHelper.insertRequest(Friend(7, 3, 4, strDate.substring(11, 19), strDate.substring(0, 10), 3))
-        usersDBHelper.insertRequest(Friend(8, 4, 3, strDate.substring(11, 19), strDate.substring(0, 10), 3))*/
+        usersDBHelper.insertRequest(Friend(8, 4, 3, strDate.substring(11, 19), strDate.substring(0, 10), 3))
 
         fEnter = findViewById(R.id.userName)
         sEnter = findViewById(R.id.password)

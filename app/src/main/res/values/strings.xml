@@ -102,5 +102,6 @@
     <string name="phone_number">+#(###)### ###</string>
     <string name="title_activity_followers_fragment">FollowersFragment</string>
     <string name="title_activity_new_followers_fragment">NewFollowersFragment</string>
+    <string name="title_activity_followers">FollowersActivity</string>
 
 </resources>

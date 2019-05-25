@@ -1,6 +1,7 @@
 package com.example.semicolon
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -77,14 +78,17 @@ class MainFragment : Fragment() {
         val args = Bundle()
 
         followersLink.setOnClickListener {
-            val fragment = FollowersFragment()
+            val intent = Intent(activity, FollowersActivity::class.java)
+            intent.putStringArrayListExtra("dataToTheList", param1)
+            startActivity(intent)
+            /*val fragment = FollowersFragment()
             args.putStringArrayList("user", param1)
             fragment.arguments = args
             val manager = fragmentManager
             val transaction = manager!!.beginTransaction()
             transaction.add(R.id.nav_host, fragment)
             // Commit the transaction
-            transaction.commit()
+            transaction.commit()*/
         }
 
         followingLink.setOnClickListener {

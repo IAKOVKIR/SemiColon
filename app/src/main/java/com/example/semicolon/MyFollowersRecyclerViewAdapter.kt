@@ -23,7 +23,8 @@ import java.util.*
 class MyFollowersRecyclerViewAdapter(
     private val mValues: List<User>,
     private val mContext: Context,
-    private val mListener: FollowersFragment.OnListFragmentInteractionListener?,
+    //private val mListener: FollowersFragment.OnListFragmentInteractionListener?,
+    private val mListener: ListFollowers.OnListFragmentInteractionListener?,
     private val mUser: String,
     private val buttonsVisibility: Boolean
     /*private val follower: Boolean*/
