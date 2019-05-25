@@ -16,18 +16,18 @@ import android.view.ViewGroup
  * [ListFollowers.OnListFragmentInteractionListener] interface.
  */
 
-class ListFollowers : Fragment() {
+class ListFollowing : Fragment() {
 
     private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
     private var data: DatabaseOpenHelper? = null
-    private var receiverID: String? = null
+    private var senderID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
-            receiverID = it.getString("receiverID")
+            senderID = it.getString("senderID")
         }
     }
 
@@ -35,7 +35,7 @@ class ListFollowers : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_list_followers, container, false)
+        val view = inflater.inflate(R.layout.fragment_list_following, container, false)
         val list = view.findViewById<RecyclerView>(R.id.list)
         data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
 
@@ -46,10 +46,9 @@ class ListFollowers : Fragment() {
                     columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
                     else -> layoutManager = GridLayoutManager(context, columnCount)
                 }
-                adapter = MyFollowersRecyclerViewAdapter(
-                    data!!.readAllFollowers(receiverID!!, 1, receiverID!!.toInt()), context,
-                    listener as OnListFragmentInteractionListener, "1", false
-                )
+                adapter = MyFollowingRecyclerViewAdapter(
+                    data!!.readAllFollowing(senderID!!), context,
+                    listener as OnListFragmentInteractionListener, "1", false)
             }
 
         return view

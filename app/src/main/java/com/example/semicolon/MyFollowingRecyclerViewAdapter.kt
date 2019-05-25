@@ -1,6 +1,5 @@
 package com.example.semicolon
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -24,9 +23,9 @@ import java.util.*
 class MyFollowingRecyclerViewAdapter(
     private val mValues: List<User>,
     private val mContext: Context,
-    private val mListener: OnListFragmentInteractionListener?
-    //private val mUser: String
-    //private val follower: Boolean
+    private val mListener: ListFollowing.OnListFragmentInteractionListener?,
+    private val mUser: String,
+    private val buttonsVisibility: Boolean
 ) : RecyclerView.Adapter<MyFollowingRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
@@ -50,7 +49,6 @@ class MyFollowingRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         holder.mIdView.text = item.firstName
@@ -59,6 +57,7 @@ class MyFollowingRecyclerViewAdapter(
         var bool = db!!.checkFollower(yourID, item.id.toString())
 
         val bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.smithers)
+        val str = arrayOf("Confirmed", "Declined", "in progress", "follow", "unfollow")
         val height = bitmap.height
         val width = bitmap.width
         val dif = height.toDouble() / width
@@ -68,24 +67,46 @@ class MyFollowingRecyclerViewAdapter(
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
         val strDate = sdf.format(c.time).trim()
 
+        if (buttonsVisibility) {
+            holder.mRequestButtons.visibility = View.VISIBLE
+            holder.mUnFollowButtons.visibility = View.GONE
+        } else {
+            holder.mRequestButtons.visibility = View.GONE
+            holder.mUnFollowButtons.visibility = View.VISIBLE
+        }
+
         when (bool) {
-            1 -> holder.mFollowUnFollowButton.text = "unfollow"
-            2 -> holder.mFollowUnFollowButton.text = "follow"
-            else -> holder.mFollowUnFollowButton.text = "in progress"
+            1 -> holder.mFollowUnFollowButton.text = str[4]
+            2 -> holder.mFollowUnFollowButton.text = str[3]
+            else -> holder.mFollowUnFollowButton.text = str[2]
         }
 
         holder.mFollowUnFollowButton.setOnClickListener {
             if (bool == 2) {
-                holder.mFollowUnFollowButton.text = "in progress"
+                holder.mFollowUnFollowButton.text = str[2]
                 bool = 3
                 val friend = Friend(db!!.countFriendTable(), yourID.toInt(), item.id,
                     strDate.substring(11, 19), strDate.substring(0, 10), bool)
                 db!!.insertRequest(friend)
             } else {
-                holder.mFollowUnFollowButton.text = "follow"
+                holder.mFollowUnFollowButton.text = str[3]
                 bool = 2
                 db!!.deleteFollowing(yourID, item.id.toString())
             }
+        }
+
+        holder.mConfirmButton.setOnClickListener {
+            db!!.updateRequest(item.id.toString(), mUser, 1)
+            holder.mResultText.text = str[0]
+            holder.mRequestButtons.visibility = View.GONE
+            holder.mRequestResult.visibility = View.VISIBLE
+        }
+
+        holder.mDeclineButton.setOnClickListener {
+            db!!.deleteUser(mUser)
+            holder.mResultText.text = str[1]
+            holder.mRequestButtons.visibility = View.GONE
+            holder.mRequestResult.visibility = View.VISIBLE
         }
 
         with(holder.mView) {
@@ -100,7 +121,13 @@ class MyFollowingRecyclerViewAdapter(
         val mIdView: TextView = mView.friend_first_name
         val mUserImage: CircleImageView = mView.userImage
         val mContentView: TextView = mView.friend_second_name
+        val mConfirmButton: Button = mView.confirm_button
+        val mDeclineButton: Button = mView.decline_button
+        val mRequestResult: LinearLayout = mView.request_result
+        val mRequestButtons: LinearLayout = mView.request_buttons
+        val mUnFollowButtons: LinearLayout = mView.follow_un_follow_buttons
         val mFollowUnFollowButton: Button = mView.un_follow_button
+        val mResultText: TextView = mView.button_result
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView.text + "'"

@@ -81,25 +81,12 @@ class MainFragment : Fragment() {
             val intent = Intent(activity, FollowersActivity::class.java)
             intent.putStringArrayListExtra("dataToTheList", param1)
             startActivity(intent)
-            /*val fragment = FollowersFragment()
-            args.putStringArrayList("user", param1)
-            fragment.arguments = args
-            val manager = fragmentManager
-            val transaction = manager!!.beginTransaction()
-            transaction.add(R.id.nav_host, fragment)
-            // Commit the transaction
-            transaction.commit()*/
         }
 
         followingLink.setOnClickListener {
-            val fragment: Fragment = FollowingFragment()
-            args.putStringArrayList("user", param1)
-            fragment.arguments = args
-            val manager = fragmentManager
-            val transaction = manager!!.beginTransaction()
-            transaction.add(R.id.nav_host, fragment)
-            // Commit the transaction
-            transaction.commit()
+            val intent = Intent(activity, FollowingActivity::class.java)
+            intent.putStringArrayListExtra("dataToTheList", param1)
+            startActivity(intent)
         }
 
         val settingsButton : ImageButton = view.findViewById(R.id.settings_button)

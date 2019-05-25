@@ -11,6 +11,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".FollowingActivity">
+        </activity>
         <activity android:name=".FriendActivity">
         </activity>
         <activity android:name=".FollowersActivity">
