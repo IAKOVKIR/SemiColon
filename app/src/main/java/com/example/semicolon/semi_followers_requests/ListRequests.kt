@@ -38,7 +38,7 @@ class ListRequests : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_list_requests, container, false)
+        val view = inflater.inflate(R.layout.followers_requests_list_requests, container, false)
         val list = view.findViewById<RecyclerView>(R.id.list)
         data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
 
@@ -50,8 +50,8 @@ class ListRequests : Fragment() {
                     else -> layoutManager = GridLayoutManager(context, columnCount)
                 }
                 adapter = MyRequestsRecyclerViewAdapter(
-                    data!!.readAllFollowers(receiverID!!, 1, receiverID!!.toInt()),
-                    context, listener as OnListFragmentInteractionListener, "1", false)
+                    data!!.readAllFollowers(receiverID!!, 2, receiverID!!.toInt()),
+                    context, listener as OnListFragmentInteractionListener, receiverID!!)
             }
 
         return view
