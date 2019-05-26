@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.semi_following_search
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -9,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.semicolon.*
 import com.example.semicolon.FollowingFragment.OnListFragmentInteractionListener
+import com.example.semicolon.semi_database.DatabaseOpenHelper
 import de.hdodenhof.circleimageview.CircleImageView
 
 import kotlinx.android.synthetic.main.fragment_friends.view.*
@@ -85,8 +87,10 @@ class MyFollowingRecyclerViewAdapter(
             if (bool == 2) {
                 holder.mFollowUnFollowButton.text = str[2]
                 bool = 3
-                val friend = Friend(db!!.countFriendTable(), yourID.toInt(), item.id,
-                    strDate.substring(11, 19), strDate.substring(0, 10), bool)
+                val friend = Friend(
+                    db!!.countFriendTable(), yourID.toInt(), item.id,
+                    strDate.substring(11, 19), strDate.substring(0, 10), bool
+                )
                 db!!.insertRequest(friend)
             } else {
                 holder.mFollowUnFollowButton.text = str[3]

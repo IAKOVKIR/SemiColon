@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.semi_following_search.ListFollowing
+import com.example.semicolon.semi_following_search.MyFollowingRecyclerViewAdapter
 
 class FollowingSliderAdapter(private val context : Context, var data : DatabaseOpenHelper,
                              private var listener: OnListFragmentInteractionListener,
@@ -42,8 +45,10 @@ class FollowingSliderAdapter(private val context : Context, var data : DatabaseO
                             columnCount <= 1 -> LinearLayoutManager(context)
                             else -> GridLayoutManager(context, columnCount)
                         }
-                        adapter = MyFollowingRecyclerViewAdapter(data.readAllFollowing(param1[0]), context,
-                            listener as ListFollowing.OnListFragmentInteractionListener, "1", false)
+                        adapter = MyFollowingRecyclerViewAdapter(
+                            data.readAllFollowing(param1[0]), context,
+                            listener as ListFollowing.OnListFragmentInteractionListener, "1", false
+                        )
                     }
 
             }
@@ -54,8 +59,10 @@ class FollowingSliderAdapter(private val context : Context, var data : DatabaseO
                             columnCount <= 1 -> LinearLayoutManager(context)
                             else -> GridLayoutManager(context, columnCount)
                         }
-                        adapter = MyFollowingRecyclerViewAdapter(listOf(), context,
-                            listener as ListFollowing.OnListFragmentInteractionListener, "1", false)
+                        adapter = MyFollowingRecyclerViewAdapter(
+                            listOf(), context,
+                            listener as ListFollowing.OnListFragmentInteractionListener, "1", false
+                        )
                     }
 
             }

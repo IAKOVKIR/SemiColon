@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.semi_followers_requests
 
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.R
+import com.example.semicolon.User
 
 /**
  * A fragment representing a list of Items.
@@ -16,7 +19,7 @@ import android.view.ViewGroup
  * [ListFollowers.OnListFragmentInteractionListener] interface.
  */
 
-class ListFollowers : Fragment() {
+class ListRequests : Fragment() {
 
     private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
@@ -27,7 +30,7 @@ class ListFollowers : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
-            receiverID = it.getString("receiverID")
+            receiverID = it.getString("receiver_id")
         }
     }
 
@@ -35,7 +38,7 @@ class ListFollowers : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_list_followers, container, false)
+        val view = inflater.inflate(R.layout.fragment_list_requests, container, false)
         val list = view.findViewById<RecyclerView>(R.id.list)
         data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
 
@@ -46,10 +49,9 @@ class ListFollowers : Fragment() {
                     columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
                     else -> layoutManager = GridLayoutManager(context, columnCount)
                 }
-                adapter = MyFollowersRecyclerViewAdapter(
-                    data!!.readAllFollowers(receiverID!!, 1, receiverID!!.toInt()), context,
-                    listener as OnListFragmentInteractionListener, "1", false
-                )
+                adapter = MyRequestsRecyclerViewAdapter(
+                    data!!.readAllFollowers(receiverID!!, 1, receiverID!!.toInt()),
+                    context, listener as OnListFragmentInteractionListener, "1", false)
             }
 
         return view

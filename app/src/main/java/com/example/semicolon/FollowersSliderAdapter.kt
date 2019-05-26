@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.semi_followers_requests.ListFollowers
+import com.example.semicolon.semi_followers_requests.MyFollowersRecyclerViewAdapter
 
 class FollowersSliderAdapter(private val context: Context, var data: DatabaseOpenHelper,
                              private var listener: OnListFragmentInteractionListener,
@@ -43,12 +46,20 @@ class FollowersSliderAdapter(private val context: Context, var data: DatabaseOpe
                 }
                 adapter = if (position == 0) {
                     MyFollowersRecyclerViewAdapter(
-                        data.readAllFollowers(param1[0], 1, except), context,
-                        listener as /*FollowersFragment*/ListFollowers.OnListFragmentInteractionListener, param1[0], false
+                        data.readAllFollowers(param1[0], 1, except),
+                        context,
+                        listener as /*FollowersFragment*/ListFollowers.OnListFragmentInteractionListener,
+                        param1[0],
+                        false
                     )
                 } else {
-                    MyFollowersRecyclerViewAdapter(data.readAllFollowers(param1[0], 2, except), context,
-                        listener as /*FollowersFragment*/ListFollowers.OnListFragmentInteractionListener, param1[0], true)
+                    MyFollowersRecyclerViewAdapter(
+                        data.readAllFollowers(param1[0], 2, except),
+                        context,
+                        listener as /*FollowersFragment*/ListFollowers.OnListFragmentInteractionListener,
+                        param1[0],
+                        true
+                    )
                 }
             }
         }

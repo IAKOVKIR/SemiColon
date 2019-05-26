@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.semi_registration
 
 import android.app.Activity
 import android.graphics.Color
@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
 import android.view.View
+import com.example.semicolon.R
 
 class Registration : Activity() {
 

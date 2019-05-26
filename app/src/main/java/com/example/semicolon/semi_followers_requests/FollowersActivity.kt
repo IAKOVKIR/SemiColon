@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.semi_followers_requests
 
 import android.content.Context
 import android.content.Intent
@@ -9,9 +9,11 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import com.example.semicolon.*
 import java.util.ArrayList
 
-class FollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentInteractionListener {
+class FollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentInteractionListener,
+    ListRequests.OnListFragmentInteractionListener {
 
     private var log = Login()
     private var tabLayout: TabLayout? = null
@@ -50,11 +52,13 @@ class FollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentIntera
         val args = Bundle()
         args.putString("receiver_id", sender_id)
 
-        val listFragment = ListFollowers()
-        listFragment.arguments = args
+        val listFollowers = ListFollowers()
+        val listRequests = ListRequests()
+        listFollowers.arguments = args
+        listRequests.arguments = args
 
-        adapter.addFragment(listFragment, "Followers")
-        adapter.addFragment(Fragment(), "Requests")
+        adapter.addFragment(listFollowers, "Followers")
+        adapter.addFragment(listRequests, "Requests")
         viewPager.adapter = adapter
     }
 

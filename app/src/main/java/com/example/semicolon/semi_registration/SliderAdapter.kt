@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.semi_registration
 
 import android.content.Context
 import android.support.design.widget.TextInputEditText
@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.semicolon.R
 
 class SliderAdapter(private val context : Context) : PagerAdapter() {
 

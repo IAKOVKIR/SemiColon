@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import com.example.semicolon.DatabaseOpenHelper
+import com.example.semicolon.semi_database.DatabaseOpenHelper
 import com.example.semicolon.Login
 import com.example.semicolon.R
 
@@ -77,7 +77,8 @@ class SettingParamsFragment : Fragment() {
                     if (password == curPas)
                         if (newPas == repeatPassword.text.toString())
                             if (newPas != curPas) {
-                                val db = DatabaseOpenHelper(activity!!.applicationContext)
+                                val db =
+                                    DatabaseOpenHelper(activity!!.applicationContext)
                                 db.setPassword(param3!![0].toInt(), newPas)
                                 changePassword(newPas)
                                 activity!!.onBackPressed()

@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.semi_following_search
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,10 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import com.example.semicolon.FriendActivity
+import com.example.semicolon.Login
+import com.example.semicolon.R
+import com.example.semicolon.User
 import java.util.ArrayList
 
 class FollowingActivity : FragmentActivity(), ListFollowing.OnListFragmentInteractionListener {

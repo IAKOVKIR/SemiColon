@@ -11,18 +11,18 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".FollowingActivity">
+        <activity android:name=".semi_following_search.FollowingActivity">
         </activity>
         <activity android:name=".FriendActivity">
         </activity>
-        <activity android:name=".FollowersActivity">
+        <activity android:name=".semi_followers_requests.FollowersActivity">
         </activity>
         <activity
                 android:name=".UserHomeActivity"
                 android:screenOrientation="portrait">
         </activity>
         <activity
-                android:name=".Registration"
+                android:name=".semi_registration.Registration"
                 android:screenOrientation="portrait">
         </activity>
         <activity android:name=".DataRecovery">
