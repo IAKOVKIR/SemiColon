@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/BLACK"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <EditText
+            android:id="@+id/editText4"
+            android:textSize="22sp"
+            android:textColor="@color/WHITE"
+            android:textCursorDrawable="@drawable/black_cursor"
+            android:backgroundTint="@color/WHITE"
+            android:textColorHint="#CAC2C2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:inputType="text"
+            tools:ignore="Autofill,LabelFor"/>
+
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:name="com.example.semicolon.ListSearchUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="LinearLayoutManager"
+            tools:context=".semi_following_search.ListSearchUser"
+            tools:listitem="@layout/fragment_friends"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/editText4"
+            android:paddingBottom="60dp"/>
+
+</android.support.constraint.ConstraintLayout>

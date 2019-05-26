@@ -16,7 +16,7 @@ import com.example.semicolon.User
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [ListFollowers.OnListFragmentInteractionListener] interface.
+ * [ListFollowing.OnListFragmentInteractionListener] interface.
  */
 
 class ListFollowing : Fragment() {

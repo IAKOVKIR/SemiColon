@@ -15,7 +15,8 @@ import com.example.semicolon.R
 import com.example.semicolon.User
 import java.util.ArrayList
 
-class FollowingActivity : FragmentActivity(), ListFollowing.OnListFragmentInteractionListener {
+class FollowingActivity : FragmentActivity(), ListFollowing.OnListFragmentInteractionListener,
+    ListSearchUser.OnListFragmentInteractionListener {
 
     private var log = Login()
     private var tabLayout: TabLayout? = null
@@ -55,11 +56,13 @@ class FollowingActivity : FragmentActivity(), ListFollowing.OnListFragmentIntera
         val args = Bundle()
         args.putString("senderID", sender_id)
 
-        val listFragment = ListFollowing()
-        listFragment.arguments = args
+        val listFollowing = ListFollowing()
+        val listSearchUser = ListSearchUser()
+        listFollowing.arguments = args
+        listSearchUser.arguments = args
 
-        adapter.addFragment(listFragment, "Following")
-        adapter.addFragment(Fragment(), "Find a follower")
+        adapter.addFragment(listFollowing, "Following")
+        adapter.addFragment(listSearchUser, "Find a follower")
         viewPager.adapter = adapter
     }
 

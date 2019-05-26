@@ -1,4 +1,4 @@
-package com.example.semicolon.semi_followers_requests
+package com.example.semicolon.semi_following_search
 
 import android.content.Context
 import android.os.Bundle
@@ -16,21 +16,21 @@ import com.example.semicolon.User
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [ListRequests.OnListFragmentInteractionListener] interface.
+ * [ListSearchUser.OnListFragmentInteractionListener] interface.
  */
 
-class ListRequests : Fragment() {
+class ListSearchUser : Fragment() {
 
     private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
     private var data: DatabaseOpenHelper? = null
-    private var receiverID: String? = null
+    private var senderID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
-            receiverID = it.getString("receiver_id")
+            senderID = it.getString("senderID")
         }
     }
 
@@ -38,7 +38,7 @@ class ListRequests : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_list_requests, container, false)
+        val view = inflater.inflate(R.layout.fragment_list_search_user, container, false)
         val list = view.findViewById<RecyclerView>(R.id.list)
         data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
 
@@ -49,9 +49,13 @@ class ListRequests : Fragment() {
                     columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
                     else -> layoutManager = GridLayoutManager(context, columnCount)
                 }
-                adapter = MyRequestsRecyclerViewAdapter(
-                    data!!.readAllFollowers(receiverID!!, 1, receiverID!!.toInt()),
-                    context, listener as OnListFragmentInteractionListener, "1", false)
+                adapter = MySearchUserRecyclerViewAdapter(
+                    data!!.readAllFollowing(senderID!!),
+                    context,
+                    listener as OnListFragmentInteractionListener,
+                    "1",
+                    false
+                )
             }
 
         return view
