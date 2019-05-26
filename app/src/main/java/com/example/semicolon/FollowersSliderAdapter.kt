@@ -9,9 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.semicolon.semi_database.DatabaseOpenHelper
-import com.example.semicolon.semi_followers_requests.ListFollowers
-import com.example.semicolon.semi_followers_requests.MyFollowersRecyclerViewAdapter
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.followers_requests.ListFollowers
+import com.example.semicolon.followers_requests.MyFollowersRecyclerViewAdapter
 
 class FollowersSliderAdapter(private val context: Context, var data: DatabaseOpenHelper,
                              private var listener: OnListFragmentInteractionListener,

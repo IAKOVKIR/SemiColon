@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.*
 import com.example.semicolon.FollowingFragment.OnListFragmentInteractionListener
-import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import de.hdodenhof.circleimageview.CircleImageView
 
 import kotlinx.android.synthetic.main.fragment_friends.view.*

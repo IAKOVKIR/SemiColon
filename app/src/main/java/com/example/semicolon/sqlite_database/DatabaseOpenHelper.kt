@@ -1,4 +1,4 @@
-package com.example.semicolon.semi_database
+package com.example.semicolon.sqlite_database
 
 import android.content.ContentValues
 import android.content.Context

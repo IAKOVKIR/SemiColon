@@ -11,7 +11,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 
 class FollowingFragment : Fragment() {
 

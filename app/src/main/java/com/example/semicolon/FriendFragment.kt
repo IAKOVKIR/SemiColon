@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.users.UserFollowersFragment
 import java.text.SimpleDateFormat
 import java.util.*

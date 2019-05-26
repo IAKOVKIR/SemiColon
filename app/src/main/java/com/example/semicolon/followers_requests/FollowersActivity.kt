@@ -1,4 +1,4 @@
-package com.example.semicolon.semi_followers_requests
+package com.example.semicolon.followers_requests
 
 import android.content.Context
 import android.content.Intent

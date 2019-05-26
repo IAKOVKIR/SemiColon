@@ -1,4 +1,4 @@
-package com.example.semicolon.semi_followers_requests
+package com.example.semicolon.followers_requests
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,24 +11,21 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.*
 import com.example.semicolon.FollowingFragment.OnListFragmentInteractionListener
-import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import de.hdodenhof.circleimageview.CircleImageView
 
 import kotlinx.android.synthetic.main.fragment_friends.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  */
-class MyFollowersRecyclerViewAdapter(
+class MyRequestsRecyclerViewAdapter(
     private val mValues: List<User>,
     private val mContext: Context,
-    private val mListener: ListFollowers.OnListFragmentInteractionListener?,
-    private val mUser: String,
-    private val buttonsVisibility: Boolean
-) : RecyclerView.Adapter<MyFollowersRecyclerViewAdapter.ViewHolder>() {
+    private val mListener: ListRequests.OnListFragmentInteractionListener?,
+    private val mUser: String
+) : RecyclerView.Adapter<MyRequestsRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
     private var db: DatabaseOpenHelper? = null
@@ -45,7 +42,7 @@ class MyFollowersRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_friends, parent, false)
+            .inflate(R.layout.followers_requests_friends_requests, parent, false)
         n = mContext.getSharedPreferences(Login().prefName, Context.MODE_PRIVATE)
         db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
@@ -55,8 +52,6 @@ class MyFollowersRecyclerViewAdapter(
         val item = mValues[position]
         holder.mIdView.text = item.firstName
         holder.mContentView.text = item.lastName
-        val yourID = n!!.getString(Login().prefVar[0], "") as String
-        var bool = db!!.checkFollower(yourID, item.id.toString())
 
         val bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.smithers)
         val str = arrayOf("Confirmed", "Declined", "in progress", "follow", "unfollow")
@@ -64,40 +59,6 @@ class MyFollowersRecyclerViewAdapter(
         val width = bitmap.width
         val dif = height.toDouble() / width
         holder.mUserImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 200, (200 * dif).toInt(), true))
-
-        val c = Calendar.getInstance()
-        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-        val strDate = sdf.format(c.time).trim()
-
-        if (buttonsVisibility) {
-            holder.mRequestButtons.visibility = View.VISIBLE
-            holder.mUnFollowButtons.visibility = View.GONE
-        } else {
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mUnFollowButtons.visibility = View.VISIBLE
-        }
-
-        when (bool) {
-            1 -> holder.mFollowUnFollowButton.text = str[4]
-            2 -> holder.mFollowUnFollowButton.text = str[3]
-            else -> holder.mFollowUnFollowButton.text = str[2]
-        }
-
-        holder.mFollowUnFollowButton.setOnClickListener {
-            if (bool == 2) {
-                holder.mFollowUnFollowButton.text = str[2]
-                bool = 3
-                val friend = Friend(
-                    db!!.countFriendTable(), yourID.toInt(), item.id,
-                    strDate.substring(11, 19), strDate.substring(0, 10), bool
-                )
-                db!!.insertRequest(friend)
-            } else {
-                holder.mFollowUnFollowButton.text = str[3]
-                bool = 2
-                db!!.deleteFollowing(yourID, item.id.toString())
-            }
-        }
 
         holder.mConfirmButton.setOnClickListener {
             db!!.updateRequest(item.id.toString(), mUser, 1)
@@ -129,8 +90,6 @@ class MyFollowersRecyclerViewAdapter(
         val mDeclineButton: Button = mView.decline_button
         val mRequestResult: LinearLayout = mView.request_result
         val mRequestButtons: LinearLayout = mView.request_buttons
-        val mUnFollowButtons: LinearLayout = mView.follow_un_follow_buttons
-        val mFollowUnFollowButton: Button = mView.un_follow_button
         val mResultText: TextView = mView.button_result
 
         override fun toString(): String {

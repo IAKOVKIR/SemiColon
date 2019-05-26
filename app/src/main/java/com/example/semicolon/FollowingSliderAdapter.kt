@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.semi_following_search.ListFollowing
 import com.example.semicolon.semi_following_search.MyFollowingRecyclerViewAdapter
 

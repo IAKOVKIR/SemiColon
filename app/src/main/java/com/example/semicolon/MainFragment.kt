@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.example.semicolon.semi_database.DatabaseOpenHelper
-import com.example.semicolon.semi_followers_requests.FollowersActivity
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.followers_requests.FollowersActivity
 import com.example.semicolon.semi_following_search.FollowingActivity
 import com.example.semicolon.semi_settings.SettingFragment
 

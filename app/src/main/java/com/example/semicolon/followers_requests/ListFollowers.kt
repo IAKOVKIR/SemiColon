@@ -1,4 +1,4 @@
-package com.example.semicolon.semi_followers_requests
+package com.example.semicolon.followers_requests
 
 import android.content.Context
 import android.os.Bundle
@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
 import com.example.semicolon.User
 
@@ -38,7 +38,7 @@ class ListFollowers : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_list_followers, container, false)
+        val view = inflater.inflate(R.layout.followers_requests_list_followers, container, false)
         val list = view.findViewById<RecyclerView>(R.id.list)
         data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
 
@@ -51,7 +51,7 @@ class ListFollowers : Fragment() {
                 }
                 adapter = MyFollowersRecyclerViewAdapter(
                     data!!.readAllFollowers(receiverID!!, 1, receiverID!!.toInt()),
-                    context, listener as OnListFragmentInteractionListener, "1", false)
+                    context, listener as OnListFragmentInteractionListener)
             }
 
         return view

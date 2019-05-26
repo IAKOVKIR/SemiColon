@@ -1,4 +1,4 @@
-package com.example.semicolon.semi_followers_requests
+package com.example.semicolon.followers_requests
 
 import android.content.Context
 import android.os.Bundle
@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.semicolon.semi_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
 import com.example.semicolon.User
 
