@@ -186,6 +186,34 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return users
     }
 
+    fun searchAllUsers(UserID: String, except: Int, searchLine: String): ArrayList<User> {
+        val users = ArrayList<User>()
+        val db = writableDatabase
+        val cursor: Cursor?
+
+        try {
+            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.SenderID != '$except' AND (USER.UserFirstName LIKE '$searchLine%' OR USER.UserLastName LIKE '$searchLine%')"
+            cursor = db.rawQuery(line, null)
+        } catch (e: SQLiteException) {
+            return ArrayList()
+        }
+
+        if (cursor!!.moveToFirst())
+            while (!cursor.isAfterLast) {
+                val id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
+                val firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
+                val lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
+                val phoneNum = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                val city = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_CITY))
+                val email = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                users.add(User(id, firstName, lastName, phoneNum, "", city, 1, 0F, email))
+                cursor.moveToNext()
+            }
+
+        cursor.close()
+        return users
+    }
+
     fun searchAllFollowers(UserID: String, num: Int, except: Int, searchLine: String): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase

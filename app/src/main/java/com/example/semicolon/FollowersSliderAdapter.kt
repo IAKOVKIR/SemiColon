@@ -48,17 +48,13 @@ class FollowersSliderAdapter(private val context: Context, var data: DatabaseOpe
                     MyFollowersRecyclerViewAdapter(
                         data.readAllFollowers(param1[0], 1, except),
                         context,
-                        listener as /*FollowersFragment*/ListFollowers.OnListFragmentInteractionListener,
-                        param1[0],
-                        false
+                        listener as /*FollowersFragment*/ListFollowers.OnListFragmentInteractionListener
                     )
                 } else {
                     MyFollowersRecyclerViewAdapter(
                         data.readAllFollowers(param1[0], 2, except),
                         context,
-                        listener as /*FollowersFragment*/ListFollowers.OnListFragmentInteractionListener,
-                        param1[0],
-                        true
+                        listener as /*FollowersFragment*/ListFollowers.OnListFragmentInteractionListener
                     )
                 }
             }
