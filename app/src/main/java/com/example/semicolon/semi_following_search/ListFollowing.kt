@@ -6,9 +6,12 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
 import com.example.semicolon.User
@@ -40,6 +43,7 @@ class ListFollowing : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_list_following, container, false)
         val list = view.findViewById<RecyclerView>(R.id.list)
+        val searchFollowing = view.findViewById<EditText>(R.id.search)
         data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
 
         // Set the adapter
@@ -57,6 +61,28 @@ class ListFollowing : Fragment() {
                     false
                 )
             }
+
+        searchFollowing.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val line = searchFollowing.text.toString()
+                if (list is RecyclerView)
+                    with(list) {
+                        when {
+                            columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
+                            else -> layoutManager = GridLayoutManager(context, columnCount)
+                        }
+                        adapter = MySearchUserRecyclerViewAdapter(
+                            data!!.searchAllFollowing(senderID!!, line),
+                            context,
+                            listener as ListSearchUser.OnListFragmentInteractionListener,
+                            "1",
+                            false
+                        )
+                    }
+            }
+        })
 
         return view
     }

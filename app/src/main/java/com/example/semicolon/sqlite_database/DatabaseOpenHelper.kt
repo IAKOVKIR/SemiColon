@@ -214,18 +214,13 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return users
     }
 
-    fun searchAllFollowers(UserID: String, num: Int, except: Int, searchLine: String): ArrayList<User> {
+    fun searchAllFollowing(UserID: String, searchLine: String): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase
         val cursor: Cursor?
 
-        val condition: Int = if (num == 1)
-            1//confirmed
-        else
-            3//inProgress
-
         try {
-            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition' AND FRIEND.SenderID != '$except' AND (USER.UserFirstName LIKE '$searchLine%' OR USER.UserLastName LIKE '$searchLine%')"
+            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = 1 AND (USER.UserFirstName LIKE '$searchLine%' OR USER.UserLastName LIKE '$searchLine%')"
             cursor = db.rawQuery(line, null)
         } catch (e: SQLiteException) {
             return ArrayList()
@@ -355,7 +350,8 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         private const val SQL_DELETE_FRIEND_TABLE = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME
     }
 
-    @Throws(SQLiteConstraintException::class)
+    //in development stage
+   /* @Throws(SQLiteConstraintException::class)
    fun insertUser(user: User): Boolean {
        // Gets the data repository in write mode
        val db = writableDatabase
@@ -375,6 +371,39 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
        db.insert(DBContract.UserEntry.USER_TABLE_NAME, null, values)
 
        return true
-   }
+   }*/
+
+    /*fun searchAllFollowers(UserID: String, num: Int, except: Int, searchLine: String): ArrayList<User> {
+        val users = ArrayList<User>()
+        val db = writableDatabase
+        val cursor: Cursor?
+
+        val condition: Int = if (num == 1)
+            1//confirmed
+        else
+            3//inProgress
+
+        try {
+            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$condition' AND FRIEND.SenderID != '$except' AND (USER.UserFirstName LIKE '$searchLine%' OR USER.UserLastName LIKE '$searchLine%')"
+            cursor = db.rawQuery(line, null)
+        } catch (e: SQLiteException) {
+            return ArrayList()
+        }
+
+        if (cursor!!.moveToFirst())
+            while (!cursor.isAfterLast) {
+                val id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
+                val firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
+                val lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
+                val phoneNum = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                val city = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_CITY))
+                val email = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                users.add(User(id, firstName, lastName, phoneNum, "", city, 1, 0F, email))
+                cursor.moveToNext()
+            }
+
+        cursor.close()
+        return users
+    }*/
 
 }

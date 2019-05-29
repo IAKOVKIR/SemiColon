@@ -54,7 +54,7 @@ class ListSearchUser : Fragment() {
                     else -> layoutManager = GridLayoutManager(context, columnCount)
                 }
                 adapter = MySearchUserRecyclerViewAdapter(
-                    data!!.readAllFollowing(senderID!!),
+                    data!!.searchAllUsers(senderID!!, senderID!!.toInt(), ""),
                     context,
                     listener as OnListFragmentInteractionListener,
                     "1",
