@@ -54,9 +54,6 @@ class Registration : Activity() {
     private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
 
-            val drawCircle = getDrawable(R.drawable.reg_circle)
-            val drawUpdatedCircle = getDrawable(R.drawable.reg_update_circle)
-
             when (position) {
                 0 -> {
                     firstCircle!!.setTextColor(Color.WHITE)
