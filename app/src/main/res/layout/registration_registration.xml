@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/BLACK"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        tools:context=".semi_registration.Registration">
+
+    <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/footerLayout"
+            android:id="@+id/slideViewPager"/>
+
+    <RelativeLayout
+            android:id="@+id/footerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+        <Button
+                android:id="@+id/buttonBack"
+                android:textColor="@color/WHITE"
+                android:background="@android:color/transparent"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <Button
+                android:id="@+id/buttonNext"
+                android:textColor="@color/WHITE"
+                android:text="@string/word_next"
+                android:background="@android:color/transparent"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="RelativeOverlap"/>
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/buttonBack"
+                android:layout_toStartOf="@+id/buttonNext">
+
+            <TextView
+                    android:id="@+id/FirstCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:textSize="37sp"
+                    android:textColor="@color/WHITE"
+                    android:layout_alignParentStart="true"
+                    android:text="•"/>
+
+            <TextView
+                    android:id="@+id/SecondCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="37sp"
+                    android:textColor="@color/GREY"
+                    android:layout_centerHorizontal="true"
+                    android:text="•"/>
+
+            <TextView
+                    android:id="@+id/ThirdCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:textSize="37sp"
+                    android:textColor="@color/GREY"
+                    android:layout_alignParentEnd="true"
+                    android:text="•"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

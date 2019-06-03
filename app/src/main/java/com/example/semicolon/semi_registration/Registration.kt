@@ -27,7 +27,7 @@ class Registration : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registration)
+        setContentView(R.layout.registration_registration)
 
         val sliderAdapter = SliderAdapter(this)
 
@@ -59,12 +59,9 @@ class Registration : Activity() {
 
             when (position) {
                 0 -> {
-                    firstCircle!!.background = drawUpdatedCircle
-                    firstCircle!!.setTextColor(Color.BLACK)
-                    secondCircle!!.background = drawCircle
-                    thirdCircle!!.background = drawCircle
-                    secondCircle!!.setTextColor(Color.WHITE)
-                    thirdCircle!!.setTextColor(Color.WHITE)
+                    firstCircle!!.setTextColor(Color.WHITE)
+                    secondCircle!!.setTextColor(Color.GRAY)
+                    thirdCircle!!.setTextColor(Color.GRAY)
 
                     buttonBack!!.isEnabled = false
                     buttonBack!!.text = ""
@@ -76,12 +73,9 @@ class Registration : Activity() {
 
                 }
                 1 -> {
-                    secondCircle!!.background = drawUpdatedCircle
-                    secondCircle!!.setTextColor(Color.BLACK)
-                    firstCircle!!.background = drawCircle
-                    thirdCircle!!.background = drawCircle
-                    firstCircle!!.setTextColor(Color.WHITE)
-                    thirdCircle!!.setTextColor(Color.WHITE)
+                    secondCircle!!.setTextColor(Color.WHITE)
+                    firstCircle!!.setTextColor(Color.GRAY)
+                    thirdCircle!!.setTextColor(Color.GRAY)
 
                     buttonBack!!.isEnabled = true
                     buttonBack!!.text = getString(R.string.word_back)
@@ -104,12 +98,9 @@ class Registration : Activity() {
                     }
                     imm!!.hideSoftInputFromWindow(view.windowToken, 0)
 
-                    thirdCircle!!.background = drawUpdatedCircle
-                    thirdCircle!!.setTextColor(Color.BLACK)
-                    firstCircle!!.background = drawCircle
-                    secondCircle!!.background = drawCircle
-                    firstCircle!!.setTextColor(Color.WHITE)
-                    secondCircle!!.setTextColor(Color.WHITE)
+                    thirdCircle!!.setTextColor(Color.WHITE)
+                    firstCircle!!.setTextColor(Color.GRAY)
+                    secondCircle!!.setTextColor(Color.GRAY)
 
                     buttonBack!!.isEnabled = true
                     buttonBack!!.text = getString(R.string.word_back)

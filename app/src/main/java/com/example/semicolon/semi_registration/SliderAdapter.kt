@@ -33,7 +33,7 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         val layoutInflater = LayoutInflater.from(context)
-        val view = layoutInflater.inflate(R.layout.slide_layout, container, false)
+        val view = layoutInflater.inflate(R.layout.registration_slide_layout, container, false)
 
         //layouts
         val firstLayout = view.findViewById<ScrollView>(R.id.first_layout)
