@@ -90,9 +90,9 @@ class Registration : Activity() {
                 else -> {
 
                     var view = currentFocus
-                    if (view == null) {
+                    if (view == null)
                         view = View(applicationContext)
-                    }
+
                     imm!!.hideSoftInputFromWindow(view.windowToken, 0)
 
                     thirdCircle!!.setTextColor(Color.WHITE)
@@ -116,5 +116,4 @@ class Registration : Activity() {
 
         }
     }
-
 }

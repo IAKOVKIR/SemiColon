@@ -186,13 +186,13 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return users
     }
 
-    fun searchAllUsers(UserID: String, except: Int, searchLine: String): ArrayList<User> {
+    fun searchAllUsers(except: Int, searchLine: String): ArrayList<User> {
         val users = ArrayList<User>()
         val db = writableDatabase
         val cursor: Cursor?
 
         try {
-            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.SenderID != '$except' AND (USER.UserFirstName LIKE '$searchLine%' OR USER.UserLastName LIKE '$searchLine%')"
+            val line = "SELECT UserID, UserFirstName, UserLastName, Phone, City, Email FROM USER WHERE UserID != '$except' AND (UserFirstName LIKE '$searchLine%' OR UserLastName LIKE '$searchLine%')"
             cursor = db.rawQuery(line, null)
         } catch (e: SQLiteException) {
             return ArrayList()
@@ -351,7 +351,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
     }
 
     //in development stage
-   /* @Throws(SQLiteConstraintException::class)
+   /*@Throws(SQLiteConstraintException::class)
    fun insertUser(user: User): Boolean {
        // Gets the data repository in write mode
        val db = writableDatabase
