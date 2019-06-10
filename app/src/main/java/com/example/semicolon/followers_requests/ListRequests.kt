@@ -1,9 +1,11 @@
 package com.example.semicolon.followers_requests
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -18,19 +20,15 @@ import com.example.semicolon.User
  * Activities containing this fragment MUST implement the
  * [ListRequests.OnListFragmentInteractionListener] interface.
  */
-
 class ListRequests : Fragment() {
 
-    private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
-    private var data: DatabaseOpenHelper? = null
-    private var receiverID: String? = null
+    private var receiverID: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-            receiverID = it.getString("receiver_id")
+            receiverID = it.getInt("receiver_id")
         }
     }
 
@@ -38,22 +36,28 @@ class ListRequests : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.followers_requests_list_requests, container, false)
-        val list = view.findViewById<RecyclerView>(R.id.list)
-        data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
+        val view: View = inflater.inflate(R.layout.followers_requests_list_requests, container, false)
+        val list: RecyclerView = view.findViewById(R.id.list)
+        val db = DatabaseOpenHelper(context!!)
+        val listUser: ArrayList<User> = db.readAllFollowers(receiverID!!, 0, receiverID!!)
+
+        var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
+        val height: Int = bitmap.height
+        val width: Int = bitmap.width
+        val dif: Double = height.toDouble() / width
+        bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
+        val bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)
 
         // Set the adapter
-        if (list is RecyclerView)
-            with(list) {
-                when {
-                    columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
-                    else -> layoutManager = GridLayoutManager(context, columnCount)
-                }
-                adapter = MyRequestsRecyclerViewAdapter(
-                    data!!.readAllFollowers(receiverID!!, 2, receiverID!!.toInt()),
-                    context, listener as OnListFragmentInteractionListener, receiverID!!)
-            }
+        with(list) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = MyRequestsRecyclerViewAdapter(
+                listUser,
+                listener as OnListFragmentInteractionListener,
+                receiverID!!, bitmapDrawable)
+        }
 
+        db.close()
         return view
     }
 
@@ -76,16 +80,11 @@ class ListRequests : Fragment() {
      * to the activity and potentially other fragments contained in that
      * activity.
      *
-     *
      * See the Android Training lesson
      * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
-    }
-
-    companion object {
-        const val ARG_COLUMN_COUNT = "column-count"
     }
 }

@@ -1,6 +1,5 @@
 package com.example.semicolon.followers_requests
 
-import android.content.Context
 import android.content.Intent
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -15,20 +14,12 @@ import java.util.ArrayList
 class FollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentInteractionListener,
     ListRequests.OnListFragmentInteractionListener {
 
-    private var log = Login()
-    private var tabLayout: TabLayout? = null
-    private var viewPager: ViewPager? = null
+    private var myID: Int? = null
 
     override fun onListFragmentInteraction(item: User?) {
-        val n = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-        val list = arrayListOf(n.getString(log.prefVar[0], "") as String, n.getString(log.prefVar[1], "") as String,
-            n.getString(log.prefVar[2], "") as String, n.getString(log.prefVar[3], "") as String,
-            n.getString(log.prefVar[4], "") as String, n.getString(log.prefVar[5], "") as String,
-            n.getString(log.prefVar[6], "") as String, n.getString(log.prefVar[7], "") as String)
-
         val intent = Intent(this, FriendActivity::class.java)
-        intent.putExtra("param1", list[0])
-        intent.putStringArrayListExtra("param2",item!!.getList())
+        intent.putExtra("MyID", myID)
+        intent.putExtra("UserID",item!!.id)
         startActivity(intent)
     }
 
@@ -36,21 +27,20 @@ class FollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentIntera
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_followers)
 
-        val intent = intent
-        val list: ArrayList<String> = intent.getStringArrayListExtra("dataToTheList")
-        viewPager = findViewById(R.id.viewpager)
-        setupViewPager(viewPager!!, list[0])
+        myID = intent.getStringExtra("MyID").toInt()
+        val viewPager: ViewPager = findViewById(R.id.viewpager)
+        val tabLayout: TabLayout = findViewById(R.id.tabs)
 
-        tabLayout = findViewById(R.id.tabs)
-        tabLayout!!.setupWithViewPager(viewPager)
+        setupViewPager(viewPager, myID!!)
+        tabLayout.setupWithViewPager(viewPager)
 
     }
 
-    private fun setupViewPager(viewPager: ViewPager, sender_id: String) {
+    private fun setupViewPager(viewPager: ViewPager, my_receiver_id: Int) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
 
         val args = Bundle()
-        args.putString("receiver_id", sender_id)
+        args.putInt("receiver_id", my_receiver_id)
 
         val listFollowers = ListFollowers()
         val listRequests = ListRequests()

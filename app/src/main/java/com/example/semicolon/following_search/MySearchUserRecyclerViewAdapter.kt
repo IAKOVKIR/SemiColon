@@ -1,22 +1,17 @@
-package com.example.semicolon.semi_following_search
+package com.example.semicolon.following_search
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.*
-import com.example.semicolon.FollowingFragment.OnListFragmentInteractionListener
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import de.hdodenhof.circleimageview.CircleImageView
-
 import kotlinx.android.synthetic.main.fragment_friends.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import android.graphics.drawable.BitmapDrawable
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
@@ -24,15 +19,15 @@ import java.util.*
  */
 class MySearchUserRecyclerViewAdapter(
     private val mValues: List<User>,
-    private val mContext: Context,
     private val mListener: ListSearchUser.OnListFragmentInteractionListener?,
-    private val mUser: String,
-    private val buttonsVisibility: Boolean
+    private val buttonsVisibility: Boolean,
+    private val myID: Int,
+    private val mBitMap: BitmapDrawable
 ) : RecyclerView.Adapter<MySearchUserRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
+    private val str = arrayOf("Confirmed", "Declined", "in progress", "follow", "unfollow")
     private var db: DatabaseOpenHelper? = null
-    private var n: SharedPreferences? = null
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -46,7 +41,6 @@ class MySearchUserRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_friends, parent, false)
-        n = mContext.getSharedPreferences(Login().prefName, Context.MODE_PRIVATE)
         db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
     }
@@ -55,15 +49,9 @@ class MySearchUserRecyclerViewAdapter(
         val item = mValues[position]
         holder.mIdView.text = item.firstName
         holder.mContentView.text = item.lastName
-        val yourID = n!!.getString(Login().prefVar[0], "") as String
-        var bool = db!!.checkFollower(yourID, item.id.toString())
+        var bool = db!!.checkFollower(myID, item.id)
 
-        val bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.smithers)
-        val str = arrayOf("Confirmed", "Declined", "in progress", "follow", "unfollow")
-        val height = bitmap.height
-        val width = bitmap.width
-        val dif = height.toDouble() / width
-        holder.mUserImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 200, (200 * dif).toInt(), true))
+        holder.mUserImage.setImageDrawable(mBitMap)
 
         val c = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
@@ -88,26 +76,26 @@ class MySearchUserRecyclerViewAdapter(
                 holder.mFollowUnFollowButton.text = str[2]
                 bool = 3
                 val friend = Friend(
-                    db!!.countFriendTable(), yourID.toInt(), item.id,
+                    db!!.countFriendTable(), myID, item.id,
                     strDate.substring(11, 19), strDate.substring(0, 10), bool
                 )
                 db!!.insertRequest(friend)
             } else {
                 holder.mFollowUnFollowButton.text = str[3]
                 bool = 2
-                db!!.deleteFollowing(yourID, item.id.toString())
+                db!!.deleteFollowing(myID, item.id)
             }
         }
 
         holder.mConfirmButton.setOnClickListener {
-            db!!.updateRequest(item.id.toString(), mUser, 1)
+            db!!.updateRequest(item.id, 1, -1)
             holder.mResultText.text = str[0]
             holder.mRequestButtons.visibility = View.GONE
             holder.mRequestResult.visibility = View.VISIBLE
         }
 
         holder.mDeclineButton.setOnClickListener {
-            db!!.deleteUser(mUser)
+            db!!.deleteUser(1)
             holder.mResultText.text = str[1]
             holder.mRequestButtons.visibility = View.GONE
             holder.mRequestResult.visibility = View.VISIBLE
@@ -122,9 +110,9 @@ class MySearchUserRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.friend_first_name
+        val mIdView: TextView = mView.first_name
         val mUserImage: CircleImageView = mView.userImage
-        val mContentView: TextView = mView.friend_second_name
+        val mContentView: TextView = mView.last_name
         val mConfirmButton: Button = mView.confirm_button
         val mDeclineButton: Button = mView.decline_button
         val mRequestResult: LinearLayout = mView.request_result

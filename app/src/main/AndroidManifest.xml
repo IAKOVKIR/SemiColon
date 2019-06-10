@@ -11,7 +11,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".semi_following_search.FollowingActivity">
+        <activity android:name=".following_search.FollowingActivity">
         </activity>
         <activity android:name=".FriendActivity">
         </activity>

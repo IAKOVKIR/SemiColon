@@ -10,7 +10,6 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.users.UserFollowersFragment
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -25,7 +24,7 @@ private const val ARG_PARAM4 = "param4"
  */
 class FriendFragment : Fragment() {
 
-    private var param3: ArrayList<String>? = null
+    /*private var param3: ArrayList<String>? = null
     private var param4: ArrayList<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,6 +108,6 @@ class FriendFragment : Fragment() {
         numOfFollowing.text = "${db.countFollowing(param4!![0])}"
 
         return view
-    }
+    }*/
 
 }

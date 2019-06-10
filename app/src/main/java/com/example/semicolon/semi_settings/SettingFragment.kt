@@ -3,7 +3,8 @@ package com.example.semicolon.semi_settings
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -15,7 +16,6 @@ import android.view.KeyEvent
 import com.example.semicolon.MainFragment
 import com.example.semicolon.R
 
-
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
@@ -23,36 +23,19 @@ import com.example.semicolon.R
  */
 class SettingFragment : Fragment() {
 
-    private var columnCount = 1
-    private var param1 : ArrayList<String>? = null
     private var listener: OnListFragmentInteractionListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-            param1 = it.getStringArrayList("user")
-        }
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_settings_list, container, false)
-        val list = view.findViewById<RecyclerView>(R.id.list)
+        val view: View = inflater.inflate(R.layout.fragment_settings_list, container, false)
+        val list: RecyclerView = view.findViewById(R.id.list)
 
         // Set the adapter
-        if (list is RecyclerView) {
-            with(list) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = SettingsRecyclerViewAdapter(Setting.SETTING, listener)
-            }
+        with(list) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = SettingsRecyclerViewAdapter(Setting.SETTING, listener)
         }
         return view
     }
@@ -71,13 +54,10 @@ class SettingFragment : Fragment() {
         view!!.requestFocus()
         view!!.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                val args = Bundle()
-                args.putStringArrayList("user", param1)
 
                 val fragment: Fragment = MainFragment()
-                fragment.arguments = args
-                val manager = fragmentManager
-                val transaction = manager!!.beginTransaction()
+                val manager: FragmentManager? = fragmentManager
+                val transaction: FragmentTransaction = manager!!.beginTransaction()
                 transaction.replace(R.id.nav_host, fragment)
                 // Commit the transaction
                 transaction.commit()
@@ -95,9 +75,5 @@ class SettingFragment : Fragment() {
 
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: SettingItem?)
-    }
-
-    companion object {
-        const val ARG_COLUMN_COUNT = "column-count"
     }
 }

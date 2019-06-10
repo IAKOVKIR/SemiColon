@@ -1,10 +1,7 @@
 package com.example.semicolon.semi_registration
 
 import android.content.Context
-import android.support.design.widget.TextInputEditText
 import android.support.v4.view.PagerAdapter
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +10,7 @@ import com.example.semicolon.R
 
 class SliderAdapter(private val context : Context) : PagerAdapter() {
 
-    //arrays with strings for pages
-    private val slideTexts = arrayOf("first name", "email", "phone number")
-    /*private val slideTexts2 = arrayOf("second name", "city", "age")
-    private val slideEditTexts = arrayOf("Enter your first name", "Enter your email", "Enter your phone number")
-    private val slideEditTexts2 = arrayOf("enter your second name", "enter your city", "enter your age")
-    val texts = arrayOf("", "", "")
-    val texts2 = arrayOf("", "", "")*/
+    private val slideTexts: Array<String> = arrayOf("first name", "email", "phone number")
     private var check = false
 
     override fun getCount(): Int {
@@ -32,49 +23,15 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
-        val layoutInflater = LayoutInflater.from(context)
-        val view = layoutInflater.inflate(R.layout.registration_slide_layout, container, false)
+        val layoutInflater: LayoutInflater = LayoutInflater.from(context)
+        val view: View = layoutInflater.inflate(R.layout.registration_slide_layout, container, false)
 
         //layouts
-        val firstLayout = view.findViewById<ScrollView>(R.id.first_layout)
-        val secondLayout = view.findViewById<ScrollView>(R.id.second_layout)
-        val thirdLayout = view.findViewById<RelativeLayout>(R.id.third_layout)
+        val firstLayout: ScrollView = view.findViewById(R.id.first_layout)
+        val secondLayout: ScrollView = view.findViewById(R.id.second_layout)
+        val thirdLayout: RelativeLayout = view.findViewById(R.id.third_layout)
 
-        //EditTexts
-        val firstName = view.findViewById<TextInputEditText>(R.id.first_name)
-        val lastName = view.findViewById<TextInputEditText>(R.id.last_name)
-        //val phone = view.findViewById<TextInputEditText>(R.id.phone)
-
-        val checkBox = view.findViewById<CheckBox>(R.id.checkBox)
-
-
-        firstName.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-        })
-
-        lastName.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-        })
+        val checkBox: CheckBox = view.findViewById(R.id.checkBox)
 
         checkBox.setOnCheckedChangeListener { _, _ ->
             check = true

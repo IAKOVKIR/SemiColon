@@ -1,9 +1,11 @@
-package com.example.semicolon.semi_following_search
+package com.example.semicolon.following_search
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -24,16 +26,13 @@ import com.example.semicolon.User
 
 class ListFollowing : Fragment() {
 
-    private var columnCount = 1
     private var listener: OnListFragmentInteractionListener? = null
-    private var data: DatabaseOpenHelper? = null
-    private var senderID: String? = null
+    private var senderID: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-            senderID = it.getString("senderID")
+            senderID = it.getInt("sender_id")
         }
     }
 
@@ -41,49 +40,46 @@ class ListFollowing : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_list_following, container, false)
-        val list = view.findViewById<RecyclerView>(R.id.list)
-        val searchFollowing = view.findViewById<EditText>(R.id.search)
-        data = context?.let { DatabaseOpenHelper(it) } as DatabaseOpenHelper
+        val view: View = inflater.inflate(R.layout.fragment_list_following, container, false)
+        val list: RecyclerView = view.findViewById(R.id.list)
+        val searchFollowing: EditText = view.findViewById(R.id.search)
+        val db = DatabaseOpenHelper(context!!)
+        var userList: ArrayList<User> = db.readAllFollowing(senderID!!)
+
+        var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
+        val height: Int = bitmap.height
+        val width: Int = bitmap.width
+        val dif: Double = height.toDouble() / width
+        bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
+        val bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)
 
         // Set the adapter
-        if (list is RecyclerView)
-            with(list) {
-                when {
-                    columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
-                    else -> layoutManager = GridLayoutManager(context, columnCount)
-                }
-                adapter = MyFollowingRecyclerViewAdapter(
-                    data!!.readAllFollowing(senderID!!),
-                    context,
-                    listener as OnListFragmentInteractionListener,
-                    "1",
-                    false
-                )
-            }
+        with(list) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = MyFollowingRecyclerViewAdapter(
+                userList,
+                listener as OnListFragmentInteractionListener,
+                senderID!!, bitmapDrawable)
+        }
 
         searchFollowing.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val line = searchFollowing.text.toString()
-                if (list is RecyclerView)
-                    with(list) {
-                        when {
-                            columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
-                            else -> layoutManager = GridLayoutManager(context, columnCount)
-                        }
-                        adapter = MySearchUserRecyclerViewAdapter(
-                            data!!.searchAllFollowing(senderID!!, line),
-                            context,
-                            listener as ListSearchUser.OnListFragmentInteractionListener,
-                            "1",
-                            false
-                        )
-                    }
+                val line: String = searchFollowing.text.toString()
+                userList = db.searchAllFollowing(senderID!!, line)
+
+                with(list) {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = MySearchUserRecyclerViewAdapter(
+                        userList,
+                        listener as ListSearchUser.OnListFragmentInteractionListener,
+                        false, 0,bitmapDrawable)
+                }
             }
         })
 
+        db.close()
         return view
     }
 
@@ -113,9 +109,5 @@ class ListFollowing : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
-    }
-
-    companion object {
-        const val ARG_COLUMN_COUNT = "column-count"
     }
 }

@@ -3,12 +3,6 @@ package com.example.semicolon.semi_settings
 import java.util.ArrayList
 import java.util.HashMap
 
-/**
- * Helper class for providing sample pos for user interfaces created by
- * Android template wizards.
- *
- * TODO: Replace all uses of this class before publishing your app.
- */
 object Setting {
 
     /**
@@ -47,12 +41,6 @@ object Setting {
             "F"
         )
     }
-
-    /*private fun makeDetails(position: Int): String {
-        val builder = StringBuilder()
-        builder.append("Details about Item: ").append(position)
-        return builder.toString()
-    }*/
 
     /**
      * A dummy item representing a piece of pos.

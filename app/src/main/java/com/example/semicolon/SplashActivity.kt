@@ -3,6 +3,7 @@ package com.example.semicolon
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 
@@ -17,10 +18,10 @@ class SplashActivity : Activity() {
 
         val timer = Timer()
         val intent = Intent(this, Login::class.java)
-        val animFadeIn = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
-        val textSemiColon = findViewById<TextView>(R.id.label)
-        textSemiColon.startAnimation(animFadeIn)
+        val animFadeIn: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
+        val textSemiColon: TextView = findViewById(R.id.label)
 
+        textSemiColon.startAnimation(animFadeIn)
         timer.schedule(object : TimerTask() {
             override fun run() {
                 startActivity(intent)

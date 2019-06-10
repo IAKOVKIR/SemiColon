@@ -1,4 +1,4 @@
-package com.example.semicolon.followers_requests
+package com.example.semicolon.following_search
 
 import android.graphics.drawable.BitmapDrawable
 import android.support.v7.widget.RecyclerView
@@ -8,22 +8,23 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.*
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.time.Time
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_friends.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
- * specified [ListRequests.OnListFragmentInteractionListener].
+ * specified [OnListFragmentInteractionListener].
  */
-class MyRequestsRecyclerViewAdapter(
+class MyFollowingRecyclerViewAdapter(
     private val mValues: List<User>,
-    private val mListener: ListRequests.OnListFragmentInteractionListener?,
-    private val mUser: Int,
+    private val mListener: ListFollowing.OnListFragmentInteractionListener?,
+    private val myID: Int,
     private val mBitMap: BitmapDrawable
-) : RecyclerView.Adapter<MyRequestsRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MyFollowingRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-    private val str: Array<String> = arrayOf("Confirmed", "Declined")
+    private val str: Array<String> = arrayOf("unfollow", "in progress", "follow")
     private var db: DatabaseOpenHelper? = null
 
     init {
@@ -37,36 +38,39 @@ class MyRequestsRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.followers_requests_friends_requests, parent, false)
+            .inflate(R.layout.following_search_friends_following, parent, false)
         db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
+        val item: User = mValues[position]
         holder.mUserImage.setImageDrawable(mBitMap)
         holder.mFirstName.text = item.firstName
-        holder.mLastName.text = item.lastName
+        holder.mSecondName.text = item.lastName
 
-        holder.mConfirmButton.setOnClickListener {
-            db!!.updateRequest(item.id, mUser, -1)
-            holder.mResultText.text = str[0]
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mRequestResult.visibility = View.VISIBLE
-        }
+        val time = Time()
+        var bool: Int = db!!.checkFollower(myID, item.id)
 
-        holder.mDeclineButton.setOnClickListener {
-            db!!.deleteUser(mUser)
-            holder.mResultText.text = str[1]
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mRequestResult.visibility = View.VISIBLE
+        holder.mFollowUnFollowButton.text = str[bool + 1]
+        holder.mFollowUnFollowButton.setOnClickListener {
+            if (bool == 1) {
+                holder.mFollowUnFollowButton.text = str[1]
+                bool = 0
+                val friend = Friend(db!!.countFriendTable(), myID, item.id,
+                    time.getDate(), time.getTime(), 0)
+                db!!.insertRequest(friend)
+            } else {
+                holder.mFollowUnFollowButton.text = str[2]
+                bool = 1
+                db!!.deleteFollowing(myID, item.id)
+            }
         }
 
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)
         }
-
     }
 
     override fun getItemCount(): Int = mValues.size
@@ -74,15 +78,11 @@ class MyRequestsRecyclerViewAdapter(
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mUserImage: CircleImageView = mView.userImage
         val mFirstName: TextView = mView.first_name
-        val mLastName: TextView = mView.last_name
-        val mConfirmButton: Button = mView.confirm_button
-        val mDeclineButton: Button = mView.decline_button
-        val mRequestResult: LinearLayout = mView.request_result
-        val mRequestButtons: LinearLayout = mView.request_buttons
-        val mResultText: TextView = mView.button_result
+        val mSecondName: TextView = mView.last_name
+        val mFollowUnFollowButton: Button = mView.un_follow_button
 
         override fun toString(): String {
-            return super.toString() + " '" + mLastName.text + "'"
+            return super.toString() + " '" + mSecondName.text + "'"
         }
     }
 }

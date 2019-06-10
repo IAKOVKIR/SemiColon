@@ -89,7 +89,7 @@ class Registration : Activity() {
                 }
                 else -> {
 
-                    var view = currentFocus
+                    var view: View? = currentFocus
                     if (view == null)
                         view = View(applicationContext)
 

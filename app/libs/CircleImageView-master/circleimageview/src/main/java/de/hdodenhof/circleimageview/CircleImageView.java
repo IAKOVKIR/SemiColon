@@ -113,9 +113,8 @@ public class CircleImageView extends ImageView {
         super.setScaleType(SCALE_TYPE);
         mReady = true;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             setOutlineProvider(new OutlineProvider());
-        }
 
         if (mSetupPending) {
             setup();

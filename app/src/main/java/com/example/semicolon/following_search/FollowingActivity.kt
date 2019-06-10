@@ -1,6 +1,5 @@
-package com.example.semicolon.semi_following_search
+package com.example.semicolon.following_search
 
-import android.content.Context
 import android.content.Intent
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -10,7 +9,6 @@ import android.support.v4.view.ViewPager
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import com.example.semicolon.FriendActivity
-import com.example.semicolon.Login
 import com.example.semicolon.R
 import com.example.semicolon.User
 import java.util.ArrayList
@@ -18,21 +16,12 @@ import java.util.ArrayList
 class FollowingActivity : FragmentActivity(), ListFollowing.OnListFragmentInteractionListener,
     ListSearchUser.OnListFragmentInteractionListener {
 
-    private var log = Login()
-    private var tabLayout: TabLayout? = null
-    private var viewPager: ViewPager? = null
+    private var myID: Int? = null
 
     override fun onListFragmentInteraction(item: User?) {
-        val n = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-        val list = arrayListOf(n.getString(log.prefVar[0], "") as String,
-            n.getString(log.prefVar[1], "") as String, n.getString(log.prefVar[2], "") as String,
-            n.getString(log.prefVar[3], "") as String, n.getString(log.prefVar[4], "") as String,
-            n.getString(log.prefVar[5], "") as String, n.getString(log.prefVar[6], "") as String,
-            n.getString(log.prefVar[7], "") as String)
-
         val intent = Intent(this, FriendActivity::class.java)
-        intent.putExtra("param1", list[0])
-        intent.putStringArrayListExtra("param2",item!!.getList())
+        intent.putExtra("MyID", myID)
+        intent.putExtra("UserID",item!!.id)
         startActivity(intent)
     }
 
@@ -40,21 +29,20 @@ class FollowingActivity : FragmentActivity(), ListFollowing.OnListFragmentIntera
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_following)
 
-        val intent = intent
-        val list: ArrayList<String> = intent.getStringArrayListExtra("dataToTheList")
-        viewPager = findViewById(R.id.viewpager)
-        setupViewPager(viewPager!!, list[0])
+        myID = intent.getStringExtra("MyID").toInt()
+        val viewPager: ViewPager = findViewById(R.id.viewpager)
+        val tabLayout: TabLayout = findViewById(R.id.tabs)
 
-        tabLayout = findViewById(R.id.tabs)
-        tabLayout!!.setupWithViewPager(viewPager)
+        setupViewPager(viewPager, myID!!)
+        tabLayout.setupWithViewPager(viewPager)
 
     }
 
-    private fun setupViewPager(viewPager: ViewPager, sender_id: String) {
+    private fun setupViewPager(viewPager: ViewPager, sender_id: Int) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
 
         val args = Bundle()
-        args.putString("senderID", sender_id)
+        args.putInt("sender_id", sender_id)
 
         val listFollowing = ListFollowing()
         val listSearchUser = ListSearchUser()

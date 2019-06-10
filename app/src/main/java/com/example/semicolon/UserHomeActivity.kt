@@ -1,61 +1,33 @@
 package com.example.semicolon
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentActivity
-import android.util.Log
-import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.navigation.findNavController
 import com.example.semicolon.semi_settings.Setting
 import com.example.semicolon.event.EventContent
 import com.example.semicolon.semi_settings.SettingFragment
-import com.example.semicolon.users.UserFollowersFragment
 import kotlinx.android.synthetic.main.activity_user_home.*
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
-    SettingFragment.OnListFragmentInteractionListener, FollowingFragment.OnListFragmentInteractionListener,
-    FollowingSliderAdapter.OnListFragmentInteractionListener, FollowersFragment.OnListFragmentInteractionListener,
-    FollowersSliderAdapter.OnListFragmentInteractionListener, UserFollowersFragment.OnListFragmentInteractionListener {
+    SettingFragment.OnListFragmentInteractionListener {
 
-    /*
-    variable list contains ArrayList<String> array with user's data from shared preferences
-    log is an object from Login Class
-     */
-    var list: ArrayList<String>? = null
+    private var myID: Int? = null
     private var log = Login()
-    var text : TextView? = null
-    var imm: InputMethodManager? = null
-
-    //listener for users list
-    override fun onListFragmentInteraction(item: User?) {
-
-        val n = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-        list = arrayListOf(n.getString(log.prefVar[0], "") as String, n.getString(log.prefVar[1], "") as String,
-            n.getString(log.prefVar[2], "") as String, n.getString(log.prefVar[3], "") as String,
-            n.getString(log.prefVar[4], "") as String, n.getString(log.prefVar[5], "") as String,
-            n.getString(log.prefVar[6], "") as String, n.getString(log.prefVar[7], "") as String)
-
-        Log.i("Navigation", "Selected Friend $item")
-        val args = Bundle()
-        args.putString("param1", item!!.firstName)
-        args.putString("param2", item.lastName)
-        args.putStringArrayList("param3", list)
-        args.putStringArrayList("param4", item.getList())
-
-        findNavController(R.id.nav_host).navigate(R.id.friend_params_dest, args)
-    }
+    private var n: SharedPreferences? = null
 
     //listener for settings list
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
-        Log.i("Navigation", "Selected Setting $item")
+
+        myID = n!!.getInt(log.prefVar[0], 1)
+
         val args = Bundle()
         args.putString("param1", item!!.name)
         args.putString("param2", item.pos)
-        args.putStringArrayList("param3", list)
+        args.putInt("MyID", myID!!)
 
         if (item.pos == "6")
             logOut()
@@ -65,7 +37,6 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
     //listener for events list
     override fun onListFragmentInteraction(item: EventContent.Event?) {
-        Log.i("Navigation", "Selected Event $item")
         val args = Bundle()
         args.putString("param1", "Selected")
         args.putString("param2", item.toString())
@@ -77,12 +48,6 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
     //listener for bottom navigation
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-
-        val n = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-        list = arrayListOf(n.getString(log.prefVar[0], "") as String, n.getString(log.prefVar[1], "") as String,
-            n.getString(log.prefVar[2], "") as String, n.getString(log.prefVar[3], "") as String,
-            n.getString(log.prefVar[4], "") as String, n.getString(log.prefVar[5], "") as String,
-            n.getString(log.prefVar[6], "") as String, n.getString(log.prefVar[7], "") as String)
 
         when (item.itemId) {
             R.id.navigation_home -> {
@@ -97,8 +62,8 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
             }
             R.id.navigation_notifications -> {
                 val args = Bundle()
-                args.putString("param1", n.getString(log.prefVar[1], ""))
-                args.putString("param2", n.getString(log.prefVar[2], ""))
+                args.putString("MyFirstName", n!!.getString(log.prefVar[1], ""))
+                args.putString("MyLastName", n!!.getString(log.prefVar[2], ""))
 
                 //opens notifications fragment and sends arguments
                 findNavController(R.id.nav_host).navigate(R.id.action_global_params_dest, args)
@@ -111,7 +76,8 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_home)
-        imm = applicationContext!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        n = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
 
         //add navigation listener
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
@@ -121,8 +87,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
      * @function [logOut] removes all data from SharedPreferences and starts Login activity
      */
     private fun logOut() {
-        val sharedPrefs = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-        val editor = sharedPrefs.edit()
+        val editor: SharedPreferences.Editor = n!!.edit()
         editor.clear()
         editor.apply()
 
