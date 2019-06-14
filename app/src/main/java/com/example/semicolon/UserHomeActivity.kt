@@ -56,7 +56,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                //opens event list fragment
+                //opens event list fragment (ListFragment.kt)
                 findNavController(R.id.nav_host).navigate(R.id.list_dest)
                 return@OnNavigationItemSelectedListener true
             }

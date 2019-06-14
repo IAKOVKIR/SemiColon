@@ -8,25 +8,24 @@ import android.widget.*
 import com.example.semicolon.*
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.fragment_friends.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import android.graphics.drawable.BitmapDrawable
+import kotlinx.android.synthetic.main.following_search_friends_search.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
- * specified [OnListFragmentInteractionListener].
+ * specified [ListFollowing.OnListFragmentInteractionListener].
  */
 class MySearchUserRecyclerViewAdapter(
     private val mValues: List<User>,
     private val mListener: ListSearchUser.OnListFragmentInteractionListener?,
-    private val buttonsVisibility: Boolean,
     private val myID: Int,
     private val mBitMap: BitmapDrawable
 ) : RecyclerView.Adapter<MySearchUserRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-    private val str = arrayOf("Confirmed", "Declined", "in progress", "follow", "unfollow")
+    private val str: Array<String> = arrayOf("Confirmed", "Declined", "in progress", "follow", "unfollow")
     private var db: DatabaseOpenHelper? = null
 
     init {
@@ -39,31 +38,23 @@ class MySearchUserRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_friends, parent, false)
+        val view: View = LayoutInflater.from(parent.context)
+            .inflate(R.layout.following_search_friends_search, parent, false)
         db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
+        val item: User = mValues[position]
         holder.mIdView.text = item.firstName
         holder.mContentView.text = item.lastName
-        var bool = db!!.checkFollower(myID, item.id)
+        var bool: Int = db!!.checkFollower(myID, item.id)
 
         holder.mUserImage.setImageDrawable(mBitMap)
 
         val c = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
         val strDate = sdf.format(c.time).trim()
-
-        if (buttonsVisibility) {
-            holder.mRequestButtons.visibility = View.VISIBLE
-            holder.mUnFollowButtons.visibility = View.GONE
-        } else {
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mUnFollowButtons.visibility = View.VISIBLE
-        }
 
         when (bool) {
             1 -> holder.mFollowUnFollowButton.text = str[4]
@@ -87,20 +78,6 @@ class MySearchUserRecyclerViewAdapter(
             }
         }
 
-        holder.mConfirmButton.setOnClickListener {
-            db!!.updateRequest(item.id, 1, -1)
-            holder.mResultText.text = str[0]
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mRequestResult.visibility = View.VISIBLE
-        }
-
-        holder.mDeclineButton.setOnClickListener {
-            db!!.deleteUser(1)
-            holder.mResultText.text = str[1]
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mRequestResult.visibility = View.VISIBLE
-        }
-
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)
@@ -113,13 +90,7 @@ class MySearchUserRecyclerViewAdapter(
         val mIdView: TextView = mView.first_name
         val mUserImage: CircleImageView = mView.userImage
         val mContentView: TextView = mView.last_name
-        val mConfirmButton: Button = mView.confirm_button
-        val mDeclineButton: Button = mView.decline_button
-        val mRequestResult: LinearLayout = mView.request_result
-        val mRequestButtons: LinearLayout = mView.request_buttons
-        val mUnFollowButtons: LinearLayout = mView.follow_un_follow_buttons
         val mFollowUnFollowButton: Button = mView.un_follow_button
-        val mResultText: TextView = mView.button_result
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView.text + "'"

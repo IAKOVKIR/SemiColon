@@ -9,7 +9,7 @@ import android.widget.*
 import com.example.semicolon.*
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.fragment_friends.view.*
+import kotlinx.android.synthetic.main.followers_requests_friends_requests.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the

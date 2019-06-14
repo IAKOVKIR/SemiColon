@@ -24,36 +24,22 @@ import com.example.semicolon.event.EventContent.Event
 
 class ListFragment : Fragment() {
 
-    private var columnCount = 1
-
     private var listener: OnListFragmentInteractionListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
-        val list = view.findViewById<RecyclerView>(R.id.list)
+        val view: View = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val list: RecyclerView = view.findViewById(R.id.list)
 
         // Set the adapter
-        if (list is RecyclerView) {
-            with(list) {
-                when {
-                    columnCount <= 1 -> layoutManager = LinearLayoutManager(context)
-                    else -> layoutManager = GridLayoutManager(context, columnCount)
-                }
-                adapter = MyItemRecyclerViewAdapter(EventContent.EVENTS, listener)
-            }
+        with(list) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = MyItemRecyclerViewAdapter(EventContent.EVENTS, listener)
         }
 
-        val searchBar = view.findViewById<EditText>(R.id.editText4)
+        val searchBar: EditText = view.findViewById(R.id.editText4)
         searchBar.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {}
@@ -61,7 +47,7 @@ class ListFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
 
-                val line = searchBar.text.toString()
+                val line: String = searchBar.text.toString()
                 list.adapter = MyItemRecyclerViewAdapter(EventContent.getList(line), listener)
 
             }
@@ -97,9 +83,5 @@ class ListFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: Event?)
-    }
-
-    companion object {
-        const val ARG_COLUMN_COUNT = "column-count"
     }
 }

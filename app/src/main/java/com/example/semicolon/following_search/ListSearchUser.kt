@@ -40,7 +40,7 @@ class ListSearchUser : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_list_search_user, container, false)
+        val view: View = inflater.inflate(R.layout.following_search_list_search, container, false)
         val list: RecyclerView = view.findViewById(R.id.list)
         val textLine: EditText = view.findViewById(R.id.search)
         val db = DatabaseOpenHelper(context!!)
@@ -58,8 +58,7 @@ class ListSearchUser : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MySearchUserRecyclerViewAdapter(
                 listUser,
-                listener as OnListFragmentInteractionListener,
-                false, 1, bitmapDrawable)
+                listener as OnListFragmentInteractionListener, 1, bitmapDrawable)
         }
 
         textLine.addTextChangedListener(object : TextWatcher {
@@ -73,8 +72,7 @@ class ListSearchUser : Fragment() {
                     layoutManager = LinearLayoutManager(context)
                     adapter = MySearchUserRecyclerViewAdapter(
                         listUser,
-                        listener as OnListFragmentInteractionListener,
-                        false, 1, bitmapDrawable)
+                        listener as OnListFragmentInteractionListener, 1, bitmapDrawable)
                 }
             }
         })

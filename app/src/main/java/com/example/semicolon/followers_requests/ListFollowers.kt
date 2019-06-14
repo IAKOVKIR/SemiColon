@@ -87,4 +87,30 @@ class ListFollowers : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
+
+    /*internal inner class WordLoaderTask : AsyncTask<Void, Void, Void>() {
+
+        private val height: Int = bitmap!!.height
+        private val width: Int = bitmap!!.width
+        private val dif: Double = height.toDouble() / width
+        var db: DatabaseOpenHelper? = null
+
+        override fun onPreExecute() {
+            db = DatabaseOpenHelper(context!!)
+            bitmap = Bitmap.createScaledBitmap(bitmap!!, 180, (180 * dif).toInt(), true)
+        }
+
+        override fun doInBackground(vararg params: Void): Void? {
+            listUser = db!!.readAllFollowers(receiverID!!, -1, receiverID!!)
+            bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)
+            return null
+        }
+
+        override fun onPostExecute(param: Void?) {
+            super.onPostExecute(param)
+            db!!.close()
+        }
+
+    }
+}*/
 }
