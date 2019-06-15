@@ -1,6 +1,7 @@
 package com.example.semicolon.following_search
 
 import android.content.Intent
+import android.graphics.Color
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
 import com.example.semicolon.FriendActivity
 import com.example.semicolon.R
 import com.example.semicolon.User
@@ -32,6 +34,10 @@ class FollowingActivity : FragmentActivity(), ListFollowing.OnListFragmentIntera
         myID = intent.getStringExtra("MyID").toInt()
         val viewPager: ViewPager = findViewById(R.id.viewpager)
         val tabLayout: TabLayout = findViewById(R.id.tabs)
+
+        tabLayout.setBackgroundColor(Color.WHITE)
+        tabLayout.setTabTextColors(ContextCompat.getColor(applicationContext, R.color.SPECIAL), ContextCompat.getColor(applicationContext, R.color.BLUE))
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
         setupViewPager(viewPager, myID!!)
         tabLayout.setupWithViewPager(viewPager)

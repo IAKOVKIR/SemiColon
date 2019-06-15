@@ -14,8 +14,9 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabTextColor="#fff"
                 app:tabSelectedTextColor="#000"
+                app:tabIndicatorHeight="3dp"
+                app:tabTextColor="#fff"
                 app:tabGravity="fill"
                 app:tabMode="fixed" />
 
