@@ -17,6 +17,8 @@
         </activity>
         <activity android:name=".followers_requests.FollowersActivity">
         </activity>
+        <activity android:name=".following_followers.FollowingFollowersActivity">
+        </activity>
         <activity
                 android:name=".UserHomeActivity"
                 android:screenOrientation="portrait">

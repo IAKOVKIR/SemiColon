@@ -1,10 +1,13 @@
 package com.example.semicolon
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.semicolon.following_followers.FollowingFollowersActivity
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.time.Time
 
@@ -20,11 +23,12 @@ class FriendActivity : FragmentActivity() {
         //Time object
         val time = Time()
 
-        val myID: Int = intent.getIntExtra("MyID", -1)
-        val userID: Int = intent.getIntExtra("UserID", -1)
+        val myID: Int = intent.getIntExtra("my_id", -1)
+        val userID: Int = intent.getIntExtra("user_id", -1)
+        val exceptionID: Int = intent.getIntExtra("exception_id", -1)
         val userObject: User = db.findUserByID(userID)
 
-        //TextView's
+        //TextViews
         val name: TextView = findViewById(R.id.name)
         val location: TextView = findViewById(R.id.location)
         val phone: TextView = findViewById(R.id.phone_number)
@@ -32,9 +36,14 @@ class FriendActivity : FragmentActivity() {
         val numOfFollowers: TextView = findViewById(R.id.followers_number)
         val numOfFollowing: TextView = findViewById(R.id.following_number)
 
-        //Button's
+        //Buttons
         val followButton: Button = findViewById(R.id.followButton)
         val backButton: ImageButton = findViewById(R.id.back_button)
+
+        //Layouts
+        val followersLayout: LinearLayout = findViewById(R.id.linear_layout_followers)
+        val followingLayout: LinearLayout = findViewById(R.id.linear_layout_following)
+        //val eventsLayout: LinearLayout = findViewById(R.id.linear_layout_following)
 
         /*
         Variable bool contains one of three conditions of "friendship":
@@ -73,5 +82,23 @@ class FriendActivity : FragmentActivity() {
         }
 
         backButton.setOnClickListener { finish() }
+
+        followersLayout.setOnClickListener {
+            val intent = Intent(this, FollowingFollowersActivity::class.java)
+            intent.putExtra("my_id", "$myID")
+            intent.putExtra("user_id", "$userID")
+            intent.putExtra("exception_id", "$exceptionID")
+            intent.putExtra("string", "0")
+            startActivity(intent)
+        }
+
+        followingLayout.setOnClickListener {
+            val intent = Intent(this, FollowingFollowersActivity::class.java)
+            intent.putExtra("my_id", "$myID")
+            intent.putExtra("user_id", "$userID")
+            intent.putExtra("exception_id", "$exceptionID")
+            intent.putExtra("string", "1")
+            startActivity(intent)
+        }
     }
 }

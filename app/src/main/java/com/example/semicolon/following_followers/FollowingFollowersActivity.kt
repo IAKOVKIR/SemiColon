@@ -1,4 +1,4 @@
-package com.example.semicolon.followers_requests
+package com.example.semicolon.following_followers
 
 import android.content.Intent
 import android.graphics.Color
@@ -13,16 +13,19 @@ import android.support.v4.content.ContextCompat
 import com.example.semicolon.*
 import java.util.ArrayList
 
-class FollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentInteractionListener,
-    ListRequests.OnListFragmentInteractionListener {
+class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentInteractionListener,
+    ListFollowing.OnListFragmentInteractionListener {
 
     private var myID: Int? = null
+    private var userID: Int? = null
     private var exceptionID: Int? = null
+    private var linePos = ""
 
     override fun onListFragmentInteraction(item: User?) {
         val intent = Intent(this, FriendActivity::class.java)
         intent.putExtra("my_id", myID!!)
-        intent.putExtra("exception_id", item!!.id)
+        intent.putExtra("user_id", item!!.id)
+        intent.putExtra("exception_id", userID!!)
         startActivity(intent)
     }
 
@@ -31,7 +34,9 @@ class FollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentIntera
         setContentView(R.layout.activity_followers)
 
         myID = intent.getStringExtra("my_id").toInt()
+        userID = intent.getStringExtra("user_id").toInt()
         exceptionID = intent.getStringExtra("exception_id").toInt()
+        linePos = intent.getStringExtra("string")
         val viewPager: ViewPager = findViewById(R.id.viewpager)
         val tabLayout: TabLayout = findViewById(R.id.tabs)
 
@@ -39,25 +44,29 @@ class FollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentIntera
         tabLayout.setTabTextColors(ContextCompat.getColor(applicationContext, R.color.SPECIAL), ContextCompat.getColor(applicationContext, R.color.BLUE))
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
-        setupViewPager(viewPager, myID!!, exceptionID!!)
+        setupViewPager(viewPager, myID!!, userID!!, exceptionID!!)
         tabLayout.setupWithViewPager(viewPager)
+
+        if (linePos == "1")
+            tabLayout.getTabAt(1)!!.select()
 
     }
 
-    private fun setupViewPager(viewPager: ViewPager, my_id: Int, exception_id: Int) {
+    private fun setupViewPager(viewPager: ViewPager, my_id: Int, user_id: Int, exception_id: Int) {
         val adapter = ViewPagerAdapter(supportFragmentManager)
 
         val args = Bundle()
         args.putInt("my_id", my_id)
+        args.putInt("user_id", user_id)
         args.putInt("exception_id", exception_id)
 
         val listFollowers = ListFollowers()
-        val listRequests = ListRequests()
+        val listFollowing = ListFollowing()
         listFollowers.arguments = args
-        listRequests.arguments = args
+        listFollowing.arguments = args
 
         adapter.addFragment(listFollowers, "Followers")
-        adapter.addFragment(listRequests, "Requests")
+        adapter.addFragment(listFollowing, "Following")
         viewPager.adapter = adapter
     }
 

@@ -44,7 +44,7 @@ class ListFollowing : Fragment() {
         val list: RecyclerView = view.findViewById(R.id.list)
         val searchFollowing: EditText = view.findViewById(R.id.search)
         val db = DatabaseOpenHelper(context!!)
-        var userList: ArrayList<User> = db.readAllFollowing(senderID!!)
+        var userList: ArrayList<User> = db.readAllFollowing(senderID!!, senderID!!)
 
         var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
         val height: Int = bitmap.height

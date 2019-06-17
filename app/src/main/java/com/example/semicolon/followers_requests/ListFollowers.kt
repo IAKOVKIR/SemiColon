@@ -23,12 +23,14 @@ import com.example.semicolon.User
 class ListFollowers : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
-    private var receiverID: Int? = null
+    private var myID: Int? = null
+    private var exceptionID: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            receiverID = it.getInt("receiver_id")
+            myID = it.getInt("my_id")
+            exceptionID = it.getInt("exception_id")
         }
     }
 
@@ -39,7 +41,7 @@ class ListFollowers : Fragment() {
         val view: View = inflater.inflate(R.layout.followers_requests_list_followers, container, false)
         val list: RecyclerView = view.findViewById(R.id.list)
         val db = DatabaseOpenHelper(context!!)
-        val listUser: ArrayList<User> = db.readAllFollowers(receiverID!!, -1, receiverID!!)
+        val listUser: ArrayList<User> = db.readAllFollowers(myID!!, -1, exceptionID!!)
 
         var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
         val height: Int = bitmap.height
@@ -101,7 +103,7 @@ class ListFollowers : Fragment() {
         }
 
         override fun doInBackground(vararg params: Void): Void? {
-            listUser = db!!.readAllFollowers(receiverID!!, -1, receiverID!!)
+            listUser = db!!.readAllFollowers(myID!!, -1, myID!!)
             bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)
             return null
         }

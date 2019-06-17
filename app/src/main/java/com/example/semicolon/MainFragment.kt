@@ -14,8 +14,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.followers_requests.FollowersActivity
-import com.example.semicolon.following_search.FollowingActivity
+import com.example.semicolon.following_followers.FollowingFollowersActivity
 import com.example.semicolon.semi_settings.SettingFragment
 
 /**
@@ -76,14 +75,20 @@ class MainFragment : Fragment() {
         val followingLink: LinearLayout = view.findViewById(R.id.linear_layout_following)
 
         followersLink.setOnClickListener {
-            val intent = Intent(activity, FollowersActivity::class.java)
-            intent.putExtra("MyID", myData[0])
+            val intent = Intent(activity, FollowingFollowersActivity::class.java)
+            intent.putExtra("my_id", myData[0])
+            intent.putExtra("user_id", myData[0])
+            intent.putExtra("exception_id", myData[0])
+            intent.putExtra("string", "0")
             startActivity(intent)
         }
 
         followingLink.setOnClickListener {
-            val intent = Intent(activity, FollowingActivity::class.java)
-            intent.putExtra("MyID", myData[0])
+            val intent = Intent(activity, FollowingFollowersActivity::class.java)
+            intent.putExtra("my_id", myData[0])
+            intent.putExtra("user_id", myData[0])
+            intent.putExtra("exception_id", myData[0])
+            intent.putExtra("string", "1")
             startActivity(intent)
         }
 

@@ -19,6 +19,7 @@ class FollowingActivity : FragmentActivity(), ListFollowing.OnListFragmentIntera
     ListSearchUser.OnListFragmentInteractionListener {
 
     private var myID: Int? = null
+    private var exceptionID: Int? = null
 
     override fun onListFragmentInteraction(item: User?) {
         val intent = Intent(this, FriendActivity::class.java)
@@ -31,7 +32,8 @@ class FollowingActivity : FragmentActivity(), ListFollowing.OnListFragmentIntera
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_following)
 
-        myID = intent.getStringExtra("MyID").toInt()
+        myID = intent.getStringExtra("sender_id").toInt()
+        exceptionID = intent.getStringExtra("exception_id").toInt()
         val viewPager: ViewPager = findViewById(R.id.viewpager)
         val tabLayout: TabLayout = findViewById(R.id.tabs)
 

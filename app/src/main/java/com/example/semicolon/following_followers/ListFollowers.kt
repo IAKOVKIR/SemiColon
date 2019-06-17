@@ -1,4 +1,4 @@
-package com.example.semicolon.followers_requests
+package com.example.semicolon.following_followers
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -18,18 +18,20 @@ import com.example.semicolon.User
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [ListRequests.OnListFragmentInteractionListener] interface.
+ * [ListFollowers.OnListFragmentInteractionListener] interface.
  */
-class ListRequests : Fragment() {
+class ListFollowers : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
     private var myID: Int? = null
+    private var userID: Int? = null
     private var exceptionID: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             myID = it.getInt("my_id")
+            userID = it.getInt("user_id")
             exceptionID = it.getInt("exception_id")
         }
     }
@@ -38,10 +40,10 @@ class ListRequests : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.followers_requests_list_requests, container, false)
+        val view: View = inflater.inflate(R.layout.followers_requests_list_followers, container, false)
         val list: RecyclerView = view.findViewById(R.id.list)
         val db = DatabaseOpenHelper(context!!)
-        val listUser: ArrayList<User> = db.readAllFollowers(myID!!, 0, exceptionID!!)
+        val listUser: ArrayList<User> = db.readAllFollowers(userID!!, -1, exceptionID!!)
 
         var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
         val height: Int = bitmap.height
@@ -53,11 +55,11 @@ class ListRequests : Fragment() {
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = MyRequestsRecyclerViewAdapter(
+            adapter = MyFollowersRecyclerViewAdapter(
                 listUser,
                 listener as OnListFragmentInteractionListener,
-                myID!!, bitmapDrawable)
-        }
+                bitmapDrawable)
+            }
 
         db.close()
         return view
@@ -89,4 +91,30 @@ class ListRequests : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
+
+    /*internal inner class WordLoaderTask : AsyncTask<Void, Void, Void>() {
+
+        private val height: Int = bitmap!!.height
+        private val width: Int = bitmap!!.width
+        private val dif: Double = height.toDouble() / width
+        var db: DatabaseOpenHelper? = null
+
+        override fun onPreExecute() {
+            db = DatabaseOpenHelper(context!!)
+            bitmap = Bitmap.createScaledBitmap(bitmap!!, 180, (180 * dif).toInt(), true)
+        }
+
+        override fun doInBackground(vararg params: Void): Void? {
+            listUser = db!!.readAllFollowers(myID!!, -1, myID!!)
+            bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)
+            return null
+        }
+
+        override fun onPostExecute(param: Void?) {
+            super.onPostExecute(param)
+            db!!.close()
+        }
+
+    }
+}*/
 }

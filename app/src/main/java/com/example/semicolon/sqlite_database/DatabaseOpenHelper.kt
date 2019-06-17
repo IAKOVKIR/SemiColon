@@ -220,13 +220,13 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
-    fun readAllFollowing(UserID: Int): ArrayList<User> {
+    fun readAllFollowing(SenderID: Int, except: Int): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = '-1'"
+            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$SenderID' AND FRIEND.Condition = '-1' AND FRIEND.ReceiverID != '$except'"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
