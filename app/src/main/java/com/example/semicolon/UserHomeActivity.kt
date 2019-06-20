@@ -17,12 +17,12 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
     private var myID: Int? = null
     private var log = Login()
-    private var n: SharedPreferences? = null
+    private lateinit var n: SharedPreferences
 
     //listener for settings list
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
 
-        myID = n!!.getInt(log.prefVar[0], 1)
+        myID = n.getInt(log.prefVar[0], 1)
 
         val args = Bundle()
         args.putString("param1", item!!.name)
@@ -62,8 +62,8 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
             }
             R.id.navigation_notifications -> {
                 val args = Bundle()
-                args.putString("MyFirstName", n!!.getString(log.prefVar[1], ""))
-                args.putString("MyLastName", n!!.getString(log.prefVar[2], ""))
+                args.putString("MyFirstName", n.getString(log.prefVar[1], ""))
+                args.putString("MyLastName", n.getString(log.prefVar[2], ""))
 
                 //opens notifications fragment and sends arguments
                 findNavController(R.id.nav_host).navigate(R.id.action_global_params_dest, args)
@@ -87,7 +87,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
      * @function [logOut] removes all data from SharedPreferences and starts Login activity
      */
     private fun logOut() {
-        val editor: SharedPreferences.Editor = n!!.edit()
+        val editor: SharedPreferences.Editor = n.edit()
         editor.clear()
         editor.apply()
 

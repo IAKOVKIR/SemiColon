@@ -38,7 +38,7 @@ class MyFollowersRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
+        val item: User = mValues[position]
         holder.mUserImage.setImageDrawable(mBitMap)
         holder.mIdView.text = item.firstName
         holder.mContentView.text = item.lastName

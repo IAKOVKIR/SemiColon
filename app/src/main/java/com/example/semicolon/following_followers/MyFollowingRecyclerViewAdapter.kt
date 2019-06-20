@@ -25,7 +25,7 @@ class MyFollowingRecyclerViewAdapter(
 
     private val mOnClickListener: View.OnClickListener
     private val str: Array<String> = arrayOf("unfollow", "in progress", "follow")
-    private var db: DatabaseOpenHelper? = null
+    private lateinit var db: DatabaseOpenHelper
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -37,7 +37,7 @@ class MyFollowingRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
+        val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.following_search_friends_following, parent, false)
         db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
@@ -50,20 +50,20 @@ class MyFollowingRecyclerViewAdapter(
         holder.mSecondName.text = item.lastName
 
         val time = Time()
-        var bool: Int = db!!.checkFollower(myID, item.id)
+        var bool: Int = db.checkFollower(myID, item.id)
 
         holder.mFollowUnFollowButton.text = str[bool + 1]
         holder.mFollowUnFollowButton.setOnClickListener {
             if (bool == 1) {
                 holder.mFollowUnFollowButton.text = str[1]
                 bool = 0
-                val friend = Friend(db!!.countFriendTable(), myID, item.id,
+                val friend = Friend(db.countFriendTable(), myID, item.id,
                     time.getDate(), time.getTime(), 0)
-                db!!.insertRequest(friend)
+                db.insertRequest(friend)
             } else {
                 holder.mFollowUnFollowButton.text = str[2]
                 bool = 1
-                db!!.deleteFollowing(myID, item.id)
+                db.deleteFollowing(myID, item.id)
             }
         }
 

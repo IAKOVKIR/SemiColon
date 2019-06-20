@@ -3,13 +3,12 @@ package com.example.semicolon.following_followers
 import android.content.Intent
 import android.graphics.Color
 import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
+import android.support.v4.app.*
 import android.support.v4.content.ContextCompat
+import android.widget.ImageButton
+import android.widget.TextView
 import com.example.semicolon.*
 import java.util.ArrayList
 
@@ -37,8 +36,11 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         userID = intent.getStringExtra("user_id").toInt()
         exceptionID = intent.getStringExtra("exception_id").toInt()
         linePos = intent.getStringExtra("string")
+
         val viewPager: ViewPager = findViewById(R.id.viewpager)
         val tabLayout: TabLayout = findViewById(R.id.tabs)
+        val backButton: ImageButton = findViewById(R.id.back_button)
+        val requestsButton: TextView = findViewById(R.id.requests_button)
 
         tabLayout.setBackgroundColor(Color.WHITE)
         tabLayout.setTabTextColors(ContextCompat.getColor(applicationContext, R.color.SPECIAL), ContextCompat.getColor(applicationContext, R.color.BLUE))
@@ -49,6 +51,15 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
         if (linePos == "1")
             tabLayout.getTabAt(1)!!.select()
+
+        backButton.setOnClickListener { finish() }
+        requestsButton.setOnClickListener {
+            val intent = Intent(this, RequestsActivity::class.java)
+            intent.putExtra("my_id", myID!!.toString())
+            intent.putExtra("user_id", userID!!)
+            intent.putExtra("exception_id", exceptionID!!.toString())
+            startActivity(intent)
+        }
 
     }
 

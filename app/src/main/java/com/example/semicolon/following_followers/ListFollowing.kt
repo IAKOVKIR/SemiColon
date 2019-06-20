@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +46,7 @@ class ListFollowing : Fragment() {
         val list: RecyclerView = view.findViewById(R.id.list)
         val searchFollowing: EditText = view.findViewById(R.id.search)
         val db = DatabaseOpenHelper(context!!)
-        var userList: ArrayList<User> = db.readAllFollowing(userID!!, exceptionID!!)
+        val userList: ArrayList<User> = db.readAllFollowing(userID!!, exceptionID!!)
 
         var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
         val height: Int = bitmap.height
@@ -65,23 +63,6 @@ class ListFollowing : Fragment() {
                 listener as OnListFragmentInteractionListener,
                 userID!!, bitmapDrawable)
         }
-
-        /*searchFollowing.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val line: String = searchFollowing.text.toString()
-                userList = db.searchAllFollowing(senderID!!, line)
-
-                with(list) {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = MySearchUserRecyclerViewAdapter(
-                        userList,
-                        listener as ListSearchUser.OnListFragmentInteractionListener,
-                         0,bitmapDrawable)
-                }
-            }
-        })*/
 
         db.close()
         return view
