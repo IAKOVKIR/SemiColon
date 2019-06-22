@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.widget.ImageButton
 import android.widget.TextView
 import com.example.semicolon.*
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import java.util.ArrayList
 
 class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentInteractionListener,
@@ -32,6 +33,7 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_followers)
 
+        val db = DatabaseOpenHelper(applicationContext)
         myID = intent.getStringExtra("my_id").toInt()
         userID = intent.getStringExtra("user_id").toInt()
         exceptionID = intent.getStringExtra("exception_id").toInt()
@@ -53,6 +55,9 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
             tabLayout.getTabAt(1)!!.select()
 
         backButton.setOnClickListener { finish() }
+
+        val numOfRequests = db.countFollowingRequests(myID!!)
+        requestsButton.text = "$numOfRequests"
         requestsButton.setOnClickListener {
             val intent = Intent(this, RequestsActivity::class.java)
             intent.putExtra("my_id", myID!!.toString())

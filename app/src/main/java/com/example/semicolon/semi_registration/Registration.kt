@@ -12,18 +12,18 @@ import com.example.semicolon.R
 
 class Registration : Activity() {
 
-    private var mSlideViewPager : ViewPager? = null
+    private lateinit var mSlideViewPager : ViewPager
 
     //TextViews (Three circles on navigation)
-    var firstCircle : TextView? = null
-    var secondCircle : TextView? = null
-    var thirdCircle : TextView? = null
+    lateinit var firstCircle : TextView
+    lateinit var secondCircle : TextView
+    lateinit var thirdCircle : TextView
 
     //Buttons
-    var buttonNext : Button? = null
-    var buttonBack : Button? = null
+    lateinit var buttonNext : Button
+    lateinit var buttonBack : Button
 
-    var imm: InputMethodManager? = null
+    lateinit var imm: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +36,8 @@ class Registration : Activity() {
         buttonBack = findViewById(R.id.buttonBack)
         buttonNext = findViewById(R.id.buttonNext)
 
-        buttonNext!!.setOnClickListener {
-            mSlideViewPager!!.currentItem = 1
+        buttonNext.setOnClickListener {
+            mSlideViewPager.currentItem = 1
         }
 
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -46,8 +46,8 @@ class Registration : Activity() {
         secondCircle = findViewById(R.id.SecondCircle)
         thirdCircle = findViewById(R.id.ThirdCircle)
 
-        mSlideViewPager?.adapter = sliderAdapter
-        mSlideViewPager!!.addOnPageChangeListener(pageChangeListener)
+        mSlideViewPager.adapter = sliderAdapter
+        mSlideViewPager.addOnPageChangeListener(pageChangeListener)
 
     }
 
@@ -56,34 +56,34 @@ class Registration : Activity() {
 
             when (position) {
                 0 -> {
-                    firstCircle!!.setTextColor(Color.WHITE)
-                    secondCircle!!.setTextColor(Color.GRAY)
-                    thirdCircle!!.setTextColor(Color.GRAY)
+                    firstCircle.setTextColor(Color.WHITE)
+                    secondCircle.setTextColor(Color.GRAY)
+                    thirdCircle.setTextColor(Color.GRAY)
 
-                    buttonBack!!.isEnabled = false
-                    buttonBack!!.text = ""
-                    buttonNext!!.text = getString(R.string.word_next)
+                    buttonBack.isEnabled = false
+                    buttonBack.text = ""
+                    buttonNext.text = getString(R.string.word_next)
 
-                    buttonNext!!.setOnClickListener {
-                        mSlideViewPager!!.currentItem = 1
+                    buttonNext.setOnClickListener {
+                        mSlideViewPager.currentItem = 1
                     }
 
                 }
                 1 -> {
-                    secondCircle!!.setTextColor(Color.WHITE)
-                    firstCircle!!.setTextColor(Color.GRAY)
-                    thirdCircle!!.setTextColor(Color.GRAY)
+                    secondCircle.setTextColor(Color.WHITE)
+                    firstCircle.setTextColor(Color.GRAY)
+                    thirdCircle.setTextColor(Color.GRAY)
 
-                    buttonBack!!.isEnabled = true
-                    buttonBack!!.text = getString(R.string.word_back)
-                    buttonNext!!.text = getString(R.string.word_next)
+                    buttonBack.isEnabled = true
+                    buttonBack.text = getString(R.string.word_back)
+                    buttonNext.text = getString(R.string.word_next)
 
-                    buttonNext!!.setOnClickListener {
-                        mSlideViewPager!!.currentItem = 2
+                    buttonNext.setOnClickListener {
+                        mSlideViewPager.currentItem = 2
                     }
 
-                    buttonBack!!.setOnClickListener {
-                        mSlideViewPager!!.currentItem = 0
+                    buttonBack.setOnClickListener {
+                        mSlideViewPager.currentItem = 0
                     }
 
                 }
@@ -93,22 +93,22 @@ class Registration : Activity() {
                     if (view == null)
                         view = View(applicationContext)
 
-                    imm!!.hideSoftInputFromWindow(view.windowToken, 0)
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
 
-                    thirdCircle!!.setTextColor(Color.WHITE)
-                    firstCircle!!.setTextColor(Color.GRAY)
-                    secondCircle!!.setTextColor(Color.GRAY)
+                    thirdCircle.setTextColor(Color.WHITE)
+                    firstCircle.setTextColor(Color.GRAY)
+                    secondCircle.setTextColor(Color.GRAY)
 
-                    buttonBack!!.isEnabled = true
-                    buttonBack!!.text = getString(R.string.word_back)
-                    buttonNext!!.text = getString(R.string.word_finish)
+                    buttonBack.isEnabled = true
+                    buttonBack.text = getString(R.string.word_back)
+                    buttonNext.text = getString(R.string.word_finish)
 
-                    buttonNext!!.setOnClickListener {
+                    buttonNext.setOnClickListener {
                         finish()
                     }
 
-                    buttonBack!!.setOnClickListener {
-                        mSlideViewPager!!.currentItem = 1
+                    buttonBack.setOnClickListener {
+                        mSlideViewPager.currentItem = 1
                     }
 
                 }

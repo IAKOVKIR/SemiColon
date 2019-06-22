@@ -1,6 +1,7 @@
 package com.example.semicolon.semi_settings
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -43,16 +44,16 @@ class SettingParamsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_setting_params, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_setting_params, container, false)
         val fullText = "$param1"
-        val nameText = view.findViewById<TextView>(R.id.name_text)
+        val nameText: TextView = view.findViewById(R.id.name_text)
 
         //layouts
-        val passwordLayout = view.findViewById<LinearLayout>(R.id.password_layout)
-        val notificationLayout = view.findViewById<LinearLayout>(R.id.notification_layout)
-        val languageLayout = view.findViewById<LinearLayout>(R.id.language_layout)
-        val helpLayout = view.findViewById<LinearLayout>(R.id.help_layout)
-        val aboutLayout = view.findViewById<LinearLayout>(R.id.about_layout)
+        val passwordLayout: LinearLayout = view.findViewById(R.id.password_layout)
+        val notificationLayout: LinearLayout = view.findViewById(R.id.notification_layout)
+        val languageLayout: LinearLayout = view.findViewById(R.id.language_layout)
+        val helpLayout: LinearLayout = view.findViewById(R.id.help_layout)
+        val aboutLayout: LinearLayout = view.findViewById(R.id.about_layout)
 
         nameText.text = fullText
 
@@ -60,18 +61,18 @@ class SettingParamsFragment : Fragment() {
             "1" -> notificationLayout.visibility = View.VISIBLE
             "2" -> {
                 passwordLayout.visibility = View.VISIBLE
-                val currentPassword = view.findViewById<EditText>(R.id.current_password)
-                val newPassword = view.findViewById<EditText>(R.id.new_password)
-                val repeatPassword = view.findViewById<EditText>(R.id.repeat_password)
+                val currentPassword: EditText = view.findViewById(R.id.current_password)
+                val newPassword: EditText = view.findViewById(R.id.new_password)
+                val repeatPassword: EditText = view.findViewById(R.id.repeat_password)
 
-                val buttonSubmit = view.findViewById<Button>(R.id.submit_button)
+                val buttonSubmit: Button = view.findViewById(R.id.submit_button)
                 buttonSubmit.setOnClickListener {
-                    val pref = context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-                    val password = pref.getString(log.prefVar[4], null)
-                    val curPas = currentPassword.text.toString()
-                    val newPas = newPassword.text.toString()
+                    val pref: SharedPreferences = context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
+                    val password: String? = pref.getString(log.prefVar[4], null)
+                    val curPas: String = currentPassword.text.toString()
+                    val newPas: String = newPassword.text.toString()
 
-                    val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm: InputMethodManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
 
                     if (password == curPas)

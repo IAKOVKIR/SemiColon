@@ -37,7 +37,7 @@
                 android:paddingEnd="4dp"
                 android:gravity="center"
                 android:background="@drawable/rounded_corner_for_text"
-                android:text="0"
+                android:text="@string/number_zero"
                 android:textColor="@color/WHITE"
                 android:textSize="20sp"
                 app:layout_constraintTop_toTopOf="parent"

@@ -344,6 +344,24 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    fun countFollowingRequests(UserID: Int): Int {
+        val db: SQLiteDatabase = writableDatabase
+        var cursor: Cursor? = null
+        var total = 0
+
+        try {
+            val line = "SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '0'"
+            cursor = db.rawQuery(line, null)
+            if (cursor.moveToFirst())
+                total = cursor.getInt(0)
+        } catch (e: SQLiteException) {
+        } finally {
+            cursor!!.close()
+            db.close()
+            return total
+        }
+    }
+
     fun countFriendTable(): Int {
         val db: SQLiteDatabase = writableDatabase
         val cursor: Cursor?
