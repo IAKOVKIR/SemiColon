@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.
  * specified [ListFollowers.OnListFragmentInteractionListener].
  */
 class MyFollowersRecyclerViewAdapter(
-    private val mValues: List<User>,
+    private val mValues: ArrayList<User>,
     private val mListener: ListFollowers.OnListFragmentInteractionListener?,
     private val mBitMap: BitmapDrawable
 ) : RecyclerView.Adapter<MyFollowersRecyclerViewAdapter.ViewHolder>() {
@@ -24,7 +24,7 @@ class MyFollowersRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as User
+            val item: User = v.tag as User
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -39,7 +39,7 @@ class MyFollowersRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
-        holder.mUserImage.setImageDrawable(mBitMap)
+        //holder.mUserImage.setImageDrawable(mBitMap)
         holder.mIdView.text = item.firstName
         holder.mContentView.text = item.lastName
 

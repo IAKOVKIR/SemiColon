@@ -45,6 +45,18 @@ class Login : Activity() {
             "Melbourne", 1, 5.0F, "CallMePresident@gmail.com"))
         db.insertUser(User(4,"Matt", "Merin", "0490000002", "12345678",
             "Melbourne", 1, 5.0F, "MattMerinOnTheBeat@gmail.com"))
+        db.insertUser(User(5,"John", "Carlos", "0490000003", "12345678",
+            "Melbourne", 1, 5.0F, "JohnCarlos@gmail.com"))
+        db.insertUser(User(6,"Patrick", "Beverly", "0490000004", "12345678",
+            "Melbourne", 1, 5.0F, "JohnCarlos@gmail.com"))
+        db.insertUser(User(7,"Dwyane", "Wade", "0490000005", "12345678",
+            "Melbourne", 1, 5.0F, "JohnCarlos@gmail.com"))
+        db.insertUser(User(8,"Michael", "Phelps", "0490000006", "12345678",
+            "Melbourne", 1, 5.0F, "JohnCarlos@gmail.com"))
+        db.insertUser(User(9,"Vladimir", "Putin", "0490000007", "12345678",
+            "Melbourne", 1, 5.0F, "JohnCarlos@gmail.com"))
+        db.insertUser(User(10,"James", "Harden", "0490000008", "12345678",
+            "Melbourne", 1, 5.0F, "JohnCarlos@gmail.com"))
 
         db.insertRequest(Friend(1, 1, 2, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(2, 1, 3, time.getDate(), time.getTime(), 0))
@@ -53,7 +65,13 @@ class Login : Activity() {
         db.insertRequest(Friend(5, 1, 4, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(6, 2, 4, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(7, 3, 4, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(8, 4, 3, time.getDate(), time.getTime(), 0))*/
+        db.insertRequest(Friend(8, 4, 3, time.getDate(), time.getTime(), 0))
+        db.insertRequest(Friend(9, 5, 3, time.getDate(), time.getTime(), 0))
+        db.insertRequest(Friend(10, 6, 3, time.getDate(), time.getTime(), 0))
+        db.insertRequest(Friend(11, 7, 3, time.getDate(), time.getTime(), 0))
+        db.insertRequest(Friend(12, 8, 3, time.getDate(), time.getTime(), 0))
+        db.insertRequest(Friend(13, 9, 3, time.getDate(), time.getTime(), 0))
+        db.insertRequest(Friend(14, 10, 3, time.getDate(), time.getTime(), 0))*/
 
         fEnter = findViewById(R.id.userName)
         sEnter = findViewById(R.id.password)

@@ -45,7 +45,7 @@ class MyFollowingRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
-        holder.mUserImage.setImageDrawable(mBitMap)
+        //holder.mUserImage.setImageDrawable(mBitMap)
         holder.mFirstName.text = item.firstName
         holder.mSecondName.text = item.lastName
 

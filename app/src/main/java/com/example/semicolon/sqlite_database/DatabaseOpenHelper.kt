@@ -105,6 +105,24 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
     }
 
     @Throws(SQLiteConstraintException::class)
+    fun deleteFollowingRequest(SenderID: Int, ReceiverID: Int): Boolean {
+
+        val db: SQLiteDatabase = writableDatabase
+
+        // Define 'where' part of query.
+        val selection = "${DBContract.UserEntry.FRIEND_COLUMN_SENDER_ID} = ? AND ${DBContract.UserEntry.FRIEND_COLUMN_RECEIVER_ID} = ?"
+        // Specify arguments in placeholder order.
+        val selectionArgs: Array<String> = arrayOf("$SenderID", "$ReceiverID")
+        // Issue SQL statement.
+        db.delete(DBContract.UserEntry.FRIEND_TABLE_NAME, selection, selectionArgs)
+
+        //alternative way
+        //db.execSQL("delete * from TABLE_CONTACTS where KEY_ID = "+contact+";");
+
+        return true
+    }
+
+    @Throws(SQLiteConstraintException::class)
     fun deleteUser(UserID: Int): Boolean {
 
         val db: SQLiteDatabase = writableDatabase

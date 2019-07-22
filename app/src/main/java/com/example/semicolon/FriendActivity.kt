@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.example.semicolon.following_followers.FollowingFollowersActivity
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.time.Time
+import de.hdodenhof.circleimageview.CircleImageView
 
 class FriendActivity : FragmentActivity() {
 
@@ -27,6 +28,8 @@ class FriendActivity : FragmentActivity() {
         val userID: Int = intent.getIntExtra("user_id", -1)
         val exceptionID: Int = intent.getIntExtra("exception_id", -1)
         val userObject: User = db.findUserByID(userID)
+
+        val circleImageView: CircleImageView = findViewById(R.id.circleImageView)
 
         //TextViews
         val name: TextView = findViewById(R.id.name)

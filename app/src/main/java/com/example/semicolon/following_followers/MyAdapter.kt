@@ -66,7 +66,7 @@ class MyAdapter(private val mValues: List<User>,
         }
 
         holder.mDeclineButton.setOnClickListener {
-            db.deleteUser(mUser)
+            db.deleteFollowingRequest(item.id, mUser)
             holder.mResultText.text = str[1]
             holder.mRequestButtons.visibility = View.GONE
             holder.mRequestResult.visibility = View.VISIBLE
