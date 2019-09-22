@@ -28,6 +28,7 @@ class ListFollowing : Fragment() {
     private var myID: Int? = null
     private var userID: Int? = null
     private var exceptionID: Int? = null
+    var listUser: ArrayList<User>? = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +47,6 @@ class ListFollowing : Fragment() {
         val list: RecyclerView = view.findViewById(R.id.list)
         val searchFollowing: EditText = view.findViewById(R.id.search)
         val db = DatabaseOpenHelper(context!!)
-        val userList: ArrayList<User> = db.readAllFollowing(userID!!, exceptionID!!)
 
         var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
         val height: Int = bitmap.height
@@ -59,12 +59,27 @@ class ListFollowing : Fragment() {
         with(list) {
             layoutManager = LinearLayoutManager(context)
             adapter = MyFollowingRecyclerViewAdapter(
-                userList,
+                listUser!!,
                 listener as OnListFragmentInteractionListener,
                 userID!!, bitmapDrawable)
         }
 
-        db.close()
+        val th = Thread(Runnable {
+            val testList: ArrayList<User> = db.readAllFollowing(userID!!, exceptionID!!)
+
+            for (i in 0 until testList.size)
+                listUser!!.add(testList[i])
+
+        })
+
+        th.start()
+
+        with(list) {
+            adapter!!.notifyDataSetChanged()
+        }
+
+        th.join()
+
         return view
     }
 

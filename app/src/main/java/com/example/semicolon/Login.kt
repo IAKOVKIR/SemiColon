@@ -73,13 +73,13 @@ class Login : Activity() {
         db.insertRequest(Friend(13, 9, 3, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(14, 10, 3, time.getDate(), time.getTime(), 0))*/
 
-        fEnter = findViewById(R.id.userName)
+        fEnter = findViewById(R.id.user_name)
         sEnter = findViewById(R.id.password)
 
         //Buttons
         val logBut: Button = findViewById(R.id.logBut)
         val forgotBut: Button = findViewById(R.id.forgotBut)
-        val createBut: Button = findViewById(R.id.createBut)
+        val createBut: Button = findViewById(R.id.create_an_account_but)
 
         //"Sign In" listener
         logBut.setOnClickListener {

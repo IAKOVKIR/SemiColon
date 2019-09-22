@@ -29,7 +29,7 @@ class ListFollowers : Fragment() {
     private var exceptionID: Int? = null
     lateinit var bitmap: Bitmap
     lateinit var bitmapDrawable: BitmapDrawable
-    var listUser: ArrayList<User>? = ArrayList()
+    var listUser: ArrayList<User> = ArrayList()
     lateinit var list: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +47,7 @@ class ListFollowers : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.followers_requests_list_followers, container, false)
         list = view.findViewById(R.id.list)
-        //val db = DatabaseOpenHelper(context!!)
+        val db = DatabaseOpenHelper(context!!)
 
         bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
         /*val height: Int = bitmap.height
@@ -62,12 +62,36 @@ class ListFollowers : Fragment() {
         with(list) {
             layoutManager = LinearLayoutManager(context)
             adapter = MyFollowersRecyclerViewAdapter(
-                listUser!!,
+                listUser,
                 listener as OnListFragmentInteractionListener,
                 bitmapDrawable)
+        }
+
+
+
+        val th = Thread(Runnable {
+            var list: ArrayList<User> = ArrayList()
+            try {
+                list = db.readAllFollowers(myID!!, -1, myID!!)
+            }
+            catch(e: Exception) {
+
             }
 
-        WordLoaderTask().execute()
+            for (i in 0 until list.size)
+                listUser.add(list[i])
+
+        })
+
+        th.start()
+
+        with(list) {
+            adapter!!.notifyDataSetChanged()
+        }
+
+        //th.join()
+
+        //WordLoaderTask(listUser!!).execute()
 
         return view
     }
@@ -99,12 +123,26 @@ class ListFollowers : Fragment() {
         fun onListFragmentInteraction(item: User?)
     }
 
-    internal inner class WordLoaderTask : AsyncTask<Void, ArrayList<User>, ArrayList<User>>() {
+    //just testing
+    /*internal inner class KitchenCleaner(arr: ArrayList<User>) : Thread() {
+        override fun run() {
+            println("Olivia cleaned the kitchen.")
+            try {
+                sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }
+    }
+    */
+
+    /*internal inner class WordLoaderTask(userList: ArrayList<User>) : AsyncTask<Void, ArrayList<User>, ArrayList<User>>() {
 
         private val height: Int = bitmap.height
         private val width: Int = bitmap.width
         private val dif: Double = height.toDouble() / width
         var db: DatabaseOpenHelper? = null
+        private val uList: ArrayList<User> = userList
 
         override fun onPreExecute() {
             db = DatabaseOpenHelper(context!!)
@@ -112,9 +150,9 @@ class ListFollowers : Fragment() {
         }
 
         override fun doInBackground(vararg params: Void): ArrayList<User>? {
-            val list = db!!.readAllFollowers(myID!!, -1, myID!!)
+            val list: ArrayList<User> = db!!.readAllFollowers(myID!!, -1, myID!!)
             for (i in 0 until list.size)
-                listUser!!.add(list[i])
+                uList.add(list[i])
 
             //Log.e("kek", "mem ${listUser!!.size}")
             bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)
@@ -122,7 +160,7 @@ class ListFollowers : Fragment() {
             try { Thread.sleep(2000) }
             catch (e: InterruptedException) { e.printStackTrace() }
 
-            return listUser
+            return uList
         }
 
         override fun onPostExecute(result: ArrayList<User>?) {
@@ -137,5 +175,5 @@ class ListFollowers : Fragment() {
             }
         }
 
-    }
+    }*/
 }
