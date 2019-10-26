@@ -16,7 +16,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <ImageButton
+        <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="6dp"
+                android:src="@drawable/heh"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription,RtlSymmetry" />
+
+        <!--<ImageButton
                 android:id="@+id/back_button"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
@@ -24,9 +35,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/back_arrow"
-                tools:ignore="ContentDescription,RtlSymmetry"/>
+                tools:ignore="ContentDescription,RtlSymmetry"/>-->
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -61,7 +72,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/circleImageView"/>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.ConstraintLayout>
 
         <Button
                 android:id="@+id/followButton"
@@ -73,7 +84,7 @@
 
     </LinearLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/gray_red">
@@ -173,7 +184,7 @@
 
         </LinearLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.ConstraintLayout>
 
     <LinearLayout
             android:layout_width="match_parent"

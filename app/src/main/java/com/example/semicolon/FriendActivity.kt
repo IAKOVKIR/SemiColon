@@ -2,11 +2,8 @@ package com.example.semicolon
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import android.widget.*
 import com.example.semicolon.following_followers.FollowingFollowersActivity
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.time.Time
@@ -41,7 +38,7 @@ class FriendActivity : FragmentActivity() {
 
         //Buttons
         val followButton: Button = findViewById(R.id.followButton)
-        val backButton: ImageButton = findViewById(R.id.back_button)
+        val backButton: ImageView = findViewById(R.id.back_button)
 
         //Layouts
         val followersLayout: LinearLayout = findViewById(R.id.linear_layout_followers)

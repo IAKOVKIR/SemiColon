@@ -5,18 +5,16 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:background="@color/BLACK">
+        android:padding="16dp">
 
     <!-- First Page -->
     <ScrollView
             android:id="@+id/first_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             tools:ignore="ScrollViewCount,UselessParent">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -25,16 +23,16 @@
 
             <android.support.design.widget.TextInputLayout
                     android:id="@+id/first_name_layout"
+                    android:hint="@string/phrase_first_word"
+                    android:textColorHint="@color/GREY"
                     android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/phrase_first_word"
-                android:textColorHint="@color/GREY"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
             <android.support.design.widget.TextInputEditText
                     android:id="@+id/first_name"
@@ -73,7 +71,7 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <!--<android.support.design.widget.TextInputLayout
                 android:id="@+id/phone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,9 +144,9 @@
                     android:textColorHint="@color/GREY"
                     android:textColor="@color/WHITE"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout>-->
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.ConstraintLayout>
 
     </ScrollView>
 
@@ -157,9 +155,10 @@
             android:id="@+id/second_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             tools:ignore="ScrollViewCount,UselessParent">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -168,10 +167,10 @@
 
             <android.support.design.widget.TextInputLayout
                     android:id="@+id/city_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:hint="@string/word_city"
                     android:textColorHint="@color/GREY"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -312,7 +311,7 @@
                     app:layout_constraintStart_toEndOf="@+id/date_layout"
                     android:layout_marginStart="8dp"/>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.ConstraintLayout>
 
     </ScrollView>
 

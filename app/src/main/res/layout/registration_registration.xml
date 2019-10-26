@@ -2,25 +2,25 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:background="@color/BLACK"
+        android:background="@drawable/gray_red"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
         tools:context=".semi_registration.Registration">
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/slideViewPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_above="@id/footerLayout"
-            android:id="@+id/slideViewPager"/>
+            android:layout_above="@id/footerLayout" />
 
     <RelativeLayout
             android:id="@+id/footerLayout"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:orientation="horizontal"
             android:layout_alignParentBottom="true">
 
         <Button
@@ -59,12 +59,12 @@
 
             <TextView
                     android:id="@+id/SecondCircle"
+                    android:text="•"
+                    android:textSize="37sp"
+                    android:textColor="#792E2E"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="37sp"
-                    android:textColor="@color/GREY"
-                    android:layout_centerHorizontal="true"
-                    android:text="•"/>
+                    android:layout_centerHorizontal="true" />
 
             <TextView
                     android:id="@+id/ThirdCircle"
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="25dp"
                     android:textSize="37sp"
-                    android:textColor="@color/GREY"
+                    android:textColor="#792E2E"
                     android:layout_alignParentEnd="true"
                     android:text="•"/>
 

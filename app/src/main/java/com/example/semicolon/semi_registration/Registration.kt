@@ -3,7 +3,7 @@ package com.example.semicolon.semi_registration
 import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
@@ -54,15 +54,20 @@ class Registration : Activity() {
     private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
 
+            val wordNext: String = getString(R.string.word_next)
+            val wordBack: String = getString(R.string.word_back)
+            val grayColor: Int = Color.GRAY
+            val whiteColor: Int = Color.WHITE
+
             when (position) {
                 0 -> {
-                    firstCircle.setTextColor(Color.WHITE)
-                    secondCircle.setTextColor(Color.GRAY)
-                    thirdCircle.setTextColor(Color.GRAY)
+                    firstCircle.setTextColor(whiteColor)
+                    secondCircle.setTextColor(grayColor)
+                    thirdCircle.setTextColor(grayColor)
 
                     buttonBack.isEnabled = false
                     buttonBack.text = ""
-                    buttonNext.text = getString(R.string.word_next)
+                    buttonNext.text = wordNext
 
                     buttonNext.setOnClickListener {
                         mSlideViewPager.currentItem = 1
@@ -70,13 +75,13 @@ class Registration : Activity() {
 
                 }
                 1 -> {
-                    secondCircle.setTextColor(Color.WHITE)
-                    firstCircle.setTextColor(Color.GRAY)
-                    thirdCircle.setTextColor(Color.GRAY)
+                    secondCircle.setTextColor(whiteColor)
+                    firstCircle.setTextColor(grayColor)
+                    thirdCircle.setTextColor(grayColor)
 
                     buttonBack.isEnabled = true
-                    buttonBack.text = getString(R.string.word_back)
-                    buttonNext.text = getString(R.string.word_next)
+                    buttonBack.text = wordBack
+                    buttonNext.text = wordNext
 
                     buttonNext.setOnClickListener {
                         mSlideViewPager.currentItem = 2
@@ -95,12 +100,12 @@ class Registration : Activity() {
 
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
 
-                    thirdCircle.setTextColor(Color.WHITE)
-                    firstCircle.setTextColor(Color.GRAY)
-                    secondCircle.setTextColor(Color.GRAY)
+                    thirdCircle.setTextColor(whiteColor)
+                    firstCircle.setTextColor(grayColor)
+                    secondCircle.setTextColor(grayColor)
 
                     buttonBack.isEnabled = true
-                    buttonBack.text = getString(R.string.word_back)
+                    buttonBack.text = wordBack
                     buttonNext.text = getString(R.string.word_finish)
 
                     buttonNext.setOnClickListener {

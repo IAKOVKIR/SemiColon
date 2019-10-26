@@ -2,13 +2,17 @@ package com.example.semicolon.following_followers
 
 import android.content.Intent
 import android.graphics.Color
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
+import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
 import android.os.Bundle
-import android.support.v4.app.*
-import android.support.v4.content.ContextCompat
-import android.widget.ImageButton
+import androidx.core.app.*
+import androidx.core.content.ContextCompat
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.example.semicolon.*
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import java.util.ArrayList
@@ -41,7 +45,7 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
         val viewPager: ViewPager = findViewById(R.id.viewpager)
         val tabLayout: TabLayout = findViewById(R.id.tabs)
-        val backButton: ImageButton = findViewById(R.id.back_button)
+        val backButton: ImageView = findViewById(R.id.back_button)
         val requestsButton: TextView = findViewById(R.id.requests_button)
 
         tabLayout.setBackgroundColor(Color.WHITE)
@@ -56,7 +60,7 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
         backButton.setOnClickListener { finish() }
 
-        val numOfRequests = db.countFollowingRequests(myID!!)
+        val numOfRequests: Int = db.countFollowingRequests(myID!!)
         requestsButton.text = "$numOfRequests"
         requestsButton.setOnClickListener {
             val intent = Intent(this, RequestsActivity::class.java)

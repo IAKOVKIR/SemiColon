@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.FragmentActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import com.example.semicolon.semi_settings.Setting
 import com.example.semicolon.event.EventContent

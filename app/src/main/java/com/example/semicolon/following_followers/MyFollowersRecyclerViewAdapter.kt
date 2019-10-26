@@ -1,7 +1,7 @@
 package com.example.semicolon.following_followers
 
 import android.graphics.drawable.BitmapDrawable
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +52,7 @@ class MyFollowersRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mUserImage: CircleImageView = mView.userImage
+        //val mUserImage: CircleImageView = mView.userImage
         val mIdView: TextView = mView.first_name
         val mContentView: TextView = mView.last_name
 
