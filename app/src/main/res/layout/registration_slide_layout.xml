@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             tools:ignore="ScrollViewCount,UselessParent">
 
-        <androidx.constraintlayout.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -146,7 +146,7 @@
 
         </android.support.design.widget.TextInputLayout>-->
 
-        </androidx.constraintlayout.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
@@ -158,7 +158,7 @@
             android:visibility="gone"
             tools:ignore="ScrollViewCount,UselessParent">
 
-        <androidx.constraintlayout.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -311,7 +311,7 @@
                     app:layout_constraintStart_toEndOf="@+id/date_layout"
                     android:layout_marginStart="8dp"/>
 
-        </androidx.constraintlayout.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

@@ -12,6 +12,10 @@ import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.time.Time
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.following_search_friends_following.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.concurrent.Executors
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
@@ -58,13 +62,25 @@ class MyFollowingRecyclerViewAdapter(
             if (bool == 1) {
                 holder.mFollowUnFollowButton.text = str[1]
                 bool = 0
-                val friend = Friend(db.countFriendTable(), myID, item.id,
-                    time.getDate(), time.getTime(), 0)
-                db.insertRequest(friend)
+
+                runBlocking {
+                    launch(Dispatchers.Default) {
+                        val friend = Friend(
+                            db.countFriendTable(), myID, item.id,
+                            time.getDate(), time.getTime(), 0
+                        )
+                        db.insertRequest(friend)
+                    }
+                }
+
             } else {
                 holder.mFollowUnFollowButton.text = str[2]
                 bool = 1
-                db.deleteFollowing(myID, item.id)
+                runBlocking {
+                    launch(Dispatchers.Default) {
+                        db.deleteFollowing(myID, item.id)
+                    }
+                }
             }
         }
 

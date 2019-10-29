@@ -5,9 +5,7 @@ import android.graphics.Color
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import android.os.Bundle
-import androidx.core.app.*
 import androidx.core.content.ContextCompat
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -22,8 +20,6 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
     private var myID: Int? = null
     private var userID: Int? = null
-    private var exceptionID: Int? = null
-    private var linePos = ""
 
     override fun onListFragmentInteraction(item: User?) {
         val intent = Intent(this, FriendActivity::class.java)
@@ -39,23 +35,23 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
         val db = DatabaseOpenHelper(applicationContext)
         myID = intent.getStringExtra("my_id").toInt()
-        userID = intent.getStringExtra("user_id").toInt()
-        exceptionID = intent.getStringExtra("exception_id").toInt()
-        linePos = intent.getStringExtra("string")
+        val userID: Int = intent.getStringExtra("user_id").toInt()
+        val exceptionID: Int = intent.getStringExtra("exception_id").toInt()
+        val linePos: Int = intent.getIntExtra("string", 0)
 
         val viewPager: ViewPager = findViewById(R.id.viewpager)
         val tabLayout: TabLayout = findViewById(R.id.tabs)
-        val backButton: ImageView = findViewById(R.id.back_button)
+        val backButton: TextView = findViewById(R.id.back_button)
         val requestsButton: TextView = findViewById(R.id.requests_button)
 
         tabLayout.setBackgroundColor(Color.WHITE)
         tabLayout.setTabTextColors(ContextCompat.getColor(applicationContext, R.color.SPECIAL), ContextCompat.getColor(applicationContext, R.color.BLUE))
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
-        setupViewPager(viewPager, myID!!, userID!!, exceptionID!!)
+        setupViewPager(viewPager, myID!!, userID, exceptionID)
         tabLayout.setupWithViewPager(viewPager)
 
-        if (linePos == "1")
+        if (linePos == 1)
             tabLayout.getTabAt(1)!!.select()
 
         backButton.setOnClickListener { finish() }
@@ -65,8 +61,8 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         requestsButton.setOnClickListener {
             val intent = Intent(this, RequestsActivity::class.java)
             intent.putExtra("my_id", myID!!.toString())
-            intent.putExtra("user_id", userID!!)
-            intent.putExtra("exception_id", exceptionID!!.toString())
+            intent.putExtra("user_id", userID)
+            intent.putExtra("exception_id", exceptionID.toString())
             startActivity(intent)
         }
 

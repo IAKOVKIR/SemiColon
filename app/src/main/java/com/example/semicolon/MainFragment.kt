@@ -79,7 +79,7 @@ class MainFragment : Fragment() {
             intent.putExtra("my_id", myData[0])
             intent.putExtra("user_id", myData[0])
             intent.putExtra("exception_id", myData[0])
-            intent.putExtra("string", "0")
+            intent.putExtra("string", 0)
             startActivity(intent)
         }
 
@@ -88,7 +88,7 @@ class MainFragment : Fragment() {
             intent.putExtra("my_id", myData[0])
             intent.putExtra("user_id", myData[0])
             intent.putExtra("exception_id", myData[0])
-            intent.putExtra("string", "1")
+            intent.putExtra("string", 1)
             startActivity(intent)
         }
 
