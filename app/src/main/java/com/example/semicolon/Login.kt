@@ -37,7 +37,7 @@ class Login : Activity() {
 
         db = DatabaseOpenHelper(this)
 
-        /*db.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678",
+        db.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678",
             "Melbourne", 1, 5.0F, "MrStealYourQuery@gmail.com"))
         db.insertUser(User(2,"Abbas", "Ice Wallow", "0490000000", "12345678",
             "Somewhere", 1, 3.2F, "BetterThanFather@gmail.com"))
@@ -71,7 +71,7 @@ class Login : Activity() {
         db.insertRequest(Friend(11, 7, 3, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(12, 8, 3, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(13, 9, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(14, 10, 3, time.getDate(), time.getTime(), 0))*/
+        db.insertRequest(Friend(14, 10, 3, time.getDate(), time.getTime(), 0))
 
         fEnter = findViewById(R.id.user_name)
         sEnter = findViewById(R.id.password)

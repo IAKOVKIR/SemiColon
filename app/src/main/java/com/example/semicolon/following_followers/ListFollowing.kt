@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.loader.content.AsyncTaskLoader
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
 import com.example.semicolon.User
@@ -65,6 +66,7 @@ class ListFollowing : Fragment() {
             setHasFixedSize(true)
         }
 
+        //dumb thread
         val th = Thread(Runnable {
             val testList: ArrayList<User> = db.readAllFollowing(userID!!, exceptionID!!)
 
@@ -111,4 +113,13 @@ class ListFollowing : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
+
+    /*inner class InBackground() : AsyncTaskLoader(context: Context) {
+
+        @override
+        fun loadInBackgroud() {
+
+        }
+
+    }*/
 }

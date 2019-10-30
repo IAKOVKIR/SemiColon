@@ -7,7 +7,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.ImageButton
+import android.widget.ImageView
 import com.example.semicolon.R
 import com.example.semicolon.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
@@ -26,7 +26,7 @@ class RequestsActivity : Activity() {
         myID = intent.getStringExtra("my_id").toInt()
         exceptionID = intent.getStringExtra("exception_id").toInt()
 
-        val backButton: ImageButton = findViewById(R.id.back_button)
+        val backButton: ImageView = findViewById(R.id.back_button)
         val db = DatabaseOpenHelper(applicationContext)
         val listUser: ArrayList<User> = db.readAllFollowers(myID!!, 0, exceptionID!!)
 

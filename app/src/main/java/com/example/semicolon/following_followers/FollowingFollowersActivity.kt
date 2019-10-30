@@ -86,7 +86,8 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         viewPager.adapter = adapter
     }
 
-    internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
+
+    internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         private val mFragmentList = ArrayList<Fragment>()
         private val mFragmentTitleList = ArrayList<String>()
 
