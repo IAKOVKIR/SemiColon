@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.following_search_friends_following.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.concurrent.Executors
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the

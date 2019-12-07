@@ -47,7 +47,7 @@ class MyAdapter(private val mValues: List<User>,
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.followers_requests_friends_requests, parent, false)
         db = DatabaseOpenHelper(parent.context)
-        // set the view's size, margins, paddings and layout parameters
+        // set the view's size, margins, padding's and layout parameters
         return MyViewHolder(view)
     }
 
@@ -73,6 +73,6 @@ class MyAdapter(private val mValues: List<User>,
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    // Return the size of your data set (invoked by the layout manager)
     override fun getItemCount() = mValues.size
 }

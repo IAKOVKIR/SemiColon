@@ -5,6 +5,7 @@ import android.graphics.Color
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -35,8 +36,9 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
         val db = DatabaseOpenHelper(applicationContext)
         myID = intent.getStringExtra("my_id").toInt()
-        val userID: Int = intent.getStringExtra("user_id").toInt()
+        userID = intent.getStringExtra("user_id").toInt()
         val exceptionID: Int = intent.getStringExtra("exception_id").toInt()
+        Log.i("check", "$exceptionID")
         val linePos: Int = intent.getIntExtra("string", 0)
 
         val viewPager: ViewPager = findViewById(R.id.viewpager)
@@ -48,7 +50,7 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         tabLayout.setTabTextColors(ContextCompat.getColor(applicationContext, R.color.SPECIAL), ContextCompat.getColor(applicationContext, R.color.BLUE))
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
-        setupViewPager(viewPager, myID!!, userID, exceptionID)
+        setupViewPager(viewPager, myID!!, userID!!, exceptionID)
         tabLayout.setupWithViewPager(viewPager)
 
         if (linePos == 1)
@@ -61,7 +63,7 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         requestsButton.setOnClickListener {
             val intent = Intent(this, RequestsActivity::class.java)
             intent.putExtra("my_id", myID!!.toString())
-            intent.putExtra("user_id", userID)
+            intent.putExtra("user_id", userID!!)
             intent.putExtra("exception_id", exceptionID.toString())
             startActivity(intent)
         }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,9 +27,9 @@ class ListFollowers : Fragment() {
     private var myID: Int? = null
     private var userID: Int? = null
     private var exceptionID: Int? = null
-    lateinit var bitmap: Bitmap
-    lateinit var bitmapDrawable: BitmapDrawable
-    var listUser: ArrayList<User> = ArrayList()
+    private lateinit var bitmap: Bitmap
+    private lateinit var bitmapDrawable: BitmapDrawable
+    private var listUser: ArrayList<User> = ArrayList()
     lateinit var list: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +49,7 @@ class ListFollowers : Fragment() {
         list = view.findViewById(R.id.list)
         val db = DatabaseOpenHelper(context!!)
 
+        Log.i("check", "$exceptionID")
         bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
         /*val height: Int = bitmap.height
         val width: Int = bitmap.width
@@ -70,16 +72,12 @@ class ListFollowers : Fragment() {
 
 
         val th = Thread(Runnable {
-            var list: ArrayList<User> = ArrayList()
             try {
-                list = db.readAllFollowers(myID!!, -1, myID!!)
+                listUser = db.readAllFollowers(myID!!, -1, myID!!)
             }
             catch(e: Exception) {
 
             }
-
-            for (i in 0 until list.size)
-                listUser.add(list[i])
 
         })
 
@@ -122,19 +120,6 @@ class ListFollowers : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
-
-    //just testing
-    /*internal inner class KitchenCleaner(arr: ArrayList<User>) : Thread() {
-        override fun run() {
-            println("Olivia cleaned the kitchen.")
-            try {
-                sleep(1000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-        }
-    }
-    */
 
     /*internal inner class WordLoaderTask(userList: ArrayList<User>) : AsyncTask<Void, ArrayList<User>, ArrayList<User>>() {
 

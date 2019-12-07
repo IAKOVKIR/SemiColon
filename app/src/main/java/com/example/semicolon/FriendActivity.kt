@@ -2,12 +2,13 @@ package com.example.semicolon
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import android.widget.*
 import com.example.semicolon.following_followers.FollowingFollowersActivity
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.time.Time
-import de.hdodenhof.circleimageview.CircleImageView
+//import de.hdodenhof.circleimageview.CircleImageView
 
 class FriendActivity : FragmentActivity() {
 
@@ -26,7 +27,7 @@ class FriendActivity : FragmentActivity() {
         val exceptionID: Int = intent.getIntExtra("exception_id", -1)
         val userObject: User = db.findUserByID(userID)
 
-        val circleImageView: CircleImageView = findViewById(R.id.circleImageView)
+        //val circleImageView: CircleImageView = findViewById(R.id.circleImageView)
 
         //TextViews
         val name: TextView = findViewById(R.id.name)
@@ -88,6 +89,9 @@ class FriendActivity : FragmentActivity() {
             intent.putExtra("my_id", "$myID")
             intent.putExtra("user_id", "$userID")
             intent.putExtra("exception_id", "$exceptionID")
+            Log.i("MyID", "$myID")
+            Log.i("UserID", "$userID")
+            Log.i("Exception", "$exceptionID")
             intent.putExtra("string", "0")
             startActivity(intent)
         }
@@ -97,6 +101,9 @@ class FriendActivity : FragmentActivity() {
             intent.putExtra("my_id", "$myID")
             intent.putExtra("user_id", "$userID")
             intent.putExtra("exception_id", "$exceptionID")
+            Log.i("MyID", "$myID")
+            Log.i("UserID", "$userID")
+            Log.i("Exception", "$exceptionID")
             intent.putExtra("string", "1")
             startActivity(intent)
         }
