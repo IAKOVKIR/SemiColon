@@ -57,6 +57,8 @@ class Login : Activity() {
             "Melbourne", 1, 5.0F, "JohnCarlos@gmail.com"))
         db.insertUser(User(10,"James", "Harden", "0490000008", "12345678",
             "Melbourne", 1, 5.0F, "JohnCarlos@gmail.com"))
+        db.insertUser(User(11,"Lebron", "James", "0490000009", "12345678",
+            "Melbourne", 1, 5.0F, "MrStealYourQuery@gmail.com"))
 
         db.insertRequest(Friend(1, 1, 2, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(2, 1, 3, time.getDate(), time.getTime(), 0))
@@ -72,6 +74,7 @@ class Login : Activity() {
         db.insertRequest(Friend(12, 8, 3, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(13, 9, 3, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(14, 10, 3, time.getDate(), time.getTime(), 0))
+        db.insertRequest(Friend(15, 11, 3, time.getDate(), time.getTime(), 0))
 
         fEnter = findViewById(R.id.user_name)
         sEnter = findViewById(R.id.password)

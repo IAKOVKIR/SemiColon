@@ -35,7 +35,7 @@
 
         <ImageView
                 android:id="@+id/phone_field_image"
-                android:src="@drawable/login"
+                android:src="@drawable/icon_login"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="12dp"

@@ -72,12 +72,16 @@ class ListFollowers : Fragment() {
 
 
         val th = Thread(Runnable {
+            var list: ArrayList<User> = ArrayList()
             try {
-                listUser = db.readAllFollowers(myID!!, -1, myID!!)
+                list = db.readAllFollowers(userID!!, -1, exceptionID!!)
             }
             catch(e: Exception) {
 
             }
+
+            for (i in 0 until list.size)
+                listUser.add(list[i])
 
         })
 
