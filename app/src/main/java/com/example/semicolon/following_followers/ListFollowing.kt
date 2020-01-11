@@ -1,11 +1,11 @@
 package com.example.semicolon.following_followers
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
+//import android.graphics.Bitmap
+//import android.graphics.BitmapFactory
+//import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
+//import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
 import com.example.semicolon.User
+import kotlinx.coroutines.*
 
 /**
  * A fragment representing a list of Items.
@@ -30,7 +31,8 @@ class ListFollowing : Fragment() {
     private var myID: Int? = null
     private var userID: Int? = null
     private var exceptionID: Int? = null
-    var listUser: ArrayList<User>? = ArrayList()
+    private var listUser: ArrayList<User> = ArrayList()
+    private var job: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,40 +52,39 @@ class ListFollowing : Fragment() {
         //val searchFollowing: EditText = view.findViewById(R.id.search)
         val db = DatabaseOpenHelper(context!!)
 
-        Log.i("check", "$exceptionID")
-        var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
+        //Log.i("check", "$exceptionID")
+        /*var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
         val height: Int = bitmap.height
         val width: Int = bitmap.width
         val dif: Double = height.toDouble() / width
         bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-        val bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)
+        val bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)*/
 
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
             adapter = MyFollowingRecyclerViewAdapter(
-                listUser!!,
+                listUser,
                 listener as OnListFragmentInteractionListener,
-                userID!!, bitmapDrawable)
+                userID!!/*, bitmapDrawable*/)
             setHasFixedSize(true)
         }
 
-        //dumb thread
-        val th = Thread(Runnable {
-            val testList: ArrayList<User> = db.readAllFollowing(userID!!, exceptionID!!)
-
-            for (i in 0 until testList.size)
-                listUser!!.add(testList[i])
-
-        })
-
-        th.start()
-
-        with(list) {
-            adapter!!.notifyDataSetChanged()
+        fun load() : ArrayList<User> {
+            return db.readAllFollowing(userID!!, exceptionID!!)
         }
 
-        th.join()
+        job = CoroutineScope(Dispatchers.Default).launch {
+
+            listUser.addAll(withContext(Dispatchers.Default) { load() })
+
+            CoroutineScope(Dispatchers.Main).launch {
+                with(list) {
+                    adapter!!.notifyDataSetChanged()
+                }
+            }
+
+        }
 
         return view
     }
@@ -106,11 +107,6 @@ class ListFollowing : Fragment() {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     *
-     *
-     * See the Android Training lesson
-     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
      */
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)

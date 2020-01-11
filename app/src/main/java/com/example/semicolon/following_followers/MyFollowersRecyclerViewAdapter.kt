@@ -1,13 +1,13 @@
 package com.example.semicolon.following_followers
 
-import android.graphics.drawable.BitmapDrawable
+//import android.graphics.drawable.BitmapDrawable
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.*
-import de.hdodenhof.circleimageview.CircleImageView
+//import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.*
 
 /**
@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.
  */
 class MyFollowersRecyclerViewAdapter(
     private val mValues: ArrayList<User>,
-    private val mListener: ListFollowers.OnListFragmentInteractionListener?,
-    private val mBitMap: BitmapDrawable
+    private val mListener: ListFollowers.OnListFragmentInteractionListener?/*,
+    private val mBitMap: BitmapDrawable*/
 ) : RecyclerView.Adapter<MyFollowersRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener

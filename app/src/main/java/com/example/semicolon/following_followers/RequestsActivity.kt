@@ -38,7 +38,7 @@ class RequestsActivity : Activity() {
         val bitmapDrawable = BitmapDrawable(applicationContext.resources, bitmap)
 
         viewManager = LinearLayoutManager(this)
-        viewAdapter = MyAdapter(listUser, myID!!, bitmapDrawable)
+        viewAdapter = MyAdapter(listUser, myID!!/*, bitmapDrawable*/)
 
         recyclerView = findViewById<RecyclerView>(R.id.list).apply {
             // use this setting to improve performance if you know that changes

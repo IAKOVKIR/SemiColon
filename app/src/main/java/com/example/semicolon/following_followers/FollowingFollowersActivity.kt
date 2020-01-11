@@ -5,7 +5,7 @@ import android.graphics.Color
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import android.os.Bundle
-import android.util.Log
+//import android.util.Log
 import androidx.core.content.ContextCompat
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.semicolon.*
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+//import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import java.util.ArrayList
 
 class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentInteractionListener,
@@ -21,12 +21,13 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
     private var myID: Int? = null
     private var userID: Int? = null
+    private var exceptionID: Int? = null
 
     override fun onListFragmentInteraction(item: User?) {
         val intent = Intent(this, FriendActivity::class.java)
         intent.putExtra("my_id", myID!!)
         intent.putExtra("user_id", item!!.id)
-        intent.putExtra("exception_id", userID!!)
+        intent.putExtra("exception_id", exceptionID!!)
         startActivity(intent)
     }
 
@@ -34,11 +35,11 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_followers)
 
-        val db = DatabaseOpenHelper(applicationContext)
-        myID = intent.getStringExtra("my_id").toInt()
-        userID = intent.getStringExtra("user_id").toInt()
-        val exceptionID: Int = intent.getStringExtra("exception_id").toInt()
-        Log.i("check", "$exceptionID")
+        //val db = DatabaseOpenHelper(applicationContext)
+        myID = intent.getStringExtra("my_id")!!.toInt()
+        userID = intent.getStringExtra("user_id")!!.toInt()
+        exceptionID = intent.getStringExtra("exception_id")!!.toInt()
+        //Log.i("check", "$exceptionID")
         val linePos: Int = intent.getIntExtra("string", 0)
 
         val viewPager: ViewPager = findViewById(R.id.viewpager)
@@ -50,7 +51,7 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         tabLayout.setTabTextColors(ContextCompat.getColor(applicationContext, R.color.SPECIAL), ContextCompat.getColor(applicationContext, R.color.BLUE))
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
-        setupViewPager(viewPager, myID!!, userID!!, exceptionID)
+        setupViewPager(viewPager, myID!!, userID!!, exceptionID!!)
         tabLayout.setupWithViewPager(viewPager)
 
         if (linePos == 1)
@@ -58,8 +59,8 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
         backButton.setOnClickListener { finish() }
 
-        val numOfRequests: Int = db.countFollowingRequests(myID!!)
-        requestsButton.text = "$numOfRequests"
+        //val numOfRequests = db.countFollowingRequests(myID!!)
+        requestsButton.text = "0"//"$numOfRequests"
         requestsButton.setOnClickListener {
             val intent = Intent(this, RequestsActivity::class.java)
             intent.putExtra("my_id", myID!!.toString())

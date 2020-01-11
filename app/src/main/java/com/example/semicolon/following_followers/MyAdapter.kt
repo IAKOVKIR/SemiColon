@@ -1,6 +1,6 @@
 package com.example.semicolon.following_followers
 
-import android.graphics.drawable.BitmapDrawable
+//import android.graphics.drawable.BitmapDrawable
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,23 +10,23 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.semicolon.R
 import com.example.semicolon.User
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import de.hdodenhof.circleimageview.CircleImageView
+//import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+//import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.followers_requests_friends_requests.view.*
 
 class MyAdapter(private val mValues: List<User>,
-                private val mUser: Int,
-                private val mBitMap: BitmapDrawable
+                private val mUser: Int/*,
+                private val mBitMap: BitmapDrawable*/
 ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     private val str: Array<String> = arrayOf("Confirmed", "Declined")
-    private lateinit var db: DatabaseOpenHelper
+    //private lateinit var db: DatabaseOpenHelper
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder.
     // Each data item is just a string in this case that is shown in a TextView.
     class MyViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val mUserImage: CircleImageView = view.userImage
+        //val mUserImage: CircleImageView = view.userImage
         val mFirstName: TextView = view.first_name
         val mLastName: TextView = view.last_name
         val mConfirmButton: Button = view.confirm_button
@@ -46,7 +46,7 @@ class MyAdapter(private val mValues: List<User>,
         // create a new view
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.followers_requests_friends_requests, parent, false)
-        db = DatabaseOpenHelper(parent.context)
+        //db = DatabaseOpenHelper(parent.context)
         // set the view's size, margins, padding's and layout parameters
         return MyViewHolder(view)
     }
@@ -54,19 +54,19 @@ class MyAdapter(private val mValues: List<User>,
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item: User = mValues[position]
-        holder.mUserImage.setImageDrawable(mBitMap)
+        //holder.mUserImage.setImageDrawable(mBitMap)
         holder.mFirstName.text = item.firstName
         holder.mLastName.text = item.lastName
 
         holder.mConfirmButton.setOnClickListener {
-            db.updateRequest(item.id, mUser, -1)
+            //db.updateRequest(item.id, mUser, -1)
             holder.mResultText.text = str[0]
             holder.mRequestButtons.visibility = View.GONE
             holder.mRequestResult.visibility = View.VISIBLE
         }
 
         holder.mDeclineButton.setOnClickListener {
-            db.deleteFollowingRequest(item.id, mUser)
+            //db.deleteFollowingRequest(item.id, mUser)
             holder.mResultText.text = str[1]
             holder.mRequestButtons.visibility = View.GONE
             holder.mRequestResult.visibility = View.VISIBLE

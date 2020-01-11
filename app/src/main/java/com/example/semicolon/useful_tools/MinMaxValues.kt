@@ -25,7 +25,7 @@ class MinMaxFilter(minValue: Int, maxValue: Int) : InputFilter {
         dend: Int
     ): CharSequence? {
         try {
-            val input = Integer.parseInt(dest.toString() + source.toString())
+            val input: Int = Integer.parseInt(dest.toString() + source.toString())
             if (isInRange(mIntMin, mIntMax, input))
                 return null
         } catch (nfe: NumberFormatException) { }
