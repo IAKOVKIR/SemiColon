@@ -37,6 +37,7 @@ class Login : Activity() {
 
         db = DatabaseOpenHelper(this)
 
+        //test entries for USER table
         db.insertUser(User(1,"Chandra", "MrQuery", "0490506763", "12345678",
             "Melbourne", 1, 5.0F, "MrStealYourQuery@gmail.com"))
         db.insertUser(User(2,"Abbas", "Ice Wallow", "0490000000", "12345678",
@@ -60,6 +61,7 @@ class Login : Activity() {
         db.insertUser(User(11,"Lebron", "James", "0490000009", "12345678",
             "Melbourne", 1, 5.0F, "MrStealYourQuery@gmail.com"))
 
+        //test entries for FRIEND table
         db.insertRequest(Friend(1, 1, 2, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(2, 1, 3, time.getDate(), time.getTime(), 0))
         db.insertRequest(Friend(3, 2, 3, time.getDate(), time.getTime(), 0))
@@ -105,9 +107,9 @@ class Login : Activity() {
 
     /**
      * @function doLogin() retrieves data from two EditText's (txtPhone - phone number, txtPassword - password)
-     * If txtPhone equals to username and txtPassword equals to password, then HomeActivity will be started
-     * Else 'Toast' message will be displayed
-     * If checkBox ("remember me") will be checked, then username and password will be saved in SharedPreferences
+     * If there is a user with the same phone number and password as txtPhone and txtPassword, then HomeUserActivity will be started
+     * Otherwise 'Toast' message with and error will be displayed
+     * @function rememberMe(user: User) saves user's phone number and password in SharedPreferences
      */
     private fun doLogin() {
         val txtPhone: String = fEnter.text.toString()
@@ -124,7 +126,7 @@ class Login : Activity() {
     }
 
     /**
-     * @function showHome() starts HomeActivity and sends username
+     * @function showHome() starts UserHomeActivity
      */
 
     private fun showHome() {
@@ -135,13 +137,13 @@ class Login : Activity() {
 
     /**
      * @function getUser() checks username and password.
-     * If username or password contain something, then the logout activity will be opened directly
+     * If there is an account with same username and password, then UserHomeActivity activity will be opened directly
      */
 
     private fun getUser() {
-        val pref: SharedPreferences = getSharedPreferences(prefName, Context.MODE_PRIVATE)
-        val username: String = pref.getString(prefVar[3], "") as String
-        val password: String = pref.getString(prefVar[4], "") as String
+        val pref: SharedPreferences = getSharedPreferences("myPreferences"/*prefName*/, Context.MODE_PRIVATE)
+        val username: String = pref.getString("phone"/*prefVar[3]*/, "") as String
+        val password: String = pref.getString("password"/*prefVar[4]*/, "") as String
         val list: User = db.findUserByPhoneAndPassword(username, password)
 
         if (list.id != -1)
@@ -149,21 +151,21 @@ class Login : Activity() {
     }
 
     /**
-     * @function rememberMe() saves username and password values in SharedPreferences
+     * @function rememberMe() saves username, password and other values in SharedPreferences
      */
 
-    //rememberMe() function saves username and password in SharedPreferences
+    //rememberMe() function saves id, phone number and password in SharedPreferences
     private fun rememberMe(user: User) {
-        getSharedPreferences(prefName, Context.MODE_PRIVATE)
+        getSharedPreferences("myPreferences"/*prefName*/, Context.MODE_PRIVATE)
             .edit()
-            .putInt(prefVar[0], user.id)
-            .putString(prefVar[1], user.firstName)
-            .putString(prefVar[2], user.lastName)
-            .putString(prefVar[3], user.phone)
-            .putString(prefVar[4], user.password)
-            .putString(prefVar[5], user.city)
-            .putFloat(prefVar[6], user.rating)
-            .putString(prefVar[7], user.email)
+            .putInt("id"/*prefVar[0]*/, user.id)
+            //.putString(prefVar[1], user.firstName)
+            //.putString(prefVar[2], user.lastName)
+            .putString("phone"/*prefVar[3]*/, user.phone)
+            .putString("password"/*prefVar[4]*/, user.password)
+            //.putString(prefVar[5], user.city)
+            //.putFloat(prefVar[6], user.rating)
+            //.putString(prefVar[7], user.email)
             .apply()
     }
 

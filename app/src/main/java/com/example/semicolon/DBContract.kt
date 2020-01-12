@@ -7,7 +7,7 @@ object DBContract {
     // Inner class that defines the table contents
     class UserEntry : BaseColumns {
         companion object {
-            //User table
+            //USER table
             const val USER_TABLE_NAME = "USER"
             const val USER_COLUMN_ID = "UserId"
             const val USER_COLUMN_FIRST_NAME = "UserFirstName"
@@ -19,7 +19,7 @@ object DBContract {
             const val USER_COLUMN_RATING = "Rating"
             const val USER_COLUMN_EMAIL = "Email"
 
-            //Friend table
+            //FRIEND table
             const val FRIEND_TABLE_NAME = "FRIEND"
             const val FRIEND_COLUMN_FRIEND_ID = "FriendshipID"
             const val FRIEND_COLUMN_SENDER_ID = "SenderID"

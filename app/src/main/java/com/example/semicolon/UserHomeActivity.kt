@@ -16,13 +16,13 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     SettingFragment.OnListFragmentInteractionListener {
 
     private var myID: Int? = null
-    private var log = Login()
+    //private var log = Login()
     private lateinit var n: SharedPreferences
 
     //listener for settings list
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
 
-        myID = n.getInt(log.prefVar[0], 1)
+        myID = n.getInt("id"/*log.prefVar[0]*/, 1)
 
         val args = Bundle()
         args.putString("param1", item!!.name)
@@ -62,8 +62,8 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
             }
             R.id.navigation_notifications -> {
                 val args = Bundle()
-                args.putString("MyFirstName", n.getString(log.prefVar[1], ""))
-                args.putString("MyLastName", n.getString(log.prefVar[2], ""))
+                args.putString("MyFirstName", n.getString("FName"/*log.prefVar[1]*/, ""))
+                args.putString("MyLastName", n.getString("LName"/*log.prefVar[2]*/, ""))
 
                 //opens notifications fragment and sends arguments
                 findNavController(R.id.nav_host).navigate(R.id.action_global_params_dest, args)
@@ -77,7 +77,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_home)
 
-        n = getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
+        n = getSharedPreferences("myPreferences"/*log.prefName*/, Context.MODE_PRIVATE)
 
         //add navigation listener
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
