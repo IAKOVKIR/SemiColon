@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.Login
+//import com.example.semicolon.Login
 import com.example.semicolon.R
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +28,7 @@ class SettingParamsFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var param3: ArrayList<String>? = null
-    private var log = Login()
+    //private var log = Login()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +67,8 @@ class SettingParamsFragment : Fragment() {
 
                 val buttonSubmit: Button = view.findViewById(R.id.submit_button)
                 buttonSubmit.setOnClickListener {
-                    val pref: SharedPreferences = context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
-                    val password: String? = pref.getString(log.prefVar[4], null)
+                    val pref: SharedPreferences = context!!.getSharedPreferences("myPreferences"/*log.prefName*/, Context.MODE_PRIVATE)
+                    val password: String? = pref.getString("password"/*log.prefVar[4]*/, null)
                     val curPas: String = currentPassword.text.toString()
                     val newPas: String = newPassword.text.toString()
 
@@ -107,9 +107,9 @@ class SettingParamsFragment : Fragment() {
 
     //changePassword() function saves a new password in SharedPreferences
     private fun changePassword(password: String) {
-        context!!.getSharedPreferences(log.prefName, Context.MODE_PRIVATE)
+        context!!.getSharedPreferences("myPreferences"/*log.prefName*/, Context.MODE_PRIVATE)
             .edit()
-            .putString(log.prefVar[4], password)
+            .putString("password"/*log.prefVar[4]*/, password)
             .apply()
     }
 

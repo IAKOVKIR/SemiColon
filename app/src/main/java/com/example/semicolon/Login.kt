@@ -14,10 +14,6 @@ import com.example.semicolon.time.Time
 
 class Login : Activity() {
 
-    //variables (SharedPreferences)
-    var prefName = "myPreferences"
-    var prefVar: Array<String> = arrayOf("id", "firstName", "lastName", "phone", "password", "city", "rating", "email")
-
     //EditTexts
     private lateinit var fEnter : EditText //username
     private lateinit var sEnter : EditText //password
@@ -141,9 +137,9 @@ class Login : Activity() {
      */
 
     private fun getUser() {
-        val pref: SharedPreferences = getSharedPreferences("myPreferences"/*prefName*/, Context.MODE_PRIVATE)
-        val username: String = pref.getString("phone"/*prefVar[3]*/, "") as String
-        val password: String = pref.getString("password"/*prefVar[4]*/, "") as String
+        val pref: SharedPreferences = getSharedPreferences("myPreferences", Context.MODE_PRIVATE)
+        val username: String = pref.getString("phone", "") as String
+        val password: String = pref.getString("password", "") as String
         val list: User = db.findUserByPhoneAndPassword(username, password)
 
         if (list.id != -1)
@@ -156,16 +152,11 @@ class Login : Activity() {
 
     //rememberMe() function saves id, phone number and password in SharedPreferences
     private fun rememberMe(user: User) {
-        getSharedPreferences("myPreferences"/*prefName*/, Context.MODE_PRIVATE)
+        getSharedPreferences("myPreferences", Context.MODE_PRIVATE)
             .edit()
-            .putInt("id"/*prefVar[0]*/, user.id)
-            //.putString(prefVar[1], user.firstName)
-            //.putString(prefVar[2], user.lastName)
-            .putString("phone"/*prefVar[3]*/, user.phone)
-            .putString("password"/*prefVar[4]*/, user.password)
-            //.putString(prefVar[5], user.city)
-            //.putFloat(prefVar[6], user.rating)
-            //.putString(prefVar[7], user.email)
+            .putInt("id", user.id)
+            .putString("phone", user.phone)
+            .putString("password", user.password)
             .apply()
     }
 

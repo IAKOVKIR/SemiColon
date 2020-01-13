@@ -32,6 +32,7 @@ class ListFollowers : Fragment() {
     //private lateinit var bitmapDrawable: BitmapDrawable
     private var listUser: ArrayList<User> = ArrayList()
     lateinit var list: RecyclerView
+    lateinit var db: DatabaseOpenHelper
     private var job: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +50,7 @@ class ListFollowers : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.followers_requests_list_followers, container, false)
         list = view.findViewById(R.id.list)
-        val db = DatabaseOpenHelper(context!!)
+        db = DatabaseOpenHelper(context!!)
 
         /*Log.i("check", "$exceptionID")
         bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
@@ -69,10 +70,6 @@ class ListFollowers : Fragment() {
             setHasFixedSize(true)
         }
 
-        fun load() : ArrayList<User> {
-            return db.readAllFollowers(myID!!, -1, myID!!)
-        }
-
         job = CoroutineScope(Dispatchers.Default).launch {
 
             listUser.addAll(withContext(Dispatchers.Default) { load() })
@@ -86,6 +83,10 @@ class ListFollowers : Fragment() {
         }
 
         return view
+    }
+
+    private fun load() : ArrayList<User> {
+        return db.readAllFollowers(myID!!, -1, myID!!)
     }
 
     override fun onAttach(context: Context) {
@@ -107,10 +108,6 @@ class ListFollowers : Fragment() {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     *
-     * See the Android Training lesson
-     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
      */
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
