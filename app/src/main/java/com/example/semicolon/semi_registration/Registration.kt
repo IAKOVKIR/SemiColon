@@ -25,14 +25,14 @@ class Registration : Activity() {
     lateinit var thirdCircle : TextView
 
     //EditTexts
-    lateinit var firstName : TextInputEditText
-    lateinit var lastName : TextInputEditText
-    lateinit var city : TextInputEditText
-    lateinit var country : TextInputEditText
+    private lateinit var firstName : TextInputEditText
+    private lateinit var lastName : TextInputEditText
+    private lateinit var city : TextInputEditText
+    private lateinit var country : TextInputEditText
     lateinit var email : TextInputEditText
 
     //CheckBoxes
-    lateinit var agreementBox : CheckBox
+    private lateinit var agreementBox : CheckBox
 
     //db helper
     private lateinit var db : DatabaseOpenHelper

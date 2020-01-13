@@ -172,6 +172,24 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return users
     }
 
+    fun getUsersData(userID: Int, data: String): String {
+        val db: SQLiteDatabase = writableDatabase
+        var pieceOfData = ""
+        val cursor: Cursor?
+
+        try {
+            cursor = db.rawQuery("SELECT $data FROM ${DBContract.UserEntry.USER_TABLE_NAME} WHERE ${DBContract.UserEntry.USER_COLUMN_ID} = '$userID'", null)
+        } catch (e: SQLiteException) {
+            return pieceOfData
+        }
+
+        if (cursor.moveToFirst() && !cursor.isAfterLast)
+            pieceOfData = cursor.getString(cursor.getColumnIndex(data))
+
+        cursor.close()
+        return pieceOfData
+    }
+
     fun findUserByID(UserID: Int): User {
         var users = User(-1, "-1", "-1",
             "-1", "-1", "-1",

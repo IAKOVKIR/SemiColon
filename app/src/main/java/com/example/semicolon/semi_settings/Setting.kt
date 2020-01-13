@@ -6,11 +6,11 @@ import java.util.HashMap
 object Setting {
 
     /**
-     * An array of sample (dummy) items.
+     * An array of settings items.
      */
     val SETTING: MutableList<SettingItem> = ArrayList()
 
-    private val setting_names = arrayOf("Notifications", "Change Password", "Language", "Help", "About", "Log Out")
+    private val setting_names: Array<String> = arrayOf("Notifications", "Change Password", "Language", "Help", "About", "Log Out")
 
     /**
      * A map of sample (dummy) items, by ID.
@@ -22,11 +22,7 @@ object Setting {
     init {
         // Add some sample items.
         for (i in 1..COUNT)
-            addSetting(
-                createSettingItem(
-                    i
-                )
-            )
+            addSetting(createSettingItem(i))
     }
 
     private fun addSetting(setting: SettingItem) {
@@ -43,7 +39,7 @@ object Setting {
     }
 
     /**
-     * A dummy item representing a piece of pos.
+     * A settings item representing a piece of pos.
      */
     data class SettingItem(val name: String, val pos: String, val details: String) {
         override fun toString(): String = pos
