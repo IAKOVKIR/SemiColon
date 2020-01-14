@@ -268,7 +268,7 @@
                     android:textColor="@color/WHITE"
                     android:textSize="20sp"
                     android:padding="8dp"
-                    android:text="CWO / Executive Vise President - (Web Development Department) - George Myat Thu\nCIO / Executive Vise President (Mobile App Development Department) - Kynan Brown"
+                    android:text="Jacob Barca - vice president / head of programming"
                     tools:ignore="HardcodedText"/>
 
 

@@ -22,8 +22,8 @@ import kotlinx.android.synthetic.main.following_search_friends_following.view.*
  */
 class MyFollowingRecyclerViewAdapter(
     private val mValues: List<User>,
-    private val mListener: ListFollowing.OnListFragmentInteractionListener?,
-    private val myID: Int/*,
+    private val mListener: ListFollowing.OnListFragmentInteractionListener?/*,
+    private val myID: Int,
     private val mBitMap: BitmapDrawable*/
 ) : RecyclerView.Adapter<MyFollowingRecyclerViewAdapter.ViewHolder>() {
 

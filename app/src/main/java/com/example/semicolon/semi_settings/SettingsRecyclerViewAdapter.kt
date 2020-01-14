@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.semicolon.R
 
-
 import com.example.semicolon.semi_settings.SettingFragment.OnListFragmentInteractionListener
 import com.example.semicolon.semi_settings.Setting.SettingItem
 

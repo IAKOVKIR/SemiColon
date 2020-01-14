@@ -4,12 +4,6 @@ import com.example.semicolon.R
 import java.util.ArrayList
 import java.util.HashMap
 
-/**
- * Helper class for providing sample pos for user interfaces created by
- * Android template wizards.
- *
- * TODO: Replace all uses of this class before publishing your app.
- */
 object EventContent {
 
     /**
@@ -17,7 +11,7 @@ object EventContent {
      */
     val EVENTS: MutableList<Event> = ArrayList()
 
-    private val event_names = arrayOf("Meeting with Aminul", "Talking about Inner join", "Global Query", "Sleep at RMIT", "Sleep at RMIT", "Sleep at RMIT",
+    private val event_names: Array<String> = arrayOf("Meeting with Aminul", "Talking about Inner join", "Global Query", "Sleep at RMIT", "Sleep at RMIT", "Sleep at RMIT",
         "Sleep at RMIT", "Sleep at RMIT", "Sleep at RMIT", "Sleep at RMIT")
 
     private val event_details = arrayOf("2 persons joined the event", "2 persons joined the event", "4 persons joined the event", "Steven joined the event",
@@ -43,7 +37,7 @@ object EventContent {
     fun getList(frag: String): MutableList<Event> {
         val searchEvents: MutableList<Event> = ArrayList()
         for (i in 1..COUNT) {
-            val item = createEvent(i)
+            val item: Event = createEvent(i)
             if (item.content.toLowerCase().contains(frag))
                 searchEvents.add(item)
         }
