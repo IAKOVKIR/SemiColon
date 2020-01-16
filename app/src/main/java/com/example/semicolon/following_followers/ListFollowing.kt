@@ -65,8 +65,8 @@ class ListFollowing : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MyFollowingRecyclerViewAdapter(
                 listUser,
-                listener as OnListFragmentInteractionListener,
-                userID!!/*, bitmapDrawable*/)
+                listener as OnListFragmentInteractionListener
+                /*userID!!, bitmapDrawable*/)
             setHasFixedSize(true)
         }
 
