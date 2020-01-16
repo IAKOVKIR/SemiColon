@@ -5,7 +5,6 @@ import android.graphics.Color
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import android.os.Bundle
-//import android.util.Log
 import androidx.core.content.ContextCompat
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -13,7 +12,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.semicolon.*
-//import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import kotlinx.coroutines.*
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import java.util.ArrayList
 
 class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentInteractionListener,
@@ -22,6 +22,7 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
     private var myID: Int? = null
     private var userID: Int? = null
     private var exceptionID: Int? = null
+    private var job: Job = Job()
 
     override fun onListFragmentInteraction(item: User?) {
         val intent = Intent(this, FriendActivity::class.java)
@@ -35,7 +36,7 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_followers)
 
-        //val db = DatabaseOpenHelper(applicationContext)
+        val db = DatabaseOpenHelper(applicationContext)
         myID = intent.getStringExtra("my_id")!!.toInt()
         userID = intent.getStringExtra("user_id")!!.toInt()
         exceptionID = intent.getStringExtra("exception_id")!!.toInt()
@@ -59,8 +60,22 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
         backButton.setOnClickListener { finish() }
 
-        //val numOfRequests = db.countFollowingRequests(myID!!)
-        requestsButton.text = "0"//"$numOfRequests"
+        requestsButton.text = "0"
+
+        job = CoroutineScope(Dispatchers.Default).launch {
+
+            var numOfRequests = 0
+
+            withContext(Dispatchers.Default) {
+                numOfRequests = db.countFollowingRequests(myID!!)
+            }
+
+            launch (Dispatchers.Main) {
+                requestsButton.text = "$numOfRequests"
+            }
+
+        }
+
         requestsButton.setOnClickListener {
             val intent = Intent(this, RequestsActivity::class.java)
             intent.putExtra("my_id", myID!!.toString())
@@ -89,6 +104,10 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         viewPager.adapter = adapter
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
 
     internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         private val mFragmentList = ArrayList<Fragment>()
@@ -111,4 +130,5 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
             return mFragmentTitleList[position]
         }
     }
+
 }

@@ -66,8 +66,8 @@ class MainFragment : Fragment() {
 
         val numOfFollowers: TextView = view.findViewById(R.id.followers_number)
         val numOfFollowing: TextView = view.findViewById(R.id.following_number)
-        numOfFollowers.text = "${db.countFollowers(userID)}"
-        numOfFollowing.text = "${db.countFollowing(userID)}"
+        numOfFollowers.text = ""
+        numOfFollowing.text = ""
 
         //TextView representing user's location
         val location: TextView = view.findViewById(R.id.location)
@@ -82,17 +82,26 @@ class MainFragment : Fragment() {
             var fName = ""
             var lName = ""
             var userCity = ""
+            var followers = 0
+            var following = 0
 
             withContext(Dispatchers.Default) {
                 fName = db.getUsersData(userID, "UserFirstName")
                 lName = db.getUsersData(userID, "UserLastName")
                 emailText = db.getUsersData(userID, "Email")
                 userCity = db.getUsersData(userID, "City")
+                followers = db.countFollowers(userID)
+                following = db.countFollowing(userID)
             }
 
-            nameText.text = "$fName\n$lName"
-            email.text = emailText
-            location.text = userCity
+            launch (Dispatchers.Main) {
+                // process the data on the UI thread
+                nameText.text = "$fName\n$lName"
+                email.text = emailText
+                location.text = userCity
+                numOfFollowers.text = "$followers"
+                numOfFollowing.text = "$following"
+            }
 
         }
 
@@ -127,7 +136,6 @@ class MainFragment : Fragment() {
             transaction.commit()
         }
 
-        //db.close()
         //Inflate the layout for this fragment
         return view
     }

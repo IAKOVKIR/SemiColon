@@ -53,6 +53,8 @@ class Registration : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_registration)
 
+        db = DatabaseOpenHelper(this)
+
         val sliderAdapter = SliderAdapter(this)
 
         mSlideViewPager = findViewById(R.id.slideViewPager)
@@ -89,13 +91,10 @@ class Registration : Activity() {
         lastName = findViewById(R.id.last_name)
         phone = findViewById(R.id.phone_number)
         password = findViewById(R.id.password)
-        confirmPassword = findViewById(R.id.confirm_password)
         city = findViewById(R.id.city)
         country = findViewById(R.id.country)
         email = findViewById(R.id.email)
         agreementBox = findViewById(R.id.checkBox)
-
-        db = DatabaseOpenHelper(this)
 
         db.insertUser(User(50, firstName.text.toString(), lastName.text.toString(),
             phone.text.toString(), password.text.toString(), city.text.toString(), agreementBox.isChecked.toByte(),

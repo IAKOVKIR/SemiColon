@@ -113,9 +113,9 @@ class Login : Activity() {
         val user: User = db.findUserByPhoneAndPassword(txtPhone, txtPassword)
 
         if (user.id != -1) {
-            //save username and password in SharedPreferences
+            //saves user's id, phone number and password in SharedPreferences
             rememberMe(user)
-            //show logout activity
+            //show UserHomeActivity activity
             showHome()
         } else
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_LONG).show()
