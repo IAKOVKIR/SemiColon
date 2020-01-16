@@ -45,7 +45,13 @@ class MainFragment : Fragment() {
         val db = DatabaseOpenHelper(context!!)
 
         //variable phoneImp contains a string of phone number ("#(###)### ###")
-        val phoneImp = "${userPhone[0]}(${userPhone.substring(1, 4)})${userPhone.substring(4, 7)} ${userPhone.substring(7, 10)}"
+        var phoneImp = ""
+        if (userPhone.isNotEmpty()) {
+            phoneImp = "${userPhone[0]}(${userPhone.substring(1, 4)})${userPhone.substring(
+                4,
+                7
+            )} ${userPhone.substring(7, 10)}"
+        }
 
         //variable emailText contains email user's address
         var emailText = ""//email

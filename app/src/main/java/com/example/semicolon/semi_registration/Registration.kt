@@ -27,6 +27,9 @@ class Registration : Activity() {
     //EditTexts
     private lateinit var firstName : TextInputEditText
     private lateinit var lastName : TextInputEditText
+    private lateinit var phone : TextInputEditText
+    private lateinit var password : TextInputEditText
+    private lateinit var confirmPassword : TextInputEditText
     private lateinit var city : TextInputEditText
     private lateinit var country : TextInputEditText
     lateinit var email : TextInputEditText
@@ -84,6 +87,9 @@ class Registration : Activity() {
         // Get all input and make a new user
         firstName = findViewById(R.id.first_name)
         lastName = findViewById(R.id.last_name)
+        phone = findViewById(R.id.phone_number)
+        password = findViewById(R.id.password)
+        confirmPassword = findViewById(R.id.confirm_password)
         city = findViewById(R.id.city)
         country = findViewById(R.id.country)
         email = findViewById(R.id.email)
@@ -92,7 +98,7 @@ class Registration : Activity() {
         db = DatabaseOpenHelper(this)
 
         db.insertUser(User(50, firstName.text.toString(), lastName.text.toString(),
-            "0000000000", "12345678", city.text.toString(), agreementBox.isChecked.toByte(),
+            phone.text.toString(), password.text.toString(), city.text.toString(), agreementBox.isChecked.toByte(),
             5.0F, email.text.toString()))
 
         // Check user has been added to the database
