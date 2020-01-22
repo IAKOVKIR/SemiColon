@@ -1,12 +1,16 @@
 package com.example.semicolon.semi_registration
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.viewpager.widget.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.R
+import com.google.android.material.textfield.TextInputEditText
 
 class SliderAdapter(private val context : Context) : PagerAdapter() {
 
@@ -30,6 +34,18 @@ class SliderAdapter(private val context : Context) : PagerAdapter() {
         val firstLayout: ScrollView = view.findViewById(R.id.first_layout)
         val secondLayout: ScrollView = view.findViewById(R.id.second_layout)
         val thirdLayout: RelativeLayout = view.findViewById(R.id.third_layout)
+
+        val firstName: TextInputEditText = view.findViewById(R.id.first_name)
+
+        /*firstName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val line: String = firstName.text.toString()
+                Log.e("test",line)
+
+            }
+        })*/
 
         val checkBox: CheckBox = view.findViewById(R.id.checkBox)
 

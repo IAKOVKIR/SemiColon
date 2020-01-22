@@ -23,8 +23,8 @@ class RequestsActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.followers_requests_list_requests)
 
-        myID = intent.getStringExtra("my_id").toInt()
-        exceptionID = intent.getStringExtra("exception_id").toInt()
+        myID = intent.getStringExtra("my_id")?.toInt()
+        exceptionID = intent.getStringExtra("exception_id")?.toInt()
 
         val backButton: ImageView = findViewById(R.id.back_button)
         val db = DatabaseOpenHelper(applicationContext)

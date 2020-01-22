@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.semicolon.semi_registration.FirstRegistrationActivity
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.semi_registration.Registration
 import com.example.semicolon.time.Time
 
 class Login : Activity() {
@@ -95,7 +95,7 @@ class Login : Activity() {
 
         //"Sign Up" listener
         createBut.setOnClickListener {
-            val intent = Intent(this, Registration::class.java)
+            val intent = Intent(this, FirstRegistrationActivity::class.java)
             startActivity(intent)
         }
 
@@ -142,7 +142,7 @@ class Login : Activity() {
         val password: String = pref.getString("password", "") as String
         val list: User = db.findUserByPhoneAndPassword(username, password)
 
-        if (list.id != -1)
+        if (list.id != -1 && username != "")
             showHome()
     }
 

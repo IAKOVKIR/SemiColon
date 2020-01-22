@@ -3,6 +3,9 @@ package com.example.semicolon.semi_registration
 import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.viewpager.widget.ViewPager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -14,6 +17,9 @@ import com.example.semicolon.R
 import com.example.semicolon.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.activity_user_home.*
+import kotlinx.android.synthetic.main.registration_registration.*
+import kotlinx.android.synthetic.main.registration_slide_layout.view.*
 
 class Registration : Activity() {
 
@@ -75,6 +81,21 @@ class Registration : Activity() {
         mSlideViewPager.adapter = sliderAdapter
         mSlideViewPager.addOnPageChangeListener(pageChangeListener)
 
+        val v: View = layoutInflater.inflate(R.layout.registration_slide_layout, container, false)
+
+        // Get all input and make a new user
+        firstName = v.findViewById(R.id.first_name)
+
+        firstName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                val line: String = firstName.text.toString()
+                Log.e("test",line)
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
     }
 
     /**
@@ -86,8 +107,21 @@ class Registration : Activity() {
      * @function register() registers a user into the database based on their inputted information
      */
     private fun register() {
+
+        val v: View = layoutInflater.inflate(R.layout.registration_slide_layout, container, false)
+
         // Get all input and make a new user
-        firstName = findViewById(R.id.first_name)
+        firstName = v.findViewById(R.id.first_name)
+
+        firstName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                val line: String = firstName.text.toString()
+                Log.e("test",line)
+            }
+        })
+
         lastName = findViewById(R.id.last_name)
         phone = findViewById(R.id.phone_number)
         password = findViewById(R.id.password)
@@ -95,8 +129,9 @@ class Registration : Activity() {
         country = findViewById(R.id.country)
         email = findViewById(R.id.email)
         agreementBox = findViewById(R.id.checkBox)
+        Log.e("test",lastName.text.toString())
 
-        db.insertUser(User(50, firstName.text.toString(), lastName.text.toString(),
+        /*db.insertUser(User(50, firstName.text.toString(), lastName.text.toString(),
             phone.text.toString(), password.text.toString(), city.text.toString(), agreementBox.isChecked.toByte(),
             5.0F, email.text.toString()))
 
@@ -105,9 +140,8 @@ class Registration : Activity() {
         if (user.id != -1) {
             // Successful with current code!
             Toast.makeText(this, "Successfully registered!", Toast.LENGTH_LONG).show()
-        }
-        else
-            Toast.makeText(this, "Could not register user", Toast.LENGTH_LONG).show()
+        } else
+            Toast.makeText(this, "Could not register user", Toast.LENGTH_LONG).show()*/
     }
 
 
@@ -154,7 +188,6 @@ class Registration : Activity() {
 
                 }
                 else -> {
-
                     var view: View? = currentFocus
                     if (view == null)
                         view = View(applicationContext)

@@ -3,6 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:background="@drawable/gray_red"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
@@ -12,6 +13,7 @@
             android:id="@+id/first_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             tools:ignore="ScrollViewCount,UselessParent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -392,7 +394,6 @@
             android:id="@+id/third_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:gravity="top">
 
         <ScrollView

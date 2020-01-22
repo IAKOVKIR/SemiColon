@@ -1,18 +1,22 @@
 package com.example.semicolon.following_followers
 
 //import android.graphics.drawable.BitmapDrawable
-import androidx.recyclerview.widget.RecyclerView
+//import de.hdodenhof.circleimageview.CircleImageView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
 import com.example.semicolon.User
-//import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-//import de.hdodenhof.circleimageview.CircleImageView
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.android.synthetic.main.followers_requests_friends_requests.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MyAdapter(private val mValues: List<User>,
                 private val mUser: Int/*,
@@ -20,7 +24,7 @@ class MyAdapter(private val mValues: List<User>,
 ) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     private val str: Array<String> = arrayOf("Confirmed", "Declined")
-    //private lateinit var db: DatabaseOpenHelper
+    private lateinit var db: DatabaseOpenHelper
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder.
@@ -46,7 +50,7 @@ class MyAdapter(private val mValues: List<User>,
         // create a new view
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.followers_requests_friends_requests, parent, false)
-        //db = DatabaseOpenHelper(parent.context)
+        db = DatabaseOpenHelper(parent.context)
         // set the view's size, margins, padding's and layout parameters
         return MyViewHolder(view)
     }
@@ -59,17 +63,44 @@ class MyAdapter(private val mValues: List<User>,
         holder.mLastName.text = item.lastName
 
         holder.mConfirmButton.setOnClickListener {
-            //db.updateRequest(item.id, mUser, -1)
-            holder.mResultText.text = str[0]
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mRequestResult.visibility = View.VISIBLE
+
+            CoroutineScope(Dispatchers.Default).launch {
+
+                var res = false
+
+                withContext(Dispatchers.Default) {
+                    res = db.updateRequest(item.id, mUser, -1)
+                }
+
+                launch (Dispatchers.Main) {
+                    if (res) {
+                        holder.mResultText.text = str[0]
+                        holder.mRequestButtons.visibility = View.GONE
+                        holder.mRequestResult.visibility = View.VISIBLE
+                    }
+                }
+            }
         }
 
         holder.mDeclineButton.setOnClickListener {
-            //db.deleteFollowingRequest(item.id, mUser)
-            holder.mResultText.text = str[1]
-            holder.mRequestButtons.visibility = View.GONE
-            holder.mRequestResult.visibility = View.VISIBLE
+
+            CoroutineScope(Dispatchers.Default).launch {
+
+                var res = false
+
+                withContext(Dispatchers.Default) {
+                    res = db.deleteFollowingRequest(item.id, mUser)
+                }
+
+                launch (Dispatchers.Main) {
+                    if (res) {
+                        holder.mResultText.text = str[1]
+                        holder.mRequestButtons.visibility = View.GONE
+                        holder.mRequestResult.visibility = View.VISIBLE
+                    }
+                }
+            }
+
         }
     }
 
