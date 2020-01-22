@@ -142,7 +142,7 @@ class Login : Activity() {
         val password: String = pref.getString("password", "") as String
         val list: User = db.findUserByPhoneAndPassword(username, password)
 
-        if (list.id != -1)
+        if (list.id != -1 && username != "")
             showHome()
     }
 

@@ -3,6 +3,9 @@ package com.example.semicolon.semi_registration
 import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
 import androidx.viewpager.widget.ViewPager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -96,21 +99,18 @@ class Registration : Activity() {
         email = findViewById(R.id.email)
         agreementBox = findViewById(R.id.checkBox)
 
-        db.insertUser(User(50, firstName.text.toString(), lastName.text.toString(),
+        db.insertUser(User(52, firstName.text.toString(), lastName.text.toString(),
             phone.text.toString(), password.text.toString(), city.text.toString(), agreementBox.isChecked.toByte(),
             5.0F, email.text.toString()))
 
         // Check user has been added to the database
-        val user : User = db.findUserByPhoneAndPassword("0000000000", "12345678")
+        val user : User = db.findUserByPhoneAndPassword("0456733245", "12345678")
         if (user.id != -1) {
-            // Successful with current code!
             Toast.makeText(this, "Successfully registered!", Toast.LENGTH_LONG).show()
         }
         else
             Toast.makeText(this, "Could not register user", Toast.LENGTH_LONG).show()
     }
-
-
 
     private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
