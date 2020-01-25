@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,13 +47,9 @@ class MainFragment : Fragment() {
         var phoneImp = ""
         if (userPhone.isNotEmpty()) {
             phoneImp = "${userPhone[0]}(${userPhone.substring(1, 4)})${userPhone.substring(
-                4,
-                7
+                4, 7
             )} ${userPhone.substring(7, 10)}"
         }
-
-        //variable emailText contains email user's address
-        var emailText = ""//email
 
         //TextView representing user's full name
         val nameText: TextView = view.findViewById(R.id.name)
@@ -75,13 +70,14 @@ class MainFragment : Fragment() {
 
         //TextView representing user's email
         val email: TextView = view.findViewById(R.id.email)
-        email.text = emailText
+        email.text = ""//email
 
         job = CoroutineScope(Dispatchers.Default).launch {
 
             var fName = ""
             var lName = ""
             var userCity = ""
+            var emailText = ""
             var followers = 0
             var following = 0
 
@@ -113,7 +109,6 @@ class MainFragment : Fragment() {
             intent.putExtra("my_id", "$userID")
             intent.putExtra("user_id", "$userID")
             intent.putExtra("exception_id", "$userID")
-            Log.i("check", "$userID")
             intent.putExtra("string", 0)
             startActivity(intent)
         }

@@ -91,6 +91,8 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         editor.apply()
 
         val loginIntent = Intent(this, Login::class.java)
+        // set the new task and clear flags
+        loginIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(loginIntent)
         finish()
     }

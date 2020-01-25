@@ -233,7 +233,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$num' AND FRIEND.SenderID != '$except'"
+            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '$num'"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
@@ -262,7 +262,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$SenderID' AND FRIEND.Condition = '-1' AND FRIEND.ReceiverID != '$except'"
+            val line = "SELECT USER.UserID, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.City, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$SenderID' AND FRIEND.Condition = '-1'/* AND FRIEND.ReceiverID != '$except'*/"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
@@ -472,7 +472,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                     DBContract.UserEntry.FRIEND_COLUMN_RECEIVER_ID + " INTEGER NOT NULL, " +
                     DBContract.UserEntry.FRIEND_COLUMN_DATE + " TEXT NOT NULL, " +
                     DBContract.UserEntry.FRIEND_COLUMN_TIME + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.FRIEND_COLUMN_CONDITION + " INTEGER NOT NULL DEFAULT 1)"
+                    DBContract.UserEntry.FRIEND_COLUMN_CONDITION + " INTEGER NOT NULL DEFAULT 0)"
 
         private const val SQL_DELETE_USER_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.USER_TABLE_NAME
         private const val SQL_DELETE_FRIEND_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME

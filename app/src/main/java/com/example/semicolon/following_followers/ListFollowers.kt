@@ -86,7 +86,7 @@ class ListFollowers : Fragment() {
     }
 
     private fun load() : ArrayList<User> {
-        return db.readAllFollowers(myID!!, -1, myID!!)
+        return db.readAllFollowers(userID!!, -1, myID!!)
     }
 
     override fun onAttach(context: Context) {

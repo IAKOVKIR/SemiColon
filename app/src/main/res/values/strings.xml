@@ -105,5 +105,7 @@
     <string name="title_activity_followers">FollowersActivity</string>
     <string name="phrase_password">password</string>
     <string name="phrase_confirm_password">confirm password</string>
+    <string name="word_login">Login</string>
+    <string name="phrase_create_an_account"><u>New Here? Sign Up Here</u></string>
 
 </resources>

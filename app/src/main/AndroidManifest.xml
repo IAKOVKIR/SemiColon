@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.example.semicolon">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.example.semicolon">
 
     <application
             android:background="@color/BLACK"
@@ -11,34 +11,42 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".FriendActivity"/>
-
-        <activity android:name=".following_followers.FollowingFollowersActivity"/>
-
+        <activity
+                android:name=".semi_registration.ThirdRegistrationActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".semi_registration.SecondRegistrationActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".semi_registration.FirstRegistrationActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".FriendActivity"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name=".following_followers.FollowingFollowersActivity"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name=".following_followers.RequestsActivity"
-                android:screenOrientation="portrait"/>
-
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".UserHomeActivity"
-                android:screenOrientation="portrait"/>
-
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".semi_registration.Registration"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".DataRecovery"
                 android:screenOrientation="portrait"/>
-
-        <activity android:name=".DataRecovery"/>
-
         <activity
                 android:name=".Login"
                 android:screenOrientation="portrait"/>
-
         <activity
                 android:name=".SplashActivity"
                 android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

@@ -89,10 +89,7 @@ class FriendActivity : FragmentActivity() {
             intent.putExtra("my_id", "$myID")
             intent.putExtra("user_id", "$userID")
             intent.putExtra("exception_id", "$exceptionID")
-            Log.i("MyID", "$myID")
-            Log.i("UserID", "$userID")
-            Log.i("Exception", "$exceptionID")
-            intent.putExtra("string", "0")
+            intent.putExtra("string", 0)
             startActivity(intent)
         }
 
@@ -101,10 +98,7 @@ class FriendActivity : FragmentActivity() {
             intent.putExtra("my_id", "$myID")
             intent.putExtra("user_id", "$userID")
             intent.putExtra("exception_id", "$exceptionID")
-            Log.i("MyID", "$myID")
-            Log.i("UserID", "$userID")
-            Log.i("Exception", "$exceptionID")
-            intent.putExtra("string", "1")
+            intent.putExtra("string", 1)
             startActivity(intent)
         }
     }

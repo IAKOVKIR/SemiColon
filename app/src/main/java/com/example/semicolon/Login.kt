@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Paint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import com.example.semicolon.semi_registration.FirstRegistrationActivity
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.semi_registration.Registration
 import com.example.semicolon.time.Time
 
 class Login : Activity() {
@@ -79,13 +81,16 @@ class Login : Activity() {
 
         //Buttons
         val logBut: Button = findViewById(R.id.logBut)
-        val forgotBut: Button = findViewById(R.id.forgotBut)
-        val createBut: Button = findViewById(R.id.create_an_account_but)
+        val forgotBut: TextView = findViewById(R.id.forgotBut)
+        val createBut: TextView = findViewById(R.id.create_an_account_but)
 
         //"Sign In" listener
         logBut.setOnClickListener {
             doLogin()
         }
+
+        forgotBut.paintFlags = createBut.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        createBut.paintFlags = createBut.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         //"Recovery" listener
         forgotBut.setOnClickListener {
@@ -95,7 +100,7 @@ class Login : Activity() {
 
         //"Sign Up" listener
         createBut.setOnClickListener {
-            val intent = Intent(this, Registration::class.java)
+            val intent = Intent(this, FirstRegistrationActivity::class.java)
             startActivity(intent)
         }
 

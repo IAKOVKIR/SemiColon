@@ -2,18 +2,21 @@ package com.example.semicolon.following_followers
 
 //import android.content.Context
 //import android.graphics.drawable.BitmapDrawable
+//import de.hdodenhof.circleimageview.CircleImageView
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.*
-//import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-//import com.example.semicolon.time.Time
-//import de.hdodenhof.circleimageview.CircleImageView
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.time.Time
 import kotlinx.android.synthetic.main.following_search_friends_following.view.*
-//import kotlinx.coroutines.Dispatchers
-//import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 //import kotlinx.coroutines.runBlocking
 
 /**
@@ -22,18 +25,18 @@ import kotlinx.android.synthetic.main.following_search_friends_following.view.*
  */
 class MyFollowingRecyclerViewAdapter(
     private val mValues: List<User>,
-    private val mListener: ListFollowing.OnListFragmentInteractionListener?/*,
-    private val myID: Int,
+    private val mListener: ListFollowing.OnListFragmentInteractionListener?,
+    private val myID: Int/*,
     private val mBitMap: BitmapDrawable*/
 ) : RecyclerView.Adapter<MyFollowingRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-    //private val str: Array<String> = arrayOf("unfollow", "in progress", "follow")
-    //private lateinit var db: DatabaseOpenHelper
+    private val str: Array<String> = arrayOf("unfollow", "in progress", "follow")
+    private lateinit var db: DatabaseOpenHelper
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as User
+            val item: User = v.tag as User
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -43,7 +46,7 @@ class MyFollowingRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.following_search_friends_following, parent, false)
-        //db = DatabaseOpenHelper(parent.context)
+        db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
     }
 
@@ -53,35 +56,53 @@ class MyFollowingRecyclerViewAdapter(
         holder.mFirstName.text = item.firstName
         holder.mSecondName.text = item.lastName
 
-        //val time = Time()
-        //var bool: Int = db.checkFollower(myID, item.id)
+        val time = Time()
+        var bool: Int = db.checkFollower(myID, item.id)
 
-        holder.mFollowUnFollowButton.text = "---"//str[bool + 1]
-        /*holder.mFollowUnFollowButton.setOnClickListener {
+        holder.mFollowUnFollowButton.text = str[bool + 1]
+        holder.mFollowUnFollowButton.setOnClickListener {
             if (bool == 1) {
-                holder.mFollowUnFollowButton.text = str[1]
-                bool = 0
 
-                runBlocking {
-                    launch(Dispatchers.Default) {
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    var res = false
+
+                    withContext(Dispatchers.Default) {
                         val friend = Friend(
                             db.countFriendTable(), myID, item.id,
                             time.getDate(), time.getTime(), 0
                         )
-                        db.insertRequest(friend)
+                        res = db.insertRequest(friend)
+                    }
+
+                    launch (Dispatchers.Main) {
+                        if (res) {
+                            holder.mFollowUnFollowButton.text = str[1]
+                            bool = 0
+                        }
                     }
                 }
 
             } else {
-                holder.mFollowUnFollowButton.text = str[2]
-                bool = 1
-                runBlocking {
-                    launch(Dispatchers.Default) {
-                        db.deleteFollowing(myID, item.id)
+
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    var res = false
+
+                    withContext(Dispatchers.Default) {
+                        res = db.deleteFollowing(myID, item.id)
+                    }
+
+                    launch (Dispatchers.Main) {
+                        if (res) {
+                            holder.mFollowUnFollowButton.text = str[2]
+                            bool = 1
+                        }
                     }
                 }
+
             }
-        }*/
+        }
 
         with(holder.mView) {
             tag = item
