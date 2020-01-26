@@ -47,6 +47,7 @@ class SecondRegistrationActivity : Activity() {
 
         nextButton.setOnClickListener{
             val intent = Intent(this, ThirdRegistrationActivity::class.java)
+            intent.putStringArrayListExtra("user_array",userArray!!)
             startActivity(intent)
             finish()
         }
