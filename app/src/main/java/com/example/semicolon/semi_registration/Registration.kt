@@ -24,25 +24,6 @@ class Registration : Activity() {
     lateinit var secondCircle : TextView
     lateinit var thirdCircle : TextView
 
-    //EditTexts
-    private lateinit var firstName : TextInputEditText
-    private lateinit var lastName : TextInputEditText
-    private lateinit var phone : TextInputEditText
-    private lateinit var password : TextInputEditText
-    private lateinit var confirmPassword : TextInputEditText
-    private lateinit var city : TextInputEditText
-    private lateinit var country : TextInputEditText
-    lateinit var email : TextInputEditText
-
-    //CheckBoxes
-    private lateinit var agreementBox : CheckBox
-
-    //db helper
-    private lateinit var db : DatabaseOpenHelper
-
-    //LinearLayout (for date)
-    // do something with this later
-
     //Buttons
     lateinit var buttonNext : Button
     lateinit var buttonBack : Button
@@ -52,8 +33,6 @@ class Registration : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_registration)
-
-        db = DatabaseOpenHelper(this)
 
         val sliderAdapter = SliderAdapter(this)
 
@@ -76,41 +55,6 @@ class Registration : Activity() {
         mSlideViewPager.addOnPageChangeListener(pageChangeListener)
 
     }
-
-    /**
-     * @function Boolean.toByte() is an extension function of the Boolean class used to convert a Boolean to a Byte
-     */
-    private fun Boolean.toByte() : Byte = if (this) 1 else 0
-
-    /**
-     * @function register() registers a user into the database based on their inputted information
-     */
-    private fun register() {
-        // Get all input and make a new user
-        firstName = findViewById(R.id.first_name)
-        lastName = findViewById(R.id.last_name)
-        phone = findViewById(R.id.phone_number)
-        password = findViewById(R.id.password)
-        city = findViewById(R.id.city)
-        country = findViewById(R.id.country)
-        email = findViewById(R.id.email)
-        agreementBox = findViewById(R.id.checkBox)
-
-        db.insertUser(User(50, firstName.text.toString(), lastName.text.toString(),
-            phone.text.toString(), password.text.toString(), city.text.toString(), agreementBox.isChecked.toByte(),
-            5.0F, email.text.toString()))
-
-        // Check user has been added to the database
-        val user : User = db.findUserByPhoneAndPassword("0000000000", "12345678")
-        if (user.id != -1) {
-            // Successful with current code!
-            Toast.makeText(this, "Successfully registered!", Toast.LENGTH_LONG).show()
-        }
-        else
-            Toast.makeText(this, "Could not register user", Toast.LENGTH_LONG).show()
-    }
-
-
 
     private var pageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
@@ -170,7 +114,6 @@ class Registration : Activity() {
                     buttonNext.text = getString(R.string.word_finish)
 
                     buttonNext.setOnClickListener {
-                        register()
                         finish()
                     }
 
