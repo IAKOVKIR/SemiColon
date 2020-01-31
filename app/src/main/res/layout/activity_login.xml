@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@drawable/gray_red"
+        android:background="@drawable/login_back"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Login">
@@ -15,7 +15,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
             <TextView
                     android:id="@+id/primongo_label"
@@ -36,10 +36,12 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="24dp"
-                    android:background="#99000000"
+                    android:background="#70000000"
                     android:backgroundTint="#FFFFFF"
                     android:inputType="text"
+                    android:hint="Email"
                     android:maxLines="1"
+                    android:textSize="24sp"
                     android:textColor="@color/WHITE"
                     android:textColorHint="@color/GREY"
                     app:layout_constraintBottom_toTopOf="@+id/password"
@@ -54,10 +56,12 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="24dp"
-                    android:background="#99000000"
+                    android:textSize="24sp"
+                    android:background="#70000000"
                     android:backgroundTint="#FFFFFF"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:hint="••••••••"
                     android:textColor="@color/WHITE"
                     android:textColorHint="@color/GREY"
                     app:layout_constraintBottom_toTopOf="@+id/logBut"
@@ -71,14 +75,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="16dp"
                     android:background="@drawable/reg_square"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:text="@string/word_login"
                     android:textAllCaps="false"
                     android:textColor="@color/WHITE"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@+id/create_an_account_but"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -101,27 +105,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="40dp"
                     android:text="Forgot password? Re-Activate"
                     android:textColor="@color/WHITE"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toTopOf="@+id/user_list"
+                    app:layout_constraintBottom_toTopOf="@+id/user_hor_list"
                     app:layout_constraintStart_toStartOf="parent" />
 
-            <HorizontalScrollView
-                    android:id="@+id/user_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-
                 <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal" />
-            </HorizontalScrollView>
+                        android:id="@+id/user_hor_list"
+                        android:layout_height="60dp"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvAnimals"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

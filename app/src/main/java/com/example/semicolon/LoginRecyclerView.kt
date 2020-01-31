@@ -1,52 +1,47 @@
-package com.example.semicolon.following_followers
+package com.example.semicolon
 
+//import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import com.example.semicolon.*
+import androidx.recyclerview.widget.RecyclerView
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.*
+import kotlinx.android.synthetic.main.recycler_view_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/**
- * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
- * specified [ListFollowers.OnListFragmentInteractionListener].
- */
-class MyFollowersRecyclerViewAdapter(
-    private val mValues: ArrayList<User>,
-    private val mListener: ListFollowers.OnListFragmentInteractionListener?
-) : RecyclerView.Adapter<MyFollowersRecyclerViewAdapter.ViewHolder>() {
 
-    private val mOnClickListener: View.OnClickListener
+class LoginRecyclerView(
+    private val mValues: Int/*ArrayList<Int>, private val mListener: ListFollowers.OnListFragmentInteractionListener?*/
+) : RecyclerView.Adapter<LoginRecyclerView.ViewHolder>() {
+
+    //private val mOnClickListener: View.OnClickListener
     private lateinit var bitmap: Bitmap
     private lateinit var bitmapDrawable: BitmapDrawable
     lateinit var view: View
 
-    init {
+    /*init {
         mOnClickListener = View.OnClickListener { v ->
             val item: User = v.tag as User
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
         }
-    }
+    }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.followers_requests_friends_followers, parent, false)
+            .inflate(R.layout.recycler_view_item, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item: User = mValues[position]
+        val item: Int = position
 
 
         CoroutineScope(Dispatchers.Default).launch {
@@ -67,24 +62,19 @@ class MyFollowersRecyclerViewAdapter(
 
         }
 
-        holder.mIdView.text = item.firstName
-        holder.mContentView.text = item.lastName
-
         with(holder.mView) {
             tag = item
-            setOnClickListener(mOnClickListener)
+            //setOnClickListener(mOnClickListener)
         }
     }
 
-    override fun getItemCount(): Int = mValues.size
+    override fun getItemCount(): Int = mValues
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mUserImage: CircleImageView = mView.userImage
-        val mIdView: TextView = mView.first_name
-        val mContentView: TextView = mView.last_name
+        //val mIdView: TextView = mView.first_name
+        //val mContentView: TextView = mView.last_name
 
-        override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
-        }
+        //override fun toString(): String = super.toString() + " '" + mContentView.text + "'"
     }
 }

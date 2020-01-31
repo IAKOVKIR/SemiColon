@@ -24,9 +24,8 @@ import kotlinx.coroutines.*
  */
 class MainFragment : Fragment() {
 
-
     private var userID: Int = 0
-    private var userPhone: String = ""
+    private var username: String = ""
     private var job: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +33,7 @@ class MainFragment : Fragment() {
 
         val n: SharedPreferences = context!!.getSharedPreferences("myPreferences", Context.MODE_PRIVATE)
         userID = n.getInt("id", 1)
-        userPhone = n.getString("phone", "")!!
+        username = n.getString("username", "")!!
 
     }
 
@@ -43,58 +42,50 @@ class MainFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_main, container, false)
         val db = DatabaseOpenHelper(context!!)
 
-        //variable phoneImp contains a string of phone number ("#(###)### ###")
-        var phoneImp = ""
-        if (userPhone.isNotEmpty()) {
-            phoneImp = "${userPhone[0]}(${userPhone.substring(1, 4)})${userPhone.substring(
-                4, 7
-            )} ${userPhone.substring(7, 10)}"
-        }
-
         //TextView representing user's full name
         val nameText: TextView = view.findViewById(R.id.name)
-        nameText.text = ""
+        nameText.text = username
 
         //TextView representing user's phone number
         val phoneNum: TextView = view.findViewById(R.id.phone_number)
-        phoneNum.text = phoneImp
 
         val numOfFollowers: TextView = view.findViewById(R.id.followers_number)
         val numOfFollowing: TextView = view.findViewById(R.id.following_number)
-        numOfFollowers.text = ""
-        numOfFollowing.text = ""
-
-        //TextView representing user's location
-        val location: TextView = view.findViewById(R.id.location)
-        location.text = ""//city
 
         //TextView representing user's email
         val email: TextView = view.findViewById(R.id.email)
-        email.text = ""//email
 
         job = CoroutineScope(Dispatchers.Default).launch {
 
-            var fName = ""
-            var lName = ""
-            var userCity = ""
+            //var fName = ""
+            //var lName = ""
+            var userPhone = ""
             var emailText = ""
             var followers = 0
             var following = 0
 
             withContext(Dispatchers.Default) {
-                fName = db.getUsersData(userID, "UserFirstName")
-                lName = db.getUsersData(userID, "UserLastName")
+                //fName = db.getUsersData(userID, "UserFirstName")
+                //lName = db.getUsersData(userID, "UserLastName")
+                val line: String = db.getUsersData(userID, "Phone")
+                //variable phoneImp contains a string of phone number ("#(###)### ###")
+                if (line.isNotEmpty()) {
+                    userPhone = "${line[0]}(${line.substring(1, 4)})${line.substring(
+                        4, 7
+                    )} ${line.substring(7, 10)}"
+                }
+
+
                 emailText = db.getUsersData(userID, "Email")
-                userCity = db.getUsersData(userID, "City")
                 followers = db.countFollowers(userID)
                 following = db.countFollowing(userID)
             }
 
             launch (Dispatchers.Main) {
                 // process the data on the UI thread
-                nameText.text = "$fName\n$lName"
+                //nameText.text = "$fName\n$lName"
+                phoneNum.text = userPhone
                 email.text = emailText
-                location.text = userCity
                 numOfFollowers.text = "$followers"
                 numOfFollowing.text = "$following"
             }
