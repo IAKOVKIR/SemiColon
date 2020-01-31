@@ -2,7 +2,6 @@ package com.example.semicolon
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import android.widget.*
 import com.example.semicolon.following_followers.FollowingFollowersActivity
@@ -31,7 +30,6 @@ class FriendActivity : FragmentActivity() {
 
         //TextViews
         val name: TextView = findViewById(R.id.name)
-        val location: TextView = findViewById(R.id.location)
         val phone: TextView = findViewById(R.id.phone_number)
         val email: TextView = findViewById(R.id.email)
         val numOfFollowers: TextView = findViewById(R.id.followers_number)
@@ -61,7 +59,6 @@ class FriendActivity : FragmentActivity() {
         val phoneNum = "${userObject.phone[0]}(${userObject.phone.substring(1, 4)})${userObject.phone.substring(4, 7)} ${userObject.phone.substring(7, 10)}"
 
         name.text = fullName
-        location.text = userObject.city
         phone.text = phoneNum
         email.text = userObject.email
         numOfFollowers.text = "${db.countFollowers(userID)}"

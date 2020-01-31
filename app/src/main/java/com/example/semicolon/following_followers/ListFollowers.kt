@@ -1,9 +1,5 @@
 package com.example.semicolon.following_followers
 
-//import android.graphics.Bitmap
-//import android.graphics.BitmapFactory
-//import android.graphics.drawable.BitmapDrawable
-//import android.util.Log
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,8 +24,6 @@ class ListFollowers : Fragment() {
     private var myID: Int? = null
     private var userID: Int? = null
     private var exceptionID: Int? = null
-    //private lateinit var bitmap: Bitmap
-    //private lateinit var bitmapDrawable: BitmapDrawable
     private var listUser: ArrayList<User> = ArrayList()
     lateinit var list: RecyclerView
     lateinit var db: DatabaseOpenHelper
@@ -52,21 +46,12 @@ class ListFollowers : Fragment() {
         list = view.findViewById(R.id.list)
         db = DatabaseOpenHelper(context!!)
 
-        /*Log.i("check", "$exceptionID")
-        bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
-        val height: Int = bitmap.height
-        val width: Int = bitmap.width
-        val dif: Double = height.toDouble() / width
-        bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-        bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)*/
-
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
             adapter = MyFollowersRecyclerViewAdapter(
                 listUser,
-                listener as OnListFragmentInteractionListener/*,
-                bitmapDrawable*/)
+                listener as OnListFragmentInteractionListener)
             setHasFixedSize(true)
         }
 

@@ -52,13 +52,13 @@ class ThirdRegistrationActivity : Activity() {
     private fun register() {
         // Get all input and make a new user
         db.insertUser(
-            User(61, userArray!![0], userArray!![1],
-                userArray!![2], userArray!![3], userArray!![4], 1,
+            User("-1", userArray!![0], userArray!![1],
+                userArray!![2], userArray!![3],
                 5.0F, userArray!![6])
         )
 
         // Check user has been added to the database
-        val user : User = db.findUserByPhoneAndPassword(userArray!![2], userArray!![3])
+        val user : User = db.findUserByUsernameAndPassword(userArray!![2], userArray!![3])
         if (user.id != -1) {
             // Successful with current code!
             Toast.makeText(this, "Successfully registered!", Toast.LENGTH_LONG).show()
