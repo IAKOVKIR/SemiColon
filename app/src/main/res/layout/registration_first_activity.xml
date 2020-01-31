@@ -52,7 +52,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/phrase_confirm_password"
+                    app:hintEnabled="false"
                     android:textColorHint="@color/WHITE"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -61,12 +61,15 @@
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/confirm_password"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edit_custom"
                         android:backgroundTint="@color/WHITE"
+                        android:gravity="center"
+                        android:hint="@string/phrase_confirm_password"
                         android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@color/WHITE"
-                        android:textColorHint="@color/GREY" />
+                        android:textColorHint="#C9C3C3" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -76,7 +79,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/phrase_password"
+                    app:hintEnabled="false"
                     android:textColorHint="@color/WHITE"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -85,12 +88,15 @@
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/password"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edit_custom"
                         android:backgroundTint="@color/WHITE"
+                        android:gravity="center"
+                        android:hint="@string/phrase_password"
                         android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@color/WHITE"
-                        android:textColorHint="@color/GREY" />
+                        android:textColorHint="#C9C3C3" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -100,7 +106,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/phrase_phone_number"
+                    app:hintEnabled="false"
                     android:textColorHint="@color/WHITE"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -109,12 +115,15 @@
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/phone_number"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edit_custom"
                         android:backgroundTint="@color/WHITE"
+                        android:gravity="center"
+                        android:hint="@string/phrase_phone_number"
                         android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@color/WHITE"
-                        android:textColorHint="@color/GREY" />
+                        android:textColorHint="#C9C3C3" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -124,7 +133,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/phrase_first_word"
+                    app:hintEnabled="false"
                     android:textColorHint="@color/WHITE"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -133,12 +142,15 @@
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/first_name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edit_custom"
                         android:backgroundTint="@color/WHITE"
+                        android:gravity="center"
+                        android:hint="@string/phrase_first_word"
                         android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@color/WHITE"
-                        android:textColorHint="@color/GREY" />
+                        android:textColorHint="#C9C3C3" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -149,7 +161,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/phrase_last_name"
+                    app:hintEnabled="false"
                     android:textColorHint="@color/WHITE"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -158,12 +170,15 @@
                 <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/last_name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edit_custom"
                         android:backgroundTint="@color/WHITE"
+                        android:gravity="center"
+                        android:hint="@string/phrase_last_name"
                         android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@color/WHITE"
-                        android:textColorHint="@color/GREY" />
+                        android:textColorHint="#C9C3C3" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
