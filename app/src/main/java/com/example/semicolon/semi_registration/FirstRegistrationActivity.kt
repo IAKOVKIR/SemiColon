@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -63,8 +65,36 @@ class FirstRegistrationActivity : Activity() {
                 intent.putStringArrayListExtra("user_array", userArray)
                 startActivity(intent)
                 finish()
-            } else
-                Toast.makeText(this, "Insufficient information inputted", Toast.LENGTH_LONG).show()
+            }
+            else {
+                val shake: Animation = AnimationUtils.loadAnimation(
+                    this@FirstRegistrationActivity,
+                    R.anim.editext_shaker)
+
+                for (i in 0..4) {
+                    if (!validate(i))
+                        when (i) {
+                            0 -> {
+                                fName.startAnimation(shake)
+                            }
+                            1 -> {
+                                lName.startAnimation(shake)
+                            }
+                            2 -> {
+                                pNumber.startAnimation(shake)
+                            }
+                            3 -> {
+                                password.startAnimation(shake)
+                            }
+                            4 -> {
+                                cPassword.startAnimation(shake)
+                            }
+                        }
+
+                }
+
+                //Toast.makeText(this, "Insufficient information inputted", Toast.LENGTH_LONG).show()
+            }
         }
 
         backButton.setOnClickListener{
@@ -106,12 +136,12 @@ class FirstRegistrationActivity : Activity() {
     private fun changeListener(editText: EditText, num: Int) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                if (!validate(num)) {
-                    editText.backgroundTintList = ColorStateList.valueOf(Color.RED)
-                }
-                else {
-                    editText.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
-                }
+//                if (!validate(num)) {
+//                    editText.backgroundTintList = ColorStateList.valueOf(Color.RED)
+//                }
+//                else {
+//                    editText.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+//                }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
