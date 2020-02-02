@@ -2,8 +2,6 @@ package com.example.semicolon.semi_registration
 
 import android.app.Activity
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,18 +10,12 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.core.text.isDigitsOnly
 import com.example.semicolon.Login
 import com.example.semicolon.R
 
 class FirstRegistrationActivity : Activity() {
 
-    private lateinit var fName: EditText
-    private lateinit var lName: EditText
-    private lateinit var pNumber: EditText
-    lateinit var password: EditText
-    private lateinit var cPassword: EditText
+    private lateinit var username: EditText
 
     private var userArray: ArrayList<String>? = null
     private var valid: Boolean = false
@@ -32,34 +24,23 @@ class FirstRegistrationActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_first_activity)
 
-        fName = findViewById(R.id.first_name)
-        lName = findViewById(R.id.last_name)
-        pNumber = findViewById(R.id.phone_number)
-        password = findViewById(R.id.password)
-        cPassword = findViewById(R.id.confirm_password)
+        username = findViewById(R.id.username)
+
         val backButton: ImageView = findViewById(R.id.back_button)
-        val nextButton: Button = findViewById(R.id.buttonNext)
+        val nextButton: Button = findViewById(R.id.next_button)
 
         userArray = intent.getStringArrayListExtra("user_array")
 
         if (userArray.isNullOrEmpty())
-            userArray = arrayListOf("", "", "", "", "", "", "", "")
-        else {
-            fName.setText(userArray!![0])
-            lName.setText(userArray!![1])
-            pNumber.setText(userArray!![2])
-            password.setText(userArray!![3])
-        }
+            userArray = arrayListOf("", "", "")
+        else
+            username.setText(userArray!![0])
 
-        changeListener(fName, 0)
-        changeListener(lName, 1)
-        changeListener(pNumber, 2)
-        changeListener(password, 3)
-        changeListener(cPassword, 4)
+        changeListener(username)
 
         nextButton.setOnClickListener{
-            valid = validate(0) && validate(1) && validate(2) && validate(3)
-                    && validate(4)
+            valid = validate(0)
+
             if (valid) {
                 val intent = Intent(this, SecondRegistrationActivity::class.java)
                 intent.putStringArrayListExtra("user_array", userArray)
@@ -74,23 +55,8 @@ class FirstRegistrationActivity : Activity() {
                 for (i in 0..4) {
                     if (!validate(i))
                         when (i) {
-                            0 -> {
-                                fName.startAnimation(shake)
-                            }
-                            1 -> {
-                                lName.startAnimation(shake)
-                            }
-                            2 -> {
-                                pNumber.startAnimation(shake)
-                            }
-                            3 -> {
-                                password.startAnimation(shake)
-                            }
-                            4 -> {
-                                cPassword.startAnimation(shake)
-                            }
+                            0 -> username.startAnimation(shake)
                         }
-
                 }
 
                 //Toast.makeText(this, "Insufficient information inputted", Toast.LENGTH_LONG).show()
@@ -106,34 +72,13 @@ class FirstRegistrationActivity : Activity() {
 
     private fun validate(num: Int): Boolean {
         // validation code can and should be changed
-        when (num) {
-            0 -> {
-                return fName.text.isNotEmpty()
-            }
-
-            1 -> {
-                return lName.text.isNotEmpty()
-            }
-
-            2 -> {
-                return pNumber.text.length == 10 && pNumber.text.isDigitsOnly()
-            }
-
-            3 -> {
-                return password.text.isNotEmpty()
-            }
-
-            4 -> {
-                return cPassword.text.toString() == password.text.toString()
-            }
-
-            else -> {
-                return false
-            }
+        return when (num) {
+            0 -> username.text.isNotEmpty()
+            else -> false
         }
     }
 
-    private fun changeListener(editText: EditText, num: Int) {
+    private fun changeListener(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 //                if (!validate(num)) {
@@ -145,7 +90,7 @@ class FirstRegistrationActivity : Activity() {
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                userArray!![num] = editText.text.toString()
+                userArray!![0] = editText.text.toString()
             }
         })
     }
