@@ -449,10 +449,10 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                     DBContract.UserEntry.USER_COLUMN_USERNAME + " TEXT NOT NULL UNIQUE, " +
                     DBContract.UserEntry.USER_COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
                     DBContract.UserEntry.USER_COLUMN_LAST_NAME + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.USER_COLUMN_PHONE + " TEXT NOT NULL UNIQUE, " +
+                    DBContract.UserEntry.USER_COLUMN_PHONE + " TEXT UNIQUE, " +
                     DBContract.UserEntry.USER_COLUMN_PASSWORD + " TEXT NOT NULL, " +
                     DBContract.UserEntry.USER_COLUMN_RATING + " NUMERIC NOT NULL DEFAULT 5.0, " +
-                    DBContract.UserEntry.USER_COLUMN_EMAIL + " TEXT)"
+                    DBContract.UserEntry.USER_COLUMN_EMAIL + " TEXT NOT NULL UNIQUE)"
 
         private const val SQL_CREATE_FRIEND_TABLE: String =
             "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.FRIEND_TABLE_NAME + " (" +
