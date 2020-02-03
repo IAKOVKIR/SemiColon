@@ -6,139 +6,159 @@
         android:background="@drawable/gray_red"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".semi_registration.SecondRegistrationActivity"
-        android:padding="16dp">
+        tools:context=".semi_registration.SecondRegistrationActivity">
 
-    <ScrollView
-            android:id="@+id/second_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_layout"
-            tools:ignore="ScrollViewCount,UselessParent">
+            android:layout_height="match_parent"
+            android:background="@drawable/layout_reg_corner"
+            android:layout_margin="16dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/heh_black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription,RtlSymmetry" />
+
+        <ScrollView
+                android:id="@+id/first_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:gravity="top">
+                app:layout_constraintTop_toBottomOf="@+id/back_button"
+                tools:ignore="ScrollViewCount,UselessParent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/city_layout"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:hintEnabled="false"
-                    android:textColorHint="@color/WHITE"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/city"
+                <ImageView
+                        android:id="@+id/log_image"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_marginTop="60dp"
+                        android:src="@drawable/upload_profile_pic"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription,RtlSymmetry"/>
+
+                <EditText
+                        android:id="@+id/email_field"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@drawable/edit_custom"
                         android:backgroundTint="@color/WHITE"
                         android:gravity="center"
-                        android:hint="@string/word_city"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textColor="@color/WHITE"
-                        android:textColorHint="@color/GREY" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/country_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    app:hintEnabled="false"
-                    android:textColorHint="@color/WHITE"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/city_layout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/country"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@drawable/edit_custom"
-                        android:backgroundTint="@color/WHITE"
-                        android:gravity="center"
-                        android:hint="@string/word_country"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textColor="@color/WHITE"
-                        android:textColorHint="@color/GREY" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/email_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
-                    app:hintEnabled="false"
-                    android:textColorHint="@color/WHITE"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/country_layout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@drawable/edit_custom"
-                        android:backgroundTint="@color/WHITE"
-                        android:gravity="center"
-                        android:hint="@string/phrase_email_not_required"
+                        android:hint="enter email"
+                        android:textSize="24sp"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:textColor="@color/WHITE"
-                        android:textColorHint="@color/GREY" />
+                        android:textColorHint="#C9C3C3"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/log_image"
+                        tools:ignore="Autofill"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                        android:id="@+id/password_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/edit_custom"
+                        android:backgroundTint="@color/WHITE"
+                        android:gravity="center"
+                        android:hint="••••••••"
+                        android:textSize="24sp"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:textColor="@color/WHITE"
+                        android:textColorHint="#C9C3C3"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/email_field"
+                        tools:ignore="Autofill"/>
+
+                <Button
+                        android:id="@+id/next_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/reg_square"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="Next"
+                        android:textAllCaps="false"
+                        android:textColor="@color/WHITE"
+                        android:textSize="20sp"
+                        app:layout_constraintTop_toBottomOf="@+id/password_field"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottom_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                    android:id="@+id/FirstCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:src="@drawable/ic_gray_circle_24dp"
+                    app:layout_constraintEnd_toStartOf="@id/SecondCircle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+
+            <ImageView
+                    android:id="@+id/SecondCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_white_circle_24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="ContentDescription" />
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:src="@drawable/ic_gray_circle_24dp"
+                    app:layout_constraintStart_toEndOf="@id/SecondCircle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/bottom_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-        <Button
-                android:id="@+id/buttonBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/word_back"
-                android:background="@android:color/transparent"
-                android:textColor="@color/WHITE"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <Button
-                android:id="@+id/buttonNext"
-                android:textColor="@color/WHITE"
-                android:text="@string/word_next"
-                android:background="@android:color/transparent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

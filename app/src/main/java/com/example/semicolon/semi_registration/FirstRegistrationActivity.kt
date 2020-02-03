@@ -17,7 +17,10 @@ class FirstRegistrationActivity : Activity() {
 
     private lateinit var username: EditText
 
-    private var userArray: ArrayList<String>? = null
+    private var userName: String = ""
+    private var email: String = ""
+    private var password: String = ""
+
     private var valid: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +32,11 @@ class FirstRegistrationActivity : Activity() {
         val backButton: ImageView = findViewById(R.id.back_button)
         val nextButton: Button = findViewById(R.id.next_button)
 
-        userArray = intent.getStringArrayListExtra("user_array")
+        userName = intent.getStringExtra("username")!!
+        email = intent.getStringExtra("email")!!
+        password = intent.getStringExtra("password")!!
 
-        if (userArray.isNullOrEmpty())
-            userArray = arrayListOf("", "", "")
-        else
-            username.setText(userArray!![0])
+        username.setText(userName)
 
         changeListener(username)
 
@@ -43,7 +45,9 @@ class FirstRegistrationActivity : Activity() {
 
             if (valid) {
                 val intent = Intent(this, SecondRegistrationActivity::class.java)
-                intent.putStringArrayListExtra("user_array", userArray)
+                intent.putExtra("username", userName)
+                intent.putExtra("email", email)
+                intent.putExtra("password", password)
                 startActivity(intent)
                 finish()
             }
@@ -90,7 +94,7 @@ class FirstRegistrationActivity : Activity() {
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                userArray!![0] = editText.text.toString()
+                userName = editText.text.toString()
             }
         })
     }

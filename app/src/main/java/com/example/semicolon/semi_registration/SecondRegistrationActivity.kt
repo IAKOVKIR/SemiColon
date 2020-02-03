@@ -7,60 +7,68 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import com.example.semicolon.R
 
 class SecondRegistrationActivity : Activity() {
 
-    private lateinit var uCity: EditText
-    private lateinit var uCountry: EditText
     private lateinit var uEmail: EditText
+    private lateinit var uPassword: EditText
 
-    private var userArray: ArrayList<String>? = null
+    private var userName: String = ""
+    private var email: String = ""
+    private var password: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_second_activity)
 
-        val backButton: Button = findViewById(R.id.buttonBack)
-        val nextButton: Button = findViewById(R.id.buttonNext)
+        val backButton: ImageView = findViewById(R.id.back_button)
+        val nextButton: Button = findViewById(R.id.next_button)
 
-        uCity = findViewById(R.id.city)
-        uCountry = findViewById(R.id.country)
-        uEmail= findViewById(R.id.email)
+        uEmail= findViewById(R.id.email_field)
+        uPassword = findViewById(R.id.password_field)
 
-        userArray = intent.getStringArrayListExtra("user_array")
+        userName = intent.getStringExtra("username")!!
+        email = intent.getStringExtra("email")!!
+        password = intent.getStringExtra("password")!!
 
-        uCity.setText(userArray!![4])
-        uCountry.setText(userArray!![5])
-        uEmail.setText(userArray!![6])
+        uEmail.setText(email)
+        uPassword.setText(password)
 
-        changeListener(uCity, 4)
-        changeListener(uCountry, 5)
-        changeListener(uEmail, 6)
+        uEmail.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                email = uEmail.text.toString()
+            }
+        })
+
+        uPassword.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                password = uPassword.text.toString()
+            }
+        })
 
         backButton.setOnClickListener{
             val intent = Intent(this, FirstRegistrationActivity::class.java)
-            intent.putStringArrayListExtra("user_array",userArray!!)
+            intent.putExtra("username", userName)
+            intent.putExtra("email", email)
+            intent.putExtra("password", password)
             startActivity(intent)
             finish()
         }
 
         nextButton.setOnClickListener{
             val intent = Intent(this, ThirdRegistrationActivity::class.java)
-            intent.putStringArrayListExtra("user_array",userArray!!)
+            intent.putExtra("username", userName)
+            intent.putExtra("email", email)
+            intent.putExtra("password", password)
             startActivity(intent)
             finish()
         }
-    }
-
-    private fun changeListener(editText: EditText, num: Int) {
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                userArray!![num] = editText.text.toString()
-            }
-        })
     }
 
 }
