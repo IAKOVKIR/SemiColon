@@ -17,9 +17,9 @@ class FirstRegistrationActivity : Activity() {
 
     private lateinit var username: EditText
 
-    private var userName: String = ""
-    private var email: String = ""
-    private var password: String = ""
+    private var userName: String? = ""
+    private var email: String? = ""
+    private var password: String? = ""
 
     private var valid: Boolean = false
 
@@ -32,9 +32,9 @@ class FirstRegistrationActivity : Activity() {
         val backButton: ImageView = findViewById(R.id.back_button)
         val nextButton: Button = findViewById(R.id.next_button)
 
-        userName = intent.getStringExtra("username")!!
-        email = intent.getStringExtra("email")!!
-        password = intent.getStringExtra("password")!!
+        userName = intent.getStringExtra("username")
+        email = intent.getStringExtra("email")
+        password = intent.getStringExtra("password")
 
         username.setText(userName)
 
@@ -56,12 +56,7 @@ class FirstRegistrationActivity : Activity() {
                     this@FirstRegistrationActivity,
                     R.anim.editext_shaker)
 
-                for (i in 0..4) {
-                    if (!validate(i))
-                        when (i) {
-                            0 -> username.startAnimation(shake)
-                        }
-                }
+                username.startAnimation(shake)
 
                 //Toast.makeText(this, "Insufficient information inputted", Toast.LENGTH_LONG).show()
             }

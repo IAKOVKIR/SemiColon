@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import com.example.semicolon.R
 
 class SecondRegistrationActivity : Activity() {
@@ -15,9 +16,11 @@ class SecondRegistrationActivity : Activity() {
     private lateinit var uEmail: EditText
     private lateinit var uPassword: EditText
 
-    private var userName: String = ""
-    private var email: String = ""
-    private var password: String = ""
+    private lateinit var uPhoto: ImageView
+
+    private var userName: String? = ""
+    private var email: String? = ""
+    private var password: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +31,11 @@ class SecondRegistrationActivity : Activity() {
 
         uEmail= findViewById(R.id.email_field)
         uPassword = findViewById(R.id.password_field)
+        uPhoto = findViewById(R.id.log_image)
 
-        userName = intent.getStringExtra("username")!!
-        email = intent.getStringExtra("email")!!
-        password = intent.getStringExtra("password")!!
+        userName = intent.getStringExtra("username")
+        email = intent.getStringExtra("email")
+        password = intent.getStringExtra("password")
 
         uEmail.setText(email)
         uPassword.setText(password)
@@ -51,6 +55,10 @@ class SecondRegistrationActivity : Activity() {
                 password = uPassword.text.toString()
             }
         })
+
+        uPhoto.setOnClickListener{
+            Toast.makeText(this, "Logo pressed", Toast.LENGTH_SHORT).show()
+        }
 
         backButton.setOnClickListener{
             val intent = Intent(this, FirstRegistrationActivity::class.java)

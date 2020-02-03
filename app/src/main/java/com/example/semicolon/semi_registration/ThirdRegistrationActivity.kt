@@ -13,9 +13,9 @@ import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 
 class ThirdRegistrationActivity : Activity() {
 
-    private var userName: String = ""
-    private var email: String = ""
-    private var password: String = ""
+    private var userName: String? = ""
+    private var email: String? = ""
+    private var password: String? = ""
     private lateinit var db : DatabaseOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,9 +28,9 @@ class ThirdRegistrationActivity : Activity() {
         val finishButton: Button = findViewById(R.id.buttonFinish)
         val checkBox: CheckBox = findViewById(R.id.checkBox)
 
-        userName = intent.getStringExtra("username")!!
-        email = intent.getStringExtra("email")!!
-        password = intent.getStringExtra("password")!!
+        userName = intent.getStringExtra("username")
+        email = intent.getStringExtra("email")
+        password = intent.getStringExtra("password")
 
         backButton.setOnClickListener{
             val intent = Intent(this, SecondRegistrationActivity::class.java)
@@ -58,11 +58,11 @@ class ThirdRegistrationActivity : Activity() {
     private fun register() {
         // Get all input and make a new user
         db.insertUser(
-            User(userName, password, email)
+            User(userName!!, password!!, email!!)
         )
 
         // Check user has been added to the database
-        val user : User = db.findUserByUsernameAndPassword("-1", password)
+        val user : User = db.findUserByUsernameAndPassword(userName!!, password!!)
         if (user.id != -1) {
             // Successful with current code!
             Toast.makeText(this, "Successfully registered!", Toast.LENGTH_LONG).show()
