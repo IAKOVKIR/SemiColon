@@ -38,7 +38,7 @@ object EventContent {
         val searchEvents: MutableList<Event> = ArrayList()
         for (i in 1..COUNT) {
             val item: Event = createEvent(i)
-            if (item.content.toLowerCase().contains(frag))
+            if (item.content.contains(frag))
                 searchEvents.add(item)
         }
         return searchEvents
