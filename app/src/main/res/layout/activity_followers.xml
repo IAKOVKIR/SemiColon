@@ -24,19 +24,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <!--<ImageButton
-                android:id="@+id/back_button"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="6dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/left_arrow"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:ignore="ContentDescription,RtlSymmetry"/>-->
-
         <TextView
                 android:id="@+id/requests_button"
                 android:layout_width="wrap_content"
