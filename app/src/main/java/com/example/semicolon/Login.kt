@@ -7,8 +7,6 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button

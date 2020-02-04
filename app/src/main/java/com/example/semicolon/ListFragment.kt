@@ -1,6 +1,7 @@
 package com.example.semicolon
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 //import androidx.recyclerview.widget.GridLayoutManager
@@ -12,9 +13,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 
 import com.example.semicolon.event.EventContent
 import com.example.semicolon.event.EventContent.Event
+import com.google.android.material.tabs.TabLayout
 
 /**
  * A fragment representing a list of Items.
@@ -32,6 +35,19 @@ class ListFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_item_list, container, false)
         val list: RecyclerView = view.findViewById(R.id.list)
+
+        val tabLayout: TabLayout = view.findViewById(R.id.tabs)
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#D29B56AA"))
+
+        repeat(5) {
+            tabLayout.addTab(tabLayout.newTab())
+        }
+
+        tabLayout.getTabAt(0)!!.text = "Trending"
+        tabLayout.getTabAt(1)!!.text = "Fun\uD83D\uDE02"
+        tabLayout.getTabAt(2)!!.text = "Innovation"
+        tabLayout.getTabAt(3)!!.text = "Abbas & Phi Thien"
+        tabLayout.getTabAt(4)!!.text = "Vitaly Uncensored"
 
         // Set the adapter
         with(list) {
