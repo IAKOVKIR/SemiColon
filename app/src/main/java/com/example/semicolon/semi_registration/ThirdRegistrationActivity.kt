@@ -3,10 +3,7 @@ package com.example.semicolon.semi_registration
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.Toast
-import com.example.semicolon.Login
+import android.widget.*
 import com.example.semicolon.R
 import com.example.semicolon.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
@@ -24,13 +21,16 @@ class ThirdRegistrationActivity : Activity() {
 
         db = DatabaseOpenHelper(this)
 
-        val backButton: Button = findViewById(R.id.buttonBack)
-        val finishButton: Button = findViewById(R.id.buttonFinish)
-        val checkBox: CheckBox = findViewById(R.id.checkBox)
+        val backButton: ImageView = findViewById(R.id.back_button)
+        val userNameText: TextView = findViewById(R.id.userNameText)
 
         userName = intent.getStringExtra("username")
         email = intent.getStringExtra("email")
         password = intent.getStringExtra("password")
+
+        userNameText.setText("> ${userName.toString()}")
+
+        register()
 
         backButton.setOnClickListener{
             val intent = Intent(this, SecondRegistrationActivity::class.java)
@@ -41,16 +41,16 @@ class ThirdRegistrationActivity : Activity() {
             finish()
         }
 
-        finishButton.setOnClickListener{
-            if (checkBox.isChecked) {
-                register()
-                val intent = Intent(this, Login::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
-            } else
-                Toast.makeText(this, "Checkbox is not checked", Toast.LENGTH_LONG).show()
-        }
+//        finishButton.setOnClickListener{
+//            if (checkBox.isChecked) {
+//                register()
+//                val intent = Intent(this, Login::class.java)
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                startActivity(intent)
+//                finish()
+//            } else
+//                Toast.makeText(this, "Checkbox is not checked", Toast.LENGTH_LONG).show()
+//        }
     }
     /**
      * @function register() registers a user into the database based on their inputted information
