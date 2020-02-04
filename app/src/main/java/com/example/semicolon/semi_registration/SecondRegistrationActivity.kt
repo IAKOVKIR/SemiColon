@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -70,12 +72,40 @@ class SecondRegistrationActivity : Activity() {
         }
 
         nextButton.setOnClickListener{
-            val intent = Intent(this, ThirdRegistrationActivity::class.java)
-            intent.putExtra("username", userName)
-            intent.putExtra("email", email)
-            intent.putExtra("password", password)
-            startActivity(intent)
-            finish()
+            if (validate(0) && validate(1)) {
+                val intent = Intent(this, ThirdRegistrationActivity::class.java)
+                intent.putExtra("username", userName)
+                intent.putExtra("email", email)
+                intent.putExtra("password", password)
+                startActivity(intent)
+                finish()
+            }
+            else {
+                val shake: Animation = AnimationUtils.loadAnimation(
+                    this@SecondRegistrationActivity,
+                    R.anim.editext_shaker)
+
+                uEmail.startAnimation(shake)
+                uPassword.startAnimation(shake)
+            }
+        }
+    }
+
+    private fun validate(num: Int): Boolean {
+        when (num) {
+            0 -> {
+                // regex pattern obtained from: https://www.roytuts.com/validate-email-address-with-regular-expression-using-kotlin/
+                val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
+                return EMAIL_REGEX.toRegex().matches(uEmail.text.toString())
+            }
+
+            1 -> {
+                return uPassword.text.isNotEmpty()
+            }
+
+            else -> {
+                return false
+            }
         }
     }
 
