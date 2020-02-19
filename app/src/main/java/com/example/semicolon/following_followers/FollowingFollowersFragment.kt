@@ -1,56 +1,49 @@
 package com.example.semicolon.following_followers
 
-import android.content.Intent
 import android.graphics.Color
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.*
 import com.example.semicolon.*
 import kotlinx.coroutines.*
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import java.util.ArrayList
 
-class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragmentInteractionListener,
-    ListFollowing.OnListFragmentInteractionListener {
+class FollowingFollowersFragment : Fragment() {
 
     private var myID: Int? = null
     private var userID: Int? = null
     private var exceptionID: Int? = null
     private var job: Job = Job()
+    lateinit var viewPager: ViewPager
 
-    override fun onListFragmentInteraction(item: User?) {
-        val intent = Intent(this, FriendActivity::class.java)
-        intent.putExtra("my_id", myID!!)
-        intent.putExtra("user_id", item!!.id)
-        intent.putExtra("exception_id", exceptionID!!)
-        startActivity(intent)
-    }
+    val MY_ID = "my_id"
+    val USER_ID = "user_id"
+    val EXCEPTION_ID = "exception_id"
+    val SLIDE_NUMBER = "slide_number"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_followers)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view: View = inflater.inflate(R.layout.activity_followers, container, false)
 
-        val db = DatabaseOpenHelper(applicationContext)
-        myID = intent.getStringExtra("my_id")!!.toInt()
-        userID = intent.getStringExtra("user_id")!!.toInt()
-        exceptionID = intent.getStringExtra("exception_id")!!.toInt()
-        val linePos: Int = intent.getIntExtra("string", 0)
-        Log.i("check", "$linePos")
+        val db = DatabaseOpenHelper(context!!)
+        myID = arguments!!.getInt(MY_ID)
+        userID = arguments!!.getInt(USER_ID)
+        exceptionID = arguments!!.getInt(EXCEPTION_ID)
+        val linePos: Int = arguments!!.getInt(SLIDE_NUMBER)
 
-        val viewPager: ViewPager = findViewById(R.id.viewpager)
-        val tabLayout: TabLayout = findViewById(R.id.tabs)
-        val backButton: TextView = findViewById(R.id.back_button)
-        val requestsButton: TextView = findViewById(R.id.requests_button)
+        viewPager = view.findViewById(R.id.viewpager)
+        val tabLayout: TabLayout = view.findViewById(R.id.tabs)
+        val backButton: TextView = view.findViewById(R.id.back_button)
+        val requestsButton: TextView = view.findViewById(R.id.requests_button)
 
         tabLayout.setBackgroundColor(Color.WHITE)
-        tabLayout.setTabTextColors(ContextCompat.getColor(applicationContext, R.color.SPECIAL), ContextCompat.getColor(applicationContext, R.color.BLUE))
+        tabLayout.setTabTextColors(ContextCompat.getColor(context!!, R.color.SPECIAL), ContextCompat.getColor(context!!, R.color.BLUE))
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
         setupViewPager(viewPager, myID!!, userID!!, exceptionID!!)
@@ -59,7 +52,10 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         if (linePos == 1)
             tabLayout.getTabAt(1)!!.select()
 
-        backButton.setOnClickListener { finish() }
+        backButton.setOnClickListener {
+            val fm: FragmentManager = parentFragmentManager
+            fm.popBackStack("main_to_followers_following", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
 
         requestsButton.text = "0"
 
@@ -78,17 +74,25 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         }
 
         requestsButton.setOnClickListener {
-            val intent = Intent(this, RequestsActivity::class.java)
-            intent.putExtra("my_id", myID!!.toString())
-            //intent.putExtra("user_id", userID!!)
-            intent.putExtra("exception_id", exceptionID.toString())
-            startActivity(intent)
+
+            val fragment = RequestsFragment()
+            val argument = Bundle()
+            argument.putInt(MY_ID, myID!!)
+            argument.putInt(USER_ID, userID!!)
+            argument.putInt(EXCEPTION_ID, exceptionID!!)
+            fragment.arguments = argument
+            parentFragmentManager
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.nav_host, fragment, "followers_following_to_requests")
+                .commit()
+
         }
 
-    }
+    return view}
 
     private fun setupViewPager(viewPager: ViewPager, my_id: Int, user_id: Int, exception_id: Int) {
-        val adapter = ViewPagerAdapter(supportFragmentManager)
+        val adapter = ViewPagerAdapter(childFragmentManager)
 
         val args = Bundle()
         args.putInt("my_id", my_id)
@@ -102,6 +106,7 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
 
         adapter.addFragment(listFollowers, "Followers")
         adapter.addFragment(listFollowing, "Following")
+
         viewPager.adapter = adapter
     }
 
@@ -111,8 +116,8 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
     }
 
     internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        private val mFragmentList = ArrayList<Fragment>()
-        private val mFragmentTitleList = ArrayList<String>()
+        private var mFragmentList = ArrayList<Fragment>()
+        private var mFragmentTitleList = ArrayList<String>()
 
         override fun getItem(position: Int): Fragment {
             return mFragmentList[position]
@@ -123,8 +128,8 @@ class FollowingFollowersActivity : FragmentActivity(), ListFollowers.OnListFragm
         }
 
         fun addFragment(fragment: Fragment, title: String) {
-            mFragmentList.add(fragment)
-            mFragmentTitleList.add(title)
+                mFragmentList.add(fragment)
+                mFragmentTitleList.add(title)
         }
 
         override fun getPageTitle(position: Int): CharSequence {

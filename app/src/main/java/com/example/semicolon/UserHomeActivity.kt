@@ -4,19 +4,38 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
-import com.example.semicolon.semi_settings.Setting
 import com.example.semicolon.event.EventContent
+import com.example.semicolon.following_followers.ListFollowers
+import com.example.semicolon.following_followers.ListFollowing
+import com.example.semicolon.semi_settings.Setting
 import com.example.semicolon.semi_settings.SettingFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_user_home.*
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
-    SettingFragment.OnListFragmentInteractionListener {
+    SettingFragment.OnListFragmentInteractionListener, ListFollowers.OnListFragmentInteractionListener,
+    ListFollowing.OnListFragmentInteractionListener, UserSearchFragment.OnListFragmentInteractionListener {
 
     private var myID: Int? = null
     private lateinit var n: SharedPreferences
+
+    override fun onListFragmentInteraction(item: User?) {
+
+        myID = n.getInt("id", 1)
+
+        val args = Bundle()
+        args.putInt("my_id", myID!!)
+        args.putInt("user_id", item!!.id)
+        args.putInt("exception_id", myID!!)
+        val t = FriendActivity()
+        t.arguments = args
+
+        startFragment(t, "to_friend")
+
+    }
 
     //listener for settings list
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
@@ -51,12 +70,16 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         when (item.itemId) {
             R.id.navigation_home -> {
                 //opens main fragment
-                findNavController(R.id.nav_host).navigate(R.id.main_dest)
+                val currentFragment = supportFragmentManager.findFragmentById(R.id.nav_host)
+                if (currentFragment !is MainFragment)
+                    startFragment(MainFragment(), "open_main")
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
                 //opens event list fragment (ListFragment.kt)
-                findNavController(R.id.nav_host).navigate(R.id.list_dest)
+                val currentFragment = supportFragmentManager.findFragmentById(R.id.nav_host)
+                if (currentFragment !is ListFragment)
+                    startFragment(ListFragment(), "open_list")
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
@@ -70,6 +93,14 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
             }
         }
         false
+    }
+
+    private fun startFragment(fragment: Fragment, key: String) {
+        supportFragmentManager
+            .beginTransaction()
+            .addToBackStack(key)
+            .replace(R.id.nav_host, fragment, key)
+            .commit()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

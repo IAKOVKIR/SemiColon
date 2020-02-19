@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="LinearLayoutManager"
-            tools:context=".following_followers.RequestsActivity"
+            tools:context=".following_followers.RequestsFragment"
             tools:listitem="@layout/followers_requests_friends_requests"
             android:paddingBottom="45dp"
             app:layout_constraintTop_toBottomOf="@+id/top_layout"/>

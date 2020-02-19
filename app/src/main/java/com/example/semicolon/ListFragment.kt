@@ -1,23 +1,25 @@
 package com.example.semicolon
 
+//import androidx.recyclerview.widget.GridLayoutManager
+
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-//import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.core.content.ContextCompat
-
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.event.EventContent
 import com.example.semicolon.event.EventContent.Event
+import com.example.semicolon.semi_settings.SettingFragment
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.following_search_list_search.*
+
 
 /**
  * A fragment representing a list of Items.
@@ -28,6 +30,17 @@ import com.google.android.material.tabs.TabLayout
 class ListFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
+
+    companion object {
+        const val KEY = "FragmentKey"
+        fun newInstance(key: String): Fragment {
+            val fragment = ListFragment()
+            val argument = Bundle()
+            argument.putString(KEY, key)
+            fragment.arguments = argument
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +69,14 @@ class ListFragment : Fragment() {
         }
 
         val searchBar: EditText = view.findViewById(R.id.editText4)
-        searchBar.addTextChangedListener(object : TextWatcher {
+        searchBar.setOnClickListener {
+            parentFragmentManager
+                .beginTransaction()
+                .addToBackStack("list_to_user_search")
+                .replace(R.id.nav_host, UserSearchFragment(), "list_to_user_search")
+                .commit()
+        }
+        /*searchBar.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -67,7 +87,7 @@ class ListFragment : Fragment() {
                 list.adapter = MyItemRecyclerViewAdapter(EventContent.getList(line), listener)
 
             }
-        })
+        })*/
 
         return view
     }

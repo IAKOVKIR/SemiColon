@@ -305,13 +305,13 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
     }
 
-    fun searchAllFollowing(UserID: Int, searchLine: String): ArrayList<User> {
+    fun readFirstTenUsers(searchLine: String): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT USER.UserID, USER.UserName, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Email FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.SenderID = '$UserID' AND FRIEND.Condition = '-1' AND (USER.UserFirstName LIKE '$searchLine%' OR USER.UserLastName LIKE '$searchLine%')"
+            val line = "SELECT USER.UserID, USER.UserName, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Email FROM USER LIMIT 10"
             cursor = db.rawQuery(line, null)
         } catch (e: SQLiteException) {
             db.close()
@@ -326,7 +326,6 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                 val firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
                 val lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
                 val phoneNum = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
-                //val city = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_CITY))
                 val email = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
                 users.add(User(id, username, firstName, lastName, phoneNum, "", 0F, email))
                 cursor.moveToNext()
@@ -377,7 +376,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         var total = 0
 
         try {
-            val line = "SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.ReceiverID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '0'"
+            val line = "SELECT COUNT(*) FROM USER INNER JOIN FRIEND ON USER.UserID = FRIEND.SenderID WHERE FRIEND.ReceiverID = '$UserID' AND FRIEND.Condition = '0'"
             cursor = db.rawQuery(line, null)
             if (cursor.moveToFirst())
                 total = cursor.getInt(0)

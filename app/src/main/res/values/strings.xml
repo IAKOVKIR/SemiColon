@@ -107,5 +107,8 @@
     <string name="phrase_confirm_password">confirm password</string>
     <string name="word_login">Login</string>
     <string name="phrase_create_an_account"><u>New Here? Sign Up Here</u></string>
+    <string name="title_activity_bottom_navigation__test">Bottom_navigation_Test</string>
+    <string name="title_home">Home</string>
+    <string name="search_edittext_list"><![CDATA[> search]]></string>
 
 </resources>

@@ -2,46 +2,52 @@ package com.example.semicolon
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
-import com.example.semicolon.following_followers.FollowingFollowersActivity
+import androidx.fragment.app.Fragment
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.time.Time
 //import de.hdodenhof.circleimageview.CircleImageView
 
-class FriendActivity : FragmentActivity() {
+class FriendActivity : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_friend)
+    val MY_ID = "my_id"
+    val USER_ID = "user_id"
+    val EXCEPTION_ID = "exception_id"
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        val view: View = inflater.inflate(R.layout.activity_friend, container, false)
 
         //DatabaseOpenHelper object
-        val db = DatabaseOpenHelper(applicationContext)
+        val db = DatabaseOpenHelper(context!!)
 
         //Time object
         val time = Time()
 
-        val myID: Int = intent.getIntExtra("my_id", -1)
-        val userID: Int = intent.getIntExtra("user_id", -1)
-        val exceptionID: Int = intent.getIntExtra("exception_id", -1)
+        val myID: Int = arguments!!.getInt(MY_ID)
+        val userID: Int = arguments!!.getInt(USER_ID)
+        val exceptionID: Int = arguments!!.getInt(EXCEPTION_ID)
         val userObject: User = db.findUserByID(userID)
 
         //val circleImageView: CircleImageView = findViewById(R.id.circleImageView)
 
         //TextViews
-        val name: TextView = findViewById(R.id.name)
-        val phone: TextView = findViewById(R.id.phone_number)
-        val email: TextView = findViewById(R.id.email)
-        val numOfFollowers: TextView = findViewById(R.id.followers_number)
-        val numOfFollowing: TextView = findViewById(R.id.following_number)
+        val name: TextView = view.findViewById(R.id.name)
+        val phone: TextView = view.findViewById(R.id.phone_number)
+        val email: TextView = view.findViewById(R.id.email)
+        val numOfFollowers: TextView = view.findViewById(R.id.followers_number)
+        val numOfFollowing: TextView = view.findViewById(R.id.following_number)
 
         //Buttons
-        val followButton: Button = findViewById(R.id.followButton)
-        val backButton: ImageView = findViewById(R.id.back_button)
+        val followButton: Button = view.findViewById(R.id.followButton)
+        val backButton: ImageView = view.findViewById(R.id.back_button)
 
         //Layouts
-        val followersLayout: LinearLayout = findViewById(R.id.linear_layout_followers)
-        val followingLayout: LinearLayout = findViewById(R.id.linear_layout_following)
+        val followersLayout: LinearLayout = view.findViewById(R.id.linear_layout_followers)
+        val followingLayout: LinearLayout = view.findViewById(R.id.linear_layout_following)
         //val eventsLayout: LinearLayout = findViewById(R.id.linear_layout_following)
 
         /*
@@ -79,9 +85,7 @@ class FriendActivity : FragmentActivity() {
             }
         }
 
-        backButton.setOnClickListener { finish() }
-
-        followersLayout.setOnClickListener {
+        /*followersLayout.setOnClickListener {
             val intent = Intent(this, FollowingFollowersActivity::class.java)
             intent.putExtra("my_id", "$myID")
             intent.putExtra("user_id", "$userID")
@@ -97,6 +101,7 @@ class FriendActivity : FragmentActivity() {
             intent.putExtra("exception_id", "$exceptionID")
             intent.putExtra("string", 1)
             startActivity(intent)
-        }
+        }*/
+        return view
     }
 }
