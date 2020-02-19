@@ -54,17 +54,17 @@ class Login : Activity() {
         db.insertUser(User("ay_sir", "John", "Carlos", "0490000003", "12345678",
              5.0F, "JohnCarlos@gmail.com"))
         db.insertUser(User("beverly", "Patrick", "Beverly", "0490000004", "12345678",
-             5.0F, "JohnCarlos@gmail.com"))
+             5.0F, "beverly@gmail.com"))
         db.insertUser(User("dwade", "Dwyane", "Wade", "0490000005", "12345678",
-             5.0F, "JohnCarlos@gmail.com"))
+             5.0F, "wade@gmail.com"))
         db.insertUser(User("phelps", "Michael", "Phelps", "0490000006", "12345678",
-             5.0F, "JohnCarlos@gmail.com"))
+             5.0F, "phelps@gmail.com"))
         db.insertUser(User("putin", "Vladimir", "Putin", "0490000007", "12345678",
-             5.0F, "JohnCarlos@gmail.com"))
+             5.0F, "putin@gmail.com"))
         db.insertUser(User("harden13", "James", "Harden", "0490000008", "12345678",
-             5.0F, "JohnCarlos@gmail.com"))
+             5.0F, "jharden@gmail.com"))
         db.insertUser(User("king_james","Lebron", "James", "0490000009", "12345678",
-             5.0F, "MrStealYourQuery@gmail.com"))
+             5.0F, "KingJames@gmail.com"))
 
         //test entries for FRIEND table
         db.insertRequest(Friend(1, 1, 2, time.getDate(), time.getTime(), 0))

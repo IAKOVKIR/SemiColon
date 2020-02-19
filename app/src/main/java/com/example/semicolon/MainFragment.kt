@@ -2,9 +2,9 @@ package com.example.semicolon
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +12,9 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.example.semicolon.following_followers.FollowingFollowersActivity
 import com.example.semicolon.semi_settings.SettingFragment
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.following_followers.FollowingFollowersFragment
 import kotlinx.coroutines.*
 
 /**
@@ -27,6 +25,11 @@ class MainFragment : Fragment() {
     private var userID: Int = 0
     private var username: String = ""
     private var job: Job = Job()
+
+    private val MY_ID = "my_id"
+    private val USER_ID = "user_id"
+    private val EXCEPTION_ID = "exception_id"
+    private val SLIDE_NUMBER = "slide_number"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,32 +44,37 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_main, container, false)
         val db = DatabaseOpenHelper(context!!)
-
+        Log.e("check", "$userID")
+        //TextViews
         //TextView representing user's full name
         val nameText: TextView = view.findViewById(R.id.name)
-        nameText.text = username
 
         //TextView representing user's phone number
         val phoneNum: TextView = view.findViewById(R.id.phone_number)
 
+        //TextView representing the number of followers
         val numOfFollowers: TextView = view.findViewById(R.id.followers_number)
+
+        //TextView representing the number of users you follow
         val numOfFollowing: TextView = view.findViewById(R.id.following_number)
 
         //TextView representing user's email
         val email: TextView = view.findViewById(R.id.email)
 
+        //LinearLayouts
+        val followersLink: LinearLayout = view.findViewById(R.id.linear_layout_followers)
+        val followingLink: LinearLayout = view.findViewById(R.id.linear_layout_following)
+
+        nameText.text = username
+
         job = CoroutineScope(Dispatchers.Default).launch {
 
-            //var fName = ""
-            //var lName = ""
             var userPhone = ""
             var emailText = ""
             var followers = 0
             var following = 0
 
             withContext(Dispatchers.Default) {
-                //fName = db.getUsersData(userID, "UserFirstName")
-                //lName = db.getUsersData(userID, "UserLastName")
                 val line: String = db.getUsersData(userID, "Phone")
                 //variable phoneImp contains a string of phone number ("#(###)### ###")
                 if (line.isNotEmpty()) {
@@ -75,7 +83,6 @@ class MainFragment : Fragment() {
                     )} ${line.substring(7, 10)}"
                 }
 
-
                 emailText = db.getUsersData(userID, "Email")
                 followers = db.countFollowers(userID)
                 following = db.countFollowing(userID)
@@ -83,7 +90,6 @@ class MainFragment : Fragment() {
 
             launch (Dispatchers.Main) {
                 // process the data on the UI thread
-                //nameText.text = "$fName\n$lName"
                 phoneNum.text = userPhone
                 email.text = emailText
                 numOfFollowers.text = "$followers"
@@ -92,38 +98,40 @@ class MainFragment : Fragment() {
 
         }
 
-        val followersLink: LinearLayout = view.findViewById(R.id.linear_layout_followers)
-        val followingLink: LinearLayout = view.findViewById(R.id.linear_layout_following)
-
         followersLink.setOnClickListener {
-            val intent = Intent(activity, FollowingFollowersActivity::class.java)
-            intent.putExtra("my_id", "$userID")
-            intent.putExtra("user_id", "$userID")
-            intent.putExtra("exception_id", "$userID")
-            intent.putExtra("string", 0)
-            startActivity(intent)
+            sendToFollowersFollowing(0)
         }
 
         followingLink.setOnClickListener {
-            val intent = Intent(activity, FollowingFollowersActivity::class.java)
-            intent.putExtra("my_id", "$userID")
-            intent.putExtra("user_id", "$userID")
-            intent.putExtra("exception_id", "$userID")
-            intent.putExtra("string", 1)
-            startActivity(intent)
+            sendToFollowersFollowing(1)
         }
 
         val settingsButton : ImageButton = view.findViewById(R.id.settings_button)
         settingsButton.setOnClickListener {
-            val fragment: Fragment = SettingFragment()
-            val manager: FragmentManager? = fragmentManager
-            val transaction: FragmentTransaction = manager!!.beginTransaction()
-            transaction.add(R.id.nav_host, fragment)
-            transaction.commit()
+            parentFragmentManager
+                .beginTransaction()
+                .addToBackStack(null)
+                .add(R.id.nav_host, SettingFragment(), "main_to_settings")
+                .commit()
         }
 
         //Inflate the layout for this fragment
         return view
+    }
+
+    private fun sendToFollowersFollowing(slideNumber: Int) {
+        val fragment = FollowingFollowersFragment()
+        val argument = Bundle()
+        argument.putInt(MY_ID, userID)
+        argument.putInt(USER_ID, userID)
+        argument.putInt(EXCEPTION_ID, userID)
+        argument.putInt(SLIDE_NUMBER, slideNumber)
+        fragment.arguments = argument
+        parentFragmentManager
+            .beginTransaction()
+            .addToBackStack("main_to_followers_following")
+            .replace(R.id.nav_host, fragment, "main_to_followers_following")
+            .commit()
     }
 
     override fun onDestroy() {
