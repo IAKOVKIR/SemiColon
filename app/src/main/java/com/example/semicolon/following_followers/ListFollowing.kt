@@ -16,7 +16,7 @@ import android.view.ViewGroup
 //import androidx.loader.content.AsyncTaskLoader
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
-import com.example.semicolon.User
+import com.example.semicolon.models.User
 import kotlinx.coroutines.*
 
 /**

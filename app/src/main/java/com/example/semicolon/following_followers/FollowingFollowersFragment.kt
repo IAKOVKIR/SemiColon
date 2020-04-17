@@ -15,27 +15,35 @@ import kotlinx.coroutines.*
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import java.util.ArrayList
 
+// the fragment initialization parameters, e.g MY_ID, USER_ID, EXCEPTION_ID and SLIDE_NUMBER
+private const val MY_ID = "my_id"
+private const val USER_ID = "user_id"
+private const val EXCEPTION_ID = "exception_id"
+private const val SLIDE_NUMBER = "slide_number"
+
 class FollowingFollowersFragment : Fragment() {
 
     private var myID: Int? = null
     private var userID: Int? = null
     private var exceptionID: Int? = null
+    private var linePos: Int? = null
     private var job: Job = Job()
-    lateinit var viewPager: ViewPager
+    private lateinit var viewPager: ViewPager
 
-    val MY_ID = "my_id"
-    val USER_ID = "user_id"
-    val EXCEPTION_ID = "exception_id"
-    val SLIDE_NUMBER = "slide_number"
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            myID = it.getInt(MY_ID)
+            userID = it.getInt(USER_ID)
+            exceptionID = it.getInt(EXCEPTION_ID)
+            linePos = it.getInt(SLIDE_NUMBER)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.activity_followers, container, false)
 
         val db = DatabaseOpenHelper(context!!)
-        myID = arguments!!.getInt(MY_ID)
-        userID = arguments!!.getInt(USER_ID)
-        exceptionID = arguments!!.getInt(EXCEPTION_ID)
-        val linePos: Int = arguments!!.getInt(SLIDE_NUMBER)
 
         viewPager = view.findViewById(R.id.viewpager)
         val tabLayout: TabLayout = view.findViewById(R.id.tabs)
@@ -83,7 +91,7 @@ class FollowingFollowersFragment : Fragment() {
             fragment.arguments = argument
             parentFragmentManager
                 .beginTransaction()
-                .addToBackStack(null)
+                .addToBackStack("followers_following_to_requests")
                 .replace(R.id.nav_host, fragment, "followers_following_to_requests")
                 .commit()
 

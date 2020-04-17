@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import com.example.semicolon.R
-import com.example.semicolon.User
+import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 
 class ThirdRegistrationActivity : Activity() {
@@ -63,7 +63,7 @@ class ThirdRegistrationActivity : Activity() {
 
         // Check user has been added to the database
         val user : User = db.findUserByUsernameAndPassword(userName!!, password!!)
-        if (user.id != -1) {
+        if (user.userId != -1) {
             // Successful with current code!
             Toast.makeText(this, "Successfully registered!", Toast.LENGTH_LONG).show()
         }

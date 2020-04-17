@@ -1,12 +1,8 @@
 package com.example.semicolon
 
-//import androidx.recyclerview.widget.GridLayoutManager
-
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +10,10 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.semicolon.event.EventContent
-import com.example.semicolon.event.EventContent.Event
-import com.example.semicolon.semi_settings.SettingFragment
+import com.example.semicolon.models.EventContent.Event
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.following_search_list_search.*
-
+import kotlinx.coroutines.*
 
 /**
  * A fragment representing a list of Items.
@@ -30,24 +24,16 @@ import kotlinx.android.synthetic.main.following_search_list_search.*
 class ListFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
-
-    companion object {
-        const val KEY = "FragmentKey"
-        fun newInstance(key: String): Fragment {
-            val fragment = ListFragment()
-            val argument = Bundle()
-            argument.putString(KEY, key)
-            fragment.arguments = argument
-            return fragment
-        }
-    }
+    private var listUser: ArrayList<Event> = ArrayList()
+    lateinit var list: RecyclerView
+    lateinit var db: DatabaseOpenHelper
+    private var job: Job = Job()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_item_list, container, false)
-        val list: RecyclerView = view.findViewById(R.id.list)
 
         val tabLayout: TabLayout = view.findViewById(R.id.tabs)
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#D29B56AA"))
@@ -62,13 +48,34 @@ class ListFragment : Fragment() {
         tabLayout.getTabAt(3)!!.text = "Abbas & Phi Thien"
         tabLayout.getTabAt(4)!!.text = "Vitaly Uncensored"
 
+
+        list = view.findViewById(R.id.list)
+        db = DatabaseOpenHelper(context!!)
+
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = MyItemRecyclerViewAdapter(EventContent.EVENTS, listener)
+            adapter = MyItemRecyclerViewAdapter(
+                listUser,
+                listener as OnListFragmentInteractionListener)
+            setHasFixedSize(true)
+        }
+
+        job = CoroutineScope(Dispatchers.Default).launch {
+
+            if (listUser.isEmpty())
+                listUser.addAll(withContext(Dispatchers.Default) { load() })
+
+            CoroutineScope(Dispatchers.Main).launch {
+                with(list) {
+                    adapter!!.notifyDataSetChanged()
+                }
+            }
+
         }
 
         val searchBar: EditText = view.findViewById(R.id.editText4)
+        //searchBar.isEnabled = false
         searchBar.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -76,34 +83,26 @@ class ListFragment : Fragment() {
                 .replace(R.id.nav_host, UserSearchFragment(), "list_to_user_search")
                 .commit()
         }
-        /*searchBar.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-                val line: String = searchBar.text.toString()
-                list.adapter = MyItemRecyclerViewAdapter(EventContent.getList(line), listener)
-
-            }
-        })*/
 
         return view
     }
 
+    private fun load() : ArrayList<Event> {
+        return db.readAllEvents()
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
+        if (context is OnListFragmentInteractionListener)
             listener = context
-        } else {
+        else
             throw RuntimeException("$context must implement OnListFragmentInteractionListener")
-        }
     }
 
     override fun onDetach() {
         super.onDetach()
         listener = null
+        job.cancel()
     }
 
     /**

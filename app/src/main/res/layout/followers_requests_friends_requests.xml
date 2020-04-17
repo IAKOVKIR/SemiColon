@@ -1,54 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:background="@android:color/transparent"
         android:orientation="horizontal">
 
-    <LinearLayout
-            android:layout_height="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
+            android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userImage"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:padding="8dp"/>
-        <!--android:src="@drawable/smithers"-->
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+                <!--android:src="@drawable/smithers"-->
+
+        <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/WHITE"
+                android:layout_margin="@dimen/text_margin"
+                android:textAppearance="?attr/textAppearanceListItem"
+                app:layout_constraintStart_toEndOf="@id/userImage"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         <LinearLayout
+                android:id="@+id/request_buttons"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-            <LinearLayout
+            <TextView
+                    android:id="@+id/confirm_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/reg_square"
+                    android:textAllCaps="false"
+                    android:textColor="@color/WHITE"
+                    android:text="Accept"
+                    android:textSize="15sp"
+                    android:padding="6dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="2dp"/>
 
-                <TextView
-                        android:id="@+id/first_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="12sp"
-                        android:textColor="@color/WHITE"
-                        android:layout_margin="@dimen/text_margin"
-                        android:textAppearance="?attr/textAppearanceListItem"/>
-
-                <TextView
-                        android:id="@+id/last_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="12sp"
-                        android:textColor="@color/WHITE"
-                        android:layout_margin="@dimen/text_margin"
-                        android:textAppearance="?attr/textAppearanceListItem"/>
-
-            </LinearLayout>
+            <TextView
+                    android:id="@+id/decline_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/reg_square"
+                    android:textAllCaps="false"
+                    android:textColor="@color/WHITE"
+                    android:text="Decline"
+                    android:textSize="15sp"
+                    android:padding="6dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="4dp"/>
 
         </LinearLayout>
 
@@ -57,7 +82,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:paddingTop="30dp">
+                android:paddingTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                     android:id="@+id/button_result"
@@ -65,30 +93,13 @@
                     android:layout_height="match_parent"
                     android:textSize="15sp"
                     android:textColor="@color/WHITE"
-                    android:text="accepted"/>
+                    android:text="accepted"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="4dp"/>
 
         </LinearLayout>
 
-        <LinearLayout
-                android:id="@+id/request_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            <Button
-                    android:id="@+id/confirm_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="accept"/>
-
-            <Button
-                    android:id="@+id/decline_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="decline"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

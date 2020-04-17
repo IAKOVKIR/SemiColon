@@ -11,11 +11,13 @@ import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 import android.graphics.drawable.BitmapDrawable
+import com.example.semicolon.models.Friend
+import com.example.semicolon.models.User
 import kotlinx.android.synthetic.main.following_search_friends_search.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
- * specified [ListFollowing.OnListFragmentInteractionListener].
+ * specified [ListSearchUser.OnListFragmentInteractionListener].
  */
 class MySearchUserRecyclerViewAdapter(
     private val mValues: List<User>,
@@ -30,7 +32,7 @@ class MySearchUserRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as User
+            val item: User = v.tag as User
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
@@ -48,13 +50,13 @@ class MySearchUserRecyclerViewAdapter(
         val item: User = mValues[position]
         holder.mIdView.text = item.firstName
         holder.mContentView.text = item.lastName
-        var bool: Int = db!!.checkFollower(myID, item.id)
+        var bool: Int = db!!.checkFollower(myID, item.userId)
 
         holder.mUserImage.setImageDrawable(mBitMap)
 
-        val c = Calendar.getInstance()
+        val c: Calendar = Calendar.getInstance()
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-        val strDate = sdf.format(c.time).trim()
+        val strDate: String = sdf.format(c.time).trim()
 
         when (bool) {
             1 -> holder.mFollowUnFollowButton.text = str[4]
@@ -67,14 +69,14 @@ class MySearchUserRecyclerViewAdapter(
                 holder.mFollowUnFollowButton.text = str[2]
                 bool = 3
                 val friend = Friend(
-                    db!!.countFriendTable(), myID, item.id,
+                    db!!.countFriendTable(), myID, item.userId,
                     strDate.substring(11, 19), strDate.substring(0, 10), bool
                 )
                 db!!.insertRequest(friend)
             } else {
                 holder.mFollowUnFollowButton.text = str[3]
                 bool = 2
-                db!!.deleteFollowing(myID, item.id)
+                db!!.deleteFollowing(myID, item.userId)
             }
         }
 

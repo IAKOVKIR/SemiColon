@@ -15,9 +15,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.semicolon.models.EventContent
+import com.example.semicolon.models.Friend
+import com.example.semicolon.models.User
 import com.example.semicolon.semi_registration.FirstRegistrationActivity
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.time.Time
+import com.example.semicolon.support_features.Time
 
 
 class Login : Activity() {
@@ -43,45 +46,246 @@ class Login : Activity() {
         db = DatabaseOpenHelper(this)
 
         //test entries for USER table
-        db.insertUser(User("mr_query", "Chandra", "MrQuery", "0490506763", "12345678",
-            5.0F, "MrStealYourQuery@gmail.com"))
-        db.insertUser(User("ice_wallow", "Abbas", "Ice Wallow", "0490000000", "12345678",
-             3.2F, "BetterThanFather@gmail.com"))
-        db.insertUser(User("karama","Carl", "Obama", "0490000001", "12345678",
-             5.0F, "CallMePresident@gmail.com"))
-        db.insertUser(User("merin","Matt", "Merin", "0490000002", "12345678",
-             5.0F, "MattMerinOnTheBeat@gmail.com"))
-        db.insertUser(User("ay_sir", "John", "Carlos", "0490000003", "12345678",
-             5.0F, "JohnCarlos@gmail.com"))
-        db.insertUser(User("beverly", "Patrick", "Beverly", "0490000004", "12345678",
-             5.0F, "beverly@gmail.com"))
-        db.insertUser(User("dwade", "Dwyane", "Wade", "0490000005", "12345678",
-             5.0F, "wade@gmail.com"))
-        db.insertUser(User("phelps", "Michael", "Phelps", "0490000006", "12345678",
-             5.0F, "phelps@gmail.com"))
-        db.insertUser(User("putin", "Vladimir", "Putin", "0490000007", "12345678",
-             5.0F, "putin@gmail.com"))
-        db.insertUser(User("harden13", "James", "Harden", "0490000008", "12345678",
-             5.0F, "jharden@gmail.com"))
-        db.insertUser(User("king_james","Lebron", "James", "0490000009", "12345678",
-             5.0F, "KingJames@gmail.com"))
+            db.insertUser(
+            User(
+                "mr_query", "Chandra", "MrQuery", "0490506763", "12345678",
+                5.0F, "MrStealYourQuery@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "ice_wallow", "Abbas", "Ice Wallow", "0490000000", "12345678",
+                3.2F, "BetterThanFather@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "karama", "Carl", "Obama", "0490000001", "12345678",
+                5.0F, "CallMePresident@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "merin", "Matt", "Merin", "0490000002", "12345678",
+                5.0F, "MattMerinOnTheBeat@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "ay_sir", "John", "Carlos", "0490000003", "12345678",
+                5.0F, "JohnCarlos@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "beverly", "Patrick", "Beverly", "0490000004", "12345678",
+                5.0F, "beverly@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "dwade", "Dwyane", "Wade", "0490000005", "12345678",
+                5.0F, "wade@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "phelps", "Michael", "Phelps", "0490000006", "12345678",
+                5.0F, "phelps@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "putin", "Vladimir", "Putin", "0490000007", "12345678",
+                5.0F, "putin@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "harden13", "James", "Harden", "0490000008", "12345678",
+                5.0F, "jharden@gmail.com"
+            )
+        )
+        db.insertUser(
+            User(
+                "king_james", "Lebron", "James", "0490000009", "12345678",
+                5.0F, "KingJames@gmail.com"
+            )
+        )
 
         //test entries for FRIEND table
-        db.insertRequest(Friend(1, 1, 2, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(2, 1, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(3, 2, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(4, 3, 1, time.getDate(), time.getTime(), 1))
-        db.insertRequest(Friend(5, 1, 4, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(6, 2, 4, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(7, 3, 4, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(8, 4, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(9, 5, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(10, 6, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(11, 7, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(12, 8, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(13, 9, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(14, 10, 3, time.getDate(), time.getTime(), 0))
-        db.insertRequest(Friend(15, 11, 3, time.getDate(), time.getTime(), 0))
+        db.insertRequest(
+            Friend(
+                1,
+                1,
+                2,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                2,
+                1,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                3,
+                2,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                4,
+                3,
+                1,
+                time.getDate(),
+                time.getTime(),
+                1
+            )
+        )
+        db.insertRequest(
+            Friend(
+                5,
+                1,
+                4,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                6,
+                2,
+                4,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                7,
+                3,
+                4,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                8,
+                4,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                9,
+                5,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                10,
+                6,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                11,
+                7,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                12,
+                8,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                13,
+                9,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                14,
+                10,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+        db.insertRequest(
+            Friend(
+                15,
+                11,
+                3,
+                time.getDate(),
+                time.getTime(),
+                0
+            )
+        )
+
+
+        //test entries for EVENT table
+        db.insertEvent(
+            EventContent.Event(1, "Event1", 30, "Melbourne",
+            time.getDate(), time.getDate(), time.getTime(), time.getTime()))
+        db.insertEvent(
+            EventContent.Event(2, "Event2", 10, "Melbourne",
+            time.getDate(), time.getDate(), time.getTime(), time.getTime()))
+        db.insertEvent(
+            EventContent.Event(3, "Event3", 20, "Melbourne",
+            time.getDate(), time.getDate(), time.getTime(), time.getTime()))
+        db.insertEvent(
+            EventContent.Event(4, "Event4", 40, "Melbourne",
+            time.getDate(), time.getDate(), time.getTime(), time.getTime()))
+        db.insertEvent(
+            EventContent.Event(5, "Event5", 80, "Melbourne",
+            time.getDate(), time.getDate(), time.getTime(), time.getTime()))
+        db.insertEvent(
+            EventContent.Event(6, "Event6", 320, "Melbourne",
+            time.getDate(), time.getDate(), time.getTime(), time.getTime()))
+
 
         fEnter = findViewById(R.id.user_name)
         sEnter = findViewById(R.id.password)
@@ -135,7 +339,7 @@ class Login : Activity() {
         val txtPassword: String = sEnter.text.toString()
         val user: User = db.findUserByUsernameAndPassword(txtUsername, txtPassword)
 
-        if (user.id != -1) {
+        if (user.userId != -1) {
             //saves user's id, phone number and password in SharedPreferences
             rememberMe(user)
             //show UserHomeActivity activity
@@ -169,7 +373,7 @@ class Login : Activity() {
         val password: String = pref.getString("password", "") as String
         val list: User = db.findUserByUsernameAndPassword(username, password)
 
-        if (list.id != -1 && username != "")
+        if (list.userId != -1 && username != "")
             showHome()
     }
 
@@ -181,7 +385,7 @@ class Login : Activity() {
     private fun rememberMe(user: User) {
         getSharedPreferences("myPreferences", Context.MODE_PRIVATE)
             .edit()
-            .putInt("id", user.id)
+            .putInt("id", user.userId)
             .putString("username", user.username)
             .putString("password", user.password)
             .apply()

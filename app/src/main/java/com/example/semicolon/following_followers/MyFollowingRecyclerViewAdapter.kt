@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.*
+import com.example.semicolon.models.Friend
+import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.time.Time
+import com.example.semicolon.support_features.Time
 import kotlinx.android.synthetic.main.following_search_friends_following.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +59,7 @@ class MyFollowingRecyclerViewAdapter(
         holder.mSecondName.text = item.lastName
 
         val time = Time()
-        var bool: Int = db.checkFollower(myID, item.id)
+        var bool: Int = db.checkFollower(myID, item.userId)
 
         holder.mFollowUnFollowButton.text = str[bool + 1]
         holder.mFollowUnFollowButton.setOnClickListener {
@@ -69,7 +71,7 @@ class MyFollowingRecyclerViewAdapter(
 
                     withContext(Dispatchers.Default) {
                         val friend = Friend(
-                            db.countFriendTable(), myID, item.id,
+                            db.countFriendTable(), myID, item.userId,
                             time.getDate(), time.getTime(), 0
                         )
                         res = db.insertRequest(friend)
@@ -90,7 +92,7 @@ class MyFollowingRecyclerViewAdapter(
                     var res = false
 
                     withContext(Dispatchers.Default) {
-                        res = db.deleteFollowing(myID, item.id)
+                        res = db.deleteFollowing(myID, item.userId)
                     }
 
                     launch (Dispatchers.Main) {

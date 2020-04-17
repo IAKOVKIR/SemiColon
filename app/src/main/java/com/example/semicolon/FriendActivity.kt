@@ -1,14 +1,16 @@
 package com.example.semicolon
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.example.semicolon.models.Friend
+import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.time.Time
+import com.example.semicolon.support_features.Time
 //import de.hdodenhof.circleimageview.CircleImageView
 
 class FriendActivity : Fragment() {
@@ -45,6 +47,11 @@ class FriendActivity : Fragment() {
         val followButton: Button = view.findViewById(R.id.followButton)
         val backButton: ImageView = view.findViewById(R.id.back_button)
 
+        backButton.setOnClickListener {
+            val fm: FragmentManager = parentFragmentManager
+            fm.popBackStack("to_friend", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+
         //Layouts
         val followersLayout: LinearLayout = view.findViewById(R.id.linear_layout_followers)
         val followingLayout: LinearLayout = view.findViewById(R.id.linear_layout_following)
@@ -75,8 +82,10 @@ class FriendActivity : Fragment() {
             if (bool == 1) {
                 followButton.text = str[1]
                 bool = 0
-                val friend = Friend(db.countFriendTable(), myID, userID,
-                    time.getDate(), time.getTime(), 0)
+                val friend = Friend(
+                    db.countFriendTable(), myID, userID,
+                    time.getDate(), time.getTime(), 0
+                )
                 db.insertRequest(friend)
             } else {
                 followButton.text = str[2]

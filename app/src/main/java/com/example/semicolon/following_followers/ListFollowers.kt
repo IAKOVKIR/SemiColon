@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
-import com.example.semicolon.User
+import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
 
@@ -57,7 +57,8 @@ class ListFollowers : Fragment() {
 
         job = CoroutineScope(Dispatchers.Default).launch {
 
-            listUser.addAll(withContext(Dispatchers.Default) { load() })
+            if (listUser.isEmpty())
+                listUser.addAll(withContext(Dispatchers.Default) { load() })
 
             CoroutineScope(Dispatchers.Main).launch {
                 with(list) {
@@ -71,7 +72,7 @@ class ListFollowers : Fragment() {
     }
 
     private fun load() : ArrayList<User> {
-        return db.readAllFollowers(userID!!, -1, myID!!)
+        return db.readAllFollowers(userID!!, -1/*, myID!!*/)
     }
 
     override fun onAttach(context: Context) {

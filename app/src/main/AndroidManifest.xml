@@ -24,14 +24,8 @@
                 android:name=".FriendActivity"
                 android:screenOrientation="portrait" />
         <activity
-                android:name=".user_event_search.UserEventActivity"
-                android:screenOrientation="portrait" />
-        <activity
-                android:name=".following_followers.RequestsFragment"
-                android:screenOrientation="portrait" />
-        <activity
                 android:name=".UserHomeActivity"
-                android:screenOrientation="portrait" />
+                android:screenOrientation="fullSensor" />
         <activity
                 android:name=".semi_registration.Registration"
                 android:screenOrientation="portrait" />

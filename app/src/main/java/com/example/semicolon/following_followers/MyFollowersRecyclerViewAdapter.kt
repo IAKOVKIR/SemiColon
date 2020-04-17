@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.*
+import com.example.semicolon.models.User
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -47,7 +48,6 @@ class MyFollowersRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
-
 
         CoroutineScope(Dispatchers.Default).launch {
 
