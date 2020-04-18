@@ -19,13 +19,13 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_USER_TABLE)
-        db.execSQL(SQL_CREATE_FOLLOWERS_TABLE)
+        db.execSQL(SQL_CREATE_FOLLOWER_TABLE)
         db.execSQL(SQL_CREATE_EVENT_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL(SQL_DELETE_FRIEND_TABLE)
         db.execSQL(SQL_DELETE_USER_TABLE)
+        db.execSQL(SQL_DELETE_FOLLOWER_TABLE)
         db.execSQL(SQL_DELETE_EVENT_TABLE)
         onCreate(db)
     }
@@ -39,12 +39,14 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val values = ContentValues()
 
         values.put(DBContract.UserEntry.USER_COLUMN_USERNAME, user.username)
-        values.put(DBContract.UserEntry.USER_COLUMN_FIRST_NAME, user.firstName)
-        values.put(DBContract.UserEntry.USER_COLUMN_LAST_NAME, user.lastName)
         values.put(DBContract.UserEntry.USER_COLUMN_PHONE, user.phone)
         values.put(DBContract.UserEntry.USER_COLUMN_PASSWORD, user.password)
-        values.put(DBContract.UserEntry.USER_COLUMN_RATING, user.rating)
+        values.put(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME, user.fullName)
+        values.put(DBContract.UserEntry.USER_COLUMN_BIO_DESCRIPTION, user.bioDescription)
         values.put(DBContract.UserEntry.USER_COLUMN_EMAIL, user.email)
+        values.put(DBContract.UserEntry.USER_COLUMN_RATING, user.rating)
+        values.put(DBContract.UserEntry.USER_COLUMN_LAST_MODIFIED, user.lastModified)
+        values.put(DBContract.UserEntry.USER_COLUMN_DATE_CREATED, user.dateCreated)
 
         db.insert(DBContract.UserEntry.USER_TABLE_NAME, null, values)
 
@@ -145,7 +147,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val db: SQLiteDatabase = writableDatabase
 
         // Define 'where' part of query.
-        val selection = "${DBContract.UserEntry.USER_COLUMN_ID} = ?"
+        val selection = "${DBContract.UserEntry.USER_COLUMN_USER_ID} = ?"
         // Specify arguments in placeholder order.
         val selectionArgs: Array<String> = arrayOf("$UserID")
         // Issue SQL statement.
@@ -167,19 +169,18 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
         if (cursor.moveToFirst())
             if (!cursor.isAfterLast) {
-                val id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
-                val username = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
-                val firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
-                val lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
-                val phone = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
-                val password = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PASSWORD))
-                val rating = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_RATING)).toFloat()
-                val email = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_ID))
+                val username: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
+                val phone: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                val password: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PASSWORD))
+                val fullName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME))
+                val bioDescription: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_BIO_DESCRIPTION))
+                val email: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                val rating: Float = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_RATING)).toFloat()
+                val lastModified: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                val dateCreated: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
 
-                users = User(
-                    id, username, firstName, lastName,
-                    phone, password, rating, email
-                )
+                users = User(id, username, phone, password, fullName, bioDescription, email, rating, lastModified, dateCreated)
             }
 
         cursor.close()
@@ -192,7 +193,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val cursor: Cursor?
 
         try {
-            cursor = db.rawQuery("SELECT $columnName FROM ${DBContract.UserEntry.USER_TABLE_NAME} WHERE ${DBContract.UserEntry.USER_COLUMN_ID} = '$userID'", null)
+            cursor = db.rawQuery("SELECT $columnName FROM ${DBContract.UserEntry.USER_TABLE_NAME} WHERE ${DBContract.UserEntry.USER_COLUMN_USER_ID} = '$userID'", null)
         } catch (e: SQLiteException) {
             return pieceOfData
         }
@@ -228,25 +229,23 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         var cursor: Cursor? = null
 
         try {
-            val line = "SELECT * FROM ${DBContract.UserEntry.USER_TABLE_NAME} WHERE ${DBContract.UserEntry.USER_COLUMN_ID} = '$UserID'"
+            val line = "SELECT * FROM ${DBContract.UserEntry.USER_TABLE_NAME} WHERE ${DBContract.UserEntry.USER_COLUMN_USER_ID} = '$UserID'"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
                 if (!cursor.isAfterLast) {
-                    val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
+                    val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_ID))
                     val username: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
-                    val firstName: String = cursor.getString(cursor.getColumnIndex(
-                        DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
-                    val lastName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
                     val phone: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
                     val password: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PASSWORD))
-                    val rating: Float = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_RATING)).toFloat()
+                    val fullName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME))
+                    val bioDescription: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_BIO_DESCRIPTION))
                     val email: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                    val rating: Float = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_RATING)).toFloat()
+                    val lastModified: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                    val dateCreated: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
 
-                    users = User(
-                        id, username, firstName, lastName,
-                        phone, password, rating, email
-                    )
+                    users = User(id, username, phone, password, fullName, bioDescription, email, rating, lastModified, dateCreated)
                 }
 
         } catch (e: SQLiteException) {
@@ -264,28 +263,28 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT USER.UserID, USER.UserName, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$UserID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '$num'"
+            val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$UserID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '$num'"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
                 while (!cursor.isAfterLast) {
-                    val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
+                    val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_ID))
                     val username: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
-                    val firstName: String = cursor.getString(cursor.getColumnIndex(
-                        DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
-                    val lastName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
                     val phoneNum: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                    val fullName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME))
                     val email: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
                     users.add(
                         User(
                             id,
                             username,
-                            firstName,
-                            lastName,
                             phoneNum,
-                            "-1",
+                            "",
+                            fullName,
+                            "",
+                            email,
                             -1.0F,
-                            email
+                            "",
+                            ""
                         )
                     )
                     cursor.moveToNext()
@@ -305,28 +304,28 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT USER.UserID, USER.UserName, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$SenderID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '-1'/* AND FRIEND.ReceiverID != '$except'*/"
+            val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$SenderID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1'/* AND FRIEND.ReceiverID != '$except'*/"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
                 while (!cursor.isAfterLast) {
-                    val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
+                    val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_ID))
                     val username: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
-                    val firstName: String = cursor.getString(cursor.getColumnIndex(
-                        DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
-                    val lastName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
                     val phoneNum: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                    val fullName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME))
                     val email: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
                     users.add(
                         User(
                             id,
                             username,
-                            firstName,
-                            lastName,
                             phoneNum,
-                            "-1",
+                            "",
+                            fullName,
+                            "",
+                            email,
                             -1.0F,
-                            email
+                            "",
+                            ""
                         )
                     )
                     cursor.moveToNext()
@@ -379,27 +378,28 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT UserID, UserName, UserFirstName, UserLastName, Phone, Email FROM USER WHERE UserID != '$except' AND (UserFirstName LIKE '$searchLine%' OR UserLastName LIKE '$searchLine%')"
+            val line = "SELECT UserID, Username, Phone, UserFullName, Email FROM USER WHERE UserID != '$except' AND (UserFirstName LIKE '$searchLine%' OR UserLastName LIKE '$searchLine%')"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
                 while (!cursor.isAfterLast) {
-                    val id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
-                    val username = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
-                    val firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
-                    val lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
-                    val phoneNum = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
-                    val email = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                    val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_ID))
+                    val username: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
+                    val phoneNum: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                    val fullName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME))
+                    val email: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
                     users.add(
                         User(
                             id,
                             username,
-                            firstName,
-                            lastName,
                             phoneNum,
                             "",
+                            fullName,
+                            "",
+                            email,
                             0F,
-                            email
+                            "",
+                            ""
                         )
                     )
                     cursor.moveToNext()
@@ -420,7 +420,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT USER.UserID, USER.UserName, USER.UserFirstName, USER.UserLastName, USER.Phone, USER.Email FROM USER LIMIT 10"
+            val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER LIMIT 10"
             cursor = db.rawQuery(line, null)
         } catch (e: SQLiteException) {
             db.close()
@@ -430,22 +430,23 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
         if (cursor.moveToFirst())
             while (!cursor.isAfterLast) {
-                val id = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_ID))
-                val username = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
-                val firstName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_FIRST_NAME))
-                val lastName = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_LAST_NAME))
-                val phoneNum = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
-                val email = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_ID))
+                val username: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
+                val phoneNum: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                val fullName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME))
+                val email: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
                 users.add(
                     User(
                         id,
                         username,
-                        firstName,
-                        lastName,
                         phoneNum,
                         "",
+                        fullName,
+                        "",
+                        email,
                         0F,
-                        email
+                        "",
+                        ""
                     )
                 )
                 cursor.moveToNext()
@@ -464,7 +465,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         try {
             cursor = db.rawQuery("SELECT COUNT(*) FROM ${DBContract.UserEntry.USER_TABLE_NAME} INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} " +
                     "ON ${DBContract.UserEntry.USER_TABLE_NAME}.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$UserID' " +
-                    "AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '-1'", null)
+                    "AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1'", null)
             if (cursor.moveToFirst())
                 total = cursor.getInt(0)
         } catch (e: SQLiteException) {
@@ -482,7 +483,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         try {
             val line = "SELECT COUNT(*) FROM ${DBContract.UserEntry.USER_TABLE_NAME} INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} " +
                     "ON ${DBContract.UserEntry.USER_TABLE_NAME}.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE " +
-                    "${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$UserID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '-1'"
+                    "${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$UserID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1'"
             cursor = db.rawQuery(line, null)
             if (cursor.moveToFirst())
                 total = cursor.getInt(0)
@@ -546,7 +547,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
     fun checkFollower(SenderID: Int, ReceiverID: Int): Int {
         val db: SQLiteDatabase = writableDatabase
         val cursor: Cursor?
-        var condition = 0
+        var condition = -1
 
         try {
             val line = "SELECT Condition FROM ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} WHERE SenderID = '$SenderID' AND ReceiverID = '$ReceiverID'"
@@ -554,7 +555,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
             if (cursor.moveToFirst())
                 condition = cursor.getInt(0)
         } catch (e: SQLiteException) {
-            return 1
+            return condition
         }
 
         cursor.close()
@@ -568,16 +569,18 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
         private const val SQL_CREATE_USER_TABLE: String =
             "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.USER_TABLE_NAME + " (" +
-                    DBContract.UserEntry.USER_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    DBContract.UserEntry.USER_COLUMN_USER_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     DBContract.UserEntry.USER_COLUMN_USERNAME + " TEXT NOT NULL UNIQUE, " +
-                    DBContract.UserEntry.USER_COLUMN_FIRST_NAME + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.USER_COLUMN_LAST_NAME + " TEXT NOT NULL, " +
                     DBContract.UserEntry.USER_COLUMN_PHONE + " TEXT UNIQUE, " +
                     DBContract.UserEntry.USER_COLUMN_PASSWORD + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME + " TEXT, " +
+                    DBContract.UserEntry.USER_COLUMN_BIO_DESCRIPTION + " TEXT, " +
+                    DBContract.UserEntry.USER_COLUMN_EMAIL + " TEXT, " +
                     DBContract.UserEntry.USER_COLUMN_RATING + " NUMERIC NOT NULL DEFAULT 5.0, " +
-                    DBContract.UserEntry.USER_COLUMN_EMAIL + " TEXT NOT NULL UNIQUE)"
+                    DBContract.UserEntry.USER_COLUMN_LAST_MODIFIED + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.USER_COLUMN_DATE_CREATED + " TEXT NOT NULL)"
 
-        private const val SQL_CREATE_FOLLOWERS_TABLE: String =
+        private const val SQL_CREATE_FOLLOWER_TABLE: String =
             "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.FOLLOWER_TABLE_NAME + " (" +
                     DBContract.UserEntry.FOLLOWER_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID + " INTEGER NOT NULL CONSTRAINT " +
@@ -599,7 +602,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                     DBContract.UserEntry.EVENT_COLUMN_END_TIME + " TEXT NOT NULL)"
 
         private const val SQL_DELETE_USER_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.USER_TABLE_NAME
-        private const val SQL_DELETE_FRIEND_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FOLLOWER_TABLE_NAME
+        private const val SQL_DELETE_FOLLOWER_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FOLLOWER_TABLE_NAME
         private const val SQL_DELETE_EVENT_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.EVENT_TABLE_NAME
     }
 

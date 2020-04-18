@@ -30,7 +30,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         args.putInt("user_id", item!!.userId)
         args.putInt("exception_id", myID!!)
 
-        val t = FriendActivity()
+        val t = FriendFragment()
         t.arguments = args
         startFragment(t, "to_friend")
     }

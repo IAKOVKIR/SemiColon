@@ -33,7 +33,7 @@ class MainFragment : Fragment() {
 
     private var userID: Int = 0
     private var username: String = ""
-    //private var job: Job = Job()
+    private var db: DatabaseOpenHelper? = null
     private lateinit var bitmap: Bitmap
     private lateinit var bitmapDrawable: BitmapDrawable
 
@@ -49,7 +49,7 @@ class MainFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_main, container, false)
-        val db = DatabaseOpenHelper(context!!)
+        db = DatabaseOpenHelper(context!!)
 
         //TextViews
         //TextView representing user's full name
@@ -101,7 +101,7 @@ class MainFragment : Fragment() {
             var following = 0
 
             withContext(Dispatchers.Default) {
-                val line: String = db.getUsersData(userID, "Phone")
+                val line: String = db!!.getUsersData(userID, "Phone")
                 //variable phoneImp contains a string of phone number ("#(###)### ###")
                 if (line.isNotEmpty()) {
                     userPhone = "${line[0]}(${line.substring(1, 4)})${line.substring(
@@ -109,9 +109,9 @@ class MainFragment : Fragment() {
                     )} ${line.substring(7, 10)}"
                 }
 
-                emailText = db.getUsersData(userID, "Email")
-                followers = db.countFollowers(userID)
-                following = db.countFollowing(userID)
+                emailText = db!!.getUsersData(userID, "Email")
+                followers = db!!.countFollowers(userID)
+                following = db!!.countFollowing(userID)
             }
 
             launch (Dispatchers.Main) {
@@ -160,8 +160,8 @@ class MainFragment : Fragment() {
             .commit()
     }
 
-    /*override fun onDestroy() {
+    override fun onDestroy() {
         super.onDestroy()
-        job.cancel()
-    }*/
+        db!!.close()
+    }
 }

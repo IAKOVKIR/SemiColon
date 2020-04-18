@@ -17,4 +17,8 @@ class Time {
         val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
         return sdf.format(c.time).trim()
     }
+
+    override fun toString(): String {
+        return "${getDate()} ${getTime()}"
+    }
 }

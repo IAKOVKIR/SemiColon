@@ -13,7 +13,7 @@ import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.support_features.Time
 //import de.hdodenhof.circleimageview.CircleImageView
 
-class FriendActivity : Fragment() {
+class FriendFragment : Fragment() {
 
     val MY_ID = "my_id"
     val USER_ID = "user_id"
@@ -68,7 +68,7 @@ class FriendActivity : Fragment() {
         //Array str contains 3 of these conditions
         val str: Array<String> = arrayOf("unfollow", "in progress", "follow")
 
-        val fullName = "${userObject.firstName}\n${userObject.lastName}"
+        val fullName: String = userObject.fullName
         val phoneNum = "${userObject.phone[0]}(${userObject.phone.substring(1, 4)})${userObject.phone.substring(4, 7)} ${userObject.phone.substring(7, 10)}"
 
         name.text = fullName

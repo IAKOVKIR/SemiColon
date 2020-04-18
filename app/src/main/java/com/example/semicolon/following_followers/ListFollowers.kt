@@ -51,7 +51,7 @@ class ListFollowers : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MyFollowersRecyclerViewAdapter(
                 listUser,
-                listener as OnListFragmentInteractionListener)
+                listener as OnListFragmentInteractionListener, myID!!)
             setHasFixedSize(true)
         }
 
@@ -72,7 +72,7 @@ class ListFollowers : Fragment() {
     }
 
     private fun load() : ArrayList<User> {
-        return db.readAllFollowers(userID!!, -1/*, myID!!*/)
+        return db.readAllFollowers(userID!!, 1/*, myID!!*/)
     }
 
     override fun onAttach(context: Context) {

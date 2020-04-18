@@ -3,20 +3,21 @@ package com.example.semicolon.models
 import android.provider.BaseColumns
 
 object DBContract {
-
     // Inner class that defines the table contents
     class UserEntry : BaseColumns {
         companion object {
             //USER table
             const val USER_TABLE_NAME = "USER"
-            const val USER_COLUMN_ID = "UserID"
-            const val USER_COLUMN_USERNAME = "UserName"
-            const val USER_COLUMN_FIRST_NAME = "UserFirstName"
-            const val USER_COLUMN_LAST_NAME = "UserLastName"
+            const val USER_COLUMN_USER_ID = "UserID"
+            const val USER_COLUMN_USERNAME = "Username"
             const val USER_COLUMN_PHONE = "Phone"
             const val USER_COLUMN_PASSWORD = "Password"
-            const val USER_COLUMN_RATING = "Rating"
+            const val USER_COLUMN_USER_FULL_NAME = "UserFullName"
+            const val USER_COLUMN_BIO_DESCRIPTION = "BioDescription"
             const val USER_COLUMN_EMAIL = "Email"
+            const val USER_COLUMN_RATING = "Rating"
+            const val USER_COLUMN_LAST_MODIFIED = "LastModified"
+            const val USER_COLUMN_DATE_CREATED = "DateCreated"
 
             //FOLLOWER table
             const val FOLLOWER_TABLE_NAME = "FOLLOWER"

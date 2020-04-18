@@ -21,7 +21,7 @@
                 android:name=".semi_registration.FirstRegistrationActivity"
                 android:screenOrientation="portrait" />
         <activity
-                android:name=".FriendActivity"
+                android:name=".FriendFragment"
                 android:screenOrientation="portrait" />
         <activity
                 android:name=".UserHomeActivity"

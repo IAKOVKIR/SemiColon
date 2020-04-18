@@ -48,8 +48,7 @@ class MySearchUserRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
-        holder.mIdView.text = item.firstName
-        holder.mContentView.text = item.lastName
+        holder.mIdView.text = item.fullName
         var bool: Int = db!!.checkFollower(myID, item.userId)
 
         holder.mUserImage.setImageDrawable(mBitMap)
@@ -89,13 +88,12 @@ class MySearchUserRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.first_name
+        val mIdView: TextView = mView.user_full_name
         val mUserImage: CircleImageView = mView.userImage
-        val mContentView: TextView = mView.last_name
         val mFollowUnFollowButton: Button = mView.un_follow_button
 
         override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
+            return super.toString() + " '" + mIdView.text + "'"
         }
     }
 }

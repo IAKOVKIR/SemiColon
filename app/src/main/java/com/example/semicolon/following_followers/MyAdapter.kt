@@ -5,16 +5,18 @@ package com.example.semicolon.following_followers
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
+import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.support_features.Time
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.followers_requests_friends_requests.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -25,10 +27,10 @@ import kotlinx.coroutines.withContext
 class MyAdapter(
     private val mValues: ArrayList<User>,
     private val mListener: RequestsFragment.OnListFragmentInteractionListener?,
-    private val mUser: Int
+    private val myID: Int
 ) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
-    private val str: Array<String> = arrayOf("Confirmed", "Declined")
+    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
     private var db: DatabaseOpenHelper? = null
     private val mOnClickListener: View.OnClickListener
     private lateinit var bitmap: Bitmap
@@ -59,6 +61,56 @@ class MyAdapter(
         val item: User = mValues[position]
         holder.mUsername.text = item.username
 
+        val time = Time()
+        var bool: Int = db!!.checkFollower(myID, item.userId)
+
+        Log.e("error", "$bool")
+
+        holder.mFollowUnFollowButton.text = str[bool + 1]
+        holder.mFollowUnFollowButton.setOnClickListener {
+            if (bool == -1) {
+
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    var res = false
+
+                    withContext(Dispatchers.Default) {
+                        val friend = Friend(
+                            db!!.countFriendTable(), myID, item.userId,
+                            time.getDate(), time.getTime(), 0
+                        )
+                        res = db!!.insertRequest(friend)
+                    }
+
+                    launch (Dispatchers.Main) {
+                        if (res) {
+                            holder.mFollowUnFollowButton.text = str[1]
+                            bool = 0
+                        }
+                    }
+                }
+
+            } else {
+
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    var res = false
+
+                    withContext(Dispatchers.Default) {
+                        res = db!!.deleteFollowing(myID, item.userId)
+                    }
+
+                    launch (Dispatchers.Main) {
+                        if (res) {
+                            holder.mFollowUnFollowButton.text = str[2]
+                            bool = 1
+                        }
+                    }
+                }
+
+            }
+        }
+
         holder.mConfirmButton.setOnClickListener {
 
             CoroutineScope(Dispatchers.Default).launch {
@@ -66,14 +118,13 @@ class MyAdapter(
                 var res = false
 
                 withContext(Dispatchers.Default) {
-                    res = db!!.updateRequest(item.userId, mUser, -1)
+                    res = db!!.updateRequest(item.userId, myID, 1)
                 }
 
                 launch (Dispatchers.Main) {
                     if (res) {
-                        holder.mResultText.text = str[0]
                         holder.mRequestButtons.visibility = View.GONE
-                        holder.mRequestResult.visibility = View.VISIBLE
+                        holder.mFollowUnFollowButton.visibility = View.VISIBLE
                     }
                 }
             }
@@ -86,14 +137,13 @@ class MyAdapter(
                 var res = false
 
                 withContext(Dispatchers.Default) {
-                    res = db!!.deleteFollowingRequest(item.userId, mUser)
+                    res = db!!.deleteFollowingRequest(item.userId, myID)
                 }
 
                 launch (Dispatchers.Main) {
                     if (res) {
-                        holder.mResultText.text = str[1]
                         holder.mRequestButtons.visibility = View.GONE
-                        holder.mRequestResult.visibility = View.VISIBLE
+                        holder.mFollowUnFollowButton.visibility = View.VISIBLE
                     }
                 }
             }
@@ -136,9 +186,8 @@ class MyAdapter(
         val mUsername: TextView = mView.username
         val mConfirmButton: TextView = mView.confirm_button
         val mDeclineButton: TextView = mView.decline_button
-        val mRequestResult: LinearLayout = mView.request_result
+        val mFollowUnFollowButton: TextView = mView.follow_un_follow_button
         val mRequestButtons: LinearLayout = mView.request_buttons
-        val mResultText: TextView = mView.button_result
 
         override fun toString(): String {
             return super.toString() + " '${mUsername.text}'"

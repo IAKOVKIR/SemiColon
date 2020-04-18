@@ -9,7 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.*
+import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
+import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.support_features.Time
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -23,10 +26,13 @@ import kotlinx.coroutines.withContext
  */
 class MyFollowersRecyclerViewAdapter(
     private val mValues: ArrayList<User>,
-    private val mListener: ListFollowers.OnListFragmentInteractionListener?
+    private val mListener: ListFollowers.OnListFragmentInteractionListener?,
+    private val myID: Int
 ) : RecyclerView.Adapter<MyFollowersRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
+    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
+    private var db: DatabaseOpenHelper? = null
     private lateinit var bitmap: Bitmap
     private lateinit var bitmapDrawable: BitmapDrawable
     lateinit var view: View
@@ -43,11 +49,60 @@ class MyFollowersRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
             .inflate(R.layout.followers_requests_friends_followers, parent, false)
+        db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
+        val time = Time()
+        var bool: Int = db!!.checkFollower(myID, item.userId)
+
+        holder.mIdView.text = item.username
+        holder.mFollowUnFollowButton.text = str[bool + 1]
+        holder.mFollowUnFollowButton.setOnClickListener {
+            if (bool == -1) {
+
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    var res = false
+
+                    withContext(Dispatchers.Default) {
+                        val friend = Friend(
+                            db!!.countFriendTable(), myID, item.userId,
+                            time.getDate(), time.getTime(), 0
+                        )
+                        res = db!!.insertRequest(friend)
+                    }
+
+                    launch (Dispatchers.Main) {
+                        if (res) {
+                            holder.mFollowUnFollowButton.text = str[1]
+                            bool = 0
+                        }
+                    }
+                }
+
+            } else {
+
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    var res = false
+
+                    withContext(Dispatchers.Default) {
+                        res = db!!.deleteFollowing(myID, item.userId)
+                    }
+
+                    launch (Dispatchers.Main) {
+                        if (res) {
+                            holder.mFollowUnFollowButton.text = str[2]
+                            bool = 1
+                        }
+                    }
+                }
+
+            }
+        }
 
         CoroutineScope(Dispatchers.Default).launch {
 
@@ -67,9 +122,6 @@ class MyFollowersRecyclerViewAdapter(
 
         }
 
-        holder.mIdView.text = item.firstName
-        holder.mContentView.text = item.lastName
-
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)
@@ -80,11 +132,11 @@ class MyFollowersRecyclerViewAdapter(
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mUserImage: CircleImageView = mView.userImage
-        val mIdView: TextView = mView.first_name
-        val mContentView: TextView = mView.last_name
+        val mIdView: TextView = mView.username
+        val mFollowUnFollowButton: TextView = mView.follow_un_follow_button
 
         override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
+            return super.toString() + " '${mIdView.text}'"
         }
     }
 }

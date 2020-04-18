@@ -17,9 +17,9 @@
                 android:id="@+id/userImage"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -77,28 +77,22 @@
 
         </LinearLayout>
 
-        <LinearLayout
-                android:id="@+id/request_result"
+        <TextView
+                android:id="@+id/follow_un_follow_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/WHITE"
                 android:visibility="gone"
-                android:paddingTop="30dp"
+                android:text="Follow"
+                android:background="@drawable/reg_square"
+                android:textSize="15sp"
+                android:padding="6dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-
-            <TextView
-                    android:id="@+id/button_result"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="15sp"
-                    android:textColor="@color/WHITE"
-                    android:text="accepted"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginEnd="4dp"/>
-
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

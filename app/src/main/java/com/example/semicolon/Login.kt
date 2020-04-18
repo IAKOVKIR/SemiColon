@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -48,68 +49,68 @@ class Login : Activity() {
         //test entries for USER table
             db.insertUser(
             User(
-                "mr_query", "Chandra", "MrQuery", "0490506763", "12345678",
-                5.0F, "MrStealYourQuery@gmail.com"
+                "mr_query", "0490506763", "12345678", "Chandra MrQuery", "I'll still fuck your bitch", "MrStealYourQuery@gmail.com",
+                5.0F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "ice_wallow", "Abbas", "Ice Wallow", "0490000000", "12345678",
-                3.2F, "BetterThanFather@gmail.com"
+                "ice_wallow", "0490000000", "12345678", "Abbas Ice-Wallow", "I'm better than my father", "BetterThanFather@gmail.com",
+                2.8F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "karama", "Carl", "Obama", "0490000001", "12345678",
-                5.0F, "CallMePresident@gmail.com"
+                "karama", "0490000001", "12345678", "Carl Karama", "Mr.President", "CallMePresident@gmail.com",
+                5.0F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "merin", "Matt", "Merin", "0490000002", "12345678",
-                5.0F, "MattMerinOnTheBeat@gmail.com"
+                "merin", "0490000002", "12345678", "Matt Merin", "Always on the beat", "MattMerinOnTheBeat@gmail.com",
+                5.0F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "ay_sir", "John", "Carlos", "0490000003", "12345678",
-                5.0F, "JohnCarlos@gmail.com"
+                "ay_sir", "0490000003", "12345678", "John Carlos", "Aye, sir", "JohnCarlos@gmail.com",
+                5.0F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "beverly", "Patrick", "Beverly", "0490000004", "12345678",
-                5.0F, "beverly@gmail.com"
+                "beverly", "0490000004", "12345678", "Patrick Beverly", "PB", "beverly@gmail.com",
+                5.0F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "dwade", "Dwyane", "Wade", "0490000005", "12345678",
-                5.0F, "wade@gmail.com"
+                "dwade", "0490000005", "12345678", "Dwyane Wade", "flash", "wade@gmail.com",
+                5.0F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "phelps", "Michael", "Phelps", "0490000006", "12345678",
-                5.0F, "phelps@gmail.com"
+                "phelps", "0490000006", "12345678", "Michael Phelps", "splash", "phelps@gmail.com",
+                5.0F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "putin", "Vladimir", "Putin", "0490000007", "12345678",
-                5.0F, "putin@gmail.com"
+                "putin", "0490000007", "12345678", "Vladimir Putin", "King of the Vodkaland", "putin@kgb.com",
+                5.0F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "harden13", "James", "Harden", "0490000008", "12345678",
-                5.0F, "jharden@gmail.com"
+                "harden13", "0490000008", "12345678", "James Harden", "The Beard", "jharden@gmail.com",
+                5.0F, time.toString(), time.toString()
             )
         )
         db.insertUser(
             User(
-                "king_james", "Lebron", "James", "0490000009", "12345678",
-                5.0F, "KingJames@gmail.com"
+                "king_james", "0490000009", "12345678", "LeBron James", "King James", "KingJames@gmail.com",
+                5.0F, time.toString(), time.toString()
             )
         )
 
@@ -389,6 +390,11 @@ class Login : Activity() {
             .putString("username", user.username)
             .putString("password", user.password)
             .apply()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        db.close()
     }
 
 }

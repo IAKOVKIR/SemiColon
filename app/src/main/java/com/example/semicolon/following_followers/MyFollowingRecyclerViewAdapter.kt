@@ -1,8 +1,8 @@
 package com.example.semicolon.following_followers
 
-//import android.content.Context
-//import android.graphics.drawable.BitmapDrawable
-//import de.hdodenhof.circleimageview.CircleImageView
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,28 +13,29 @@ import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.support_features.Time
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.following_search_friends_following.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-//import kotlinx.coroutines.runBlocking
-
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
  * specified [ListFollowing.OnListFragmentInteractionListener].
  */
 class MyFollowingRecyclerViewAdapter(
-    private val mValues: List<User>,
+    private val mValues: ArrayList<User>,
     private val mListener: ListFollowing.OnListFragmentInteractionListener?,
-    private val myID: Int/*,
-    private val mBitMap: BitmapDrawable*/
+    private val myID: Int
 ) : RecyclerView.Adapter<MyFollowingRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-    private val str: Array<String> = arrayOf("unfollow", "in progress", "follow")
-    private lateinit var db: DatabaseOpenHelper
+    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
+    private var db: DatabaseOpenHelper? = null
+    private lateinit var bitmap: Bitmap
+    private lateinit var bitmapDrawable: BitmapDrawable
+    lateinit var view: View
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -46,7 +47,7 @@ class MyFollowingRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
+        view = LayoutInflater.from(parent.context)
             .inflate(R.layout.following_search_friends_following, parent, false)
         db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
@@ -54,16 +55,13 @@ class MyFollowingRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
-        //holder.mUserImage.setImageDrawable(mBitMap)
-        holder.mFirstName.text = item.firstName
-        holder.mSecondName.text = item.lastName
-
         val time = Time()
-        var bool: Int = db.checkFollower(myID, item.userId)
+        var bool: Int = db!!.checkFollower(myID, item.userId)
 
+        holder.mIdView.text = item.username
         holder.mFollowUnFollowButton.text = str[bool + 1]
         holder.mFollowUnFollowButton.setOnClickListener {
-            if (bool == 1) {
+            if (bool == -1) {
 
                 CoroutineScope(Dispatchers.Default).launch {
 
@@ -71,10 +69,10 @@ class MyFollowingRecyclerViewAdapter(
 
                     withContext(Dispatchers.Default) {
                         val friend = Friend(
-                            db.countFriendTable(), myID, item.userId,
+                            db!!.countFriendTable(), myID, item.userId,
                             time.getDate(), time.getTime(), 0
                         )
-                        res = db.insertRequest(friend)
+                        res = db!!.insertRequest(friend)
                     }
 
                     launch (Dispatchers.Main) {
@@ -92,7 +90,7 @@ class MyFollowingRecyclerViewAdapter(
                     var res = false
 
                     withContext(Dispatchers.Default) {
-                        res = db.deleteFollowing(myID, item.userId)
+                        res = db!!.deleteFollowing(myID, item.userId)
                     }
 
                     launch (Dispatchers.Main) {
@@ -106,6 +104,24 @@ class MyFollowingRecyclerViewAdapter(
             }
         }
 
+        CoroutineScope(Dispatchers.Default).launch {
+
+            withContext(Dispatchers.Default) {
+                bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
+                val height: Int = bitmap.height
+                val width: Int = bitmap.width
+                val dif: Double = height.toDouble() / width
+                bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
+                bitmapDrawable = BitmapDrawable(view.context!!.resources, bitmap)
+            }
+
+            launch (Dispatchers.Main) {
+                // process the data on the UI thread
+                holder.mUserImage.setImageDrawable(bitmapDrawable)
+            }
+
+        }
+
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)
@@ -115,13 +131,12 @@ class MyFollowingRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        //val mUserImage: CircleImageView = mView.userImage
-        val mFirstName: TextView = mView.first_name
-        val mSecondName: TextView = mView.last_name
-        val mFollowUnFollowButton: Button = mView.un_follow_button
+        val mUserImage: CircleImageView = mView.userImage
+        val mIdView: TextView = mView.username
+        val mFollowUnFollowButton: TextView = mView.follow_un_follow_button
 
         override fun toString(): String {
-            return super.toString() + " '" + mSecondName.text + "'"
+            return super.toString() + " '${mIdView.text}'"
         }
     }
 }
