@@ -78,21 +78,26 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
     @Throws(SQLiteConstraintException::class)
     fun insertRequest(friend: Friend): Boolean {
 
-        val db: SQLiteDatabase = writableDatabase
+        val check: Int = checkFollower(friend.SenderID, friend.ReceiverID)
 
-        // Create a new map of values, where column names are the keys
-        val values = ContentValues()
+        if (check == -1) {
+            val db: SQLiteDatabase = writableDatabase
 
-        values.put(DBContract.UserEntry.FOLLOWER_COLUMN_ID, friend.id)
-        values.put(DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID, friend.SenderID)
-        values.put(DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID, friend.ReceiverID)
-        values.put(DBContract.UserEntry.FOLLOWER_COLUMN_DATE, friend.date)
-        values.put(DBContract.UserEntry.FOLLOWER_COLUMN_TIME, friend.time)
-        values.put(DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION, friend.condition)
+            // Create a new map of values, where column names are the keys
+            val values = ContentValues()
 
-        db.insert(DBContract.UserEntry.FOLLOWER_TABLE_NAME, null, values)
+            //values.put(DBContract.UserEntry.FOLLOWER_COLUMN_ID, friend.id)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID, friend.SenderID)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID, friend.ReceiverID)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_DATE, friend.date)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_TIME, friend.time)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION, friend.condition)
 
-        return true
+            db.insert(DBContract.UserEntry.FOLLOWER_TABLE_NAME, null, values)
+
+            return true
+        } else
+            return false
     }
 
     @Throws(SQLiteConstraintException::class)
@@ -519,7 +524,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         var total = 0
 
         try {
-            val line = "SELECT * FROM ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} WHERE FriendshipID = (SELECT MAX(FriendshipID) FROM ${DBContract.UserEntry.FOLLOWER_TABLE_NAME})"
+            val line = "SELECT * FROM ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} WHERE FollowerID = (SELECT MAX(FriendshipID) FROM ${DBContract.UserEntry.FOLLOWER_TABLE_NAME})"
             cursor = db.rawQuery(line, null)
             if (cursor.moveToFirst())
                 total = cursor.getInt(0)

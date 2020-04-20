@@ -68,10 +68,8 @@ class MyFollowingRecyclerViewAdapter(
                     var res = false
 
                     withContext(Dispatchers.Default) {
-                        val friend = Friend(
-                            db!!.countFriendTable(), myID, item.userId,
-                            time.getDate(), time.getTime(), 0
-                        )
+                        val friend = Friend(myID, item.userId,
+                            time.getDate(), time.getTime(), 0)
                         res = db!!.insertRequest(friend)
                     }
 

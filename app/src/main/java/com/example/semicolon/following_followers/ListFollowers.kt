@@ -51,7 +51,7 @@ class ListFollowers : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MyFollowersRecyclerViewAdapter(
                 listUser,
-                listener as OnListFragmentInteractionListener, myID!!)
+                listener as OnListFragmentInteractionListener, userID!!)
             setHasFixedSize(true)
         }
 

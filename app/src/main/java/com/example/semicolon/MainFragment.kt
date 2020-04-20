@@ -155,8 +155,8 @@ class MainFragment : Fragment() {
         fragment.arguments = argument
         parentFragmentManager
             .beginTransaction()
-            .addToBackStack("main_to_followers_following")
-            .replace(R.id.nav_host, fragment, "main_to_followers_following")
+            .addToBackStack("to_followers_following")
+            .replace(R.id.nav_host, fragment, "to_followers_following")
             .commit()
     }
 

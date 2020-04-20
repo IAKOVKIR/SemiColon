@@ -56,10 +56,22 @@ class MyFollowersRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
         val time = Time()
-        var bool: Int = db!!.checkFollower(myID, item.userId)
+        var bool = 0
+
+        CoroutineScope(Dispatchers.Default).launch {
+
+            withContext(Dispatchers.Default) {
+                bool = db!!.checkFollower(myID, item.userId)
+            }
+
+            launch (Dispatchers.Main) {
+                holder.mFollowUnFollowButton.text = str[bool + 1]
+                holder.mFollowUnFollowButton.isEnabled = true
+                holder.mFollowUnFollowButton.setBackgroundResource(R.drawable.reg_square)
+            }
+        }
 
         holder.mIdView.text = item.username
-        holder.mFollowUnFollowButton.text = str[bool + 1]
         holder.mFollowUnFollowButton.setOnClickListener {
             if (bool == -1) {
 
@@ -68,10 +80,8 @@ class MyFollowersRecyclerViewAdapter(
                     var res = false
 
                     withContext(Dispatchers.Default) {
-                        val friend = Friend(
-                            db!!.countFriendTable(), myID, item.userId,
-                            time.getDate(), time.getTime(), 0
-                        )
+                        val friend = Friend(myID, item.userId,
+                            time.getDate(), time.getTime(), 0)
                         res = db!!.insertRequest(friend)
                     }
 

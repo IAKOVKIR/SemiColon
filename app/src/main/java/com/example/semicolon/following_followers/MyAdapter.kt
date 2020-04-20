@@ -64,8 +64,6 @@ class MyAdapter(
         val time = Time()
         var bool: Int = db!!.checkFollower(myID, item.userId)
 
-        Log.e("error", "$bool")
-
         holder.mFollowUnFollowButton.text = str[bool + 1]
         holder.mFollowUnFollowButton.setOnClickListener {
             if (bool == -1) {

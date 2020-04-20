@@ -32,6 +32,7 @@ class ListFollowing : Fragment() {
     private var userID: Int? = null
     private var exceptionID: Int? = null
     private var listUser: ArrayList<User> = ArrayList()
+    private var db: DatabaseOpenHelper? = null
     private var job: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,16 +50,7 @@ class ListFollowing : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.following_search_list_following, container, false)
         val list: RecyclerView = view.findViewById(R.id.list)
-        //val searchFollowing: EditText = view.findViewById(R.id.search)
-        val db = DatabaseOpenHelper(context!!)
-
-        //Log.i("check", "$exceptionID")
-        /*var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
-        val height: Int = bitmap.height
-        val width: Int = bitmap.width
-        val dif: Double = height.toDouble() / width
-        bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-        val bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)*/
+        db = DatabaseOpenHelper(context!!)
 
         // Set the adapter
         with(list) {
@@ -66,17 +58,14 @@ class ListFollowing : Fragment() {
             adapter = MyFollowingRecyclerViewAdapter(
                 listUser,
                 listener as OnListFragmentInteractionListener,
-                userID!!/*, bitmapDrawable*/)
+                userID!!)
             setHasFixedSize(true)
-        }
-
-        fun load() : ArrayList<User> {
-            return db.readAllFollowing(userID!!, exceptionID!!)
         }
 
         job = CoroutineScope(Dispatchers.Default).launch {
 
-            listUser.addAll(withContext(Dispatchers.Default) { load() })
+            if (listUser.isEmpty())
+                listUser.addAll(withContext(Dispatchers.Default) { load() })
 
             CoroutineScope(Dispatchers.Main).launch {
                 with(list) {
@@ -87,6 +76,10 @@ class ListFollowing : Fragment() {
         }
 
         return view
+    }
+
+    private fun load() : ArrayList<User> {
+        return db!!.readAllFollowing(userID!!, exceptionID!!)
     }
 
     override fun onAttach(context: Context) {
@@ -100,6 +93,11 @@ class ListFollowing : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        db!!.close()
     }
 
     /**

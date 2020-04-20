@@ -62,42 +62,44 @@ class FollowingFollowersFragment : Fragment() {
 
         backButton.setOnClickListener {
             val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("main_to_followers_following", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            fm.popBackStack("to_followers_following", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
+        if (userID == myID) {
+            requestsButton.text = "0"
 
-        requestsButton.text = "0"
+            job = CoroutineScope(Dispatchers.Default).launch {
 
-        job = CoroutineScope(Dispatchers.Default).launch {
+                var numOfRequests = 0
 
-            var numOfRequests = 0
+                withContext(Dispatchers.Default) {
+                    numOfRequests = db.countFollowingRequests(myID!!)
+                }
 
-            withContext(Dispatchers.Default) {
-                numOfRequests = db.countFollowingRequests(myID!!)
+                launch(Dispatchers.Main) {
+                    requestsButton.text = "$numOfRequests"
+                }
+
             }
 
-            launch (Dispatchers.Main) {
-                requestsButton.text = "$numOfRequests"
+            requestsButton.setOnClickListener {
+
+                val fragment = RequestsFragment()
+                val argument = Bundle()
+                argument.putInt(MY_ID, myID!!)
+                argument.putInt(USER_ID, userID!!)
+                argument.putInt(EXCEPTION_ID, exceptionID!!)
+                fragment.arguments = argument
+                parentFragmentManager
+                    .beginTransaction()
+                    .addToBackStack("followers_following_to_requests")
+                    .replace(R.id.nav_host, fragment, "followers_following_to_requests")
+                    .commit()
+
             }
-
         }
 
-        requestsButton.setOnClickListener {
-
-            val fragment = RequestsFragment()
-            val argument = Bundle()
-            argument.putInt(MY_ID, myID!!)
-            argument.putInt(USER_ID, userID!!)
-            argument.putInt(EXCEPTION_ID, exceptionID!!)
-            fragment.arguments = argument
-            parentFragmentManager
-                .beginTransaction()
-                .addToBackStack("followers_following_to_requests")
-                .replace(R.id.nav_host, fragment, "followers_following_to_requests")
-                .commit()
-
-        }
-
-    return view}
+        return view
+    }
 
     private fun setupViewPager(viewPager: ViewPager, my_id: Int, user_id: Int, exception_id: Int) {
         val adapter = ViewPagerAdapter(childFragmentManager)
