@@ -41,12 +41,15 @@ object DBContract {
             const val EVENT_COLUMN_CURRENT_STATUS = "CurrentStatus" // active, expired, cancelled
 
             //ATTENDEES table
-            const val ATTENDEES_TABLE_NAME = "ATTENDEES"
-            const val ATTENDEES_COLUMN_ID = "AttendeesID"
-            const val ATTENDEES_COLUMN_EVENT_ID = "EventID"
-            const val ATTENDEES_COLUMN_USER_ID = "UserID"
-            const val ATTENDEES_COLUMN_POSITION = "Position" //host, co-host, user
-            const val ATTENDEES_COLUMN_CONDITION = "Condition" // sentToUser, sentToHost, accepted
+            const val ATTENDEE_TABLE_NAME = "ATTENDEES"
+            const val ATTENDEE_COLUMN_ID = "AttendeesID"
+            const val ATTENDEE_COLUMN_EVENT_ID = "EventID"
+            const val ATTENDEE_COLUMN_USER_ID = "UserID"
+            const val ATTENDEE_COLUMN_POSITION = "Position" //host, co-host, user
+            const val ATTENDEE_COLUMN_CONDITION = "Condition" // sentToUser, sentToHost, accepted
+            const val ATTENDEE_COLUMN_LAST_MODIFIED = "LastModified"
+            const val ATTENDEE_COLUMN_DATE_ACCEPTED = "DateAccepted"
+            const val ATTENDEE_COLUMN_DATE_CREATED = "DateCreated"
         }
     }
 }

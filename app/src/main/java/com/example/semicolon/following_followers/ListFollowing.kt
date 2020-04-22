@@ -50,7 +50,7 @@ class ListFollowing : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.following_search_list_following, container, false)
         val list: RecyclerView = view.findViewById(R.id.list)
-        db = DatabaseOpenHelper(context!!)
+        db = DatabaseOpenHelper(requireContext())
 
         // Set the adapter
         with(list) {
@@ -79,7 +79,7 @@ class ListFollowing : Fragment() {
     }
 
     private fun load() : ArrayList<User> {
-        return db!!.readAllFollowing(userID!!, exceptionID!!)
+        return db!!.readAllFollowing(userID!!)
     }
 
     override fun onAttach(context: Context) {

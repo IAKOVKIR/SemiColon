@@ -40,7 +40,7 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val n: SharedPreferences = context!!.getSharedPreferences("myPreferences", Context.MODE_PRIVATE)
+        val n: SharedPreferences = requireContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE)
         userID = n.getInt("id", 1)
         username = n.getString("username", "")!!
 
@@ -49,7 +49,7 @@ class MainFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_main, container, false)
-        db = DatabaseOpenHelper(context!!)
+        db = DatabaseOpenHelper(requireContext())
 
         //TextViews
         //TextView representing user's full name

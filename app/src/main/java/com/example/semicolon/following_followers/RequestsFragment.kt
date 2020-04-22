@@ -45,7 +45,7 @@ class RequestsFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.followers_requests_list_requests, container, false)
         val backButton: ImageView = view.findViewById(R.id.back_button)
         list = view.findViewById(R.id.list)
-        db = DatabaseOpenHelper(context!!)
+        db = DatabaseOpenHelper(requireContext())
 
         // Set the adapter
         with(list) {
