@@ -9,78 +9,17 @@
             android:id="@+id/main_dest"
             android:name="com.example.semicolon.MainFragment"
             android:label="fragment_main"
-            tools:layout="@layout/fragment_main" >
-        <action
-                android:id="@+id/action_main_dest_to_followers_following_dest"
-                app:destination="@id/followers_following_dest" />
-    </fragment>
+            tools:layout="@layout/fragment_main" />
     <fragment
             android:id="@+id/list_dest"
             android:name="com.example.semicolon.ListFragment"
             android:label="fragment_item_list"
-            tools:layout="@layout/fragment_item_list">
-        <action
-                android:id="@+id/action_to_params"
-                app:destination="@id/params_dest" />
-        <action
-                android:id="@+id/action_list_dest_to_params_dest"
-                app:destination="@id/params_dest" />
-    </fragment>
-    <fragment
-            android:id="@+id/params_dest"
-            android:name="com.example.semicolon.ParamFragment"
-            android:label="fragment_param"
-            tools:layout="@layout/fragment_param">
-        <argument
-                android:name="param1"
-                android:defaultValue="Chandra"
-                app:argType="string" />
-        <argument
-                android:name="param2"
-                android:defaultValue="MrQuery"
-                app:argType="string" />
-    </fragment>
-    <action
-            android:id="@+id/action_global_params_dest"
-            app:destination="@id/params_dest" />
+            tools:layout="@layout/fragment_item_list"/>
     <action
             android:id="@+id/action_global_main_dest"
             app:destination="@id/main_dest" />
     <action
             android:id="@+id/action_global_list_dest"
             app:destination="@id/list_dest" />
-    <fragment
-            android:id="@+id/setting_dest"
-            android:name="com.example.semicolon.semi_settings.SettingFragment"
-            android:label="fragment_settings_list"
-            tools:layout="@layout/fragment_settings_list">
-        <action
-                android:id="@+id/action_setting_dest_to_setting_params_dest"
-                app:destination="@id/setting_params_dest" />
-    </fragment>
-    <fragment
-            android:id="@+id/setting_params_dest"
-            android:name="com.example.semicolon.semi_settings.SettingParamsFragment"
-            android:label="fragment_setting_params"
-            tools:layout="@layout/fragment_setting_params">
-        <argument
-                android:name="param1"
-                android:defaultValue="Setting"
-                app:argType="string" />
-        <argument
-                android:name="param2"
-                android:defaultValue="Chandra"
-                app:argType="string" />
-    </fragment>
-    <fragment
-            android:id="@+id/friend_params_dest"
-            android:name="com.example.semicolon.FriendFragment"
-            android:label="fragment_friend"
-            tools:layout="@layout/fragment_friend" />
-    <fragment
-            android:id="@+id/followers_following_dest"
-            android:name="com.example.semicolon.following_followers.FollowingFollowersFragment"
-            android:label="fragment_following_followers"
-            tools:layout="@layout/activity_followers"/>
 
 </navigation>

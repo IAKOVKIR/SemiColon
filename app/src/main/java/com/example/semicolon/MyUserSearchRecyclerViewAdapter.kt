@@ -8,8 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.semicolon.models.User
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.*
+import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.userImage
+import kotlinx.android.synthetic.main.user_search_fragment_list.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -66,8 +69,7 @@ class MyUserSearchRecyclerViewAdapter(
 
         }
 
-        holder.mIdView.text = item.username
-        //holder.mContentView.text = item.lastName
+        holder.mFullName.text = item.fullName
 
         with(holder.mView) {
             tag = item
@@ -79,11 +81,10 @@ class MyUserSearchRecyclerViewAdapter(
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mUserImage: CircleImageView = mView.userImage
-        val mIdView: TextView = mView.first_name
-        val mContentView: TextView = mView.last_name
+        val mFullName: TextView = mView.user_full_name
 
         override fun toString(): String {
-            return super.toString() + " '" + mContentView.text + "'"
+            return super.toString() + " '" + mFullName.text + "'"
         }
     }
 }

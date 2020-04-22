@@ -16,7 +16,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
-import com.example.semicolon.User
+import com.example.semicolon.models.User
 
 /**
  * A fragment representing a list of Items.

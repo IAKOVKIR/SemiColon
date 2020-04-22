@@ -1,113 +1,225 @@
 package com.example.semicolon
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.example.semicolon.following_followers.PublicFollowersFollowingFragment
+import com.example.semicolon.models.Friend
+import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
+import com.example.semicolon.support_features.Time
+import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM3 = "param3"
-private const val ARG_PARAM4 = "param4"
+// the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
+private const val MY_ID = "my_id"
+private const val USER_ID = "user_id"
+private const val EXCEPTION_ID = "exception_id"
+private const val SLIDE_NUMBER = "slide_number"
 
-/**
- * A simple [Fragment] subclass.
- *
- */
 class FriendFragment : Fragment() {
 
-    /*private var param3: ArrayList<String>? = null
-    private var param4: ArrayList<String>? = null
+    private var myID: Int? = null
+    private var userID: Int? = null
+    private var exceptionID: Int? = null
+    private var db: DatabaseOpenHelper? = null
+    private lateinit var bitmap: Bitmap
+    private lateinit var bitmapDrawable: BitmapDrawable
+    //Array str contains 3 of these conditions
+    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")//-1, 0, 1
+    //Time object
+    val time = Time()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param3 = it.getStringArrayList(ARG_PARAM3)
-            param4 = it.getStringArrayList(ARG_PARAM4)
+            myID = it.getInt(MY_ID) //myID
+            userID = it.getInt(USER_ID) //userID
+            exceptionID = it.getInt(EXCEPTION_ID) //myID
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_friend, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_friend, container, false)
+        //DatabaseOpenHelper object
+        db = DatabaseOpenHelper(context!!)
 
-        val linearFollowers = view.findViewById<LinearLayout>(R.id.linear_layout_followers)
+        //TextViews
+        val name: TextView = view.findViewById(R.id.name)
+        val phone: TextView = view.findViewById(R.id.phone_number)
+        val email: TextView = view.findViewById(R.id.email)
+        val followedBy: TextView = view.findViewById(R.id.followed_by)
+        val numOfFollowers: TextView = view.findViewById(R.id.followers_number)
+        val numOfFollowing: TextView = view.findViewById(R.id.following_number)
 
-        val name = view.findViewById<TextView>(R.id.name)
-        val location = view.findViewById<TextView>(R.id.location)
-        val phone = view.findViewById<TextView>(R.id.phone_number)
-        val email = view.findViewById<TextView>(R.id.email)
+        val circleImageView: CircleImageView = view.findViewById(R.id.circleImageView)
 
-        val numOfFollowers = view.findViewById<TextView>(R.id.followers_number)
-        val numOfFollowing = view.findViewById<TextView>(R.id.following_number)
+        //Buttons
+        val followButton: TextView = view.findViewById(R.id.follow_un_follow_button)
+        val backButton: ImageView = view.findViewById(R.id.back_button)
 
-        val followButton = view.findViewById<Button>(R.id.followButton)
-        val db = context?.let { DatabaseOpenHelper(it) }
+        //Layouts
+        val followersLayout: LinearLayout = view.findViewById(R.id.linear_layout_followers)
+        val followingLayout: LinearLayout = view.findViewById(R.id.linear_layout_following)
+        //val eventsLayout: LinearLayout = findViewById(R.id.linear_layout_following)
 
-        var bool = db!!.checkFollower(param3!![0], param4!![0])
-        val str = arrayOf("in progress", "follow", "unfollow")
+        var bool = 0
 
-        val c = Calendar.getInstance()
-        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
-        val strDate = sdf.format(c.time).trim()
+        CoroutineScope(Dispatchers.Default).launch {
+            var userObject = User()
+            var phoneNum = ""
+            var followedByList: ArrayList<String>
+            var followedByLine = ""
+            var followers = 0
+            var following = 0
 
-        linearFollowers.setOnClickListener {
-            val fragment = UserFollowersFragment()
-            val args = Bundle()
-            args.putStringArrayList("user", param4)
-            args.putInt("id", param3!![0].toInt())
-            fragment.arguments = args
-            val manager = fragmentManager
-            val transaction = manager!!.beginTransaction()
-            transaction.add(R.id.nav_host, fragment)
-            // Commit the transaction
-            transaction.commit()
+            withContext(Dispatchers.Default) {
+                userObject = db!!.findUserByID(userID!!)
+                //variable phoneImp contains a string of phone number ("#(###)### ###")
+                if (userObject.phone.isNotEmpty())
+                    phoneNum = "${userObject.phone[0]}(${userObject.phone.substring(1, 4)})${userObject.phone.substring(4, 7)} ${userObject.phone.substring(7, 10)}"
+
+                followers = db!!.countFollowers(userID!!)
+                following = db!!.countFollowing(userID!!)
+                bool = db!!.checkFollower(myID!!, userID!!)
+                followedByList = db!!.readFirstThreeMutualFollowers(myID!!, userID!!)
+
+                val len: Int = followedByList.size
+                followedByLine = when {
+                    len == 3 -> "Followed by <b>${followedByList[0]}</b>, <b>${followedByList[1]}</b> and <b>1 other</b>"
+                    len == 2 -> "Followed by <b>${followedByList[0]}</b> and <b>${followedByList[1]}</b>"
+                    len == 1 -> "Followed by <b>${followedByList[0]}</b>"
+                    len > 3 -> "Followed by <b>${followedByList[0]}</b>, <b>${followedByList[1]}</b> and <b>${len - 2} others</b>"
+                    else -> ""
+                }
+            }
+
+            launch (Dispatchers.Main) {
+                // process the data on the UI thread
+                name.text = userObject.username
+                phone.text = phoneNum
+                email.text = userObject.email
+                numOfFollowers.text = "$followers"
+                numOfFollowing.text = "$following"
+                followButton.text = str[bool + 1]
+                followedBy.isEnabled = true
+                followedBy.text = HtmlCompat.fromHtml(followedByLine, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            }
+
         }
 
-        when (bool) {
-            1 -> followButton.text = str[2]
-            2 -> followButton.text = str[1]
-            else -> followButton.text = str[0]
+        CoroutineScope(Dispatchers.Default).launch {
+
+            withContext(Dispatchers.Default) {
+                bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.burns)
+                val height: Int = bitmap.height
+                val width: Int = bitmap.width
+                val dif: Double = height.toDouble() / width
+                bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
+                bitmapDrawable = BitmapDrawable(view.context!!.resources, bitmap)
+            }
+
+            launch (Dispatchers.Main) {
+                // process the data on the UI thread
+                circleImageView.setImageDrawable(bitmapDrawable)
+            }
+
         }
+
+        //OnClickListener's
+
+        backButton.setOnClickListener {
+            val fm: FragmentManager = parentFragmentManager
+            fm.popBackStack("to_friend", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+
+        followedBy.setOnClickListener {
+            sendToFollowersFollowing(0)
+        }
+
+        /*
+        Variable bool contains one of three conditions of "friendship":
+        "1" - you follow the user
+        "0" - "your request is in progress"
+        "-1" - "you do not follow the user"
+        */
 
         followButton.setOnClickListener{
-            if (bool == 2) {
-                followButton.text = str[0]
-                bool = 3
-                val friend = Friend(db.countFriendTable(), param4!![0].toInt(), param3!![0].toInt(),
-                    strDate.substring(11, 19), strDate.substring(0, 10), bool)
-                db.insertRequest(friend)
-            } else {
-                followButton.text = str[1]
-                bool = 2
-                db.deleteFollowing(param4!![0], param3!![0])
-            }
+
+            if (bool == -1)
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    var res = false
+
+                    withContext(Dispatchers.Default) {
+                        val friend = Friend(myID!!, userID!!,
+                            time.getDate(), time.getTime(), 0)
+                        res = db!!.insertRequest(friend)
+                    }
+
+                    launch (Dispatchers.Main) {
+                        if (res) {
+                            followButton.text = str[1]
+                            bool = 0
+                        }
+                    }
+                }
+            else
+                CoroutineScope(Dispatchers.Default).launch {
+
+                    var res = false
+
+                    withContext(Dispatchers.Default) {
+                        res = db!!.deleteFollowing(myID!!, userID!!)
+                    }
+
+                    launch (Dispatchers.Main) {
+                        if (res) {
+                            followButton.text = str[2]
+                            bool = 1
+                        }
+                    }
+                }
+
         }
 
-        val backButton = view.findViewById<ImageButton>(R.id.back_button)
-        backButton.setOnClickListener {
-            fragmentManager!!.popBackStack()
+        followersLayout.setOnClickListener {
+            sendToFollowersFollowing(1)
         }
 
-        val fullName = "${param4!![1]}\n${param4!![2]}"
-        val phoneNum = "${param4!![3][0]}(${param4!![3].substring(1, 4)})${param4!![3].substring(4, 7)} ${param4!![3].substring(7, 10)}"
-
-        name.text = fullName
-        location.text = param4!![4]
-        phone.text = phoneNum
-        email.text = param4!![6]
-        numOfFollowers.text = "${db.countFollowers(param4!![0])}"
-        numOfFollowing.text = "${db.countFollowing(param4!![0])}"
+        followingLayout.setOnClickListener {
+            sendToFollowersFollowing(2)
+        }
 
         return view
-    }*/
+    }
+
+    private fun sendToFollowersFollowing(slideNumber: Int) {
+        val fragment = PublicFollowersFollowingFragment()
+        val argument = Bundle()
+        argument.putInt(MY_ID, myID!!)
+        argument.putInt(USER_ID, userID!!)
+        argument.putInt(EXCEPTION_ID, userID!!)
+        argument.putInt(SLIDE_NUMBER, slideNumber)
+        fragment.arguments = argument
+        parentFragmentManager
+            .beginTransaction()
+            .addToBackStack("to_public_followers_following")
+            .replace(R.id.nav_host, fragment, "to_public_followers_following")
+            .commit()
+    }
 
 }

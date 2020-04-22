@@ -8,12 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
 import android.view.View
-import android.widget.CheckBox
-import android.widget.Toast
 import com.example.semicolon.R
-import com.example.semicolon.User
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.google.android.material.textfield.TextInputEditText
 
 class Registration : Activity() {
 

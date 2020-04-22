@@ -110,5 +110,11 @@
     <string name="title_activity_bottom_navigation__test">Bottom_navigation_Test</string>
     <string name="title_home">Home</string>
     <string name="search_edittext_list"><![CDATA[> search]]></string>
+    <string name="username_word">username</string>
+    <string name="phrase_item_image">Item Image</string>
+    <string name="symbol_triple_dash">---</string>
+
+    <string name="event_date_or_time">%s---%s</string>
+    <string name="event_max_attendees">%d / %d</string>
 
 </resources>
