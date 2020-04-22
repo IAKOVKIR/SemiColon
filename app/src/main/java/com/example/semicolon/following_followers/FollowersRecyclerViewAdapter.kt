@@ -14,7 +14,7 @@ import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.support_features.Time
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.following_search_friends_following.view.*
+import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,16 +22,16 @@ import kotlinx.coroutines.withContext
 
 /**
  * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
- * specified [ListFollowing.OnListFragmentInteractionListener].
+ * specified [ListFollowers.OnListFragmentInteractionListener].
  */
-class MyFollowingRecyclerViewAdapter(
+class FollowersRecyclerViewAdapter(
     private val mValues: ArrayList<User>,
-    private val mListener: ListFollowing.OnListFragmentInteractionListener?,
+    private val mListener: ListFollowers.OnListFragmentInteractionListener?,
     private val myID: Int
-) : RecyclerView.Adapter<MyFollowingRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<FollowersRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
+    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow") //-1, 0, 1
     private var db: DatabaseOpenHelper? = null
     private lateinit var bitmap: Bitmap
     private lateinit var bitmapDrawable: BitmapDrawable
@@ -48,7 +48,7 @@ class MyFollowingRecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.following_search_friends_following, parent, false)
+            .inflate(R.layout.followers_requests_friends_followers, parent, false)
         db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
     }
@@ -56,51 +56,70 @@ class MyFollowingRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
         val time = Time()
-        var bool: Int = db!!.checkFollower(myID, item.userId)
+        var bool = 0
 
         holder.mIdView.text = item.username
-        holder.mFollowUnFollowButton.text = str[bool + 1]
-        holder.mFollowUnFollowButton.setOnClickListener {
-            if (bool == -1) {
 
-                CoroutineScope(Dispatchers.Default).launch {
+        if (item.userId != myID) {
+            CoroutineScope(Dispatchers.Default).launch {
 
-                    var res = false
-
-                    withContext(Dispatchers.Default) {
-                        val friend = Friend(myID, item.userId,
-                            time.getDate(), time.getTime(), 0)
-                        res = db!!.insertRequest(friend)
-                    }
-
-                    launch (Dispatchers.Main) {
-                        if (res) {
-                            holder.mFollowUnFollowButton.text = str[1]
-                            bool = 0
-                        }
-                    }
+                withContext(Dispatchers.Default) {
+                    bool = db!!.checkFollower(myID, item.userId)
                 }
 
-            } else {
-
-                CoroutineScope(Dispatchers.Default).launch {
-
-                    var res = false
-
-                    withContext(Dispatchers.Default) {
-                        res = db!!.deleteFollowing(myID, item.userId)
-                    }
-
-                    launch (Dispatchers.Main) {
-                        if (res) {
-                            holder.mFollowUnFollowButton.text = str[2]
-                            bool = 1
-                        }
-                    }
+                launch(Dispatchers.Main) {
+                    holder.mFollowUnFollowButton.text = str[bool + 1]
+                    holder.mFollowUnFollowButton.isEnabled = true
+                    holder.mFollowUnFollowButton.setBackgroundResource(R.drawable.reg_square)
                 }
-
             }
-        }
+
+            holder.mIdView.text = item.username
+            holder.mFollowUnFollowButton.setOnClickListener {
+                if (bool == -1) {
+
+                    CoroutineScope(Dispatchers.Default).launch {
+
+                        var res = false
+
+                        withContext(Dispatchers.Default) {
+                            val friend = Friend(
+                                myID, item.userId,
+                                time.getDate(), time.getTime(), 0
+                            )
+                            res = db!!.insertRequest(friend)
+                        }
+
+                        launch(Dispatchers.Main) {
+                            if (res) {
+                                holder.mFollowUnFollowButton.text = str[1]
+                                bool = 0
+                            }
+                        }
+                    }
+
+                } else {
+
+                    CoroutineScope(Dispatchers.Default).launch {
+
+                        var res = false
+
+                        withContext(Dispatchers.Default) {
+                            res = db!!.deleteFollowing(myID, item.userId)
+                        }
+
+                        launch(Dispatchers.Main) {
+                            if (res) {
+                                holder.mFollowUnFollowButton.text = str[2]
+                                bool = 1
+                            }
+                        }
+                    }
+
+                }
+            }
+        } else
+            holder.mFollowUnFollowButton.visibility = View.GONE
 
         CoroutineScope(Dispatchers.Default).launch {
 

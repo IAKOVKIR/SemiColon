@@ -55,10 +55,10 @@ class ListFollowing : Fragment() {
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = MyFollowingRecyclerViewAdapter(
+            adapter = FollowingRecyclerViewAdapter(
                 listUser,
                 listener as OnListFragmentInteractionListener,
-                userID!!)
+                myID!!)
             setHasFixedSize(true)
         }
 

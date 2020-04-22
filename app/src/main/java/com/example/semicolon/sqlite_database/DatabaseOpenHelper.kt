@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.example.semicolon.models.DBContract
 import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
@@ -309,7 +310,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$SenderID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1'/* AND FRIEND.ReceiverID != '$except'*/"
+            val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$SenderID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1'"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
@@ -374,6 +375,94 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
             cursor!!.close()
             db.close()
             return events
+        }
+    }
+
+    fun readAllMutualFollowers(myID: Int, userID: Int): ArrayList<User> {
+        val db: SQLiteDatabase = writableDatabase
+        var cursor: Cursor? = null
+        val users = ArrayList<User>()
+
+        try {
+            /*val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER " +
+                    "ON USER.UserID = FOLLOWER.ReceiverID WHERE (FOLLOWER.SenderID = '$myID' AND FOLLOWER.Condition = '1') INNER JOIN " +
+                    "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER " +
+                    "ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = '$userID' AND FOLLOWER.Condition = '1'"*/
+
+            val line = "SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$myID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q1 INNER JOIN " +
+                    "(SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.UserID = Q2.UserID"
+
+            cursor = db.rawQuery(line, null)
+
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    val id: Int =
+                        cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_ID))
+                    val username: String =
+                        cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
+                    val phoneNum: String =
+                        cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                    val fullName: String =
+                        cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME))
+                    val email: String =
+                        cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                    users.add(
+                        User(
+                            id,
+                            username,
+                            phoneNum,
+                            "",
+                            fullName,
+                            "",
+                            email,
+                            -1.0F,
+                            "",
+                            ""
+                        )
+                    )
+                    cursor.moveToNext()
+                }
+            }
+
+        } catch (e: SQLiteException) {
+        } finally {
+            cursor!!.close()
+            db.close()
+            return users
+        }
+    }
+
+    fun readFirstThreeMutualFollowers(myID: Int, userID: Int): ArrayList<String> {
+        val db: SQLiteDatabase = writableDatabase
+        var cursor: Cursor? = null
+        val users = ArrayList<String>()
+
+        try {
+            /*val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER " +
+                    "ON USER.UserID = FOLLOWER.ReceiverID WHERE (FOLLOWER.SenderID = '$myID' AND FOLLOWER.Condition = '1') INNER JOIN " +
+                    "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER " +
+                    "ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = '$userID' AND FOLLOWER.Condition = '1'"*/
+
+            val line = "SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$myID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q1 INNER JOIN " +
+                    "(SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.Username = Q2.Username LIMIT 2"
+
+            cursor = db.rawQuery(line, null)
+
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    val username: String =
+                        cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
+                    users.add(username)
+
+                    cursor.moveToNext()
+                }
+            }
+
+        } catch (e: SQLiteException) {
+        } finally {
+            cursor!!.close()
+            db.close()
+            return users
         }
     }
 

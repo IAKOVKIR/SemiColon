@@ -5,8 +5,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:background="@android:color/transparent"
+        android:layout_margin="8dp"
         android:orientation="horizontal">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
-        <!--android:src="@drawable/smithers"-->
 
         <TextView
                 android:id="@+id/username"

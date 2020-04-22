@@ -5,7 +5,6 @@ package com.example.semicolon.following_followers
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,11 +23,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MyAdapter(
+class RequestsRecyclerViewAdapter(
     private val mValues: ArrayList<User>,
     private val mListener: RequestsFragment.OnListFragmentInteractionListener?,
     private val myID: Int
-) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RequestsRecyclerViewAdapter.ViewHolder>() {
 
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
     private var db: DatabaseOpenHelper? = null

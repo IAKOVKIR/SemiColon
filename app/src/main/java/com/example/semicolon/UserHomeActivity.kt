@@ -10,13 +10,15 @@ import com.example.semicolon.models.EventContent
 import com.example.semicolon.models.User
 import com.example.semicolon.following_followers.ListFollowers
 import com.example.semicolon.following_followers.ListFollowing
+import com.example.semicolon.following_followers.ListMutual
 import com.example.semicolon.following_followers.RequestsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_user_home.*
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     ListFollowers.OnListFragmentInteractionListener, ListFollowing.OnListFragmentInteractionListener,
-    UserSearchFragment.OnListFragmentInteractionListener, RequestsFragment.OnListFragmentInteractionListener
+    UserSearchFragment.OnListFragmentInteractionListener, RequestsFragment.OnListFragmentInteractionListener,
+        ListMutual.OnListFragmentInteractionListener
 {
 
     private var myID: Int? = null
@@ -25,14 +27,17 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     override fun onListFragmentInteraction(item: User?) {
         myID = n.getInt("id", 1)
 
-        val args = Bundle()
-        args.putInt("my_id", myID!!)
-        args.putInt("user_id", item!!.userId)
-        args.putInt("exception_id", myID!!)
+        if (item!!.userId != myID) {
+            val args = Bundle()
+            args.putInt("my_id", myID!!)
+            args.putInt("user_id", item.userId)
+            args.putInt("exception_id", myID!!)
 
-        val t = FriendFragment()
-        t.arguments = args
-        startFragment(t, "to_friend")
+            val t = FriendFragment()
+            t.arguments = args
+            startFragment(t, "to_friend")
+        } else
+            startFragment(MainFragment(), "open_main")
     }
 
     //listener for events list

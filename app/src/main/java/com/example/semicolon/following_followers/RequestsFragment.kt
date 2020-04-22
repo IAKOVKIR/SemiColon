@@ -31,7 +31,6 @@ class RequestsFragment : Fragment() {
     private var listUser: ArrayList<User> = ArrayList()
     lateinit var list: RecyclerView
     lateinit var db: DatabaseOpenHelper
-    private var job: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +50,7 @@ class RequestsFragment : Fragment() {
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = MyAdapter(
+            adapter = RequestsRecyclerViewAdapter(
                 listUser,
                 listener as OnListFragmentInteractionListener, myID!!)
             setHasFixedSize(true)
@@ -72,7 +71,7 @@ class RequestsFragment : Fragment() {
 
         backButton.setOnClickListener {
             val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("followers_following_to_requests", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            fm.popBackStack("to_followers_requests", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
         return view

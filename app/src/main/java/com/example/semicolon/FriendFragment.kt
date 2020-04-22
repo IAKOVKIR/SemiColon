@@ -4,13 +4,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.example.semicolon.following_followers.FollowingFollowersFragment
+import com.example.semicolon.following_followers.PublicFollowersFollowingFragment
 import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
@@ -36,22 +38,22 @@ class FriendFragment : Fragment() {
     private lateinit var bitmap: Bitmap
     private lateinit var bitmapDrawable: BitmapDrawable
     //Array str contains 3 of these conditions
-    private val str: Array<String> = arrayOf("unfollow", "in progress", "follow")
+    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")//-1, 0, 1
     //Time object
     val time = Time()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            myID = it.getInt(MY_ID)
-            userID = it.getInt(USER_ID)
-            exceptionID = it.getInt(EXCEPTION_ID)
+            myID = it.getInt(MY_ID) //myID
+            userID = it.getInt(USER_ID) //userID
+            exceptionID = it.getInt(EXCEPTION_ID) //myID
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view: View = inflater.inflate(R.layout.activity_friend, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_friend, container, false)
         //DatabaseOpenHelper object
         db = DatabaseOpenHelper(context!!)
 
@@ -59,6 +61,7 @@ class FriendFragment : Fragment() {
         val name: TextView = view.findViewById(R.id.name)
         val phone: TextView = view.findViewById(R.id.phone_number)
         val email: TextView = view.findViewById(R.id.email)
+        val followedBy: TextView = view.findViewById(R.id.followed_by)
         val numOfFollowers: TextView = view.findViewById(R.id.followers_number)
         val numOfFollowing: TextView = view.findViewById(R.id.following_number)
 
@@ -70,7 +73,7 @@ class FriendFragment : Fragment() {
 
         //Layouts
         val followersLayout: LinearLayout = view.findViewById(R.id.linear_layout_followers)
-        //val followingLayout: LinearLayout = view.findViewById(R.id.linear_layout_following)
+        val followingLayout: LinearLayout = view.findViewById(R.id.linear_layout_following)
         //val eventsLayout: LinearLayout = findViewById(R.id.linear_layout_following)
 
         var bool = 0
@@ -78,6 +81,8 @@ class FriendFragment : Fragment() {
         CoroutineScope(Dispatchers.Default).launch {
             var userObject = User()
             var phoneNum = ""
+            var followedByList: ArrayList<String>
+            var followedByLine = ""
             var followers = 0
             var following = 0
 
@@ -90,6 +95,16 @@ class FriendFragment : Fragment() {
                 followers = db!!.countFollowers(userID!!)
                 following = db!!.countFollowing(userID!!)
                 bool = db!!.checkFollower(myID!!, userID!!)
+                followedByList = db!!.readFirstThreeMutualFollowers(myID!!, userID!!)
+
+                val len: Int = followedByList.size
+                followedByLine = when {
+                    len == 3 -> "Followed by <b>${followedByList[0]}</b>, <b>${followedByList[1]}</b> and <b>1 other</b>"
+                    len == 2 -> "Followed by <b>${followedByList[0]}</b> and <b>${followedByList[1]}</b>"
+                    len == 1 -> "Followed by <b>${followedByList[0]}</b>"
+                    len > 3 -> "Followed by <b>${followedByList[0]}</b>, <b>${followedByList[1]}</b> and <b>${len - 2} others</b>"
+                    else -> ""
+                }
             }
 
             launch (Dispatchers.Main) {
@@ -100,6 +115,8 @@ class FriendFragment : Fragment() {
                 numOfFollowers.text = "$followers"
                 numOfFollowing.text = "$following"
                 followButton.text = str[bool + 1]
+                followedBy.isEnabled = true
+                followedBy.text = HtmlCompat.fromHtml(followedByLine, HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
 
         }
@@ -127,6 +144,10 @@ class FriendFragment : Fragment() {
         backButton.setOnClickListener {
             val fm: FragmentManager = parentFragmentManager
             fm.popBackStack("to_friend", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+
+        followedBy.setOnClickListener {
+            sendToFollowersFollowing(0)
         }
 
         /*
@@ -176,35 +197,29 @@ class FriendFragment : Fragment() {
         }
 
         followersLayout.setOnClickListener {
-            sendToFollowersFollowing(0)
+            sendToFollowersFollowing(1)
+        }
+
+        followingLayout.setOnClickListener {
+            sendToFollowersFollowing(2)
         }
 
         return view
     }
 
     private fun sendToFollowersFollowing(slideNumber: Int) {
-        val fragment = FollowingFollowersFragment()
+        val fragment = PublicFollowersFollowingFragment()
         val argument = Bundle()
-        argument.putInt(MY_ID, userID!!)
+        argument.putInt(MY_ID, myID!!)
         argument.putInt(USER_ID, userID!!)
         argument.putInt(EXCEPTION_ID, userID!!)
         argument.putInt(SLIDE_NUMBER, slideNumber)
         fragment.arguments = argument
         parentFragmentManager
             .beginTransaction()
-            .addToBackStack("to_followers_following")
-            .replace(R.id.nav_host, fragment, "to_followers_following")
+            .addToBackStack("to_public_followers_following")
+            .replace(R.id.nav_host, fragment, "to_public_followers_following")
             .commit()
     }
 
 }
-
-
-/*      followingLayout.setOnClickListener {
-            val intent = Intent(this, FollowingFollowersActivity::class.java)
-            intent.putExtra("my_id", "$myID")
-            intent.putExtra("user_id", "$userID")
-            intent.putExtra("exception_id", "$exceptionID")
-            intent.putExtra("string", 1)
-            startActivity(intent)
-        }*/

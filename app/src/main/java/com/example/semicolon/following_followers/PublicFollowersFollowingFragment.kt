@@ -1,19 +1,20 @@
 package com.example.semicolon.following_followers
 
 import android.graphics.Color
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import android.widget.TextView
-import androidx.fragment.app.*
-import com.example.semicolon.*
-import kotlinx.coroutines.*
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.example.semicolon.R
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import java.util.ArrayList
+import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.*
 
 // the fragment initialization parameters, e.g MY_ID, USER_ID, EXCEPTION_ID and SLIDE_NUMBER
 private const val MY_ID = "my_id"
@@ -21,7 +22,7 @@ private const val USER_ID = "user_id"
 private const val EXCEPTION_ID = "exception_id"
 private const val SLIDE_NUMBER = "slide_number"
 
-class FollowingFollowersFragment : Fragment() {
+class PublicFollowersFollowingFragment : Fragment() {
 
     private var myID: Int? = null
     private var userID: Int? = null
@@ -33,22 +34,19 @@ class FollowingFollowersFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            myID = it.getInt(MY_ID) //myID
-            userID = it.getInt(USER_ID) //myID
-            exceptionID = it.getInt(EXCEPTION_ID) //myID
+            myID = it.getInt(MY_ID)
+            userID = it.getInt(USER_ID)
+            exceptionID = it.getInt(EXCEPTION_ID)
             linePos = it.getInt(SLIDE_NUMBER)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.activity_followers, container, false)
-
-        val db = DatabaseOpenHelper(context!!)
+        val view: View = inflater.inflate(R.layout.activity_public_followers, container, false)
 
         viewPager = view.findViewById(R.id.viewpager)
         val tabLayout: TabLayout = view.findViewById(R.id.tabs)
         val backButton: TextView = view.findViewById(R.id.back_button)
-        val requestsButton: TextView = view.findViewById(R.id.requests_button)
 
         tabLayout.setBackgroundColor(Color.WHITE)
         tabLayout.setTabTextColors(ContextCompat.getColor(context!!, R.color.SPECIAL), ContextCompat.getColor(context!!, R.color.BLUE))
@@ -59,41 +57,12 @@ class FollowingFollowersFragment : Fragment() {
 
         if (linePos == 1)
             tabLayout.getTabAt(1)!!.select()
+        else if (linePos == 2)
+            tabLayout.getTabAt(2)!!.select()
 
         backButton.setOnClickListener {
             val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("to_followers_following", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
-
-        job = CoroutineScope(Dispatchers.Default).launch {
-
-            var numOfRequests = 0
-
-            withContext(Dispatchers.Default) {
-                numOfRequests = db.countFollowingRequests(myID!!)
-            }
-
-            launch(Dispatchers.Main) {
-                requestsButton.text = "$numOfRequests"
-                requestsButton.isEnabled = true
-                requestsButton.visibility = View.VISIBLE
-            }
-
-        }
-
-        requestsButton.setOnClickListener {
-
-            val fragment = RequestsFragment()
-            val argument = Bundle()
-            argument.putInt(MY_ID, myID!!)
-            argument.putInt(USER_ID, userID!!)
-            argument.putInt(EXCEPTION_ID, exceptionID!!)
-            fragment.arguments = argument
-            parentFragmentManager
-                .beginTransaction()
-                .addToBackStack("to_followers_requests")
-                .replace(R.id.nav_host, fragment, "to_followers_requests")
-                .commit()
+            fm.popBackStack("to_public_followers_following", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
         return view
@@ -107,11 +76,15 @@ class FollowingFollowersFragment : Fragment() {
         args.putInt(USER_ID, user_id)
         args.putInt(EXCEPTION_ID, exception_id)
 
+        val listMutual = ListMutual()
         val listFollowers = ListFollowers()
         val listFollowing = ListFollowing()
+
+        listMutual.arguments = args
         listFollowers.arguments = args
         listFollowing.arguments = args
 
+        adapter.addFragment(listMutual, "Mutual")
         adapter.addFragment(listFollowers, "Followers")
         adapter.addFragment(listFollowing, "Following")
 
@@ -136,8 +109,8 @@ class FollowingFollowersFragment : Fragment() {
         }
 
         fun addFragment(fragment: Fragment, title: String) {
-                mFragmentList.add(fragment)
-                mFragmentTitleList.add(title)
+            mFragmentList.add(fragment)
+            mFragmentTitleList.add(title)
         }
 
         override fun getPageTitle(position: Int): CharSequence {

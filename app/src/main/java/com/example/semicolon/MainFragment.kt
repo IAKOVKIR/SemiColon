@@ -148,9 +148,9 @@ class MainFragment : Fragment() {
     private fun sendToFollowersFollowing(slideNumber: Int) {
         val fragment = FollowingFollowersFragment()
         val argument = Bundle()
-        argument.putInt(MY_ID, userID)
-        argument.putInt(USER_ID, userID)
-        argument.putInt(EXCEPTION_ID, userID)
+        argument.putInt(MY_ID, userID)//myID
+        argument.putInt(USER_ID, userID)//myID
+        argument.putInt(EXCEPTION_ID, userID)//myID
         argument.putInt(SLIDE_NUMBER, slideNumber)
         fragment.arguments = argument
         parentFragmentManager

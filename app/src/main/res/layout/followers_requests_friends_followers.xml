@@ -41,7 +41,7 @@
                 android:id="@+id/follow_un_follow_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/WHITE"
                 android:enabled="false"
                 android:text="Loading"
                 android:background="@drawable/reg_square_disabled"

@@ -162,7 +162,7 @@ class Login : Activity() {
                 4,
                 time.getDate(),
                 time.getTime(),
-                0
+                1
             )
         )
         db.insertRequest(
