@@ -43,7 +43,7 @@ class ListSearchUser : Fragment() {
         val view: View = inflater.inflate(R.layout.following_search_list_search, container, false)
         val list: RecyclerView = view.findViewById(R.id.list)
         val textLine: EditText = view.findViewById(R.id.search)
-        val db = DatabaseOpenHelper(context!!)
+        val db = DatabaseOpenHelper(requireContext())
         var listUser: ArrayList<User> = db.searchAllUsers(senderID!!, "")
 
         var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
@@ -51,7 +51,7 @@ class ListSearchUser : Fragment() {
         val width: Int = bitmap.width
         val dif: Double = height.toDouble() / width
         bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-        val bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)
+        val bitmapDrawable = BitmapDrawable(requireContext().resources, bitmap)
 
         // Set the adapter
         with(list) {

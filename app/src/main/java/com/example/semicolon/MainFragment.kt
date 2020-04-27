@@ -136,8 +136,8 @@ class MainFragment : Fragment() {
         settingsButton.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
-                .addToBackStack(null)
-                .add(R.id.nav_host, SettingFragment(), "main_to_settings")
+                .addToBackStack("to_settings")
+                .add(R.id.nav_host, SettingFragment(), "to_settings")
                 .commit()
         }
 

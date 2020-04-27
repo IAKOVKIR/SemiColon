@@ -48,7 +48,7 @@ class EventFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View =  inflater.inflate(R.layout.fragment_event, container, false)
-        val db = DatabaseOpenHelper(context!!)
+        val db = DatabaseOpenHelper(requireContext())
 
         val image: ImageView = view.findViewById(R.id.event_image)
         val eventName: TextView = view.findViewById(R.id.event_name)

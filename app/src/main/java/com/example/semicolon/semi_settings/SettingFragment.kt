@@ -1,20 +1,17 @@
 package com.example.semicolon.semi_settings
 
-import android.content.Context
 import android.os.Bundle
+import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
-
-import com.example.semicolon.semi_settings.Setting.SettingItem
-import android.view.KeyEvent
-import com.example.semicolon.MainFragment
+import android.view.LayoutInflater
+import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import com.example.semicolon.R
+import com.example.semicolon.semi_settings.Setting.SettingItem
 
 /**
  * A fragment representing a list of Items.
@@ -31,12 +28,19 @@ class SettingFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_settings_list, container, false)
         val list: RecyclerView = view.findViewById(R.id.list)
+        val backButton: TextView = view.findViewById(R.id.back_button)
 
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
             adapter = SettingsRecyclerViewAdapter(Setting.SETTING, listener)
         }
+
+        backButton.setOnClickListener {
+            val fm: FragmentManager = parentFragmentManager
+            fm.popBackStack("to_settings", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
+
         return view
     }
 
@@ -46,26 +50,6 @@ class SettingFragment : Fragment() {
             listener = context
         else
             throw RuntimeException("$context must implement OnListFragmentInteractionListener")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        view!!.isFocusableInTouchMode = true
-        view!!.requestFocus()
-        view!!.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-
-                val fragment: Fragment = MainFragment()
-                val manager: FragmentManager? = fragmentManager
-                val transaction: FragmentTransaction = manager!!.beginTransaction()
-                transaction.replace(R.id.nav_host, fragment)
-                // Commit the transaction
-                transaction.commit()
-
-                true
-            } else
-                false
-        }
     }
 
     override fun onDetach() {

@@ -21,7 +21,7 @@ object Setting {
 
     init {
         // Add some sample items.
-        for (i in 1..COUNT)
+        for (i: Int in 1..COUNT)
             addSetting(createSettingItem(i))
     }
 
@@ -33,7 +33,7 @@ object Setting {
     private fun createSettingItem(position: Int): SettingItem {
         return SettingItem(
             setting_names[position - 1],
-            "$position",
+            position,
             "F"
         )
     }
@@ -41,7 +41,7 @@ object Setting {
     /**
      * A settings item representing a piece of pos.
      */
-    data class SettingItem(val name: String, val pos: String, val details: String) {
-        override fun toString(): String = pos
+    data class SettingItem(val name: String, val pos: Int, val details: String) {
+        override fun toString(): String = "$pos"
     }
 }

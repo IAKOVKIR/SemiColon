@@ -28,7 +28,7 @@ class ThirdRegistrationActivity : Activity() {
         email = intent.getStringExtra("email")
         password = intent.getStringExtra("password")
 
-        userNameText.setText("> ${userName.toString()}")
+        userNameText.text = "> ${userName.toString()}"
 
         register()
 

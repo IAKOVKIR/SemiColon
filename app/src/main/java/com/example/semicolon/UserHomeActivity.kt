@@ -12,13 +12,14 @@ import com.example.semicolon.following_followers.ListFollowers
 import com.example.semicolon.following_followers.ListFollowing
 import com.example.semicolon.following_followers.ListMutual
 import com.example.semicolon.following_followers.RequestsFragment
+import com.example.semicolon.semi_settings.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_user_home.*
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     ListFollowers.OnListFragmentInteractionListener, ListFollowing.OnListFragmentInteractionListener,
     UserSearchFragment.OnListFragmentInteractionListener, RequestsFragment.OnListFragmentInteractionListener,
-        ListMutual.OnListFragmentInteractionListener
+        ListMutual.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener
 {
 
     private var myID: Int? = null
@@ -51,6 +52,68 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         val t = EventFragment()
         t.arguments = args
         startFragment(t, "open_event_page")
+    }
+
+    override fun onListFragmentInteraction(item: Setting.SettingItem?) {
+
+        when (item!!.pos) {
+            1 -> {
+                myID = n.getInt("id", 1)
+
+                val args = Bundle()
+                args.putInt("my_id", myID!!)
+
+                val t = NotificationSettingsFragment()
+                t.arguments = args
+                startFragment(t, "to_notifications_settings")
+            }
+            2 -> {
+                myID = n.getInt("id", 1)
+
+                val args = Bundle()
+                args.putInt("my_id", myID!!)
+
+                val t =
+                    PasswordSettingsFragment()
+                t.arguments = args
+                startFragment(t, "to_password_settings")
+            }
+            3 -> {
+                myID = n.getInt("id", 1)
+
+                val args = Bundle()
+                args.putInt("my_id", myID!!)
+
+                val t =
+                    LanguageSettingsFragment()
+                t.arguments = args
+                startFragment(t, "to_language_settings")
+            }
+            4 -> {
+                myID = n.getInt("id", 1)
+
+                val args = Bundle()
+                args.putInt("my_id", myID!!)
+
+                val t =
+                    HelpSettingsFragment()
+                t.arguments = args
+                startFragment(t, "to_help_settings")
+            }
+            5 -> {
+                myID = n.getInt("id", 1)
+
+                val args = Bundle()
+                args.putInt("my_id", myID!!)
+
+                val t =
+                    AboutSettingsFragment()
+                t.arguments = args
+                startFragment(t, "to_about_settings")
+            }
+            else -> logOut()
+        }
+
     }
 
     //listener for bottom navigation

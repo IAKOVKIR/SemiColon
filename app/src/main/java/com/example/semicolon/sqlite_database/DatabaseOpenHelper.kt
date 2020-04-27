@@ -103,7 +103,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
     fun setPassword(UserID: Int, newPassword: String): Boolean {
 
         val cv = ContentValues()
-        cv.put("Password", newPassword)
+        cv.put(DBContract.UserEntry.USER_COLUMN_PASSWORD, newPassword)
 
         //updates the record in USER table
         val db: SQLiteDatabase = writableDatabase
