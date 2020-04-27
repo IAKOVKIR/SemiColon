@@ -2,7 +2,6 @@ package com.example.semicolon.following_followers
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +44,7 @@ class ListMutual : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.mutual_followers_list, container, false)
         list = view.findViewById(R.id.list)
-        db = DatabaseOpenHelper(context!!)
+        db = DatabaseOpenHelper(requireContext())
 
         // Set the adapter
         with(list) {

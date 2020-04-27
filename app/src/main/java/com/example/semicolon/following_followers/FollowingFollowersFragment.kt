@@ -43,7 +43,7 @@ class FollowingFollowersFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.activity_followers, container, false)
 
-        val db = DatabaseOpenHelper(context!!)
+        val db = DatabaseOpenHelper(requireContext())
 
         viewPager = view.findViewById(R.id.viewpager)
         val tabLayout: TabLayout = view.findViewById(R.id.tabs)
@@ -51,7 +51,7 @@ class FollowingFollowersFragment : Fragment() {
         val requestsButton: TextView = view.findViewById(R.id.requests_button)
 
         tabLayout.setBackgroundColor(Color.WHITE)
-        tabLayout.setTabTextColors(ContextCompat.getColor(context!!, R.color.SPECIAL), ContextCompat.getColor(context!!, R.color.BLUE))
+        tabLayout.setTabTextColors(ContextCompat.getColor(requireContext(), R.color.SPECIAL), ContextCompat.getColor(requireContext(), R.color.BLUE))
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
         setupViewPager(viewPager, myID!!, userID!!, exceptionID!!)

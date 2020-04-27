@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.semicolon.R
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.*
 
@@ -49,7 +48,7 @@ class PublicFollowersFollowingFragment : Fragment() {
         val backButton: TextView = view.findViewById(R.id.back_button)
 
         tabLayout.setBackgroundColor(Color.WHITE)
-        tabLayout.setTabTextColors(ContextCompat.getColor(context!!, R.color.SPECIAL), ContextCompat.getColor(context!!, R.color.BLUE))
+        tabLayout.setTabTextColors(ContextCompat.getColor(requireContext(), R.color.SPECIAL), ContextCompat.getColor(requireContext(), R.color.BLUE))
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
         setupViewPager(viewPager, myID!!, userID!!, exceptionID!!)
@@ -117,5 +116,4 @@ class PublicFollowersFollowingFragment : Fragment() {
             return mFragmentTitleList[position]
         }
     }
-
 }

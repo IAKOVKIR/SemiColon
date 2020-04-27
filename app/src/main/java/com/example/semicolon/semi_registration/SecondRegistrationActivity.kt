@@ -92,19 +92,19 @@ class SecondRegistrationActivity : Activity() {
     }
 
     private fun validate(num: Int): Boolean {
-        when (num) {
+        return when (num) {
             0 -> {
                 // regex pattern obtained from: https://www.roytuts.com/validate-email-address-with-regular-expression-using-kotlin/
-                val EMAIL_REGEX = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
-                return EMAIL_REGEX.toRegex().matches(uEmail.text.toString())
+                val emailRegex = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
+                emailRegex.toRegex().matches(uEmail.text.toString())
             }
 
             1 -> {
-                return uPassword.text.isNotEmpty()
+                uPassword.text.isNotEmpty()
             }
 
             else -> {
-                return false
+                false
             }
         }
     }

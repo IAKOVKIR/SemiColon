@@ -7,11 +7,7 @@ import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
-import com.example.semicolon.models.DBContract
-import com.example.semicolon.models.Friend
-import com.example.semicolon.models.User
-import com.example.semicolon.models.EventContent
+import com.example.semicolon.models.*
 
 import java.util.ArrayList
 
@@ -22,12 +18,14 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         db.execSQL(SQL_CREATE_USER_TABLE)
         db.execSQL(SQL_CREATE_FOLLOWER_TABLE)
         db.execSQL(SQL_CREATE_EVENT_TABLE)
+        db.execSQL(SQL_CREATE_ATTENDEE_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL(SQL_DELETE_USER_TABLE)
         db.execSQL(SQL_DELETE_FOLLOWER_TABLE)
         db.execSQL(SQL_DELETE_EVENT_TABLE)
+        db.execSQL(SQL_DELETE_ATTENDEE_TABLE)
         onCreate(db)
     }
 
@@ -105,7 +103,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
     fun setPassword(UserID: Int, newPassword: String): Boolean {
 
         val cv = ContentValues()
-        cv.put("Password", newPassword)
+        cv.put(DBContract.UserEntry.USER_COLUMN_PASSWORD, newPassword)
 
         //updates the record in USER table
         val db: SQLiteDatabase = writableDatabase
@@ -304,7 +302,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
-    fun readAllFollowing(SenderID: Int, except: Int): ArrayList<User> {
+    fun readAllFollowing(SenderID: Int): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
         val users = ArrayList<User>()
@@ -384,11 +382,6 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            /*val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER " +
-                    "ON USER.UserID = FOLLOWER.ReceiverID WHERE (FOLLOWER.SenderID = '$myID' AND FOLLOWER.Condition = '1') INNER JOIN " +
-                    "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER " +
-                    "ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = '$userID' AND FOLLOWER.Condition = '1'"*/
-
             val line = "SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$myID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q1 INNER JOIN " +
                     "(SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.UserID = Q2.UserID"
 
@@ -438,11 +431,6 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<String>()
 
         try {
-            /*val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER " +
-                    "ON USER.UserID = FOLLOWER.ReceiverID WHERE (FOLLOWER.SenderID = '$myID' AND FOLLOWER.Condition = '1') INNER JOIN " +
-                    "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER " +
-                    "ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = '$userID' AND FOLLOWER.Condition = '1'"*/
-
             val line = "SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$myID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q1 INNER JOIN " +
                     "(SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.Username = Q2.Username LIMIT 2"
 
@@ -629,7 +617,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
         val db: SQLiteDatabase = writableDatabase
         // Define 'where' part of query.
-        val selection: String = "${DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID} = ? AND ${DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID} = ?"
+        val selection = "${DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID} = ? AND ${DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID} = ?"
         // Specify arguments in placeholder order.
         val selectionArgs: Array<String> = arrayOf("$SenderID", "$ReceiverID")
         // Issue SQL statement.
@@ -677,12 +665,15 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         private const val SQL_CREATE_FOLLOWER_TABLE: String =
             "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.FOLLOWER_TABLE_NAME + " (" +
                     DBContract.UserEntry.FOLLOWER_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                    DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID + " INTEGER NOT NULL CONSTRAINT " +
-                    DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID + " REFERENCES " + DBContract.UserEntry.USER_TABLE_NAME + ", " +
+                    DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID + " INTEGER NOT NULL, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID + " INTEGER NOT NULL, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_DATE + " TEXT NOT NULL, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_TIME + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION + " INTEGER NOT NULL DEFAULT 0)"
+                    DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION + " INTEGER NOT NULL DEFAULT 0, " +
+                    "FOREIGN KEY(" + DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID + ") REFERENCES " +
+                    DBContract.UserEntry.USER_TABLE_NAME + "(" + DBContract.UserEntry.USER_COLUMN_USER_ID + "), " +
+                    "FOREIGN KEY(" + DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID + ") REFERENCES " +
+                    DBContract.UserEntry.USER_TABLE_NAME + "(" + DBContract.UserEntry.USER_COLUMN_USER_ID + ") )"
 
         private const val SQL_CREATE_EVENT_TABLE: String =
             "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.EVENT_TABLE_NAME + " (" +
@@ -695,9 +686,25 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                     DBContract.UserEntry.EVENT_COLUMN_START_TIME + " TEXT NOT NULL, " +
                     DBContract.UserEntry.EVENT_COLUMN_END_TIME + " TEXT NOT NULL)"
 
+        private const val SQL_CREATE_ATTENDEE_TABLE: String =
+            "CREATE TABLE IF NOT EXISTS " + DBContract.UserEntry.ATTENDEE_TABLE_NAME + " (" +
+                    DBContract.UserEntry.ATTENDEE_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    DBContract.UserEntry.ATTENDEE_COLUMN_EVENT_ID + " INTEGER NOT NULL, " +
+                    DBContract.UserEntry.ATTENDEE_COLUMN_USER_ID + " INTEGER NOT NULL, " +
+                    DBContract.UserEntry.ATTENDEE_COLUMN_POSITION + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.ATTENDEE_COLUMN_CONDITION + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.ATTENDEE_COLUMN_LAST_MODIFIED + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.ATTENDEE_COLUMN_DATE_ACCEPTED + " TEXT, " +
+                    DBContract.UserEntry.ATTENDEE_COLUMN_DATE_CREATED + " TEXT NOT NULL, " +
+                    "FOREIGN KEY(" + DBContract.UserEntry.ATTENDEE_COLUMN_EVENT_ID + ") REFERENCES " +
+                    DBContract.UserEntry.EVENT_TABLE_NAME + "(" + DBContract.UserEntry.EVENT_COLUMN_ID + "), " +
+                    "FOREIGN KEY(" + DBContract.UserEntry.ATTENDEE_COLUMN_USER_ID + ") REFERENCES " +
+                    DBContract.UserEntry.USER_TABLE_NAME + "(" + DBContract.UserEntry.USER_COLUMN_USER_ID + ") )"
+
         private const val SQL_DELETE_USER_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.USER_TABLE_NAME
         private const val SQL_DELETE_FOLLOWER_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.FOLLOWER_TABLE_NAME
         private const val SQL_DELETE_EVENT_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.EVENT_TABLE_NAME
+        private const val SQL_DELETE_ATTENDEE_TABLE: String = "DROP TABLE IF EXISTS " + DBContract.UserEntry.ATTENDEE_TABLE_NAME
     }
 
 }

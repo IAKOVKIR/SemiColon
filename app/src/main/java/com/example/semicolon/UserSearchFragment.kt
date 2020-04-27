@@ -59,7 +59,7 @@ class UserSearchFragment : Fragment() {
         val editText: EditText = view.findViewById(R.id.edit_text)
 
         list = view.findViewById(R.id.list)
-        db = DatabaseOpenHelper(context!!)
+        db = DatabaseOpenHelper(requireContext())
 
         backButton.setOnClickListener {
             val fm: FragmentManager = parentFragmentManager

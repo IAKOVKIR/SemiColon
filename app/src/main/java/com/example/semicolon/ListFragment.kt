@@ -50,7 +50,7 @@ class ListFragment : Fragment() {
 
 
         list = view.findViewById(R.id.list)
-        db = DatabaseOpenHelper(context!!)
+        db = DatabaseOpenHelper(requireContext())
 
         // Set the adapter
         with(list) {
