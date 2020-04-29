@@ -13,6 +13,11 @@ import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
 
+// the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
+private const val MY_ID = "my_id"
+private const val USER_ID = "user_id"
+private const val EXCEPTION_ID = "exception_id"
+
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
@@ -32,9 +37,9 @@ class ListFollowers : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            myID = it.getInt("my_id")
-            userID = it.getInt("user_id")
-            exceptionID = it.getInt("exception_id")
+            myID = it.getInt(MY_ID)
+            userID = it.getInt(USER_ID)
+            exceptionID = it.getInt(EXCEPTION_ID)
         }
     }
 

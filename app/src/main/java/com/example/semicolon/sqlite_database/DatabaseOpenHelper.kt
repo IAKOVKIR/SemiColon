@@ -496,6 +496,49 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
     }
 
+    fun readFirstSixUsers(): ArrayList<User> {
+        val db: SQLiteDatabase = writableDatabase
+        var cursor: Cursor? = null
+        val users = ArrayList<User>()
+
+        try {
+            val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER LIMIT 6"
+            cursor = db.rawQuery(line, null)
+        } catch (e: SQLiteException) {
+            db.close()
+            cursor!!.close()
+            return ArrayList()
+        }
+
+        if (cursor.moveToFirst())
+            while (!cursor.isAfterLast) {
+                val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_ID))
+                val username: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
+                val phoneNum: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                val fullName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME))
+                val email: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                users.add(
+                    User(
+                        id,
+                        username,
+                        phoneNum,
+                        "",
+                        fullName,
+                        "",
+                        email,
+                        0F,
+                        "",
+                        ""
+                    )
+                )
+                cursor.moveToNext()
+            }
+
+        db.close()
+        cursor!!.close()
+        return users
+    }
+
     fun readFirstTenUsers(searchLine: String): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null

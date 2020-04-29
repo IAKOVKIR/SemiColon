@@ -16,10 +16,17 @@ import com.example.semicolon.semi_settings.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_user_home.*
 
+// the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
+private const val MY_ID = "my_id"
+private const val USER_ID = "user_id"
+private const val EXCEPTION_ID = "exception_id"
+private const val EVENT_ID = "event_id"
+
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     ListFollowers.OnListFragmentInteractionListener, ListFollowing.OnListFragmentInteractionListener,
     UserSearchFragment.OnListFragmentInteractionListener, RequestsFragment.OnListFragmentInteractionListener,
-        ListMutual.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener
+        ListMutual.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener,
+        ListSearchFragment.OnListFragmentInteractionListener
 {
 
     private var myID: Int? = null
@@ -30,9 +37,9 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
 
         if (item!!.userId != myID) {
             val args = Bundle()
-            args.putInt("my_id", myID!!)
-            args.putInt("user_id", item.userId)
-            args.putInt("exception_id", myID!!)
+            args.putInt(MY_ID, myID!!)
+            args.putInt(USER_ID, item.userId)
+            args.putInt(EXCEPTION_ID, myID!!)
 
             val t = FriendFragment()
             t.arguments = args
@@ -46,8 +53,8 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         myID = n.getInt("id", 1)
 
         val args = Bundle()
-        args.putInt("my_id", myID!!)
-        args.putInt("event_id", item!!.eventId)
+        args.putInt(MY_ID, myID!!)
+        args.putInt(EVENT_ID, item!!.eventId)
 
         val t = EventFragment()
         t.arguments = args
@@ -57,60 +64,11 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
 
         when (item!!.pos) {
-            1 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t = NotificationSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_notifications_settings")
-            }
-            2 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t =
-                    PasswordSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_password_settings")
-            }
-            3 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t =
-                    LanguageSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_language_settings")
-            }
-            4 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t =
-                    HelpSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_help_settings")
-            }
-            5 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t =
-                    AboutSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_about_settings")
-            }
+            1 -> startFragmentArgs(NotificationSettingsFragment(), "to_notifications_settings")
+            2 -> startFragmentArgs(PasswordSettingsFragment(), "to_password_settings")
+            3 -> startFragmentArgs(LanguageSettingsFragment(), "to_language_settings")
+            4 -> startFragmentArgs(HelpSettingsFragment(), "to_help_settings")
+            5 -> startFragmentArgs(AboutSettingsFragment(), "to_about_settings")
             else -> logOut()
         }
 
@@ -135,16 +93,23 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                val args = Bundle()
-                args.putString("MyFirstName", n.getString("FName", ""))
-                args.putString("MyLastName", n.getString("LName", ""))
-
-                //opens notifications fragment and sends arguments
-                //findNavController(R.id.nav_host).navigate(R.id.action_global_params_dest, args)
+                val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)
+                if (currentFragment !is ListSearchFragment)
+                    startFragmentArgs(ListSearchFragment(), "open_list_search")
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
+    }
+
+    private fun startFragmentArgs(fragment: Fragment, key: String) {
+        myID = n.getInt("id", 1)
+
+        val args = Bundle()
+        args.putInt(MY_ID, myID!!)
+
+        fragment.arguments = args
+        startFragment(fragment, key)
     }
 
     private fun startFragment(fragment: Fragment, key: String) {
