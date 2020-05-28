@@ -60,7 +60,7 @@
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listEvent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layoutManager="LinearLayoutManager"
                 tools:context=".ListSearchFragment"
                 tools:listitem="@layout/fragment_item"

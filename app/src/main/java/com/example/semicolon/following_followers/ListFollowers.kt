@@ -47,6 +47,7 @@ class ListFollowers : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view: View = inflater.inflate(R.layout.followers_requests_list_followers, container, false)
         list = view.findViewById(R.id.list)
         db = DatabaseOpenHelper(requireContext())

@@ -70,14 +70,14 @@ class ListSearchEventViewAdapter(
                 var finalWidth: Double = width.toDouble()
                 var finalHeight: Double = height.toDouble()
 
-                if (width > (sW * 0.40)) {
-                    finalWidth = sW * 0.40
+                if (width > (sW * 0.38)) {
+                    finalWidth = sW * 0.38
                     finalHeight *= (finalWidth / width)
                 }
 
-                if (finalHeight > sW * 0.26) {
-                    finalWidth *= ((sW * 0.26) / finalHeight)
-                    finalHeight = sW * 0.26
+                if (finalHeight > sW * 0.247) {
+                    finalWidth *= ((sW * 0.247) / finalHeight)
+                    finalHeight = sW * 0.247
                 }
 
                 Log.e("W + H", "${finalWidth.toInt()} + ${finalHeight.toInt()}")

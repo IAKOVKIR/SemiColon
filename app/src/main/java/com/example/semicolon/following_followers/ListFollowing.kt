@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 //import android.widget.EditText
 //import androidx.loader.content.AsyncTaskLoader
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
+import com.example.semicolon.databinding.FollowingSearchListFollowingBinding
 import com.example.semicolon.models.User
 import kotlinx.coroutines.*
 
@@ -33,7 +35,6 @@ class ListFollowing : Fragment() {
     private var exceptionID: Int? = null
     private var listUser: ArrayList<User> = ArrayList()
     private var db: DatabaseOpenHelper? = null
-    private var job: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +49,9 @@ class ListFollowing : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.following_search_list_following, container, false)
-        val list: RecyclerView = view.findViewById(R.id.list)
+        val binding: FollowingSearchListFollowingBinding = DataBindingUtil.inflate(
+            inflater, R.layout.following_search_list_following, container, false)
+        val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
 
         // Set the adapter
@@ -62,7 +64,7 @@ class ListFollowing : Fragment() {
             setHasFixedSize(true)
         }
 
-        job = CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Default).launch {
 
             if (listUser.isEmpty())
                 listUser.addAll(withContext(Dispatchers.Default) { load() })
@@ -93,11 +95,6 @@ class ListFollowing : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        db!!.close()
     }
 
     /**

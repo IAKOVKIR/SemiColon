@@ -14,6 +14,8 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.databinding.DataBindingUtil
+import com.example.semicolon.databinding.FragmentMainBinding
 import com.example.semicolon.semi_settings.SettingFragment
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.following_followers.FollowingFollowersFragment
@@ -33,9 +35,6 @@ class MainFragment : Fragment() {
 
     private var userID: Int = 0
     private var username: String = ""
-    private var db: DatabaseOpenHelper? = null
-    private lateinit var bitmap: Bitmap
-    private lateinit var bitmapDrawable: BitmapDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,42 +47,45 @@ class MainFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.fragment_main, container, false)
-        db = DatabaseOpenHelper(requireContext())
+        val binding: FragmentMainBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_main, container, false)
+        val db = DatabaseOpenHelper(requireContext())
 
         //TextViews
         //TextView representing user's full name
-        val nameText: TextView = view.findViewById(R.id.name)
+        val nameText: TextView = binding.name
 
         //TextView representing user's phone number
-        val phoneNum: TextView = view.findViewById(R.id.phone_number)
+        val phoneNum: TextView = binding.phoneNumber
 
         //TextView representing the number of followers
-        val numOfFollowers: TextView = view.findViewById(R.id.followers_number)
+        val numOfFollowers: TextView = binding.followersNumber
 
         //TextView representing the number of users you follow
-        val numOfFollowing: TextView = view.findViewById(R.id.following_number)
+        val numOfFollowing: TextView = binding.followingNumber
 
         //TextView representing user's email
-        val email: TextView = view.findViewById(R.id.email)
+        val email: TextView = binding.email
 
-        val imageView: CircleImageView = view.findViewById(R.id.circleImageView)
+        val imageView: CircleImageView = binding.circleImageView
 
         //LinearLayouts
-        val followersLink: LinearLayout = view.findViewById(R.id.linear_layout_followers)
-        val followingLink: LinearLayout = view.findViewById(R.id.linear_layout_following)
+        val followersLink: LinearLayout = binding.linearLayoutFollowers
+        val followingLink: LinearLayout = binding.linearLayoutFollowing
 
         nameText.text = username
 
         CoroutineScope(Dispatchers.Default).launch {
 
+            lateinit var bitmapDrawable: BitmapDrawable
+
             withContext(Dispatchers.Default) {
-                bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.burns)
+                var bitmap: Bitmap = BitmapFactory.decodeResource(binding.root.resources, R.drawable.burns)
                 val height: Int = bitmap.height
                 val width: Int = bitmap.width
                 val dif: Double = height.toDouble() / width
                 bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-                bitmapDrawable = BitmapDrawable(view.context!!.resources, bitmap)
+                bitmapDrawable = BitmapDrawable(requireContext().resources, bitmap)
             }
 
             launch (Dispatchers.Main) {
@@ -101,7 +103,7 @@ class MainFragment : Fragment() {
             var following = 0
 
             withContext(Dispatchers.Default) {
-                val line: String = db!!.getUsersData(userID, "Phone")
+                val line: String = db.getUsersData(userID, "Phone")
                 //variable phoneImp contains a string of phone number ("#(###)### ###")
                 if (line.isNotEmpty()) {
                     userPhone = "${line[0]}(${line.substring(1, 4)})${line.substring(
@@ -109,9 +111,9 @@ class MainFragment : Fragment() {
                     )} ${line.substring(7, 10)}"
                 }
 
-                emailText = db!!.getUsersData(userID, "Email")
-                followers = db!!.countFollowers(userID)
-                following = db!!.countFollowing(userID)
+                emailText = db.getUsersData(userID, "Email")
+                followers = db.countFollowers(userID)
+                following = db.countFollowing(userID)
             }
 
             launch (Dispatchers.Main) {
@@ -132,7 +134,7 @@ class MainFragment : Fragment() {
             sendToFollowersFollowing(1)
         }
 
-        val settingsButton : ImageButton = view.findViewById(R.id.settings_button)
+        val settingsButton : ImageButton = binding.settingsButton
         settingsButton.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
@@ -142,7 +144,7 @@ class MainFragment : Fragment() {
         }
 
         //Inflate the layout for this fragment
-        return view
+        return binding.root
     }
 
     private fun sendToFollowersFollowing(slideNumber: Int) {
@@ -158,10 +160,5 @@ class MainFragment : Fragment() {
             .addToBackStack("to_followers_following")
             .replace(R.id.nav_host, fragment, "to_followers_following")
             .commit()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        db!!.close()
     }
 }

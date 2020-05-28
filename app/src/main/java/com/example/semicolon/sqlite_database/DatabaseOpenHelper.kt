@@ -349,7 +349,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val events = ArrayList<EventContent.Event>()
 
         try {
-            val line = "SELECT * FROM EVENT"
+            val line = "SELECT * FROM EVENT LIMIT 3"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
@@ -502,7 +502,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER LIMIT 6"
+            val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER LIMIT 3"
             cursor = db.rawQuery(line, null)
         } catch (e: SQLiteException) {
             db.close()

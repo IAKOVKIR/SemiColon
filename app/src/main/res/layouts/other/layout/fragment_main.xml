@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        android:id="@+id/main_frag"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/blue_white"
-        tools:context=".MainFragment">
+        tools:context="com.example.semicolon.MainFragment">
 
     <LinearLayout
+            android:id="@+id/main_frag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/blue_white">
+
+        <LinearLayout
             android:background="@drawable/gradient_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <ImageButton
+                <ImageButton
                     android:id="@+id/settings_button"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
@@ -33,13 +34,13 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/circleImageView"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="120dp"
@@ -53,7 +54,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="32dp"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/name"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
@@ -70,16 +71,16 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/gray_red">
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/linear_layout_followers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,7 +92,7 @@
                 android:layout_marginBottom="4dp"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
+                <TextView
                     android:text="@string/word_followers"
                     android:textSize="16sp"
                     android:textColor="@color/BLACK"
@@ -103,7 +104,7 @@
                     android:layout_marginBottom="4dp"
                     android:id="@+id/followers_word"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/followers_number"
                     android:text="@string/number_zero"
                     android:textSize="20sp"
@@ -112,9 +113,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/linear_layout_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,7 +129,7 @@
                 android:layout_marginBottom="4dp"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
+                <TextView
                     android:id="@+id/following_word"
                     android:text="@string/word_following"
                     android:textSize="16sp"
@@ -140,7 +141,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/following_number"
                     android:text="@string/number_zero"
                     android:textSize="20sp"
@@ -149,9 +150,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -162,7 +163,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
+                <TextView
                     android:text="@string/word_events"
                     android:textSize="16sp"
                     android:textColor="@color/BLACK"
@@ -174,7 +175,7 @@
                     android:layout_marginBottom="4dp"
                     android:id="@+id/textView5"/>
 
-            <TextView
+                <TextView
                     android:text="@string/number_zero"
                     android:textSize="20sp"
                     android:textColor="@color/BLACK"
@@ -183,29 +184,29 @@
                     android:layout_marginStart="14dp"
                     android:id="@+id/textView7"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-            <ImageView
+                <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/smart_phone"
                     tools:ignore="ContentDescription"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/phone_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -215,22 +216,22 @@
                     android:textColor="@color/WHITE"
                     android:text="@string/phone_number"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-            <ImageView
+                <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/envelope"
                     tools:ignore="ContentDescription"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -240,8 +241,10 @@
                     android:textColor="@color/WHITE"
                     android:text="@string/email_gmail"/>
 
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</layout>
