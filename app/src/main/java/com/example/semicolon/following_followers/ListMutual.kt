@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
+import com.example.semicolon.databinding.ListMutualBinding
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
@@ -24,10 +26,7 @@ class ListMutual : Fragment() {
     private var myID: Int? = null
     private var userID: Int? = null
     private var exceptionID: Int? = null
-    private var listUser: ArrayList<User> = ArrayList()
-    lateinit var list: RecyclerView
     lateinit var db: DatabaseOpenHelper
-    private var job: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,9 +41,11 @@ class ListMutual : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.mutual_followers_list, container, false)
-        list = view.findViewById(R.id.list)
+        val binding: ListMutualBinding = DataBindingUtil.inflate(
+            inflater, R.layout.list_mutual, container, false)
+        val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
+        val listUser: ArrayList<User> = ArrayList()
 
         // Set the adapter
         with(list) {
@@ -55,7 +56,7 @@ class ListMutual : Fragment() {
             setHasFixedSize(true)
         }
 
-        job = CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Default).launch {
 
             if (listUser.isEmpty())
                 listUser.addAll(withContext(Dispatchers.Default) { load() })
@@ -68,7 +69,7 @@ class ListMutual : Fragment() {
 
         }
 
-        return view
+        return binding.root
     }
 
     private fun load() : ArrayList<User> {
@@ -86,7 +87,6 @@ class ListMutual : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-        job.cancel()
     }
 
     /**
@@ -98,5 +98,4 @@ class ListMutual : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
-
 }

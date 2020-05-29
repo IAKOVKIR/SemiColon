@@ -1,8 +1,5 @@
 package com.example.semicolon.following_followers
 
-//import android.graphics.Bitmap
-//import android.graphics.BitmapFactory
-//import android.graphics.drawable.BitmapDrawable
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.semicolon.R
+import com.example.semicolon.databinding.FragmentRequestsBinding
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
@@ -29,7 +28,6 @@ class RequestsFragment : Fragment() {
     private var userID: Int? = null
     private var exceptionID: Int? = null
     private var listUser: ArrayList<User> = ArrayList()
-    lateinit var list: RecyclerView
     lateinit var db: DatabaseOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,9 +40,11 @@ class RequestsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.followers_requests_list_requests, container, false)
-        val backButton: ImageView = view.findViewById(R.id.back_button)
-        list = view.findViewById(R.id.list)
+        val binding: FragmentRequestsBinding  = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_requests, container, false)
+
+        val backButton: ImageView = binding.backButton
+        val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
 
         // Set the adapter
@@ -74,11 +74,11 @@ class RequestsFragment : Fragment() {
             fm.popBackStack("to_followers_requests", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
-        return view
+        return binding.root
     }
 
     private fun load() : ArrayList<User> {
-        return db.readAllFollowers(userID!!, 0/*, myID!!*/)
+        return db.readAllFollowers(userID!!, 0)
     }
 
     override fun onAttach(context: Context) {
@@ -92,7 +92,6 @@ class RequestsFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-            //job.cancel()
     }
 
     /**

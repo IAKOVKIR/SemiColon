@@ -8,13 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.databinding.DataBindingUtil
 import com.example.semicolon.*
+import com.example.semicolon.databinding.FollowersRecyclerViewAdapterBinding
 import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.support_features.Time
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.*
+import kotlinx.android.synthetic.main.followers_recycler_view_adapter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,10 +34,7 @@ class FollowersRecyclerViewAdapter(
 
     private val mOnClickListener: View.OnClickListener
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow") //-1, 0, 1
-    private var db: DatabaseOpenHelper? = null
-    private lateinit var bitmap: Bitmap
-    private lateinit var bitmapDrawable: BitmapDrawable
-    lateinit var view: View
+    lateinit var db: DatabaseOpenHelper
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -47,10 +46,10 @@ class FollowersRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.followers_requests_friends_followers, parent, false)
+        val binding: FollowersRecyclerViewAdapterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+            R.layout.followers_recycler_view_adapter, parent, false)
         db = DatabaseOpenHelper(parent.context)
-        return ViewHolder(view)
+        return ViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -64,7 +63,7 @@ class FollowersRecyclerViewAdapter(
             CoroutineScope(Dispatchers.Default).launch {
 
                 withContext(Dispatchers.Default) {
-                    bool = db!!.checkFollower(myID, item.userId)
+                    bool = db.checkFollower(myID, item.userId)
                 }
 
                 launch(Dispatchers.Main) {
@@ -87,7 +86,7 @@ class FollowersRecyclerViewAdapter(
                                 myID, item.userId,
                                 time.getDate(), time.getTime(), 0
                             )
-                            res = db!!.insertRequest(friend)
+                            res = db.insertRequest(friend)
                         }
 
                         launch(Dispatchers.Main) {
@@ -105,7 +104,7 @@ class FollowersRecyclerViewAdapter(
                         var res = false
 
                         withContext(Dispatchers.Default) {
-                            res = db!!.deleteFollowing(myID, item.userId)
+                            res = db.deleteFollowing(myID, item.userId)
                         }
 
                         launch(Dispatchers.Main) {
@@ -123,13 +122,15 @@ class FollowersRecyclerViewAdapter(
 
         CoroutineScope(Dispatchers.Default).launch {
 
+            lateinit var bitmapDrawable: BitmapDrawable
+
             withContext(Dispatchers.Default) {
-                bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
+                var bitmap: Bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.smithers)
                 val height: Int = bitmap.height
                 val width: Int = bitmap.width
                 val dif: Double = height.toDouble() / width
                 bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-                bitmapDrawable = BitmapDrawable(view.context!!.resources, bitmap)
+                bitmapDrawable = BitmapDrawable(holder.mView.context!!.resources, bitmap)
             }
 
             launch (Dispatchers.Main) {

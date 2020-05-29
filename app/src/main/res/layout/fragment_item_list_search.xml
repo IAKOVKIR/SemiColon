@@ -27,7 +27,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
             android:inputType="text"
-            tools:ignore="Autofill,LabelFor"/>
+            tools:ignore="Autofill,HardcodedText,LabelFor"/>
 
     <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
@@ -73,7 +73,7 @@
                 android:layout_height="match_parent"
                 app:layoutManager="LinearLayoutManager"
                 tools:context=".ListSearchFragment"
-                tools:listitem="@layout/followers_requests_friends_followers"
+                tools:listitem="@layout/followers_recycler_view_adapter"
                 android:layout_marginTop="8dp"
                 android:paddingBottom="90dp"/>
         </LinearLayout>

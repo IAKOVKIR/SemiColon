@@ -17,7 +17,7 @@ import androidx.databinding.DataBindingUtil
 //import androidx.loader.content.AsyncTaskLoader
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
-import com.example.semicolon.databinding.FollowingSearchListFollowingBinding
+import com.example.semicolon.databinding.ListFollowingBinding
 import com.example.semicolon.models.User
 import kotlinx.coroutines.*
 
@@ -49,8 +49,8 @@ class ListFollowing : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FollowingSearchListFollowingBinding = DataBindingUtil.inflate(
-            inflater, R.layout.following_search_list_following, container, false)
+        val binding: ListFollowingBinding = DataBindingUtil.inflate(
+            inflater, R.layout.list_following, container, false)
         val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
 
@@ -77,7 +77,7 @@ class ListFollowing : Fragment() {
 
         }
 
-        return view
+        return binding.root
     }
 
     private fun load() : ArrayList<User> {
@@ -106,5 +106,4 @@ class ListFollowing : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
-
 }

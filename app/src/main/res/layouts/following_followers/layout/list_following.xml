@@ -4,15 +4,15 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context="com.example.semicolon.following_followers.ListFollowing">
 
-<LinearLayout
-        android:background="@drawable/gray_red"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout
+            android:background="@drawable/gray_red"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <EditText
+        <EditText
             android:id="@+id/search"
             android:textSize="22sp"
             android:textColor="@color/WHITE"
@@ -27,16 +27,16 @@
             android:inputType="text"
             tools:ignore="Autofill,LabelFor"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:name="com.example.semicolon.ListFollowing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="LinearLayoutManager"
             tools:context=".following_followers.ListFollowing"
-            tools:listitem="@layout/following_search_friends_following"
+            tools:listitem="@layout/following_recycler_view_adapter"
             android:layout_marginTop="8dp" />
 
-</LinearLayout>
+    </LinearLayout>
 
 </layout>

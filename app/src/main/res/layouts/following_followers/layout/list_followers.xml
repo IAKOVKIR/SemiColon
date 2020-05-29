@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.example.semicolon.following_followers.ListFollowers">
+
+    <LinearLayout
         android:background="@drawable/gray_red"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -10,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <EditText
+        <EditText
             android:id="@+id/editText4"
             android:textSize="22sp"
             android:textColor="@color/WHITE"
@@ -25,13 +27,15 @@
             android:inputType="text"
             tools:ignore="Autofill,LabelFor"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:name="com.example.semicolon.following_followers.ListFollowers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
             tools:context=".following_followers.ListFollowers"
-            tools:listitem="@layout/followers_requests_friends_followers" />
+            tools:listitem="@layout/followers_recycler_view_adapter" />
 
-</LinearLayout>
+    </LinearLayout>
+
+</layout>

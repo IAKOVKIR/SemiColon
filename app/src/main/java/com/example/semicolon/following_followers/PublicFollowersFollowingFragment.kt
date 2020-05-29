@@ -7,13 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.semicolon.R
+import com.example.semicolon.databinding.PublicFollowersFollowingFragmentBinding
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.*
+import com.google.android.material.tabs.TabLayoutMediator
 
 // the fragment initialization parameters, e.g MY_ID, USER_ID, EXCEPTION_ID and SLIDE_NUMBER
 private const val MY_ID = "my_id"
@@ -27,8 +29,6 @@ class PublicFollowersFollowingFragment : Fragment() {
     private var userID: Int? = null
     private var exceptionID: Int? = null
     private var linePos: Int? = null
-    private var job: Job = Job()
-    private lateinit var viewPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,79 +41,75 @@ class PublicFollowersFollowingFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.activity_public_followers, container, false)
+        val binding: PublicFollowersFollowingFragmentBinding = DataBindingUtil.inflate(
+                    inflater, R.layout.public_followers_following_fragment, container, false)
 
-        viewPager = view.findViewById(R.id.viewpager)
-        val tabLayout: TabLayout = view.findViewById(R.id.tabs)
-        val backButton: TextView = view.findViewById(R.id.back_button)
+        val viewpager: ViewPager2 = binding.viewpager
+        val tabs: TabLayout = binding.tabs
+        val backButton: TextView = binding.backButton
 
-        tabLayout.setBackgroundColor(Color.WHITE)
-        tabLayout.setTabTextColors(ContextCompat.getColor(requireContext(), R.color.SPECIAL), ContextCompat.getColor(requireContext(), R.color.BLUE))
-        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
+        tabs.setBackgroundColor(Color.WHITE)
+        tabs.setTabTextColors(ContextCompat.getColor(requireContext(), R.color.SPECIAL), ContextCompat.getColor(requireContext(), R.color.BLUE))
+        tabs.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
-        setupViewPager(viewPager, myID!!, userID!!, exceptionID!!)
-        tabLayout.setupWithViewPager(viewPager)
+        val viewPagerAdapter = ViewPagerAdapter(this, myID!!, userID!!, exceptionID!!)
+        var selectedTabPosition = 0
+        viewpager.apply {
+            adapter = viewPagerAdapter
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    selectedTabPosition = position
+                }
+            })
+            currentItem = selectedTabPosition
+        }
+
+        // New way of interaction with TabLayout and page title setting
+        TabLayoutMediator(tabs, viewpager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Mutual"
+                1 -> "Followers"
+                else -> "Following"
+            }
+        }.attach()
 
         if (linePos == 1)
-            tabLayout.getTabAt(1)!!.select()
+            tabs.getTabAt(1)!!.select()
         else if (linePos == 2)
-            tabLayout.getTabAt(2)!!.select()
+            tabs.getTabAt(2)!!.select()
 
         backButton.setOnClickListener {
             val fm: FragmentManager = parentFragmentManager
             fm.popBackStack("to_public_followers_following", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
 
-        return view
+        return binding.root
     }
 
-    private fun setupViewPager(viewPager: ViewPager, my_id: Int, user_id: Int, exception_id: Int) {
-        val adapter = ViewPagerAdapter(childFragmentManager)
-
+    private fun getTab(my_id: Int, user_id: Int, exception_id: Int, pos: Int): Fragment {
         val args = Bundle()
         args.putInt(MY_ID, my_id)
         args.putInt(USER_ID, user_id)
         args.putInt(EXCEPTION_ID, exception_id)
-
-        val listMutual = ListMutual()
-        val listFollowers = ListFollowers()
-        val listFollowing = ListFollowing()
-
-        listMutual.arguments = args
-        listFollowers.arguments = args
-        listFollowing.arguments = args
-
-        adapter.addFragment(listMutual, "Mutual")
-        adapter.addFragment(listFollowers, "Followers")
-        adapter.addFragment(listFollowing, "Following")
-
-        viewPager.adapter = adapter
+        val f = when (pos) {
+            0 -> ListMutual()
+            1 -> ListFollowers()
+            else -> ListFollowing()
+        }
+        f.arguments = args
+        return f
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()
-    }
+    internal inner class ViewPagerAdapter(fr: Fragment, my_id: Int, user_id: Int, exception_id: Int) : FragmentStateAdapter(fr) {
 
-    internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        private var mFragmentList = ArrayList<Fragment>()
-        private var mFragmentTitleList = ArrayList<String>()
+        private val myID = my_id
+        private val userID = user_id
+        private val exceptionID = exception_id
 
-        override fun getItem(position: Int): Fragment {
-            return mFragmentList[position]
+        override fun createFragment(position: Int): Fragment = when (position) {
+            0, 1, 2 -> getTab(myID, userID, exceptionID, position)
+            else -> throw IllegalStateException("Invalid adapter position")
         }
-
-        override fun getCount(): Int {
-            return mFragmentList.size
-        }
-
-        fun addFragment(fragment: Fragment, title: String) {
-            mFragmentList.add(fragment)
-            mFragmentTitleList.add(title)
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return mFragmentTitleList[position]
-        }
+        override fun getItemCount(): Int = 3
     }
 }

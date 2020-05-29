@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.semicolon.models.User
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.userImage
+import kotlinx.android.synthetic.main.followers_recycler_view_adapter.view.userImage
 import kotlinx.android.synthetic.main.user_search_fragment_list.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

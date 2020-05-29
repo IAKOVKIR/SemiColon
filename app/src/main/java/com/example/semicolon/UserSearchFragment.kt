@@ -123,7 +123,7 @@ class UserSearchFragment : Fragment() {
     }
 
     private fun load(line: String) : ArrayList<User> {
-        return db.readFirstTenUsers(line)
+        return db.readFirstTenUsers()
     }
 
     override fun onAttach(context: Context) {

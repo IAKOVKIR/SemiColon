@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        android:id="@+id/main_frag"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".FriendFragment">
+
+<LinearLayout
+        android:id="@+id/main_frag"
         android:orientation="vertical"
         android:background="@drawable/blue_white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".FriendFragment">
+        android:layout_height="match_parent">
 
     <LinearLayout
             android:orientation="vertical"
@@ -57,7 +58,8 @@
                     android:layout_marginTop="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/circleImageView"/>
+                    app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                    tools:ignore="HardcodedText" />
 
             <TextView
                     android:id="@+id/follow_un_follow_button"
@@ -71,7 +73,8 @@
                     android:padding="6dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/name"
-                    app:layout_constraintStart_toEndOf="@+id/circleImageView"/>
+                    app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                    tools:ignore="HardcodedText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -85,7 +88,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                tools:ignore="HardcodedText" />
 
     </LinearLayout>
 
@@ -242,7 +246,8 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/envelope"
-                    android:contentDescription="email icon" />
+                    android:contentDescription="email icon"
+                    tools:ignore="HardcodedText" />
 
             <TextView
                     android:id="@+id/email"
@@ -259,3 +264,5 @@
     </LinearLayout>
 
 </LinearLayout>
+
+</layout>

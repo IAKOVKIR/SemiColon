@@ -8,13 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.semicolon.*
 import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.support_features.Time
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.followers_requests_friends_followers.view.*
+import kotlinx.android.synthetic.main.followers_recycler_view_adapter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,7 +47,7 @@ class ListSearchUserViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.followers_requests_friends_followers, parent, false)
+            .inflate(R.layout.followers_recycler_view_adapter, parent, false)
         db = DatabaseOpenHelper(parent.context)
         return ViewHolder(view)
     }

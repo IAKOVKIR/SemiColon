@@ -1,5 +1,6 @@
 package com.example.semicolon.sqlite_database
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -145,7 +146,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return true
     }
 
-    @Throws(SQLiteConstraintException::class)
+    /*@Throws(SQLiteConstraintException::class)
     fun deleteUser(UserID: Int): Boolean {
 
         val db: SQLiteDatabase = writableDatabase
@@ -158,7 +159,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         db.delete(DBContract.UserEntry.USER_TABLE_NAME, selection, selectionArgs)
 
         return true
-    }
+    }*/
 
     fun findUserByUsernameAndPassword(Username: String, Password: String): User {
         val db: SQLiteDatabase = writableDatabase
@@ -227,6 +228,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return pieceOfData
     }
 
+    @SuppressLint("Recycle")
     fun findUserByID(UserID: Int): User {
         var users = User()
         val db: SQLiteDatabase = writableDatabase
@@ -261,7 +263,8 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
     }
 
-    fun readAllFollowers(UserID: Int, num: Int/*, except: Int*/): ArrayList<User> {
+    @SuppressLint("Recycle")
+    fun readAllFollowers(UserID: Int, num: Int): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
         val users = ArrayList<User>()
@@ -302,6 +305,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun readAllFollowing(SenderID: Int): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -343,6 +347,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun readAllEvents(): ArrayList<EventContent.Event> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -376,6 +381,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun readAllMutualFollowers(myID: Int, userID: Int): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -425,6 +431,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun readFirstThreeMutualFollowers(myID: Int, userID: Int): ArrayList<String> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -454,6 +461,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun searchAllUsers(except: Int, searchLine: String): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -496,6 +504,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
     }
 
+    @SuppressLint("Recycle")
     fun readFirstSixUsers(): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -539,7 +548,8 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return users
     }
 
-    fun readFirstTenUsers(searchLine: String): ArrayList<User> {
+    @SuppressLint("Recycle")
+    fun readFirstTenUsers(): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
         val users = ArrayList<User>()
@@ -582,6 +592,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return users
     }
 
+    @SuppressLint("Recycle")
     fun countFollowers(UserID: Int): Int {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -600,6 +611,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun countFollowing(UserID: Int): Int {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -620,6 +632,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun countFollowingRequests(UserID: Int): Int {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null

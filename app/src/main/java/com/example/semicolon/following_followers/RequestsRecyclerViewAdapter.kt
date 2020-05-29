@@ -1,7 +1,5 @@
 package com.example.semicolon.following_followers
 
-//import android.graphics.drawable.BitmapDrawable
-//import de.hdodenhof.circleimageview.CircleImageView
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -10,14 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
+import com.example.semicolon.databinding.RequestsRecyclerViewAdapterBinding
 import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.support_features.Time
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.followers_requests_friends_requests.view.*
+import kotlinx.android.synthetic.main.requests_recycler_view_adapter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,11 +30,8 @@ class RequestsRecyclerViewAdapter(
 ) : RecyclerView.Adapter<RequestsRecyclerViewAdapter.ViewHolder>() {
 
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
-    private var db: DatabaseOpenHelper? = null
+    private lateinit var db: DatabaseOpenHelper
     private val mOnClickListener: View.OnClickListener
-    private lateinit var bitmap: Bitmap
-    private lateinit var bitmapDrawable: BitmapDrawable
-    lateinit var view: View
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -48,11 +45,11 @@ class RequestsRecyclerViewAdapter(
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // create a new view
-        view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.followers_requests_friends_requests, parent, false)
+        val binding: RequestsRecyclerViewAdapterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+            R.layout.requests_recycler_view_adapter, parent, false)
         db = DatabaseOpenHelper(parent.context)
         // set the view's size, margins, padding's and layout parameters
-        return ViewHolder(view)
+        return ViewHolder(binding.root)
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -61,7 +58,7 @@ class RequestsRecyclerViewAdapter(
         holder.mUsername.text = item.username
 
         val time = Time()
-        var bool: Int = db!!.checkFollower(myID, item.userId)
+        var bool: Int = db.checkFollower(myID, item.userId)
 
         holder.mFollowUnFollowButton.text = str[bool + 1]
         holder.mFollowUnFollowButton.setOnClickListener {
@@ -73,10 +70,10 @@ class RequestsRecyclerViewAdapter(
 
                     withContext(Dispatchers.Default) {
                         val friend = Friend(
-                            db!!.countFriendTable(), myID, item.userId,
+                            db.countFriendTable(), myID, item.userId,
                             time.getDate(), time.getTime(), 0
                         )
-                        res = db!!.insertRequest(friend)
+                        res = db.insertRequest(friend)
                     }
 
                     launch (Dispatchers.Main) {
@@ -94,7 +91,7 @@ class RequestsRecyclerViewAdapter(
                     var res = false
 
                     withContext(Dispatchers.Default) {
-                        res = db!!.deleteFollowing(myID, item.userId)
+                        res = db.deleteFollowing(myID, item.userId)
                     }
 
                     launch (Dispatchers.Main) {
@@ -115,7 +112,7 @@ class RequestsRecyclerViewAdapter(
                 var res = false
 
                 withContext(Dispatchers.Default) {
-                    res = db!!.updateRequest(item.userId, myID, 1)
+                    res = db.updateRequest(item.userId, myID, 1)
                 }
 
                 launch (Dispatchers.Main) {
@@ -134,7 +131,7 @@ class RequestsRecyclerViewAdapter(
                 var res = false
 
                 withContext(Dispatchers.Default) {
-                    res = db!!.deleteFollowingRequest(item.userId, myID)
+                    res = db.deleteFollowingRequest(item.userId, myID)
                 }
 
                 launch (Dispatchers.Main) {
@@ -149,13 +146,15 @@ class RequestsRecyclerViewAdapter(
 
         CoroutineScope(Dispatchers.Default).launch {
 
+            lateinit var bitmapDrawable: BitmapDrawable
+
             withContext(Dispatchers.Default) {
-                bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
+                var bitmap: Bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.smithers)
                 val height: Int = bitmap.height
                 val width: Int = bitmap.width
                 val dif: Double = height.toDouble() / width
                 bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-                bitmapDrawable = BitmapDrawable(view.context!!.resources, bitmap)
+                bitmapDrawable = BitmapDrawable(holder.mView.context!!.resources, bitmap)
             }
 
             launch (Dispatchers.Main) {
@@ -179,7 +178,7 @@ class RequestsRecyclerViewAdapter(
     // you provide access to all the views for a data item in a view holder.
     // Each data item is just a string in this case that is shown in a TextView.
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mUserImage: CircleImageView = view.userImage
+        val mUserImage: CircleImageView = mView.userImage
         val mUsername: TextView = mView.username
         val mConfirmButton: TextView = mView.confirm_button
         val mDeclineButton: TextView = mView.decline_button

@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.example.semicolon.following_followers.FollowersRecyclerViewAdapter">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:layout_margin="8dp"
         android:orientation="horizontal">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/userImage"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -23,9 +25,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
-        <!--android:src="@drawable/smithers"-->
+                <!--android:src="@drawable/smithers"-->
 
-        <TextView
+            <TextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,7 +39,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <TextView
+            <TextView
                 android:id="@+id/follow_un_follow_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -52,8 +54,11 @@
                 android:layout_marginEnd="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="HardcodedText" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+</layout>

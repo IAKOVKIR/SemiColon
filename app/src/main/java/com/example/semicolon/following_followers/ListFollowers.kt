@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
+import com.example.semicolon.databinding.ListFollowersBinding
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
@@ -30,9 +32,7 @@ class ListFollowers : Fragment() {
     private var userID: Int? = null
     private var exceptionID: Int? = null
     private var listUser: ArrayList<User> = ArrayList()
-    lateinit var list: RecyclerView
     lateinit var db: DatabaseOpenHelper
-    private var job: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,9 +47,10 @@ class ListFollowers : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val binding: ListFollowersBinding = DataBindingUtil.inflate(
+            inflater, R.layout.list_followers, container, false)
 
-        val view: View = inflater.inflate(R.layout.followers_requests_list_followers, container, false)
-        list = view.findViewById(R.id.list)
+        val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
 
         // Set the adapter
@@ -61,7 +62,7 @@ class ListFollowers : Fragment() {
             setHasFixedSize(true)
         }
 
-        job = CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Default).launch {
 
             if (listUser.isEmpty())
                 listUser.addAll(withContext(Dispatchers.Default) { load() })
@@ -74,7 +75,7 @@ class ListFollowers : Fragment() {
 
         }
 
-        return view
+        return binding.root
     }
 
     private fun load() : ArrayList<User> {
@@ -89,12 +90,6 @@ class ListFollowers : Fragment() {
             throw RuntimeException("$context must implement OnListFragmentInteractionListener")
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-        job.cancel()
-    }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -104,5 +99,4 @@ class ListFollowers : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
-
 }

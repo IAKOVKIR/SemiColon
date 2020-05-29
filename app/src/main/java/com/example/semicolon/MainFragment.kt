@@ -51,29 +51,28 @@ class MainFragment : Fragment() {
             inflater, R.layout.fragment_main, container, false)
         val db = DatabaseOpenHelper(requireContext())
 
-        //TextViews
         //TextView representing user's full name
-        val nameText: TextView = binding.name
+        val name: TextView = binding.name
 
         //TextView representing user's phone number
-        val phoneNum: TextView = binding.phoneNumber
+        val phoneNumber: TextView = binding.phoneNumber
 
         //TextView representing the number of followers
-        val numOfFollowers: TextView = binding.followersNumber
+        val followersNumber: TextView = binding.followersNumber
 
         //TextView representing the number of users you follow
-        val numOfFollowing: TextView = binding.followingNumber
+        val followingNumber: TextView = binding.followingNumber
 
         //TextView representing user's email
         val email: TextView = binding.email
 
-        val imageView: CircleImageView = binding.circleImageView
+        val circleImageView: CircleImageView = binding.circleImageView
 
         //LinearLayouts
-        val followersLink: LinearLayout = binding.linearLayoutFollowers
-        val followingLink: LinearLayout = binding.linearLayoutFollowing
+        val linearLayoutFollowers: LinearLayout = binding.linearLayoutFollowers
+        val linearLayoutFollowing: LinearLayout = binding.linearLayoutFollowing
 
-        nameText.text = username
+        name.text = username
 
         CoroutineScope(Dispatchers.Default).launch {
 
@@ -90,7 +89,7 @@ class MainFragment : Fragment() {
 
             launch (Dispatchers.Main) {
                 // process the data on the UI thread
-                imageView.setImageDrawable(bitmapDrawable)
+                circleImageView.setImageDrawable(bitmapDrawable)
             }
 
         }
@@ -118,19 +117,19 @@ class MainFragment : Fragment() {
 
             launch (Dispatchers.Main) {
                 // process the data on the UI thread
-                phoneNum.text = userPhone
+                phoneNumber.text = userPhone
                 email.text = emailText
-                numOfFollowers.text = "$followers"
-                numOfFollowing.text = "$following"
+                followersNumber.text = "$followers"
+                followingNumber.text = "$following"
             }
 
         }
 
-        followersLink.setOnClickListener {
+        linearLayoutFollowers.setOnClickListener {
             sendToFollowersFollowing(0)
         }
 
-        followingLink.setOnClickListener {
+        linearLayoutFollowing.setOnClickListener {
             sendToFollowersFollowing(1)
         }
 

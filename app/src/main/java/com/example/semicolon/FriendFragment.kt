@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.text.HtmlCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.semicolon.databinding.FragmentFriendBinding
 import com.example.semicolon.following_followers.PublicFollowersFollowingFragment
 import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
@@ -33,9 +35,7 @@ class FriendFragment : Fragment() {
     private var myID: Int? = null
     private var userID: Int? = null
     private var exceptionID: Int? = null
-    private var db: DatabaseOpenHelper? = null
-    private lateinit var bitmap: Bitmap
-    private lateinit var bitmapDrawable: BitmapDrawable
+    lateinit var db: DatabaseOpenHelper
     //Array str contains 3 of these conditions
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")//-1, 0, 1
     //Time object
@@ -52,27 +52,28 @@ class FriendFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view: View = inflater.inflate(R.layout.fragment_friend, container, false)
+        val binding: FragmentFriendBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_friend, container, false)
         //DatabaseOpenHelper object
         db = DatabaseOpenHelper(requireContext())
 
         //TextViews
-        val name: TextView = view.findViewById(R.id.name)
-        val phone: TextView = view.findViewById(R.id.phone_number)
-        val email: TextView = view.findViewById(R.id.email)
-        val followedBy: TextView = view.findViewById(R.id.followed_by)
-        val numOfFollowers: TextView = view.findViewById(R.id.followers_number)
-        val numOfFollowing: TextView = view.findViewById(R.id.following_number)
+        val name: TextView = binding.name
+        val phoneNumber: TextView = binding.phoneNumber
+        val email: TextView = binding.email
+        val followedBy: TextView = binding.followedBy
+        val followersNumber: TextView = binding.followersNumber
+        val followingNumber: TextView = binding.followingNumber
 
-        val circleImageView: CircleImageView = view.findViewById(R.id.circleImageView)
+        val circleImageView: CircleImageView = binding.circleImageView
 
         //Buttons
-        val followButton: TextView = view.findViewById(R.id.follow_un_follow_button)
-        val backButton: ImageView = view.findViewById(R.id.back_button)
+        val followUnFollowButton: TextView = binding.followUnFollowButton
+        val backButton: ImageView = binding.backButton
 
         //Layouts
-        val followersLayout: LinearLayout = view.findViewById(R.id.linear_layout_followers)
-        val followingLayout: LinearLayout = view.findViewById(R.id.linear_layout_following)
+        val linearLayoutFollowers: LinearLayout = binding.linearLayoutFollowers
+        val linearLayoutFollowing: LinearLayout = binding.linearLayoutFollowing
         //val eventsLayout: LinearLayout = findViewById(R.id.linear_layout_following)
 
         var bool = 0
@@ -86,15 +87,15 @@ class FriendFragment : Fragment() {
             var following = 0
 
             withContext(Dispatchers.Default) {
-                userObject = db!!.findUserByID(userID!!)
+                userObject = db.findUserByID(userID!!)
                 //variable phoneImp contains a string of phone number ("#(###)### ###")
                 if (userObject.phone.isNotEmpty())
                     phoneNum = "${userObject.phone[0]}(${userObject.phone.substring(1, 4)})${userObject.phone.substring(4, 7)} ${userObject.phone.substring(7, 10)}"
 
-                followers = db!!.countFollowers(userID!!)
-                following = db!!.countFollowing(userID!!)
-                bool = db!!.checkFollower(myID!!, userID!!)
-                followedByList = db!!.readFirstThreeMutualFollowers(myID!!, userID!!)
+                followers = db.countFollowers(userID!!)
+                following = db.countFollowing(userID!!)
+                bool = db.checkFollower(myID!!, userID!!)
+                followedByList = db.readFirstThreeMutualFollowers(myID!!, userID!!)
 
                 val len: Int = followedByList.size
                 followedByLine = when {
@@ -109,11 +110,11 @@ class FriendFragment : Fragment() {
             launch (Dispatchers.Main) {
                 // process the data on the UI thread
                 name.text = userObject.username
-                phone.text = phoneNum
+                phoneNumber.text = phoneNum
                 email.text = userObject.email
-                numOfFollowers.text = "$followers"
-                numOfFollowing.text = "$following"
-                followButton.text = str[bool + 1]
+                followersNumber.text = "$followers"
+                followingNumber.text = "$following"
+                followUnFollowButton.text = str[bool + 1]
                 followedBy.isEnabled = true
                 followedBy.text = HtmlCompat.fromHtml(followedByLine, HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
@@ -122,13 +123,15 @@ class FriendFragment : Fragment() {
 
         CoroutineScope(Dispatchers.Default).launch {
 
+            lateinit var bitmapDrawable: BitmapDrawable
+
             withContext(Dispatchers.Default) {
-                bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.burns)
+                var bitmap: Bitmap = BitmapFactory.decodeResource(binding.root.resources, R.drawable.burns)
                 val height: Int = bitmap.height
                 val width: Int = bitmap.width
                 val dif: Double = height.toDouble() / width
                 bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-                bitmapDrawable = BitmapDrawable(view.context!!.resources, bitmap)
+                bitmapDrawable = BitmapDrawable(binding.root.context!!.resources, bitmap)
             }
 
             launch (Dispatchers.Main) {
@@ -156,54 +159,56 @@ class FriendFragment : Fragment() {
         "-1" - "you do not follow the user"
         */
 
-        followButton.setOnClickListener{
+        followUnFollowButton.setOnClickListener{
 
-            if (bool == -1)
+            if (bool == -1) {
                 CoroutineScope(Dispatchers.Default).launch {
 
                     var res = false
 
                     withContext(Dispatchers.Default) {
-                        val friend = Friend(myID!!, userID!!,
-                            time.getDate(), time.getTime(), 0)
-                        res = db!!.insertRequest(friend)
+                        val friend = Friend(
+                            myID!!, userID!!,
+                            time.getDate(), time.getTime(), 0
+                        )
+                        res = db.insertRequest(friend)
                     }
 
-                    launch (Dispatchers.Main) {
+                    launch(Dispatchers.Main) {
                         if (res) {
-                            followButton.text = str[1]
+                            followUnFollowButton.text = str[1]
                             bool = 0
                         }
                     }
                 }
-            else
+            } else {
                 CoroutineScope(Dispatchers.Default).launch {
 
                     var res = false
 
                     withContext(Dispatchers.Default) {
-                        res = db!!.deleteFollowing(myID!!, userID!!)
+                        res = db.deleteFollowing(myID!!, userID!!)
                     }
 
-                    launch (Dispatchers.Main) {
+                    launch(Dispatchers.Main) {
                         if (res) {
-                            followButton.text = str[2]
+                            followUnFollowButton.text = str[2]
                             bool = 1
                         }
                     }
                 }
-
+            }
         }
 
-        followersLayout.setOnClickListener {
+        linearLayoutFollowers.setOnClickListener {
             sendToFollowersFollowing(1)
         }
 
-        followingLayout.setOnClickListener {
+        linearLayoutFollowing.setOnClickListener {
             sendToFollowersFollowing(2)
         }
 
-        return view
+        return binding.root
     }
 
     private fun sendToFollowersFollowing(slideNumber: Int) {
@@ -220,5 +225,4 @@ class FriendFragment : Fragment() {
             .replace(R.id.nav_host, fragment, "to_public_followers_following")
             .commit()
     }
-
 }
