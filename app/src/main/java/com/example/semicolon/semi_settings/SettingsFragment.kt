@@ -9,16 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.semicolon.R
+import com.example.semicolon.databinding.FragmentSettingsBinding
 import com.example.semicolon.semi_settings.Setting.SettingItem
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
- * [SettingFragment.OnListFragmentInteractionListener] interface.
+ * [SettingsFragment.OnListFragmentInteractionListener] interface.
  */
-class SettingFragment : Fragment() {
+class SettingsFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
 
@@ -26,9 +28,10 @@ class SettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_settings_list, container, false)
-        val list: RecyclerView = view.findViewById(R.id.list)
-        val backButton: TextView = view.findViewById(R.id.back_button)
+        val binding: FragmentSettingsBinding = DataBindingUtil.inflate(
+                    inflater, R.layout.fragment_settings, container, false)
+        val list: RecyclerView = binding.list
+        val backButton: TextView = binding.backButton
 
         // Set the adapter
         with(list) {
@@ -36,12 +39,11 @@ class SettingFragment : Fragment() {
             adapter = SettingsRecyclerViewAdapter(Setting.SETTING, listener)
         }
 
-        backButton.setOnClickListener {
-            val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("to_settings", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        backButton.setOnClickListener {view: View ->
+            view.findNavController().popBackStack()
         }
 
-        return view
+        return binding.root
     }
 
     override fun onAttach(context: Context) {

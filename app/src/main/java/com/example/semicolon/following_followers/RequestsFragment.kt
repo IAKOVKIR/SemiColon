@@ -7,52 +7,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import com.example.semicolon.R
 import com.example.semicolon.databinding.FragmentRequestsBinding
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
 
-// the fragment initialization parameters
-private const val MY_ID = "my_id"
-private const val USER_ID = "user_id"
-private const val EXCEPTION_ID = "exception_id"
-
 class RequestsFragment : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
-    private var myID: Int? = null
     private var userID: Int? = null
-    private var exceptionID: Int? = null
     private var listUser: ArrayList<User> = ArrayList()
     lateinit var db: DatabaseOpenHelper
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            myID = it.getInt(MY_ID)
-            userID = it.getInt(USER_ID)
-            exceptionID = it.getInt(EXCEPTION_ID)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentRequestsBinding  = DataBindingUtil.inflate(
             inflater, R.layout.fragment_requests, container, false)
-
-        val backButton: ImageView = binding.backButton
         val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
+
+        val args = RequestsFragmentArgs.fromBundle(requireArguments())
+        val myID: Int = args.myId //myID
+        userID = args.userId //myID
 
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
             adapter = RequestsRecyclerViewAdapter(
                 listUser,
-                listener as OnListFragmentInteractionListener, myID!!)
+                listener as OnListFragmentInteractionListener, myID)
             setHasFixedSize(true)
         }
 
@@ -69,9 +54,8 @@ class RequestsFragment : Fragment() {
 
         }
 
-        backButton.setOnClickListener {
-            val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("to_followers_requests", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        binding.backButton.setOnClickListener {view: View ->
+            view.findNavController().popBackStack()
         }
 
         return binding.root

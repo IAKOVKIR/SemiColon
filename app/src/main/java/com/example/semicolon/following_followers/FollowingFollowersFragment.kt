@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
+import androidx.navigation.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.semicolon.*
@@ -22,40 +23,28 @@ import com.google.android.material.tabs.TabLayoutMediator
 private const val MY_ID = "my_id"
 private const val USER_ID = "user_id"
 private const val EXCEPTION_ID = "exception_id"
-private const val SLIDE_NUMBER = "slide_number"
 
 class FollowingFollowersFragment : Fragment() {
-
-    private var myID: Int? = null
-    private var userID: Int? = null
-    private var exceptionID: Int? = null
-    private var linePos: Int? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            myID = it.getInt(MY_ID) //myID
-            userID = it.getInt(USER_ID) //myID
-            exceptionID = it.getInt(EXCEPTION_ID) //myID
-            linePos = it.getInt(SLIDE_NUMBER)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FollowingFollowersFragmentBinding = DataBindingUtil.inflate(
             inflater, R.layout.following_followers_fragment, container, false)
         val db = DatabaseOpenHelper(requireContext())
 
+        val args = FollowingFollowersFragmentArgs.fromBundle(requireArguments())
+        val myID: Int = args.myId //myID
+        val userID: Int = args.userId //myID
+        val exceptionID: Int = args.exceptionId //myID
+
         val viewpager: ViewPager2 = binding.viewpager
         val tabs: TabLayout = binding.tabs
-        val backButton: TextView = binding.backButton
         val requestsButton: TextView = binding.requestsButton
 
         tabs.setBackgroundColor(Color.WHITE)
         tabs.setTabTextColors(ContextCompat.getColor(requireContext(), R.color.SPECIAL), ContextCompat.getColor(requireContext(), R.color.BLUE))
         tabs.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
-        val viewPagerAdapter = ViewPagerAdapter(this, myID!!, userID!!, exceptionID!!)
+        val viewPagerAdapter = ViewPagerAdapter(this, myID, userID, exceptionID)
         var selectedTabPosition = 0
         viewpager.apply {
             adapter = viewPagerAdapter
@@ -75,12 +64,11 @@ class FollowingFollowersFragment : Fragment() {
             }
         }.attach()
 
-        if (linePos == 1)
+        if (args.slideNumber == 1)
             tabs.getTabAt(1)!!.select()
 
-        backButton.setOnClickListener {
-            val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("to_followers_following", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        binding.backButton.setOnClickListener {view: View ->
+            view.findNavController().popBackStack()
         }
 
         CoroutineScope(Dispatchers.Default).launch {
@@ -88,7 +76,7 @@ class FollowingFollowersFragment : Fragment() {
             var numOfRequests = 0
 
             withContext(Dispatchers.Default) {
-                numOfRequests = db.countFollowingRequests(myID!!)
+                numOfRequests = db.countFollowingRequests(myID)
             }
 
             launch(Dispatchers.Main) {
@@ -99,19 +87,9 @@ class FollowingFollowersFragment : Fragment() {
 
         }
 
-        requestsButton.setOnClickListener {
-
-            val fragment = RequestsFragment()
-            val argument = Bundle()
-            argument.putInt(MY_ID, myID!!)
-            argument.putInt(USER_ID, userID!!)
-            argument.putInt(EXCEPTION_ID, exceptionID!!)
-            fragment.arguments = argument
-            parentFragmentManager
-                .beginTransaction()
-                .addToBackStack("to_followers_requests")
-                .replace(R.id.nav_host, fragment, "to_followers_requests")
-                .commit()
+        requestsButton.setOnClickListener {view: View ->
+            view.findNavController().navigate(FollowingFollowersFragmentDirections
+                .actionFollowingFollowersFragmentToRequestsFragment(myID, userID))
         }
 
         return binding.root

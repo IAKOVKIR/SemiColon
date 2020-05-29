@@ -10,23 +10,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.semicolon.databinding.FragmentMainBinding
-import com.example.semicolon.semi_settings.SettingFragment
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.following_followers.FollowingFollowersFragment
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.*
-
-// the fragment initialization parameters, e.g MY_ID, USER_ID, EXCEPTION_ID and SLIDE_NUMBER
-private const val MY_ID = "my_id"
-private const val USER_ID = "user_id"
-private const val EXCEPTION_ID = "exception_id"
-private const val SLIDE_NUMBER = "slide_number"
 
 /**
  * A simple [Fragment] subclass.
@@ -125,39 +117,21 @@ class MainFragment : Fragment() {
 
         }
 
-        linearLayoutFollowers.setOnClickListener {
-            sendToFollowersFollowing(0)
+        linearLayoutFollowers.setOnClickListener { view: View ->
+            view.findNavController().navigate(MainFragmentDirections
+                .actionMainFragmentToFollowingFollowersFragment(userID, userID, userID, 0))
         }
 
-        linearLayoutFollowing.setOnClickListener {
-            sendToFollowersFollowing(1)
+        linearLayoutFollowing.setOnClickListener {view: View ->
+            view.findNavController().navigate(MainFragmentDirections
+                .actionMainFragmentToFollowingFollowersFragment(userID, userID, userID, 1))
         }
 
-        val settingsButton : ImageButton = binding.settingsButton
-        settingsButton.setOnClickListener {
-            parentFragmentManager
-                .beginTransaction()
-                .addToBackStack("to_settings")
-                .add(R.id.nav_host, SettingFragment(), "to_settings")
-                .commit()
+        binding.settingsButton.setOnClickListener { view: View ->
+            view.findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
         }
 
         //Inflate the layout for this fragment
         return binding.root
-    }
-
-    private fun sendToFollowersFollowing(slideNumber: Int) {
-        val fragment = FollowingFollowersFragment()
-        val argument = Bundle()
-        argument.putInt(MY_ID, userID)//myID
-        argument.putInt(USER_ID, userID)//myID
-        argument.putInt(EXCEPTION_ID, userID)//myID
-        argument.putInt(SLIDE_NUMBER, slideNumber)
-        fragment.arguments = argument
-        parentFragmentManager
-            .beginTransaction()
-            .addToBackStack("to_followers_following")
-            .replace(R.id.nav_host, fragment, "to_followers_following")
-            .commit()
     }
 }

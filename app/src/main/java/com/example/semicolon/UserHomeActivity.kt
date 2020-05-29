@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import com.example.semicolon.models.EventContent
 import com.example.semicolon.models.User
 import com.example.semicolon.following_followers.ListFollowers
@@ -25,7 +26,7 @@ private const val EVENT_ID = "event_id"
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     ListFollowers.OnListFragmentInteractionListener, ListFollowing.OnListFragmentInteractionListener,
     UserSearchFragment.OnListFragmentInteractionListener, RequestsFragment.OnListFragmentInteractionListener,
-        ListMutual.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener,
+        ListMutual.OnListFragmentInteractionListener, SettingsFragment.OnListFragmentInteractionListener,
         ListSearchFragment.OnListFragmentInteractionListener
 {
 
@@ -80,9 +81,10 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         when (item.itemId) {
             R.id.navigation_home -> {
                 //opens main fragment
-                val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)
-                if (currentFragment !is MainFragment)
-                    startFragment(MainFragment(), "open_main")
+                //val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)
+                //if (currentFragment !is MainFragment)
+                  //  startFragment(MainFragment(), "open_main")
+                findNavController(R.id.nav_host).navigate(R.id.mainFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
