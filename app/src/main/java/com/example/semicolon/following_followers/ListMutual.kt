@@ -18,14 +18,12 @@ import kotlinx.coroutines.*
 // the fragment initialization parameters
 private const val MY_ID = "my_id"
 private const val USER_ID = "user_id"
-private const val EXCEPTION_ID = "exception_id"
 
 class ListMutual : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
     private var myID: Int? = null
     private var userID: Int? = null
-    private var exceptionID: Int? = null
     lateinit var db: DatabaseOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +31,6 @@ class ListMutual : Fragment() {
         arguments?.let {
             myID = it.getInt(MY_ID)
             userID = it.getInt(USER_ID)
-            exceptionID = it.getInt(EXCEPTION_ID)
         }
     }
 

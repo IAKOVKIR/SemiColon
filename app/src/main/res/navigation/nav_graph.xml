@@ -21,7 +21,23 @@
             android:id="@+id/settingsFragment"
             android:name="com.example.semicolon.semi_settings.SettingsFragment"
             android:label="fragment_item_list"
-            tools:layout="@layout/fragment_settings" />
+            tools:layout="@layout/fragment_settings" >
+        <action
+                android:id="@+id/action_settingsFragment_to_notificationSettingsFragment"
+                app:destination="@id/notificationSettingsFragment" />
+        <action
+                android:id="@+id/action_settingsFragment_to_passwordSettingsFragment"
+                app:destination="@id/passwordSettingsFragment" />
+        <action
+                android:id="@+id/action_settingsFragment_to_languageSettingsFragment"
+                app:destination="@id/languageSettingsFragment" />
+        <action
+                android:id="@+id/action_settingsFragment_to_helpSettingsFragment"
+                app:destination="@id/helpSettingsFragment" />
+        <action
+                android:id="@+id/action_settingsFragment_to_aboutSettingsFragment"
+                app:destination="@id/aboutSettingsFragment" />
+    </fragment>
     <action android:id="@+id/action_global_main_dest" />
     <action android:id="@+id/action_global_list_dest" />
     <fragment
@@ -56,5 +72,78 @@
                 android:name="user_id"
                 app:argType="integer" />
     </fragment>
+    <fragment
+            android:id="@+id/friendFragment"
+            android:name="com.example.semicolon.FriendFragment"
+            android:label="fragment_friend"
+            tools:layout="@layout/fragment_friend" >
+        <action
+                android:id="@+id/action_friendFragment_to_publicFollowersFollowingFragment"
+                app:destination="@id/publicFollowersFollowingFragment" />
+        <argument
+                android:name="my_id"
+                app:argType="integer" />
+        <argument
+                android:name="user_id"
+                app:argType="integer" />
+    </fragment>
+    <fragment
+            android:id="@+id/publicFollowersFollowingFragment"
+            android:name="com.example.semicolon.following_followers.PublicFollowersFollowingFragment"
+            android:label="public_followers_following_fragment"
+            tools:layout="@layout/public_followers_following_fragment" >
+        <argument
+                android:name="my_id"
+                app:argType="integer" />
+        <argument
+                android:name="user_id"
+                app:argType="integer" />
+        <argument
+                android:name="slide_number"
+                app:argType="integer" />
+    </fragment>
+    <fragment
+            android:id="@+id/notificationSettingsFragment"
+            android:name="com.example.semicolon.semi_settings.NotificationSettingsFragment"
+            android:label="fragment_notification_settings"
+            tools:layout="@layout/fragment_notification_settings" />
+    <fragment
+            android:id="@+id/passwordSettingsFragment"
+            android:name="com.example.semicolon.semi_settings.PasswordSettingsFragment"
+            android:label="fragment_password_settings"
+            tools:layout="@layout/fragment_password_settings" >
+        <argument
+                android:name="my_id"
+                app:argType="integer" />
+    </fragment>
+    <fragment
+            android:id="@+id/languageSettingsFragment"
+            android:name="com.example.semicolon.semi_settings.LanguageSettingsFragment"
+            android:label="fragment_language_settings"
+            tools:layout="@layout/fragment_language_settings" />
+    <fragment
+            android:id="@+id/helpSettingsFragment"
+            android:name="com.example.semicolon.semi_settings.HelpSettingsFragment"
+            android:label="fragment_help_settings"
+            tools:layout="@layout/fragment_help_settings" />
+    <fragment
+            android:id="@+id/aboutSettingsFragment"
+            android:name="com.example.semicolon.semi_settings.AboutSettingsFragment"
+            android:label="fragment_about_settings"
+            tools:layout="@layout/fragment_about_settings" />
+    <fragment
+            android:id="@+id/listFragment"
+            android:name="com.example.semicolon.ListFragment"
+            android:label="fragment_item_list"
+            tools:layout="@layout/fragment_item_list" >
+        <action
+                android:id="@+id/action_listFragment_to_userSearchFragment"
+                app:destination="@id/userSearchFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/userSearchFragment"
+            android:name="com.example.semicolon.UserSearchFragment"
+            android:label="fragment_user_search"
+            tools:layout="@layout/fragment_user_search" />
 
 </navigation>

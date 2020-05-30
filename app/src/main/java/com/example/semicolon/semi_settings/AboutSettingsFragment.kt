@@ -5,41 +5,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.FragmentManager
-
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.semicolon.R
-
-// the fragment initialization parameter, e.g MY_ID
-private const val MY_ID = "my_id"
+import com.example.semicolon.databinding.FragmentAboutSettingsBinding
+//import com.example.semicolon.following_followers.FollowingFollowersFragmentArgs
 
 /**
  * A simple [Fragment] subclass.
  */
 class AboutSettingsFragment : Fragment() {
 
-    private var myID: Int? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            myID = it.getInt(MY_ID) //myID
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view: View = inflater.inflate(R.layout.fragment_about_settings, container, false)
-        val backButton: TextView = view.findViewById(R.id.back_button)
+        val binding: FragmentAboutSettingsBinding = DataBindingUtil.inflate(
+                    inflater, R.layout.fragment_about_settings, container, false)
+        //val args = FollowingFollowersFragmentArgs.fromBundle(requireArguments())
+        //val myID: Int = args.myId //myID
 
-        backButton.setOnClickListener {
-            val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("to_about_settings", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        binding.backButton.setOnClickListener {view: View ->
+            view.findNavController().popBackStack()
         }
 
-        return view
+        return binding.root
     }
 }

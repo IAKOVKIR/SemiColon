@@ -1,11 +1,7 @@
 package com.example.semicolon.following_followers
 
 import android.content.Context
-//import android.graphics.Bitmap
-//import android.graphics.BitmapFactory
-//import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-//import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,8 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-//import android.widget.EditText
-//import androidx.loader.content.AsyncTaskLoader
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
 import com.example.semicolon.databinding.ListFollowingBinding
@@ -32,16 +26,13 @@ class ListFollowing : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     private var myID: Int? = null
     private var userID: Int? = null
-    private var exceptionID: Int? = null
-    private var listUser: ArrayList<User> = ArrayList()
-    private var db: DatabaseOpenHelper? = null
+    lateinit var db: DatabaseOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             myID = it.getInt("my_id")
             userID = it.getInt("user_id")
-            exceptionID = it.getInt("exception_id")
         }
     }
 
@@ -53,6 +44,7 @@ class ListFollowing : Fragment() {
             inflater, R.layout.list_following, container, false)
         val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
+        val listUser: ArrayList<User> = ArrayList()
 
         // Set the adapter
         with(list) {
@@ -81,7 +73,7 @@ class ListFollowing : Fragment() {
     }
 
     private fun load() : ArrayList<User> {
-        return db!!.readAllFollowing(userID!!)
+        return db.readAllFollowing(userID!!)
     }
 
     override fun onAttach(context: Context) {

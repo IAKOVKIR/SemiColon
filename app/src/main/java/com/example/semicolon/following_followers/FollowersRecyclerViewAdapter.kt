@@ -73,7 +73,6 @@ class FollowersRecyclerViewAdapter(
                 }
             }
 
-            holder.mIdView.text = item.username
             holder.mFollowUnFollowButton.setOnClickListener {
                 if (bool == -1) {
 
@@ -126,9 +125,7 @@ class FollowersRecyclerViewAdapter(
 
             withContext(Dispatchers.Default) {
                 var bitmap: Bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.smithers)
-                val height: Int = bitmap.height
-                val width: Int = bitmap.width
-                val dif: Double = height.toDouble() / width
+                val dif: Double = bitmap.height.toDouble() / bitmap.width
                 bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
                 bitmapDrawable = BitmapDrawable(holder.mView.context!!.resources, bitmap)
             }

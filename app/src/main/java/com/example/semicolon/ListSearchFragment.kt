@@ -28,11 +28,9 @@ private const val MY_ID = "my_id"
 class ListSearchFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
-    private var listUser: ArrayList<User> = ArrayList()
     private var listEvent: ArrayList<Event> = ArrayList()
     private var myID: Int? = null
     lateinit var listE: RecyclerView
-    lateinit var listU: RecyclerView
     lateinit var db: DatabaseOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +61,6 @@ class ListSearchFragment : Fragment() {
 
 
         listE = view.findViewById(R.id.listEvent)
-        listU = view.findViewById(R.id.listUser)
         db = DatabaseOpenHelper(requireContext())
 
         // Set the adapter
@@ -75,15 +72,6 @@ class ListSearchFragment : Fragment() {
             setHasFixedSize(true)
         }
 
-        // Set the adapter
-        with(listU) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = ListSearchUserViewAdapter(
-                listUser,
-                listener as OnListFragmentInteractionListener, myID!!)
-            setHasFixedSize(true)
-        }
-
         CoroutineScope(Dispatchers.Default).launch {
 
             if (listEvent.isEmpty())
@@ -91,19 +79,6 @@ class ListSearchFragment : Fragment() {
 
             CoroutineScope(Dispatchers.Main).launch {
                 with(listE) {
-                    adapter!!.notifyDataSetChanged()
-                }
-            }
-
-        }
-
-        CoroutineScope(Dispatchers.Default).launch {
-
-            if (listUser.isEmpty())
-                listUser.addAll(withContext(Dispatchers.Default) { loadUsers() })
-
-            CoroutineScope(Dispatchers.Main).launch {
-                with(listU) {
                     adapter!!.notifyDataSetChanged()
                 }
             }
@@ -127,10 +102,6 @@ class ListSearchFragment : Fragment() {
         return db.readAllEvents()
     }
 
-    private fun loadUsers() : ArrayList<User> {
-        return db.readFirstSixUsers()
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnListFragmentInteractionListener)
@@ -152,7 +123,6 @@ class ListSearchFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: Event?)
-        fun onListFragmentInteraction(item: User?)
     }
 
 }

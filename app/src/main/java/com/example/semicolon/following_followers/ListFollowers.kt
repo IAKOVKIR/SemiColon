@@ -18,7 +18,6 @@ import kotlinx.coroutines.*
 // the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
 private const val MY_ID = "my_id"
 private const val USER_ID = "user_id"
-private const val EXCEPTION_ID = "exception_id"
 
 /**
  * A fragment representing a list of Items.
@@ -30,8 +29,6 @@ class ListFollowers : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     private var myID: Int? = null
     private var userID: Int? = null
-    private var exceptionID: Int? = null
-    private var listUser: ArrayList<User> = ArrayList()
     lateinit var db: DatabaseOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +36,6 @@ class ListFollowers : Fragment() {
         arguments?.let {
             myID = it.getInt(MY_ID)
             userID = it.getInt(USER_ID)
-            exceptionID = it.getInt(EXCEPTION_ID)
         }
     }
 
@@ -49,9 +45,9 @@ class ListFollowers : Fragment() {
     ): View? {
         val binding: ListFollowersBinding = DataBindingUtil.inflate(
             inflater, R.layout.list_followers, container, false)
-
         val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
+        val listUser: ArrayList<User> = ArrayList()
 
         // Set the adapter
         with(list) {
@@ -79,7 +75,7 @@ class ListFollowers : Fragment() {
     }
 
     private fun load() : ArrayList<User> {
-        return db.readAllFollowers(userID!!, 1/*, myID!!*/)
+        return db.readAllFollowers(userID!!, 1)
     }
 
     override fun onAttach(context: Context) {

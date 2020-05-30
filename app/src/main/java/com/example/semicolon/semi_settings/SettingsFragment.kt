@@ -3,12 +3,10 @@ package com.example.semicolon.semi_settings
 import android.os.Bundle
 import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import android.view.LayoutInflater
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.example.semicolon.R
@@ -30,16 +28,14 @@ class SettingsFragment : Fragment() {
     ): View? {
         val binding: FragmentSettingsBinding = DataBindingUtil.inflate(
                     inflater, R.layout.fragment_settings, container, false)
-        val list: RecyclerView = binding.list
-        val backButton: TextView = binding.backButton
 
         // Set the adapter
-        with(list) {
+        with(binding.list) {
             layoutManager = LinearLayoutManager(context)
             adapter = SettingsRecyclerViewAdapter(Setting.SETTING, listener)
         }
 
-        backButton.setOnClickListener {view: View ->
+        binding.backButton.setOnClickListener {view: View ->
             view.findNavController().popBackStack()
         }
 

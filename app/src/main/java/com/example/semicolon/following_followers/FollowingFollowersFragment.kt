@@ -22,7 +22,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 // the fragment initialization parameters, e.g MY_ID, USER_ID, EXCEPTION_ID and SLIDE_NUMBER
 private const val MY_ID = "my_id"
 private const val USER_ID = "user_id"
-private const val EXCEPTION_ID = "exception_id"
 
 class FollowingFollowersFragment : Fragment() {
 
@@ -34,7 +33,6 @@ class FollowingFollowersFragment : Fragment() {
         val args = FollowingFollowersFragmentArgs.fromBundle(requireArguments())
         val myID: Int = args.myId //myID
         val userID: Int = args.userId //myID
-        val exceptionID: Int = args.exceptionId //myID
 
         val viewpager: ViewPager2 = binding.viewpager
         val tabs: TabLayout = binding.tabs
@@ -44,7 +42,7 @@ class FollowingFollowersFragment : Fragment() {
         tabs.setTabTextColors(ContextCompat.getColor(requireContext(), R.color.SPECIAL), ContextCompat.getColor(requireContext(), R.color.BLUE))
         tabs.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
 
-        val viewPagerAdapter = ViewPagerAdapter(this, myID, userID, exceptionID)
+        val viewPagerAdapter = ViewPagerAdapter(this, myID, userID)
         var selectedTabPosition = 0
         viewpager.apply {
             adapter = viewPagerAdapter
@@ -64,12 +62,7 @@ class FollowingFollowersFragment : Fragment() {
             }
         }.attach()
 
-        if (args.slideNumber == 1)
-            tabs.getTabAt(1)!!.select()
-
-        binding.backButton.setOnClickListener {view: View ->
-            view.findNavController().popBackStack()
-        }
+        tabs.getTabAt(args.slideNumber)!!.select()
 
         CoroutineScope(Dispatchers.Default).launch {
 
@@ -92,14 +85,17 @@ class FollowingFollowersFragment : Fragment() {
                 .actionFollowingFollowersFragmentToRequestsFragment(myID, userID))
         }
 
+        binding.backButton.setOnClickListener {view: View ->
+            view.findNavController().popBackStack()
+        }
+
         return binding.root
     }
 
-    private fun getTab(my_id: Int, user_id: Int, exception_id: Int, pos: Int): Fragment {
+    private fun getTab(my_id: Int, user_id: Int, pos: Int): Fragment {
         val args = Bundle()
         args.putInt(MY_ID, my_id)
         args.putInt(USER_ID, user_id)
-        args.putInt(EXCEPTION_ID, exception_id)
         val f = if (pos == 0)
             ListFollowers()
         else
@@ -108,14 +104,13 @@ class FollowingFollowersFragment : Fragment() {
         return f
     }
 
-    internal inner class ViewPagerAdapter(fr: Fragment, my_id: Int, user_id: Int, exception_id: Int) : FragmentStateAdapter(fr) {
+    internal inner class ViewPagerAdapter(fr: Fragment, my_id: Int, user_id: Int) : FragmentStateAdapter(fr) {
 
         private val myID = my_id
         private val userID = user_id
-        private val exceptionID = exception_id
 
         override fun createFragment(position: Int): Fragment = when (position) {
-            0, 1 -> getTab(myID, userID, exceptionID, position)
+            0, 1 -> getTab(myID, userID, position)
             else -> throw IllegalStateException("Invalid adapter position")
         }
         override fun getItemCount(): Int = 2

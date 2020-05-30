@@ -20,38 +20,30 @@ import kotlinx.android.synthetic.main.activity_user_home.*
 // the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
 private const val MY_ID = "my_id"
 private const val USER_ID = "user_id"
-private const val EXCEPTION_ID = "exception_id"
 private const val EVENT_ID = "event_id"
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     ListFollowers.OnListFragmentInteractionListener, ListFollowing.OnListFragmentInteractionListener,
     UserSearchFragment.OnListFragmentInteractionListener, RequestsFragment.OnListFragmentInteractionListener,
         ListMutual.OnListFragmentInteractionListener, SettingsFragment.OnListFragmentInteractionListener,
-        ListSearchFragment.OnListFragmentInteractionListener
-{
+        ListSearchFragment.OnListFragmentInteractionListener {
 
     private var myID: Int? = null
     private lateinit var n: SharedPreferences
 
     override fun onListFragmentInteraction(item: User?) {
-        myID = n.getInt("id", 1)
+        myID = n.getInt("id", -1)
 
-        if (item!!.userId != myID) {
-            val args = Bundle()
-            args.putInt(MY_ID, myID!!)
-            args.putInt(USER_ID, item.userId)
-            args.putInt(EXCEPTION_ID, myID!!)
+        val args = Bundle()
+        args.putInt(MY_ID, myID!!)
+        args.putInt(USER_ID, item!!.userId)
 
-            val t = FriendFragment()
-            t.arguments = args
-            startFragment(t, "to_friend")
-        } else
-            startFragment(MainFragment(), "open_main")
+        findNavController(R.id.nav_host).navigate(R.id.friendFragment, args)
     }
 
     //listener for events list
     override fun onListFragmentInteraction(item: EventContent.Event?) {
-        myID = n.getInt("id", 1)
+        myID = n.getInt("id", -1)
 
         val args = Bundle()
         args.putInt(MY_ID, myID!!)
@@ -63,13 +55,17 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     }
 
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
+        myID = n.getInt("id", -1)
+
+        val args = Bundle()
+        args.putInt(MY_ID, myID!!)
 
         when (item!!.pos) {
-            1 -> startFragmentArgs(NotificationSettingsFragment(), "to_notifications_settings")
-            2 -> startFragmentArgs(PasswordSettingsFragment(), "to_password_settings")
-            3 -> startFragmentArgs(LanguageSettingsFragment(), "to_language_settings")
-            4 -> startFragmentArgs(HelpSettingsFragment(), "to_help_settings")
-            5 -> startFragmentArgs(AboutSettingsFragment(), "to_about_settings")
+            1 -> findNavController(R.id.nav_host).navigate(R.id.notificationSettingsFragment, args)
+            2 -> findNavController(R.id.nav_host).navigate(R.id.passwordSettingsFragment, args)
+            3 -> findNavController(R.id.nav_host).navigate(R.id.languageSettingsFragment, args)
+            4 -> findNavController(R.id.nav_host).navigate(R.id.helpSettingsFragment, args)
+            5 -> findNavController(R.id.nav_host).navigate(R.id.aboutSettingsFragment, args)
             else -> logOut()
         }
 
@@ -81,17 +77,16 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         when (item.itemId) {
             R.id.navigation_home -> {
                 //opens main fragment
-                //val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)
-                //if (currentFragment !is MainFragment)
-                  //  startFragment(MainFragment(), "open_main")
-                findNavController(R.id.nav_host).navigate(R.id.mainFragment)
+                if (findNavController(R.id.nav_host).currentDestination!!.id != R.id.mainFragment) {
+                    findNavController(R.id.nav_host).navigate(R.id.mainFragment)
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
                 //opens event list fragment (ListFragment.kt)
-                val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)
-                if (currentFragment !is ListFragment)
-                    startFragment(ListFragment(), "open_list")
+                if (findNavController(R.id.nav_host).currentDestination!!.id != R.id.listFragment) {
+                    findNavController(R.id.nav_host).navigate(R.id.listFragment)
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {

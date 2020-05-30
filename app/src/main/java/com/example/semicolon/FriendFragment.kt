@@ -7,18 +7,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import com.example.semicolon.databinding.FragmentFriendBinding
-import com.example.semicolon.following_followers.PublicFollowersFollowingFragment
 import com.example.semicolon.models.Friend
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.support_features.Time
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,14 +25,11 @@ import kotlinx.coroutines.withContext
 // the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
 private const val MY_ID = "my_id"
 private const val USER_ID = "user_id"
-private const val EXCEPTION_ID = "exception_id"
-private const val SLIDE_NUMBER = "slide_number"
 
 class FriendFragment : Fragment() {
 
     private var myID: Int? = null
     private var userID: Int? = null
-    private var exceptionID: Int? = null
     lateinit var db: DatabaseOpenHelper
     //Array str contains 3 of these conditions
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")//-1, 0, 1
@@ -46,7 +41,6 @@ class FriendFragment : Fragment() {
         arguments?.let {
             myID = it.getInt(MY_ID) //myID
             userID = it.getInt(USER_ID) //userID
-            exceptionID = it.getInt(EXCEPTION_ID) //myID
         }
     }
 
@@ -58,22 +52,10 @@ class FriendFragment : Fragment() {
         db = DatabaseOpenHelper(requireContext())
 
         //TextViews
-        val name: TextView = binding.name
-        val phoneNumber: TextView = binding.phoneNumber
-        val email: TextView = binding.email
         val followedBy: TextView = binding.followedBy
-        val followersNumber: TextView = binding.followersNumber
-        val followingNumber: TextView = binding.followingNumber
-
-        val circleImageView: CircleImageView = binding.circleImageView
-
-        //Buttons
         val followUnFollowButton: TextView = binding.followUnFollowButton
-        val backButton: ImageView = binding.backButton
 
         //Layouts
-        val linearLayoutFollowers: LinearLayout = binding.linearLayoutFollowers
-        val linearLayoutFollowing: LinearLayout = binding.linearLayoutFollowing
         //val eventsLayout: LinearLayout = findViewById(R.id.linear_layout_following)
 
         var bool = 0
@@ -109,11 +91,11 @@ class FriendFragment : Fragment() {
 
             launch (Dispatchers.Main) {
                 // process the data on the UI thread
-                name.text = userObject.username
-                phoneNumber.text = phoneNum
-                email.text = userObject.email
-                followersNumber.text = "$followers"
-                followingNumber.text = "$following"
+                binding.name.text = userObject.username
+                binding.phoneNumber.text = phoneNum
+                binding.email.text = userObject.email
+                binding.followersNumber.text = "$followers"
+                binding.followingNumber.text = "$following"
                 followUnFollowButton.text = str[bool + 1]
                 followedBy.isEnabled = true
                 followedBy.text = HtmlCompat.fromHtml(followedByLine, HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -127,29 +109,16 @@ class FriendFragment : Fragment() {
 
             withContext(Dispatchers.Default) {
                 var bitmap: Bitmap = BitmapFactory.decodeResource(binding.root.resources, R.drawable.burns)
-                val height: Int = bitmap.height
-                val width: Int = bitmap.width
-                val dif: Double = height.toDouble() / width
+                val dif: Double = bitmap.height.toDouble() / bitmap.width
                 bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
                 bitmapDrawable = BitmapDrawable(binding.root.context!!.resources, bitmap)
             }
 
             launch (Dispatchers.Main) {
                 // process the data on the UI thread
-                circleImageView.setImageDrawable(bitmapDrawable)
+                binding.circleImageView.setImageDrawable(bitmapDrawable)
             }
 
-        }
-
-        //OnClickListener's
-
-        backButton.setOnClickListener {
-            val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("to_friend", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
-
-        followedBy.setOnClickListener {
-            sendToFollowersFollowing(0)
         }
 
         /*
@@ -200,29 +169,26 @@ class FriendFragment : Fragment() {
             }
         }
 
-        linearLayoutFollowers.setOnClickListener {
-            sendToFollowersFollowing(1)
+        //OnClickListener's
+        followedBy.setOnClickListener {view: View ->
+            view.findNavController().navigate(FriendFragmentDirections
+                .actionFriendFragmentToPublicFollowersFollowingFragment(myID!!, userID!!, 0))
         }
 
-        linearLayoutFollowing.setOnClickListener {
-            sendToFollowersFollowing(2)
+        binding.linearLayoutFollowers.setOnClickListener {view: View ->
+            view.findNavController().navigate(FriendFragmentDirections
+                .actionFriendFragmentToPublicFollowersFollowingFragment(myID!!, userID!!, 1))
+        }
+
+        binding.linearLayoutFollowing.setOnClickListener {view: View ->
+            view.findNavController().navigate(FriendFragmentDirections
+                .actionFriendFragmentToPublicFollowersFollowingFragment(myID!!, userID!!, 2))
+        }
+
+        binding.backButton.setOnClickListener {view: View ->
+            view.findNavController().popBackStack()
         }
 
         return binding.root
-    }
-
-    private fun sendToFollowersFollowing(slideNumber: Int) {
-        val fragment = PublicFollowersFollowingFragment()
-        val argument = Bundle()
-        argument.putInt(MY_ID, myID!!)
-        argument.putInt(USER_ID, userID!!)
-        argument.putInt(EXCEPTION_ID, userID!!)
-        argument.putInt(SLIDE_NUMBER, slideNumber)
-        fragment.arguments = argument
-        parentFragmentManager
-            .beginTransaction()
-            .addToBackStack("to_public_followers_following")
-            .replace(R.id.nav_host, fragment, "to_public_followers_following")
-            .commit()
     }
 }

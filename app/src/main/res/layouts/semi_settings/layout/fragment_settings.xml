@@ -48,7 +48,7 @@
             android:name="com.example.semicolon.SettingFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/fragment_setting"
+            tools:listitem="@layout/settings_recycler_view_adapter"
             tools:context=".semi_settings.SettingsFragment"
             app:layoutManager="LinearLayoutManager"
             android:layout_marginTop="8dp"

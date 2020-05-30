@@ -19,7 +19,6 @@ import kotlinx.coroutines.*
 class RequestsFragment : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     private var userID: Int? = null
-    private var listUser: ArrayList<User> = ArrayList()
     lateinit var db: DatabaseOpenHelper
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -27,6 +26,7 @@ class RequestsFragment : Fragment() {
             inflater, R.layout.fragment_requests, container, false)
         val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
+        val listUser: ArrayList<User> = ArrayList()
 
         val args = RequestsFragmentArgs.fromBundle(requireArguments())
         val myID: Int = args.myId //myID
