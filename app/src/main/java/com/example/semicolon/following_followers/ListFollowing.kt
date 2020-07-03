@@ -12,7 +12,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
 import com.example.semicolon.databinding.ListFollowingBinding
-import com.example.semicolon.models.User
+import com.example.semicolon.sqlite_database.User
 import kotlinx.coroutines.*
 
 /**

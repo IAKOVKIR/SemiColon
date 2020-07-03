@@ -13,9 +13,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.semicolon.databinding.FragmentFriendBinding
-import com.example.semicolon.models.Friend
-import com.example.semicolon.models.User
+import com.example.semicolon.sqlite_database.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.Follower
 import com.example.semicolon.support_features.Time
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -136,9 +136,9 @@ class FriendFragment : Fragment() {
                     var res = false
 
                     withContext(Dispatchers.Default) {
-                        val friend = Friend(
-                            myID!!, userID!!,
-                            time.getDate(), time.getTime(), 0
+                        val friend = Follower(
+                            myID!!, userID!!, 0,
+                            time.toString(), time.toString()
                         )
                         res = db.insertRequest(friend)
                     }

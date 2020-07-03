@@ -76,9 +76,9 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
     }
 
     @Throws(SQLiteConstraintException::class)
-    fun insertRequest(friend: Friend): Boolean {
+    fun insertRequest(follower: Follower): Boolean {
 
-        val check: Int = checkFollower(friend.SenderID, friend.ReceiverID)
+        val check: Int = checkFollower(follower.SenderID, follower.ReceiverID)
 
         if (check == -1) {
             val db: SQLiteDatabase = writableDatabase
@@ -87,11 +87,11 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
             val values = ContentValues()
 
             //values.put(DBContract.UserEntry.FOLLOWER_COLUMN_ID, friend.id)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID, friend.SenderID)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID, friend.ReceiverID)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_DATE, friend.date)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_TIME, friend.time)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION, friend.condition)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID, follower.SenderID)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID, follower.ReceiverID)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION, follower.Condition)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_DATE_ACCEPTED, follower.DateAccepted)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_DATE_CREATED, follower.DateCreated)
 
             db.insert(DBContract.UserEntry.FOLLOWER_TABLE_NAME, null, values)
 
@@ -185,7 +185,18 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                 val lastModified: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
                 val dateCreated: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
 
-                users = User(id, username, phone, password, fullName, bioDescription, email, rating, lastModified, dateCreated)
+                users = User(
+                    id,
+                    username,
+                    phone,
+                    password,
+                    fullName,
+                    bioDescription,
+                    email,
+                    rating,
+                    lastModified,
+                    dateCreated
+                )
             }
 
         cursor.close()
@@ -251,7 +262,18 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                     val lastModified: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
                     val dateCreated: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
 
-                    users = User(id, username, phone, password, fullName, bioDescription, email, rating, lastModified, dateCreated)
+                    users = User(
+                        id,
+                        username,
+                        phone,
+                        password,
+                        fullName,
+                        bioDescription,
+                        email,
+                        rating,
+                        lastModified,
+                        dateCreated
+                    )
                 }
 
         } catch (e: SQLiteException) {
@@ -723,9 +745,9 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                     DBContract.UserEntry.FOLLOWER_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID + " INTEGER NOT NULL, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID + " INTEGER NOT NULL, " +
-                    DBContract.UserEntry.FOLLOWER_COLUMN_DATE + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.FOLLOWER_COLUMN_TIME + " TEXT NOT NULL, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION + " INTEGER NOT NULL DEFAULT 0, " +
+                    DBContract.UserEntry.FOLLOWER_COLUMN_DATE_ACCEPTED + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.FOLLOWER_COLUMN_DATE_CREATED + " TEXT NOT NULL, " +
                     "FOREIGN KEY(" + DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID + ") REFERENCES " +
                     DBContract.UserEntry.USER_TABLE_NAME + "(" + DBContract.UserEntry.USER_COLUMN_USER_ID + "), " +
                     "FOREIGN KEY(" + DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID + ") REFERENCES " +

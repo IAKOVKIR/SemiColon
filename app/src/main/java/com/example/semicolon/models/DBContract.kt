@@ -24,9 +24,9 @@ object DBContract {
             const val FOLLOWER_COLUMN_ID = "FollowerID"
             const val FOLLOWER_COLUMN_SENDER_ID = "SenderID"
             const val FOLLOWER_COLUMN_RECEIVER_ID = "ReceiverID"
-            const val FOLLOWER_COLUMN_DATE = "Date"
-            const val FOLLOWER_COLUMN_TIME = "Time"
             const val FOLLOWER_COLUMN_CONDITION = "Condition"
+            const val FOLLOWER_COLUMN_DATE_ACCEPTED = "DateAccepted"
+            const val FOLLOWER_COLUMN_DATE_CREATED = "DateCreated"
 
             //EVENT table
             const val EVENT_TABLE_NAME = "EVENT"
@@ -34,11 +34,13 @@ object DBContract {
             const val EVENT_COLUMN_NAME = "EventName"
             const val EVENT_COLUMN_MAX_ATTENDEES = "MaxAttendees"
             const val EVENT_COLUMN_LOCATION = "Location"
+            const val EVENT_COLUMN_DESCRIPTION = "Description"
             const val EVENT_COLUMN_START_DATE = "StartDate"
             const val EVENT_COLUMN_END_DATE = "EndDate"
             const val EVENT_COLUMN_START_TIME = "StartTime"
             const val EVENT_COLUMN_END_TIME = "EndTime"
-            const val EVENT_COLUMN_CURRENT_STATUS = "CurrentStatus" // active, expired, cancelled
+            const val EVENT_COLUMN_LAST_MODIFIED = "LastModified"
+            const val EVENT_COLUMN_DATE_CREATED = "DateCreated"
 
             //ATTENDEES table
             const val ATTENDEE_TABLE_NAME = "ATTENDEES"
@@ -50,6 +52,13 @@ object DBContract {
             const val ATTENDEE_COLUMN_LAST_MODIFIED = "LastModified"
             const val ATTENDEE_COLUMN_DATE_ACCEPTED = "DateAccepted"
             const val ATTENDEE_COLUMN_DATE_CREATED = "DateCreated"
+
+            //EVENT_MEDIA table
+            const val EVENT_MEDIA_TABLE_NAME = "EVENT_MEDIA"
+            const val EVENT_MEDIA_ID = "EventMediaID"
+            const val EVENT_MEDIA_EVENT_ID = "EventID"
+            const val EVENT_MEDIA_FILE_NAME = "FileName"
+            const val EVENT_MEDIA_DATE_ADDED = "DateAdded"
         }
     }
 }

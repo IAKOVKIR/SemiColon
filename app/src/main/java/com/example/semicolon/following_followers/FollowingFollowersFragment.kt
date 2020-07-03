@@ -1,13 +1,11 @@
 package com.example.semicolon.following_followers
 
 import android.graphics.Color
-import com.google.android.material.tabs.TabLayout
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.*
 import androidx.navigation.findNavController
@@ -34,9 +32,9 @@ class FollowingFollowersFragment : Fragment() {
         val myID: Int = args.myId //myID
         val userID: Int = args.userId //myID
 
-        val viewpager: ViewPager2 = binding.viewpager
-        val tabs: TabLayout = binding.tabs
-        val requestsButton: TextView = binding.requestsButton
+        val viewpager = binding.viewpager
+        val tabs = binding.tabs
+        val requestsButton = binding.requestsButton
 
         tabs.setBackgroundColor(Color.WHITE)
         tabs.setTabTextColors(ContextCompat.getColor(requireContext(), R.color.SPECIAL), ContextCompat.getColor(requireContext(), R.color.BLUE))

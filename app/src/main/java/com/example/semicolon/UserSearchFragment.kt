@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.semicolon.databinding.FragmentUserSearchBinding
-import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.User
 import kotlinx.coroutines.*
 
 // the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID

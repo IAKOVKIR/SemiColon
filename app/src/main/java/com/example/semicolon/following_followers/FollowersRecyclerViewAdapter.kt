@@ -11,9 +11,9 @@ import android.widget.*
 import androidx.databinding.DataBindingUtil
 import com.example.semicolon.*
 import com.example.semicolon.databinding.FollowersRecyclerViewAdapterBinding
-import com.example.semicolon.models.Friend
-import com.example.semicolon.models.User
+import com.example.semicolon.sqlite_database.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.Follower
 import com.example.semicolon.support_features.Time
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.followers_recycler_view_adapter.view.*
@@ -81,9 +81,9 @@ class FollowersRecyclerViewAdapter(
                         var res = false
 
                         withContext(Dispatchers.Default) {
-                            val friend = Friend(
-                                myID, item.userId,
-                                time.getDate(), time.getTime(), 0
+                            val friend = Follower(
+                                myID, item.userId, 0,
+                                time.getDate(), time.getTime()
                             )
                             res = db.insertRequest(friend)
                         }

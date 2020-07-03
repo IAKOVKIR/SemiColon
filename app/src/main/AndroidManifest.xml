@@ -33,7 +33,7 @@
                 android:name=".DataRecovery"
                 android:screenOrientation="portrait" />
         <activity
-                android:name=".Login"
+                android:name=".login.LoginActivity"
                 android:screenOrientation="portrait" />
         <activity
                 android:name=".SplashActivity"

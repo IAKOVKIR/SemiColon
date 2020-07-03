@@ -8,12 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import com.example.semicolon.models.EventContent
-import com.example.semicolon.models.User
 import com.example.semicolon.following_followers.ListFollowers
 import com.example.semicolon.following_followers.ListFollowing
 import com.example.semicolon.following_followers.ListMutual
 import com.example.semicolon.following_followers.RequestsFragment
+import com.example.semicolon.login.LoginActivity
 import com.example.semicolon.semi_settings.*
+import com.example.semicolon.sqlite_database.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_user_home.*
 
@@ -135,7 +136,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         editor.clear()
         editor.apply()
 
-        val loginIntent = Intent(this, Login::class.java)
+        val loginIntent = Intent(this, LoginActivity::class.java)
         // set the new task and clear flags
         loginIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(loginIntent)

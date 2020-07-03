@@ -7,6 +7,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import com.example.semicolon.login.LoginActivity
 
 import java.util.Timer
 import java.util.TimerTask
@@ -18,7 +19,7 @@ class SplashActivity : Activity() {
         setContentView(R.layout.activity_splash)
 
         val timer = Timer()
-        val intent = Intent(this, Login::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         val animFadeIn: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
         val animFadeOut: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out)
         val finalAnimation = AnimationSet(true)

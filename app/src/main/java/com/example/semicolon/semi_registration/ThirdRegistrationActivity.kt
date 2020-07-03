@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import com.example.semicolon.R
-import com.example.semicolon.models.User
+import com.example.semicolon.sqlite_database.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 
 class ThirdRegistrationActivity : Activity() {
@@ -58,7 +58,11 @@ class ThirdRegistrationActivity : Activity() {
     private fun register() {
         // Get all input and make a new user
         db.insertUser(
-            User(userName!!, password!!, email!!)
+            User(
+                userName!!,
+                password!!,
+                email!!
+            )
         )
 
         // Check user has been added to the database

@@ -12,8 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.semicolon.databinding.FragmentMainBinding
+import com.example.semicolon.sqlite_database.AppDatabase
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
 
@@ -23,14 +25,12 @@ import kotlinx.coroutines.*
 class MainFragment : Fragment() {
 
     private var userID: Int = -1
-    lateinit var username: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val n: SharedPreferences = requireContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE)
         userID = n.getInt("id", -1)
-        username = n.getString("username", "")!!
     }
 
     @SuppressLint("SetTextI18n")
@@ -39,8 +39,22 @@ class MainFragment : Fragment() {
             inflater, R.layout.fragment_main, container, false)
         val db = DatabaseOpenHelper(requireContext())
 
-        //TextView representing username
-        binding.name.text = username
+        val application = requireNotNull(this.activity).application
+
+        val userDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).userDao
+        val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
+
+        // Get the viewmodel
+        val viewModelFactory = MainFragmentViewFactory(userID, userDataSource, followerDataSource, application)
+        val viewModel: MainFragmentViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(MainFragmentViewModel::class.java)
+
+        // Set the viewmodel for databinding - this allows the bound layout access to all of the
+        // data in the VieWModel
+        binding.mainFragmentViewModel = viewModel
+        // Specify the current activity as the lifecycle owner of the binding. This is used so that
+        // the binding can observe LiveData updates
+        binding.lifecycleOwner = this
 
         CoroutineScope(Dispatchers.Default).launch {
 
@@ -63,35 +77,14 @@ class MainFragment : Fragment() {
 
         CoroutineScope(Dispatchers.Default).launch {
 
-            var userPhone = ""
-            var emailText = ""
-            var followers = 0
             var following = 0
 
             withContext(Dispatchers.Default) {
-                val line: String = db.getUsersData(userID, "Phone")
-                //variable phoneImp contains a string of phone number ("#(###)### ###")
-                if (line.isNotEmpty()) {
-                    userPhone = "${line[0]}(${line.substring(1, 4)})${line.substring(
-                        4, 7
-                    )} ${line.substring(7, 10)}"
-                }
-
-                emailText = db.getUsersData(userID, "Email")
-                followers = db.countFollowers(userID)
                 following = db.countFollowing(userID)
             }
 
             launch (Dispatchers.Main) {
                 // process the data on the UI thread
-                //TextView representing user's phone number
-                binding.phoneNumber.text = userPhone
-
-                //TextView representing user's email
-                binding.email.text = emailText
-
-                //TextView representing the number of followers
-                binding.followersNumber.text = "$followers"
 
                 //TextView representing the number of users you follow
                 binding.followingNumber.text = "$following"
@@ -113,7 +106,7 @@ class MainFragment : Fragment() {
 
         // settings ImageButton
         binding.settingsButton.setOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
+            view.findNavController().navigate(MainFragmentDirections.actionMainFragmentToSettingsFragment())
         }
 
         //Inflate the layout for this fragment
