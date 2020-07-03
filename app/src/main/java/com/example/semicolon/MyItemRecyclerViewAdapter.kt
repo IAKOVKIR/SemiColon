@@ -5,18 +5,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
-
+import androidx.databinding.DataBindingUtil
 import com.example.semicolon.ListFragment.OnListFragmentInteractionListener
+import com.example.semicolon.databinding.FragmentItemBinding
 import com.example.semicolon.models.EventContent.Event
-
 import kotlinx.android.synthetic.main.fragment_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,9 +31,6 @@ class MyItemRecyclerViewAdapter(
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-    private lateinit var bitmap: Bitmap
-    private lateinit var bitmapDrawable: BitmapDrawable
-    lateinit var view: View
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -47,24 +42,26 @@ class MyItemRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_item, parent, false)
-        return ViewHolder(view)
+        val binding: FragmentItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+            R.layout.fragment_item, parent, false)
+        return ViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: Event = mValues[position]
         holder.eventName.text = item.eventName
-        holder.eventMaxAttendees.text = view.resources.getString(R.string.event_max_attendees, 0, item.maxAttendees)
+        holder.eventMaxAttendees.text = holder.mView.resources.getString(R.string.event_max_attendees, 0, item.maxAttendees)
         holder.eventLocation.text = item.location
-        holder.eventDateView.text = view.resources.getString(R.string.event_date_or_time, item.startDate, item.endDate)
-        holder.eventTimeView.text = view.resources.getString(R.string.event_date_or_time, item.startTime, item.endTime)
-
+        holder.eventDateView.text = holder.mView.resources.getString(R.string.event_date_or_time, item.startDate, item.endDate)
+        holder.eventTimeView.text = holder.mView.resources.getString(R.string.event_date_or_time, item.startTime, item.endTime)
         holder.eventMaxAttendees.setTextColor(Color.parseColor("#00c853"))
 
         CoroutineScope(Dispatchers.Default).launch {
 
+            lateinit var bitmapDrawable: BitmapDrawable
+
             withContext(Dispatchers.Default) {
-                bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.burns)
+                var bitmap: Bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.burns)
                 val height: Int = bitmap.height
                 val width: Int = bitmap.width
                 val sW: Double = Resources.getSystem().displayMetrics.widthPixels.toDouble()
@@ -81,10 +78,8 @@ class MyItemRecyclerViewAdapter(
                     finalHeight = sW * 0.26
                 }
 
-                Log.e("W + H", "${finalWidth.toInt()} + ${finalHeight.toInt()}")
-
                 bitmap = Bitmap.createScaledBitmap(bitmap, finalWidth.toInt(), finalHeight.toInt(), true)
-                bitmapDrawable = BitmapDrawable(view.context!!.resources, bitmap)
+                bitmapDrawable = BitmapDrawable(holder.mView.context!!.resources, bitmap)
             }
 
             launch (Dispatchers.Main) {

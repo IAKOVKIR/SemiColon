@@ -1,21 +1,17 @@
 package com.example.semicolon.following_followers
 
 import android.content.Context
-//import android.graphics.Bitmap
-//import android.graphics.BitmapFactory
-//import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-//import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-//import android.widget.EditText
-//import androidx.loader.content.AsyncTaskLoader
+import androidx.databinding.DataBindingUtil
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.R
+import com.example.semicolon.databinding.ListFollowingBinding
 import com.example.semicolon.models.User
 import kotlinx.coroutines.*
 
@@ -30,16 +26,13 @@ class ListFollowing : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     private var myID: Int? = null
     private var userID: Int? = null
-    private var exceptionID: Int? = null
-    private var listUser: ArrayList<User> = ArrayList()
-    private var job: Job = Job()
+    lateinit var db: DatabaseOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             myID = it.getInt("my_id")
             userID = it.getInt("user_id")
-            exceptionID = it.getInt("exception_id")
         }
     }
 
@@ -47,36 +40,26 @@ class ListFollowing : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.following_search_list_following, container, false)
-        val list: RecyclerView = view.findViewById(R.id.list)
-        //val searchFollowing: EditText = view.findViewById(R.id.search)
-        val db = DatabaseOpenHelper(context!!)
-
-        //Log.i("check", "$exceptionID")
-        /*var bitmap: Bitmap = BitmapFactory.decodeResource(view.resources, R.drawable.smithers)
-        val height: Int = bitmap.height
-        val width: Int = bitmap.width
-        val dif: Double = height.toDouble() / width
-        bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-        val bitmapDrawable = BitmapDrawable(context!!.resources, bitmap)*/
+        val binding: ListFollowingBinding = DataBindingUtil.inflate(
+            inflater, R.layout.list_following, container, false)
+        val list: RecyclerView = binding.list
+        db = DatabaseOpenHelper(requireContext())
+        val listUser: ArrayList<User> = ArrayList()
 
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = MyFollowingRecyclerViewAdapter(
+            adapter = FollowingRecyclerViewAdapter(
                 listUser,
                 listener as OnListFragmentInteractionListener,
-                userID!!/*, bitmapDrawable*/)
+                myID!!)
             setHasFixedSize(true)
         }
 
-        fun load() : ArrayList<User> {
-            return db.readAllFollowing(userID!!, exceptionID!!)
-        }
+        CoroutineScope(Dispatchers.Default).launch {
 
-        job = CoroutineScope(Dispatchers.Default).launch {
-
-            listUser.addAll(withContext(Dispatchers.Default) { load() })
+            if (listUser.isEmpty())
+                listUser.addAll(withContext(Dispatchers.Default) { load() })
 
             CoroutineScope(Dispatchers.Main).launch {
                 with(list) {
@@ -86,7 +69,11 @@ class ListFollowing : Fragment() {
 
         }
 
-        return view
+        return binding.root
+    }
+
+    private fun load() : ArrayList<User> {
+        return db.readAllFollowing(userID!!)
     }
 
     override fun onAttach(context: Context) {
@@ -111,5 +98,4 @@ class ListFollowing : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
-
 }

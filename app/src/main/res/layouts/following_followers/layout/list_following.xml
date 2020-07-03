@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.example.semicolon.following_followers.ListFollowing">
+
+    <LinearLayout
+            android:background="@drawable/gray_red"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/search"
+            android:textSize="22sp"
+            android:textColor="@color/WHITE"
+            android:textCursorDrawable="@drawable/black_cursor"
+            android:backgroundTint="@color/WHITE"
+            android:textColorHint="#CAC2C2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:inputType="text"
+            tools:ignore="Autofill,LabelFor"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:name="com.example.semicolon.ListFollowing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="LinearLayoutManager"
+            tools:context=".following_followers.ListFollowing"
+            tools:listitem="@layout/following_recycler_view_adapter"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+</layout>

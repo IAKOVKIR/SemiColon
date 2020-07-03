@@ -5,13 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
+import com.example.semicolon.databinding.ListFollowersBinding
 import com.example.semicolon.models.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
+
+// the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
+private const val MY_ID = "my_id"
+private const val USER_ID = "user_id"
 
 /**
  * A fragment representing a list of Items.
@@ -23,18 +29,13 @@ class ListFollowers : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     private var myID: Int? = null
     private var userID: Int? = null
-    private var exceptionID: Int? = null
-    private var listUser: ArrayList<User> = ArrayList()
-    lateinit var list: RecyclerView
     lateinit var db: DatabaseOpenHelper
-    private var job: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            myID = it.getInt("my_id")
-            userID = it.getInt("user_id")
-            exceptionID = it.getInt("exception_id")
+            myID = it.getInt(MY_ID)
+            userID = it.getInt(USER_ID)
         }
     }
 
@@ -42,20 +43,22 @@ class ListFollowers : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.followers_requests_list_followers, container, false)
-        list = view.findViewById(R.id.list)
-        db = DatabaseOpenHelper(context!!)
+        val binding: ListFollowersBinding = DataBindingUtil.inflate(
+            inflater, R.layout.list_followers, container, false)
+        val list: RecyclerView = binding.list
+        db = DatabaseOpenHelper(requireContext())
+        val listUser: ArrayList<User> = ArrayList()
 
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = MyFollowersRecyclerViewAdapter(
+            adapter = FollowersRecyclerViewAdapter(
                 listUser,
                 listener as OnListFragmentInteractionListener, myID!!)
             setHasFixedSize(true)
         }
 
-        job = CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Default).launch {
 
             if (listUser.isEmpty())
                 listUser.addAll(withContext(Dispatchers.Default) { load() })
@@ -68,11 +71,11 @@ class ListFollowers : Fragment() {
 
         }
 
-        return view
+        return binding.root
     }
 
     private fun load() : ArrayList<User> {
-        return db.readAllFollowers(userID!!, 1/*, myID!!*/)
+        return db.readAllFollowers(userID!!, 1)
     }
 
     override fun onAttach(context: Context) {
@@ -81,12 +84,6 @@ class ListFollowers : Fragment() {
             listener = context
         else
             throw RuntimeException("$context must implement OnListFragmentInteractionListener")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-        job.cancel()
     }
 
     /**
@@ -98,5 +95,4 @@ class ListFollowers : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
-
 }
