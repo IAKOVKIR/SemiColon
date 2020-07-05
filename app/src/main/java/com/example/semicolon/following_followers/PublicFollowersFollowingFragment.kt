@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.semicolon.R
@@ -25,19 +25,27 @@ class PublicFollowersFollowingFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: PublicFollowersFollowingFragmentBinding = DataBindingUtil.inflate(
-                    inflater, R.layout.public_followers_following_fragment, container, false)
+            inflater, R.layout.public_followers_following_fragment, container, false
+        )
 
         val args = PublicFollowersFollowingFragmentArgs.fromBundle(requireArguments())
         val myID: Int = args.myId //myID
         val userID: Int = args.userId //myID
 
+        //ViewPager2
         val viewpager: ViewPager2 = binding.viewpager
         val tabs: TabLayout = binding.tabs
         val backButton: TextView = binding.backButton
 
-        tabs.setBackgroundColor(Color.WHITE)
-        tabs.setTabTextColors(ContextCompat.getColor(requireContext(), R.color.SPECIAL), ContextCompat.getColor(requireContext(), R.color.BLUE))
-        tabs.setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
+        tabs.apply {
+            setBackgroundColor(Color.WHITE)
+            setTabTextColors(
+                ContextCompat.getColor(requireContext(), R.color.SPECIAL),
+                ContextCompat.getColor(requireContext(), R.color.BLUE)
+            )
+            setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
+            getTabAt(args.slideNumber)!!.select()
+        }
 
         val viewPagerAdapter = ViewPagerAdapter(this, myID, userID)
         var selectedTabPosition = 0
@@ -60,10 +68,8 @@ class PublicFollowersFollowingFragment : Fragment() {
             }
         }.attach()
 
-        tabs.getTabAt(args.slideNumber)!!.select()
-
-        backButton.setOnClickListener {view: View ->
-            view.findNavController().popBackStack()
+        backButton.setOnClickListener {
+            this.findNavController().popBackStack()
         }
 
         return binding.root

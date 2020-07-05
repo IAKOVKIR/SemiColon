@@ -1,6 +1,9 @@
 package com.example.semicolon
 
 import android.app.Application
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import androidx.lifecycle.*
 import com.example.semicolon.sqlite_database.*
 import com.example.semicolon.sqlite_database.daos.FollowerDao
@@ -22,15 +25,19 @@ class MainFragmentViewModel(myID: Int, private val userDatabase: UserDao, privat
     private var _following = MutableLiveData<Int>()
     val following: LiveData<Int> get() = _following
 
+    private var _bitmapDrawable = MutableLiveData<BitmapDrawable>()
+    val bitmapDrawable: LiveData<BitmapDrawable> get() = _bitmapDrawable
+
     init {
-        checkUser(myID)
+        checkUser(myID, application)
     }
 
-    private fun checkUser(userId: Int) {
+    private fun checkUser(userId: Int, application: Application) {
         uiScope.launch {
             _user.value = getUser(userId)
             _followers.value = getTotalFollowers(userId)
             _following.value = getTotalFollowing(userId)
+            _bitmapDrawable.value = getImage(application)
         }
     }
 
@@ -49,6 +56,15 @@ class MainFragmentViewModel(myID: Int, private val userDatabase: UserDao, privat
     private suspend fun getTotalFollowing(userId: Int): Int {
         return withContext(Dispatchers.IO) {
             followerDatabase.getTotalFollowing(userId)
+        }
+    }
+
+    private suspend fun getImage(application: Application): BitmapDrawable {
+        return withContext(Dispatchers.Default) {
+            var bitmap: Bitmap = BitmapFactory.decodeResource(application.resources, R.drawable.burns)
+            val dif: Double = bitmap.height.toDouble() / bitmap.width
+            bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
+            BitmapDrawable(application.resources, bitmap)
         }
     }
 

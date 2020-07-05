@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -37,14 +36,7 @@ import kotlinx.coroutines.withContext
 
 class LoginFragment : Fragment() {
 
-    private lateinit var loginViewModel: LoginViewModel
     private lateinit var userDataSource: UserDao
-
-   /* override fun onStart() {
-        super.onStart()
-        //reads username and password from SharedPreferences
-        getUser()
-    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +54,7 @@ class LoginFragment : Fragment() {
             inflater, R.layout.fragment_login, container, false)
 
         val viewModelFactory = LoginViewModelFactory(userDataSource)
-
-        loginViewModel =
+        val loginViewModel =
             ViewModelProvider(
                 ViewModelStore(), viewModelFactory).get(LoginViewModel::class.java)
 
@@ -113,31 +104,34 @@ class LoginFragment : Fragment() {
         })
 
         //Buttons
-        val forgotBut: TextView = loginBinding.forgotBut
-        val createBut: TextView = loginBinding.createAnAccountBut
+        //forgot info button
+        loginBinding.forgotBut.apply {
+            paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
-        forgotBut.paintFlags = createBut.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-        createBut.paintFlags = createBut.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-
-        //"Recovery" listener
-        forgotBut.setOnClickListener {
-            val intent = Intent(this.activity, DataRecovery::class.java)
-            startActivity(intent)
+            //"Recovery" listener
+            setOnClickListener {
+                val intent = Intent(requireActivity(), DataRecovery::class.java)
+                startActivity(intent)
+            }
         }
 
-        //"Sign Up" listener
-        createBut.setOnClickListener {
-            val intent = Intent(this.activity, FirstRegistrationActivity::class.java)
-            startActivity(intent)
+        //create an account button
+        loginBinding.createAnAccountBut.apply {
+            paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+
+            //"Sign Up" listener
+            setOnClickListener {
+                val intent = Intent(requireActivity(), FirstRegistrationActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         // set up the RecyclerView
-        val recyclerView: RecyclerView = loginBinding.rvAnimals
+        val recyclerView: RecyclerView = loginBinding.rvUsers
         val horizontalLayoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = horizontalLayoutManager
         val adapter = LoginRecyclerView(10)
-        //adapter.setClickListener(this)
         recyclerView.adapter = adapter
 
         return loginBinding.root

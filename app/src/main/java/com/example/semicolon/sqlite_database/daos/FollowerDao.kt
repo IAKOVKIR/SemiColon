@@ -17,4 +17,7 @@ interface FollowerDao {
 
     @Query("SELECT COUNT(*) FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.ReceiverID WHERE FOLLOWER.SenderID = :userId AND FOLLOWER.Condition = '1'")
     fun getTotalFollowing(userId: Int): Int
+
+    @Query("SELECT COUNT(*) FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = :userId AND FOLLOWER.Condition = '0'")
+    fun getTotalRequests(userId: Int): Int
 }

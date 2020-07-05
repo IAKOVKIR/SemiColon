@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.login
 
 import android.app.Activity
 import android.content.Intent
@@ -7,7 +7,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import com.example.semicolon.login.LoginActivity
+import com.example.semicolon.R
 
 import java.util.Timer
 import java.util.TimerTask
@@ -20,8 +20,12 @@ class SplashActivity : Activity() {
 
         val timer = Timer()
         val intent = Intent(this, LoginActivity::class.java)
-        val animFadeIn: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
-        val animFadeOut: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out)
+        val animFadeIn: Animation = AnimationUtils.loadAnimation(applicationContext,
+            R.anim.fade_in
+        )
+        val animFadeOut: Animation = AnimationUtils.loadAnimation(applicationContext,
+            R.anim.fade_out
+        )
         val finalAnimation = AnimationSet(true)
         val textSemiColon: TextView = findViewById(R.id.label)
 
