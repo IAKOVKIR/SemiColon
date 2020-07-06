@@ -14,6 +14,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.semicolon.*
 import com.example.semicolon.databinding.FollowingFollowersFragmentBinding
+import com.example.semicolon.following_followers.view_models.FollowingFollowersViewModel
+import com.example.semicolon.following_followers.view_models.FollowingFollowersViewModelFactory
 import com.example.semicolon.sqlite_database.AppDatabase
 import kotlinx.coroutines.*
 import com.google.android.material.tabs.TabLayoutMediator
@@ -39,7 +41,9 @@ class FollowingFollowersFragment : Fragment() {
         val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
 
         // Get the ViewModel
-        val viewModelFactory = FollowingFollowersViewModelFactory(myID, followerDataSource)
+        val viewModelFactory =
+            FollowingFollowersViewModelFactory(
+                myID, followerDataSource)
         val viewModel: FollowingFollowersViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FollowingFollowersViewModel::class.java)
 

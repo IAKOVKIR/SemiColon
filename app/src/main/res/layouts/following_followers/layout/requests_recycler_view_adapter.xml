@@ -1,87 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.example.semicolon.following_followers.RequestsRecyclerViewAdapter">
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@android:color/transparent"
-        android:orientation="horizontal">
+    <data>
+        <variable
+                name="user"
+                type="com.example.semicolon.sqlite_database.User" />
+    </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ifitworkssasi"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/userImage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginBottom="4dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-                <!--android:src="@drawable/smithers"-->
+                app:layout_constraintTop_toTopOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userImage"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            <!--android:src="@drawable/smithers"-->
 
             <TextView
-                android:id="@+id/username"
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textColor="@color/WHITE"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/userImage"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+                android:id="@+id/confirm_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:background="@drawable/reg_square"
+                android:textAllCaps="false"
                 android:textColor="@color/WHITE"
-                android:layout_margin="@dimen/text_margin"
-                android:textAppearance="?attr/textAppearanceListItem"
-                app:layout_constraintStart_toEndOf="@id/userImage"
+                android:text="Accept"
+                android:textSize="15sp"
+                android:padding="6dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="2dp"
+                tools:ignore="HardcodedText"
+                app:layout_constraintEnd_toStartOf="@id/decline_button"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <LinearLayout
-                android:id="@+id/request_buttons"
+        <TextView
+                android:id="@+id/decline_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/reg_square"
+                android:textAllCaps="false"
+                android:textColor="@color/WHITE"
+                android:text="Decline"
+                android:textSize="15sp"
+                android:padding="6dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="4dp"
+                tools:ignore="HardcodedText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <TextView
-                    android:id="@+id/confirm_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/reg_square"
-                    android:textAllCaps="false"
-                    android:textColor="@color/WHITE"
-                    android:text="Accept"
-                    android:textSize="15sp"
-                    android:padding="6dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="2dp"
-                        tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/decline_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/reg_square"
-                    android:textAllCaps="false"
-                    android:textColor="@color/WHITE"
-                    android:text="Decline"
-                    android:textSize="15sp"
-                    android:padding="6dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="4dp"
-                        tools:ignore="HardcodedText" />
-
-            </LinearLayout>
-
-            <TextView
+        <TextView
                 android:id="@+id/follow_un_follow_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -97,10 +110,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                    tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

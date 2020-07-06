@@ -7,7 +7,7 @@
     <data>
         <variable
                 name="followingFollowersFragmentViewModel"
-                type="com.example.semicolon.following_followers.FollowingFollowersViewModel" />
+                type="com.example.semicolon.following_followers.view_models.FollowingFollowersViewModel" />
     </data>
 
     <LinearLayout

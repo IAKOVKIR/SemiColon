@@ -3,15 +3,18 @@ package com.example.semicolon.following_followers
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import androidx.recyclerview.widget.ListAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
 import com.example.semicolon.databinding.RequestsRecyclerViewAdapterBinding
+import com.example.semicolon.following_followers.view_models.RequestsFragmentViewModel
 import com.example.semicolon.sqlite_database.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.sqlite_database.Follower
@@ -23,37 +26,63 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RequestsRecyclerViewAdapter(
-    private val mValues: ArrayList<User>,
-    private val mListener: RequestsFragment.OnListFragmentInteractionListener?,
-    private val myID: Int
-) : RecyclerView.Adapter<RequestsRecyclerViewAdapter.ViewHolder>() {
+class RequestsRecyclerViewAdapter(private val viewModel: RequestsFragmentViewModel, private val mValues: ArrayList<User>) : RecyclerView.Adapter<
+        RequestsRecyclerViewAdapter.ViewHolder>(/*UserDiffCallback()*/) {
 
-    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
-    private lateinit var db: DatabaseOpenHelper
-    private val mOnClickListener: View.OnClickListener
+    //private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
 
-    init {
-        mOnClickListener = View.OnClickListener { v ->
-            val item: User = v.tag as User
-            // Notify the active callbacks interface (the activity, if the fragment is attached to
-            // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(item)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(mValues[position], viewModel)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder.from(parent)
+    }
+
+    class ViewHolder private constructor(val binding: RequestsRecyclerViewAdapterBinding)
+        : RecyclerView.ViewHolder(binding.root){
+
+        fun bind(item: User, viewModel: RequestsFragmentViewModel) {
+            binding.user = item
+            binding.username.text = item.username
+
+            binding.ifitworkssasi.setOnClickListener {
+                viewModel.onUserClicked(item.userId)
+            }
+
+            binding.confirmButton.setOnClickListener {
+                viewModel.setNewCondition(item.userId, 1)
+                confirmOrDecline()
+            }
+
+            binding.declineButton.setOnClickListener {
+                viewModel.deleteRecord(item.userId)
+                confirmOrDecline()
+            }
+        }
+
+        private fun confirmOrDecline() {
+            binding.apply {
+                confirmButton.visibility = View.GONE
+                declineButton.visibility = View.GONE
+                followUnFollowButton.visibility = View.VISIBLE
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = RequestsRecyclerViewAdapterBinding.inflate(layoutInflater, parent, false)
+
+                return ViewHolder(binding)
+            }
         }
     }
 
-    // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // create a new view
-        val binding: RequestsRecyclerViewAdapterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
-            R.layout.requests_recycler_view_adapter, parent, false)
-        db = DatabaseOpenHelper(parent.context)
-        // set the view's size, margins, padding's and layout parameters
-        return ViewHolder(binding.root)
-    }
+    override fun getItemCount(): Int = mValues.size
 
     // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    /*override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
         holder.mUsername.text = item.username
 
@@ -105,45 +134,6 @@ class RequestsRecyclerViewAdapter(
             }
         }
 
-        holder.mConfirmButton.setOnClickListener {
-
-            CoroutineScope(Dispatchers.Default).launch {
-
-                var res = false
-
-                withContext(Dispatchers.Default) {
-                    res = db.updateRequest(item.userId, myID, 1)
-                }
-
-                launch (Dispatchers.Main) {
-                    if (res) {
-                        holder.mRequestButtons.visibility = View.GONE
-                        holder.mFollowUnFollowButton.visibility = View.VISIBLE
-                    }
-                }
-            }
-        }
-
-        holder.mDeclineButton.setOnClickListener {
-
-            CoroutineScope(Dispatchers.Default).launch {
-
-                var res = false
-
-                withContext(Dispatchers.Default) {
-                    res = db.deleteFollowingRequest(item.userId, myID)
-                }
-
-                launch (Dispatchers.Main) {
-                    if (res) {
-                        holder.mRequestButtons.visibility = View.GONE
-                        holder.mFollowUnFollowButton.visibility = View.VISIBLE
-                    }
-                }
-            }
-
-        }
-
         CoroutineScope(Dispatchers.Default).launch {
 
             lateinit var bitmapDrawable: BitmapDrawable
@@ -166,25 +156,15 @@ class RequestsRecyclerViewAdapter(
             tag = item
             setOnClickListener(mOnClickListener)
         }
-    }
-
-    // Return the size of your data set (invoked by the layout manager)
-    override fun getItemCount() = mValues.size
-
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder.
-    // Each data item is just a string in this case that is shown in a TextView.
-    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mUserImage: CircleImageView = mView.userImage
-        val mUsername: TextView = mView.username
-        val mConfirmButton: TextView = mView.confirm_button
-        val mDeclineButton: TextView = mView.decline_button
-        val mFollowUnFollowButton: TextView = mView.follow_un_follow_button
-        val mRequestButtons: LinearLayout = mView.request_buttons
-
-        override fun toString(): String {
-            return super.toString() + " '${mUsername.text}'"
-        }
-    }
+    }*/
 }
+
+/*class UserDiffCallback : DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem.userId == newItem.userId
+    }
+
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem == newItem
+    }
+}*/

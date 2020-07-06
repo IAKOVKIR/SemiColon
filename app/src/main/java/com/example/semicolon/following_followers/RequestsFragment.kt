@@ -1,90 +1,65 @@
 package com.example.semicolon.following_followers
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.semicolon.R
 import com.example.semicolon.databinding.FragmentRequestsBinding
+import com.example.semicolon.following_followers.view_models.RequestsFragmentViewModel
+import com.example.semicolon.following_followers.view_models.RequestsFragmentViewModelFactory
+import com.example.semicolon.sqlite_database.AppDatabase
 import com.example.semicolon.sqlite_database.User
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class RequestsFragment : Fragment() {
-    private var listener: OnListFragmentInteractionListener? = null
-    private var userID: Int? = null
-    lateinit var db: DatabaseOpenHelper
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentRequestsBinding  = DataBindingUtil.inflate(
             inflater, R.layout.fragment_requests, container, false)
-        val list: RecyclerView = binding.list
-        db = DatabaseOpenHelper(requireContext())
         val listUser: ArrayList<User> = ArrayList()
 
+        val application = requireNotNull(this.activity).application
         val args = RequestsFragmentArgs.fromBundle(requireArguments())
-        val myID: Int = args.myId //myID
-        userID = args.userId //myID
 
-        // Set the adapter
-        with(list) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = RequestsRecyclerViewAdapter(
-                listUser,
-                listener as OnListFragmentInteractionListener, myID)
-            setHasFixedSize(true)
-        }
+        val userDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).userDao
+        val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
 
-        CoroutineScope(Dispatchers.Default).launch {
+        val viewModelFactory = RequestsFragmentViewModelFactory(args.myId, userDataSource, followerDataSource)
+        val testViewModel =
+            ViewModelProvider(
+                this, viewModelFactory).get(RequestsFragmentViewModel::class.java)
 
-            if (listUser.isEmpty())
-                listUser.addAll(withContext(Dispatchers.Default) { load() })
+        testViewModel.userId.observe(viewLifecycleOwner, Observer { userId ->
+            userId?.let {
+                this.findNavController().navigate(RequestsFragmentDirections.actionRequestsFragmentToFriendFragment(args.myId, userId))
+                testViewModel.onSleepDataQualityNavigated()
+            }
+        })
 
-            CoroutineScope(Dispatchers.Main).launch {
-                with(list) {
-                    adapter!!.notifyDataSetChanged()
+        val adapter = RequestsRecyclerViewAdapter(testViewModel, listUser)
+        binding.list.adapter = adapter
+
+        testViewModel.totalRequests.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (listUser.isEmpty()) {
+                    listUser.addAll(it)
+                    adapter.notifyDataSetChanged()
                 }
             }
-
-        }
+        })
 
         binding.backButton.setOnClickListener {view: View ->
             view.findNavController().popBackStack()
         }
 
         return binding.root
-    }
-
-    private fun load() : ArrayList<User> {
-        return db.readAllFollowers(userID!!, 0)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnListFragmentInteractionListener)
-            listener = context
-        else
-            throw RuntimeException("$context must implement OnListFragmentInteractionListener")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: User?)
     }
 }

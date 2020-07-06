@@ -4,20 +4,26 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".FriendFragment">
 
-<LinearLayout
+    <data>
+        <variable
+                name="friendFragmentViewModel"
+                type="com.example.semicolon.following_followers.view_models.FriendFragmentViewModel" />
+    </data>
+
+    <LinearLayout
         android:id="@+id/main_frag"
         android:orientation="vertical"
         android:background="@drawable/blue_white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
+        <LinearLayout
             android:orientation="vertical"
             android:background="@drawable/gradient_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <ImageView
+            <ImageView
                 android:id="@+id/back_button"
                 android:src="@drawable/heh"
                 android:layout_width="25dp"
@@ -28,12 +34,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="ContentDescription,RtlSymmetry" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/circleImageView"
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageView"
+                        android:src="@{friendFragmentViewModel.bitmapDrawable}"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center_horizontal"
@@ -46,9 +53,9 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/name"
-                    android:text="Aminul"
+                    android:text="@{friendFragmentViewModel.user.username}"
                     android:textColor="#fff"
                     android:textStyle="bold"
                     android:textSize="19sp"
@@ -61,7 +68,7 @@
                     app:layout_constraintStart_toEndOf="@+id/circleImageView"
                     tools:ignore="HardcodedText" />
 
-            <TextView
+                <TextView
                     android:id="@+id/follow_un_follow_button"
                     android:text="Follow"
                     android:textSize="15sp"
@@ -76,9 +83,9 @@
                     app:layout_constraintStart_toEndOf="@+id/circleImageView"
                     tools:ignore="HardcodedText" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
+            <TextView
                 android:id="@+id/followed_by"
                 android:enabled="false"
                 android:text="Loading"
@@ -91,14 +98,14 @@
                 android:layout_marginBottom="4dp"
                 tools:ignore="HardcodedText" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/gray_red">
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/linear_layout_followers"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
@@ -110,7 +117,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
+                <TextView
                     android:id="@+id/followers_word"
                     android:text="@string/word_followers"
                     android:textSize="16sp"
@@ -122,18 +129,18 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp" />
 
-            <TextView
+                <TextView
                     android:id="@+id/followers_number"
-                    android:text="@string/number_zero"
+                    android:text="@{String.valueOf(friendFragmentViewModel.followers)}"
                     android:textSize="20sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/linear_layout_following"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
@@ -145,7 +152,7 @@
                 app:layout_constraintStart_toEndOf="@+id/linear_layout_followers"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
+                <TextView
                     android:id="@+id/following_word"
                     android:text="@string/word_following"
                     android:textSize="16sp"
@@ -157,16 +164,16 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp" />
 
-            <TextView
+                <TextView
                     android:id="@+id/following_number"
-                    android:text="@string/number_zero"
+                    android:text="@{String.valueOf(friendFragmentViewModel.following)}"
                     android:textSize="20sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp" />
 
-        </LinearLayout>
+            </LinearLayout>
 
         <LinearLayout
                 android:id="@+id/linear_layout_events"
@@ -227,7 +234,7 @@
                     android:id="@+id/phone_number"
                     android:textSize="16sp"
                     android:textColor="@color/WHITE"
-                    android:text="@string/phone_number"
+                    android:text="@{friendFragmentViewModel.phoneNumber}"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:layout_width="wrap_content"
@@ -253,7 +260,7 @@
                     android:id="@+id/email"
                     android:textSize="16sp"
                     android:textColor="@color/WHITE"
-                    android:text="@string/email_gmail"
+                    android:text="@{friendFragmentViewModel.user.email}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

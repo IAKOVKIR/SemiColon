@@ -1,6 +1,8 @@
 package com.example.semicolon.sqlite_database.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.semicolon.models.DBContract
 import com.example.semicolon.sqlite_database.User
 
 @Dao
@@ -11,9 +13,6 @@ interface UserDao {
 
     @Update
     fun update(user: User)
-
-    //@Query("SELECT * FROM ${DBContract.UserEntry.USER_TABLE_NAME}")
-    //fun get(): ArrayList<User>?
 
     @Query("SELECT COUNT(*) FROM USER LIMIT 1")
     fun getOne(): Int
@@ -29,4 +28,7 @@ interface UserDao {
 
     @Query("SELECT * FROM USER WHERE Username = :Username AND Password = :Password LIMIT 1")
     fun findUserByUsernameAndPassword(Username: String, Password: String): User?
+
+    @Query("SELECT * FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = :userId AND FOLLOWER.Condition = 0")
+    fun getRequestListUsers(userId: Int): LiveData<List<User>>
 }

@@ -25,7 +25,7 @@ private const val EVENT_ID = "event_id"
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     ListFollowers.OnListFragmentInteractionListener, ListFollowing.OnListFragmentInteractionListener,
-    UserSearchFragment.OnListFragmentInteractionListener, RequestsFragment.OnListFragmentInteractionListener,
+    UserSearchFragment.OnListFragmentInteractionListener, /*RequestsFragment.OnListFragmentInteractionListener,*/
         ListMutual.OnListFragmentInteractionListener, SettingsFragment.OnListFragmentInteractionListener,
         ListSearchFragment.OnListFragmentInteractionListener {
 

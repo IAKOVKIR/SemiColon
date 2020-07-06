@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
 import com.example.semicolon.databinding.ListFollowersBinding
 import com.example.semicolon.sqlite_database.User
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import kotlinx.coroutines.*
+//import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+//import kotlinx.coroutines.*
 
 // the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
 private const val MY_ID = "my_id"
@@ -29,7 +29,6 @@ class ListFollowers : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     private var myID: Int? = null
     private var userID: Int? = null
-    lateinit var db: DatabaseOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +45,7 @@ class ListFollowers : Fragment() {
         val binding: ListFollowersBinding = DataBindingUtil.inflate(
             inflater, R.layout.list_followers, container, false)
         val list: RecyclerView = binding.list
-        db = DatabaseOpenHelper(requireContext())
+        //val db = DatabaseOpenHelper(requireContext())
         val listUser: ArrayList<User> = ArrayList()
 
         // Set the adapter
@@ -58,10 +57,10 @@ class ListFollowers : Fragment() {
             setHasFixedSize(true)
         }
 
-        CoroutineScope(Dispatchers.Default).launch {
+        /*CoroutineScope(Dispatchers.Default).launch {
 
             if (listUser.isEmpty())
-                listUser.addAll(withContext(Dispatchers.Default) { load() })
+                listUser.addAll(withContext(Dispatchers.Default) { db.readAllFollowers(userID!!, 1) })
 
             CoroutineScope(Dispatchers.Main).launch {
                 with(list) {
@@ -69,13 +68,9 @@ class ListFollowers : Fragment() {
                 }
             }
 
-        }
+        }*/
 
         return binding.root
-    }
-
-    private fun load() : ArrayList<User> {
-        return db.readAllFollowers(userID!!, 1)
     }
 
     override fun onAttach(context: Context) {

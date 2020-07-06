@@ -71,6 +71,9 @@
         <argument
                 android:name="user_id"
                 app:argType="integer" />
+        <action
+                android:id="@+id/action_requestsFragment_to_friendFragment"
+                app:destination="@id/friendFragment" />
     </fragment>
     <fragment
             android:id="@+id/friendFragment"

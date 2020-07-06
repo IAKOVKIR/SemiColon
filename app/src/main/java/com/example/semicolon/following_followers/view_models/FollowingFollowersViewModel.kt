@@ -1,4 +1,4 @@
-package com.example.semicolon.following_followers
+package com.example.semicolon.following_followers.view_models
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,5 +28,10 @@ class FollowingFollowersViewModel(myID: Int, private val followerDatabase: Follo
         return withContext(Dispatchers.IO) {
             followerDatabase.getTotalRequests(userId)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }
