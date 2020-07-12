@@ -77,7 +77,8 @@ abstract class AppDatabase : RoomDatabase() {
         Follower(12, 8, 3, 0, time.toString(), time.toString()),
         Follower(13, 9, 3, 0, time.toString(), time.toString()),
         Follower(14, 10, 3, 0, time.toString(), time.toString()),
-        Follower(15, 11, 3, 0, time.toString(), time.toString())
+        Follower(15, 11, 3, 0, time.toString(), time.toString()),
+            Follower(16, 3, 5, 1, time.toString(), time.toString())
         )
 
         /**

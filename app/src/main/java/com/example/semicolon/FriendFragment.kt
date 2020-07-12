@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.text.HtmlCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.semicolon.databinding.FragmentFriendBinding
 import com.example.semicolon.following_followers.view_models.FriendFragmentViewModel
 import com.example.semicolon.following_followers.view_models.FriendFragmentViewModelFactory
@@ -54,7 +53,7 @@ class FriendFragment : Fragment() {
         val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
 
         // Get the ViewModel
-        val viewModelFactory = FriendFragmentViewModelFactory(userID!!, userDataSource, followerDataSource, application)
+        val viewModelFactory = FriendFragmentViewModelFactory(myID!!, userID!!, userDataSource, followerDataSource, application)
         val viewModel: FriendFragmentViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FriendFragmentViewModel::class.java)
 
@@ -66,46 +65,12 @@ class FriendFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         //TextViews
-        val followedBy: TextView = binding.followedBy
         val followUnFollowButton: TextView = binding.followUnFollowButton
 
         //Layouts
         //val eventsLayout: LinearLayout = findViewById(R.id.linear_layout_following)
 
         var bool = 0
-
-        CoroutineScope(Dispatchers.Default).launch {
-            var followedByList: ArrayList<String>
-            var followedByLine = ""
-            //var followers = 0
-            //var following = 0
-
-            withContext(Dispatchers.Default) {
-                //followers = db.countFollowers(userID!!)
-                //following = db.countFollowing(userID!!)
-                bool = db.checkFollower(myID!!, userID!!)
-                followedByList = db.readFirstThreeMutualFollowers(myID!!, userID!!)
-
-                val len: Int = followedByList.size
-                followedByLine = when {
-                    len == 3 -> "Followed by <b>${followedByList[0]}</b>, <b>${followedByList[1]}</b> and <b>1 other</b>"
-                    len == 2 -> "Followed by <b>${followedByList[0]}</b> and <b>${followedByList[1]}</b>"
-                    len == 1 -> "Followed by <b>${followedByList[0]}</b>"
-                    len > 3 -> "Followed by <b>${followedByList[0]}</b>, <b>${followedByList[1]}</b> and <b>${len - 2} others</b>"
-                    else -> ""
-                }
-            }
-
-            launch (Dispatchers.Main) {
-                // process the data on the UI thread
-                //binding.followersNumber.text = "$followers"
-                //binding.followingNumber.text = "$following"
-                followUnFollowButton.text = str[bool + 1]
-                followedBy.isEnabled = true
-                followedBy.text = HtmlCompat.fromHtml(followedByLine, HtmlCompat.FROM_HTML_MODE_LEGACY)
-            }
-
-        }
 
         /*
         Variable bool contains one of three conditions of "friendship":
@@ -156,23 +121,23 @@ class FriendFragment : Fragment() {
         }
 
         //OnClickListener's
-        followedBy.setOnClickListener {view: View ->
-            view.findNavController().navigate(FriendFragmentDirections
+        binding.followedBy.setOnClickListener {
+            this.findNavController().navigate(FriendFragmentDirections
                 .actionFriendFragmentToPublicFollowersFollowingFragment(myID!!, userID!!, 0))
         }
 
-        binding.linearLayoutFollowers.setOnClickListener {view: View ->
-            view.findNavController().navigate(FriendFragmentDirections
+        binding.linearLayoutFollowers.setOnClickListener {
+            this.findNavController().navigate(FriendFragmentDirections
                 .actionFriendFragmentToPublicFollowersFollowingFragment(myID!!, userID!!, 1))
         }
 
-        binding.linearLayoutFollowing.setOnClickListener {view: View ->
-            view.findNavController().navigate(FriendFragmentDirections
+        binding.linearLayoutFollowing.setOnClickListener {
+            this.findNavController().navigate(FriendFragmentDirections
                 .actionFriendFragmentToPublicFollowersFollowingFragment(myID!!, userID!!, 2))
         }
 
-        binding.backButton.setOnClickListener {view: View ->
-            view.findNavController().popBackStack()
+        binding.backButton.setOnClickListener {
+            this.findNavController().popBackStack()
         }
 
         return binding.root

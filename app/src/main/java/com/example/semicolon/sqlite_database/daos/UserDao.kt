@@ -17,6 +17,9 @@ interface UserDao {
     @Query("SELECT COUNT(*) FROM USER LIMIT 1")
     fun getOne(): Int
 
+    @Query("SELECT MAX(UserID) FROM USER")
+    fun getMaxId(): Int
+
     @Query("SELECT * FROM USER WHERE UserID = :userId")
     fun getUserById(userId: Int): User?
 

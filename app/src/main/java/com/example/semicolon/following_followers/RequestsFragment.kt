@@ -32,7 +32,7 @@ class RequestsFragment : Fragment() {
         val userDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).userDao
         val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
 
-        val viewModelFactory = RequestsFragmentViewModelFactory(args.myId, userDataSource, followerDataSource)
+        val viewModelFactory = RequestsFragmentViewModelFactory(args.myId, userDataSource, followerDataSource, application)
         val testViewModel =
             ViewModelProvider(
                 this, viewModelFactory).get(RequestsFragmentViewModel::class.java)
@@ -44,7 +44,7 @@ class RequestsFragment : Fragment() {
             }
         })
 
-        val adapter = RequestsRecyclerViewAdapter(testViewModel, listUser)
+        val adapter = RequestsRecyclerViewAdapter(args.myId, testViewModel, listUser, application)
         binding.list.adapter = adapter
 
         testViewModel.totalRequests.observe(viewLifecycleOwner, Observer {

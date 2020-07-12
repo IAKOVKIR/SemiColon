@@ -1,38 +1,31 @@
 package com.example.semicolon.following_followers
 
+import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import androidx.recyclerview.widget.ListAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
 import com.example.semicolon.databinding.RequestsRecyclerViewAdapterBinding
 import com.example.semicolon.following_followers.view_models.RequestsFragmentViewModel
+import com.example.semicolon.sqlite_database.AppDatabase
 import com.example.semicolon.sqlite_database.User
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.sqlite_database.Follower
 import com.example.semicolon.support_features.Time
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.requests_recycler_view_adapter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RequestsRecyclerViewAdapter(private val viewModel: RequestsFragmentViewModel, private val mValues: ArrayList<User>) : RecyclerView.Adapter<
-        RequestsRecyclerViewAdapter.ViewHolder>(/*UserDiffCallback()*/) {
-
-    //private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
+class RequestsRecyclerViewAdapter(private val myID: Int, private val viewModel: RequestsFragmentViewModel,
+                                  private val mValues: ArrayList<User>, private val application: Application)
+    : RecyclerView.Adapter<RequestsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(mValues[position], viewModel)
+        holder.bind(myID, mValues[position], viewModel, application)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,12 +34,96 @@ class RequestsRecyclerViewAdapter(private val viewModel: RequestsFragmentViewMod
 
     class ViewHolder private constructor(val binding: RequestsRecyclerViewAdapterBinding)
         : RecyclerView.ViewHolder(binding.root){
+        private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
 
-        fun bind(item: User, viewModel: RequestsFragmentViewModel) {
+        //val userDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).userDao
+
+        fun bind(myID: Int, item: User, viewModel: RequestsFragmentViewModel, application: Application) {
             binding.user = item
             binding.username.text = item.username
 
-            binding.ifitworkssasi.setOnClickListener {
+            val time = Time()
+            var bool: Int = -1
+            val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
+            CoroutineScope(Dispatchers.Default).launch {
+                withContext(Dispatchers.Default) {
+                    if (followerDataSource.isRecordExist(myID, item.userId) == 1) {
+                        bool = followerDataSource.checkFollower(myID, item.userId)
+                    }
+                }
+                launch(Dispatchers.Main) {
+                    binding.followUnFollowButton.text = str[bool + 1]
+                    binding.followUnFollowButton.isEnabled = true
+                }
+            }
+
+            binding.followUnFollowButton.setOnClickListener {
+                if (bool == -1) {
+
+                    CoroutineScope(Dispatchers.Default).launch {
+                        var res = false
+
+                        withContext(Dispatchers.Default) {
+                            val friend = Follower(
+                                followerDataSource.getMaxId() + 1, myID, item.userId, 0,
+                                time.toString(), time.toString()
+                            )
+                            followerDataSource.insert(friend)
+                            if (followerDataSource.isRecordExistWithCondition(myID, item.userId, 0) == 1) {
+                                res = true
+                            }
+                        }
+
+                        launch(Dispatchers.Main) {
+                            if (res) {
+                                binding.followUnFollowButton.text = str[1]
+                                bool = 0
+                            }
+                        }
+                    }
+
+                } else {
+
+                    CoroutineScope(Dispatchers.Default).launch {
+                        var res = false
+
+                        withContext(Dispatchers.Default) {
+                            followerDataSource.deleteRecord(myID, item.userId)
+                            if (followerDataSource.isRecordExist(myID, item.userId) == 0) {
+                                res = true
+                            }
+                        }
+
+                        launch (Dispatchers.Main) {
+                            if (res) {
+                                binding.followUnFollowButton.text = str[0]
+                                bool = -1
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            CoroutineScope(Dispatchers.Default).launch {
+
+                lateinit var bitmapDrawable: BitmapDrawable
+
+                withContext(Dispatchers.Default) {
+                    var bitmap: Bitmap = BitmapFactory.decodeResource(binding.root.resources, R.drawable.smithers)
+                    val dif: Double = bitmap.height.toDouble() / bitmap.width
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
+                    bitmapDrawable = BitmapDrawable(binding.root.context!!.resources, bitmap)
+                }
+
+                launch (Dispatchers.Main) {
+                    // process the data on the UI thread
+                    binding.userImage.setImageDrawable(bitmapDrawable)
+                }
+
+            }
+
+            binding.constraintLayout.setOnClickListener {
                 viewModel.onUserClicked(item.userId)
             }
 
@@ -80,91 +157,4 @@ class RequestsRecyclerViewAdapter(private val viewModel: RequestsFragmentViewMod
     }
 
     override fun getItemCount(): Int = mValues.size
-
-    // Replace the contents of a view (invoked by the layout manager)
-    /*override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item: User = mValues[position]
-        holder.mUsername.text = item.username
-
-        val time = Time()
-        var bool: Int = db.checkFollower(myID, item.userId)
-
-        holder.mFollowUnFollowButton.text = str[bool + 1]
-        holder.mFollowUnFollowButton.setOnClickListener {
-            if (bool == -1) {
-
-                CoroutineScope(Dispatchers.Default).launch {
-
-                    var res = false
-
-                    withContext(Dispatchers.Default) {
-                        val friend = Follower(
-                            db.countFriendTable(), myID, item.userId, 0,
-                            time.toString(), time.toString()
-                        )
-                        res = db.insertRequest(friend)
-                    }
-
-                    launch (Dispatchers.Main) {
-                        if (res) {
-                            holder.mFollowUnFollowButton.text = str[1]
-                            bool = 0
-                        }
-                    }
-                }
-
-            } else {
-
-                CoroutineScope(Dispatchers.Default).launch {
-
-                    var res = false
-
-                    withContext(Dispatchers.Default) {
-                        res = db.deleteFollowing(myID, item.userId)
-                    }
-
-                    launch (Dispatchers.Main) {
-                        if (res) {
-                            holder.mFollowUnFollowButton.text = str[2]
-                            bool = 1
-                        }
-                    }
-                }
-
-            }
-        }
-
-        CoroutineScope(Dispatchers.Default).launch {
-
-            lateinit var bitmapDrawable: BitmapDrawable
-
-            withContext(Dispatchers.Default) {
-                var bitmap: Bitmap = BitmapFactory.decodeResource(holder.mView.resources, R.drawable.smithers)
-                val dif: Double = bitmap.height.toDouble() / bitmap.width
-                bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
-                bitmapDrawable = BitmapDrawable(holder.mView.context!!.resources, bitmap)
-            }
-
-            launch (Dispatchers.Main) {
-                // process the data on the UI thread
-                holder.mUserImage.setImageDrawable(bitmapDrawable)
-            }
-
-        }
-
-        with(holder.mView) {
-            tag = item
-            setOnClickListener(mOnClickListener)
-        }
-    }*/
 }
-
-/*class UserDiffCallback : DiffUtil.ItemCallback<User>() {
-    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem.userId == newItem.userId
-    }
-
-    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem == newItem
-    }
-}*/

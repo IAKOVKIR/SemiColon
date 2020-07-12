@@ -1,13 +1,19 @@
 package com.example.semicolon.following_followers.view_models
 
 import android.app.Application
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.semicolon.R
 import com.example.semicolon.sqlite_database.daos.FollowerDao
 import com.example.semicolon.sqlite_database.daos.UserDao
 import kotlinx.coroutines.*
 
-class RequestsFragmentViewModel(val myID: Int, userDatabase: UserDao, private val followerDatabase: FollowerDao) : ViewModel() {
+class RequestsFragmentViewModel(val myID: Int, userDatabase: UserDao, private val followerDatabase: FollowerDao,
+                                application: Application): AndroidViewModel(application) {
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -17,6 +23,28 @@ class RequestsFragmentViewModel(val myID: Int, userDatabase: UserDao, private va
     private val _userId = MutableLiveData<Int>()
     val userId
         get() = _userId
+
+    private var _bitmapDrawable = MutableLiveData<BitmapDrawable>()
+    val bitmapDrawable: LiveData<BitmapDrawable> get() = _bitmapDrawable
+
+    init {
+        checkUser(myID, application)
+    }
+
+    private fun checkUser(userId: Int, application: Application) {
+        uiScope.launch {
+            _bitmapDrawable.value = getImage(application)
+        }
+    }
+
+    private suspend fun getImage(application: Application): BitmapDrawable {
+        return withContext(Dispatchers.Default) {
+            var bitmap: Bitmap = BitmapFactory.decodeResource(application.resources, R.drawable.burns)
+            val dif: Double = bitmap.height.toDouble() / bitmap.width
+            bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
+            BitmapDrawable(application.resources, bitmap)
+        }
+    }
 
     fun onUserClicked(id: Int) {
         _userId.value = id

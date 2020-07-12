@@ -4,6 +4,8 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.text.Spanned
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,12 +15,15 @@ import com.example.semicolon.sqlite_database.daos.FollowerDao
 import com.example.semicolon.sqlite_database.daos.UserDao
 import kotlinx.coroutines.*
 
-class FriendFragmentViewModel(userID: Int, private val userDatabase: UserDao, private val followerDatabase: FollowerDao,
-                              application: Application
+class FriendFragmentViewModel(myID: Int, userID: Int, private val userDatabase: UserDao,
+                              private val followerDatabase: FollowerDao, application: Application
 ): AndroidViewModel(application) {
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    //Array str contains 3 of these conditions
+    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")//-1, 0, 1
+    private var bool = -1
 
     private var _user = MutableLiveData<User?>()
     val user: LiveData<User?> get() = _user
@@ -35,17 +40,26 @@ class FriendFragmentViewModel(userID: Int, private val userDatabase: UserDao, pr
     private var _following = MutableLiveData<Int>()
     val following: LiveData<Int> get() = _following
 
+    private var _followedByLine = MutableLiveData<Spanned>()
+    val followedByLine: LiveData<Spanned> get() = _followedByLine
+
+    private var _followUnFollowText = MutableLiveData<String>()
+    val followUnFollowText: LiveData<String> get() = _followUnFollowText
+
     init {
-        checkUser(userID, application)
+        checkUser(myID, userID, application)
     }
 
-    private fun checkUser(userId: Int, application: Application) {
+    private fun checkUser(myId: Int, userId: Int, application: Application) {
         uiScope.launch {
             _user.value = getUser(userId)
             _bitmapDrawable.value = getImage(application)
             _phoneNumber.value = getPhone(user.value?.phone)
             _followers.value = getTotalFollowers(userId)
             _following.value = getTotalFollowing(userId)
+            _followedByLine.value = getMutualFollowersLine(myId, userId)
+            bool = checkFollower(myId, userId)
+            buttonSetValue(bool)
         }
     }
 
@@ -86,6 +100,37 @@ class FriendFragmentViewModel(userID: Int, private val userDatabase: UserDao, pr
         return withContext(Dispatchers.IO) {
             followerDatabase.getTotalFollowing(userId)
         }
+    }
+
+    private suspend fun getTotalMutualFollowers(myId: Int, userId: Int): List<String> {
+        return withContext(Dispatchers.IO) {
+            followerDatabase.getMutualFollowers(myId, userId)
+        }
+    }
+
+    private suspend fun getMutualFollowersLine(myId: Int, userId: Int): Spanned {
+        val len = getTotalMutualFollowers(myId, userId)
+        val line = when {
+            len.size == 3 -> "Followed by <b>${len[0]}</b>, <b>${len[1]}</b> and <b>1 other</b>"
+            len.size == 2 -> "Followed by <b>${len[0]}</b> and <b>${len[1]}</b>"
+            len.size == 1 -> "Followed by <b>${len[0]}</b>"
+            len.size > 3 -> "Followed by <b>${len[0]}</b>, <b>${len[1]}</b> and <b>${len.size - 2} others</b>"
+            else -> ""
+        }
+        return HtmlCompat.fromHtml(line, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    }
+
+    private suspend fun checkFollower(myId: Int, userId: Int): Int {
+        return withContext(Dispatchers.IO) {
+            if (followerDatabase.isRecordExist(myId, userId) == 1) {
+                bool = followerDatabase.checkFollower(myId, userId)
+            }
+            bool
+        }
+    }
+
+    private fun buttonSetValue(bool: Int) {
+        _followUnFollowText.value = str[bool + 1]
     }
 
     override fun onCleared() {
