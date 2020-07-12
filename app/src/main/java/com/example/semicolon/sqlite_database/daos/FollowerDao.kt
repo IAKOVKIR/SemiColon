@@ -1,7 +1,6 @@
 package com.example.semicolon.sqlite_database.daos
 
 import androidx.room.*
-import com.example.semicolon.models.DBContract
 import com.example.semicolon.sqlite_database.Follower
 
 @Dao

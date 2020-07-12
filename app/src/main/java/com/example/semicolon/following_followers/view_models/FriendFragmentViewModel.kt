@@ -10,9 +10,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.semicolon.R
+import com.example.semicolon.sqlite_database.Follower
 import com.example.semicolon.sqlite_database.User
 import com.example.semicolon.sqlite_database.daos.FollowerDao
 import com.example.semicolon.sqlite_database.daos.UserDao
+import com.example.semicolon.support_features.Time
 import kotlinx.coroutines.*
 
 class FriendFragmentViewModel(myID: Int, userID: Int, private val userDatabase: UserDao,
@@ -21,9 +23,17 @@ class FriendFragmentViewModel(myID: Int, userID: Int, private val userDatabase: 
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    /*
+        Variable bool contains one of three conditions of request:
+        "1" - you follow the user
+        "0" - "your request is in progress"
+        "-1" - "you do not follow the user"
+        */
     //Array str contains 3 of these conditions
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")//-1, 0, 1
     private var bool = -1
+    val time = Time()
 
     private var _user = MutableLiveData<User?>()
     val user: LiveData<User?> get() = _user
@@ -60,6 +70,17 @@ class FriendFragmentViewModel(myID: Int, userID: Int, private val userDatabase: 
             _followedByLine.value = getMutualFollowersLine(myId, userId)
             bool = checkFollower(myId, userId)
             buttonSetValue(bool)
+        }
+    }
+
+    fun followOrUnFollow(myId: Int, userId: Int) {
+        uiScope.launch {
+            if (bool == -1) {
+                if (sendRequest(myId, userId))
+                    buttonSetValue(0)
+            } else if (deleteRequest(myId, userId)) {
+                buttonSetValue(-1)
+            }
         }
     }
 
@@ -129,7 +150,28 @@ class FriendFragmentViewModel(myID: Int, userID: Int, private val userDatabase: 
         }
     }
 
-    private fun buttonSetValue(bool: Int) {
+    private suspend fun sendRequest(myId: Int, userId: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            val friend = Follower(
+                followerDatabase.getMaxId() + 1, myId, userId, 0,
+                time.toString(), time.toString()
+            )
+            followerDatabase.insert(friend)
+
+            followerDatabase.isRecordExistWithCondition(myId, userId, 0) == 1
+        }
+    }
+
+    private suspend fun deleteRequest(myId: Int, userId: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            followerDatabase.deleteRecord(myId, userId)
+
+            followerDatabase.isRecordExistWithCondition(myId, userId, 0) == 0
+        }
+    }
+
+    private fun buttonSetValue(newBool: Int) {
+        bool = newBool
         _followUnFollowText.value = str[bool + 1]
     }
 

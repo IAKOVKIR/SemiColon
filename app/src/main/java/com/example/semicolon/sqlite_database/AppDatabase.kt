@@ -36,7 +36,7 @@ abstract class AppDatabase : RoomDatabase() {
      */
     companion object {
 
-        val time = Time()
+        private val time = Time()
         private val userArray = arrayOf(User(1, "mr_query", "0490506763", "12345678", "Chandra MrQuery",
             "I'll still fuck your bitch", "MrStealYourQuery@gmail.com", 5.0F, time.toString(), time.toString()
         ), User(2, "ice_wallow", "0490000000", "12345678", "Abbas Ice-Wallow", "I'm better than my father",

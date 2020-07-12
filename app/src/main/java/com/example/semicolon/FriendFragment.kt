@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,23 +12,13 @@ import com.example.semicolon.databinding.FragmentFriendBinding
 import com.example.semicolon.following_followers.view_models.FriendFragmentViewModel
 import com.example.semicolon.following_followers.view_models.FriendFragmentViewModelFactory
 import com.example.semicolon.sqlite_database.AppDatabase
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import com.example.semicolon.sqlite_database.Follower
-import com.example.semicolon.support_features.Time
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class FriendFragment : Fragment() {
 
     private var myID: Int? = null
     private var userID: Int? = null
-    lateinit var db: DatabaseOpenHelper
-    //Array str contains 3 of these conditions
-    private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")//-1, 0, 1
-    //Time object
-    val time = Time()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +33,6 @@ class FriendFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding: FragmentFriendBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_friend, container, false)
-        //DatabaseOpenHelper object
-        db = DatabaseOpenHelper(requireContext())
 
         val application = requireNotNull(this.activity).application
 
@@ -64,63 +51,15 @@ class FriendFragment : Fragment() {
         // the binding can observe LiveData updates
         binding.lifecycleOwner = viewLifecycleOwner
 
-        //TextViews
-        val followUnFollowButton: TextView = binding.followUnFollowButton
-
         //Layouts
         //val eventsLayout: LinearLayout = findViewById(R.id.linear_layout_following)
 
-        var bool = 0
-
-        /*
-        Variable bool contains one of three conditions of "friendship":
-        "1" - you follow the user
-        "0" - "your request is in progress"
-        "-1" - "you do not follow the user"
-        */
-
-        followUnFollowButton.setOnClickListener{
-
-            if (bool == -1) {
-                CoroutineScope(Dispatchers.Default).launch {
-
-                    var res = false
-
-                    withContext(Dispatchers.Default) {
-                        val friend = Follower(
-                            myID!!, userID!!, 0,
-                            time.toString(), time.toString()
-                        )
-                        res = db.insertRequest(friend)
-                    }
-
-                    launch(Dispatchers.Main) {
-                        if (res) {
-                            followUnFollowButton.text = str[1]
-                            bool = 0
-                        }
-                    }
-                }
-            } else {
-                CoroutineScope(Dispatchers.Default).launch {
-
-                    var res = false
-
-                    withContext(Dispatchers.Default) {
-                        res = db.deleteFollowing(myID!!, userID!!)
-                    }
-
-                    launch(Dispatchers.Main) {
-                        if (res) {
-                            followUnFollowButton.text = str[2]
-                            bool = 1
-                        }
-                    }
-                }
-            }
+        //OnClickListener's
+        binding.followUnFollowButton.setOnClickListener{
+            if (myID != null && userID != null)
+                viewModel.followOrUnFollow(myID!!, userID!!)
         }
 
-        //OnClickListener's
         binding.followedBy.setOnClickListener {
             this.findNavController().navigate(FriendFragmentDirections
                 .actionFriendFragmentToPublicFollowersFollowingFragment(myID!!, userID!!, 0))

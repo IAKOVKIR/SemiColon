@@ -28,10 +28,10 @@ class RequestsFragmentViewModel(val myID: Int, userDatabase: UserDao, private va
     val bitmapDrawable: LiveData<BitmapDrawable> get() = _bitmapDrawable
 
     init {
-        checkUser(myID, application)
+        checkUser(application)
     }
 
-    private fun checkUser(userId: Int, application: Application) {
+    private fun checkUser(application: Application) {
         uiScope.launch {
             _bitmapDrawable.value = getImage(application)
         }
