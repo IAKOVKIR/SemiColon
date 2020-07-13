@@ -2,6 +2,7 @@ package com.example.semicolon.sqlite_database.daos
 
 import androidx.room.*
 import com.example.semicolon.sqlite_database.Follower
+import com.example.semicolon.sqlite_database.User
 
 @Dao
 interface FollowerDao {
@@ -41,4 +42,7 @@ interface FollowerDao {
 
     @Query("SELECT Q1.Username FROM (SELECT USER.Username FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.ReceiverID WHERE FOLLOWER.SenderID = :myId AND FOLLOWER.Condition = '1') AS Q1 INNER JOIN (SELECT USER.Username FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = :userId AND FOLLOWER.Condition = '1') AS Q2 ON Q1.Username = Q2.Username LIMIT 5")
     fun getMutualFollowers(myId: Int, userId: Int): List<String>
+
+    @Query("SELECT * FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = :UserID AND FOLLOWER.Condition = :num")
+    fun readAllFollowers(UserID: Int, num: Int): List<User>
 }

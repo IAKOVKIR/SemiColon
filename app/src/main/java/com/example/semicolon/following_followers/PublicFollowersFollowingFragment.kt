@@ -14,6 +14,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.semicolon.R
 import com.example.semicolon.databinding.PublicFollowersFollowingFragmentBinding
+import com.example.semicolon.following_followers.viewpager_fragments.ListFollowers
+import com.example.semicolon.following_followers.viewpager_fragments.ListFollowing
+import com.example.semicolon.following_followers.viewpager_fragments.ListMutual
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

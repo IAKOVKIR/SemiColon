@@ -1,4 +1,4 @@
-package com.example.semicolon.following_followers
+package com.example.semicolon.following_followers.viewpager_fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -49,10 +49,12 @@ class ListFollowing : Fragment() {
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = FollowingRecyclerViewAdapter(
-                listUser,
-                listener as OnListFragmentInteractionListener,
-                myID!!)
+            adapter =
+                FollowingRecyclerViewAdapter(
+                    listUser,
+                    listener as OnListFragmentInteractionListener,
+                    myID!!
+                )
             setHasFixedSize(true)
         }
 

@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import com.example.semicolon.models.EventContent
-import com.example.semicolon.following_followers.ListFollowers
-import com.example.semicolon.following_followers.ListFollowing
-import com.example.semicolon.following_followers.ListMutual
-import com.example.semicolon.following_followers.RequestsFragment
+import com.example.semicolon.following_followers.viewpager_fragments.ListFollowers
+import com.example.semicolon.following_followers.viewpager_fragments.ListFollowing
+import com.example.semicolon.following_followers.viewpager_fragments.ListMutual
 import com.example.semicolon.login.LoginActivity
 import com.example.semicolon.semi_settings.*
 import com.example.semicolon.sqlite_database.User
@@ -25,9 +24,8 @@ private const val EVENT_ID = "event_id"
 
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     ListFollowers.OnListFragmentInteractionListener, ListFollowing.OnListFragmentInteractionListener,
-    UserSearchFragment.OnListFragmentInteractionListener, /*RequestsFragment.OnListFragmentInteractionListener,*/
-        ListMutual.OnListFragmentInteractionListener, SettingsFragment.OnListFragmentInteractionListener,
-        ListSearchFragment.OnListFragmentInteractionListener {
+    UserSearchFragment.OnListFragmentInteractionListener, ListMutual.OnListFragmentInteractionListener,
+    SettingsFragment.OnListFragmentInteractionListener, ListSearchFragment.OnListFragmentInteractionListener {
 
     private var myID: Int? = null
     private lateinit var n: SharedPreferences

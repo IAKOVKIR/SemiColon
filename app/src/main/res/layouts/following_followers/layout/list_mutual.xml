@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".following_followers.ListMutual">
+        tools:context=".following_followers.viewpager_fragments.ListMutual">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@drawable/gray_red"
@@ -20,7 +20,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:context=".following_followers.ListMutual"
+                tools:context=".following_followers.viewpager_fragments.ListMutual"
                 tools:listitem="@layout/mutual_recycler_view_adapter" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

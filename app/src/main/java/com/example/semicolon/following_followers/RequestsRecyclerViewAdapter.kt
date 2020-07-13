@@ -43,10 +43,10 @@ class RequestsRecyclerViewAdapter(private val myID: Int, private val viewModel: 
             binding.username.text = item.username
 
             val time = Time()
-            var bool: Int = -1
+            var bool = -1
             val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
             CoroutineScope(Dispatchers.Default).launch {
-                withContext(Dispatchers.Default) {
+                withContext(Dispatchers.IO) {
                     if (followerDataSource.isRecordExist(myID, item.userId) == 1) {
                         bool = followerDataSource.checkFollower(myID, item.userId)
                     }
@@ -63,11 +63,10 @@ class RequestsRecyclerViewAdapter(private val myID: Int, private val viewModel: 
                     CoroutineScope(Dispatchers.Default).launch {
                         var res = false
 
-                        withContext(Dispatchers.Default) {
+                        withContext(Dispatchers.IO) {
                             val friend = Follower(
-                                followerDataSource.getMaxId() + 1, myID, item.userId, 0,
-                                time.toString(), time.toString()
-                            )
+                                followerDataSource.getMaxId() + 1, myID, item.userId,
+                                0, time.toString(), time.toString())
                             followerDataSource.insert(friend)
                             if (followerDataSource.isRecordExistWithCondition(myID, item.userId, 0) == 1) {
                                 res = true
@@ -83,7 +82,6 @@ class RequestsRecyclerViewAdapter(private val myID: Int, private val viewModel: 
                     }
 
                 } else {
-
                     CoroutineScope(Dispatchers.Default).launch {
                         var res = false
 

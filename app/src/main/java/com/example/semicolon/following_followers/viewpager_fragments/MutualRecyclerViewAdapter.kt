@@ -1,36 +1,32 @@
-package com.example.semicolon.following_followers
+package com.example.semicolon.following_followers.viewpager_fragments
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import com.example.semicolon.*
-import com.example.semicolon.databinding.FollowingRecyclerViewAdapterBinding
+import androidx.recyclerview.widget.RecyclerView
+import com.example.semicolon.R
+import com.example.semicolon.databinding.MutualRecyclerViewAdapterBinding
 import com.example.semicolon.sqlite_database.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.sqlite_database.Follower
 import com.example.semicolon.support_features.Time
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.following_recycler_view_adapter.view.*
+import kotlinx.android.synthetic.main.mutual_recycler_view_adapter.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/**
- * [RecyclerView.Adapter] that can display a [FriendFragment] and makes a call to the
- * specified [ListFollowing.OnListFragmentInteractionListener].
- */
-class FollowingRecyclerViewAdapter(
+class MutualRecyclerViewAdapter(
     private val mValues: ArrayList<User>,
-    private val mListener: ListFollowing.OnListFragmentInteractionListener?,
+    private val mListener: ListMutual.OnListFragmentInteractionListener?,
     private val myID: Int
-) : RecyclerView.Adapter<FollowingRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MutualRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow") //-1, 0, 1
@@ -46,8 +42,8 @@ class FollowingRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: FollowingRecyclerViewAdapterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
-            R.layout.following_recycler_view_adapter, parent, false)
+        val binding: MutualRecyclerViewAdapterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+                    R.layout.mutual_recycler_view_adapter, parent, false)
         db = DatabaseOpenHelper(parent.context)
         return ViewHolder(binding.root)
     }
@@ -68,8 +64,8 @@ class FollowingRecyclerViewAdapter(
 
                 launch(Dispatchers.Main) {
                     holder.mFollowUnFollowButton.text = str[bool + 1]
-                    holder.mFollowUnFollowButton.setBackgroundResource(R.drawable.reg_square)
                     holder.mFollowUnFollowButton.isEnabled = true
+                    holder.mFollowUnFollowButton.setBackgroundResource(R.drawable.reg_square)
                 }
             }
 
@@ -83,7 +79,7 @@ class FollowingRecyclerViewAdapter(
                         withContext(Dispatchers.Default) {
                             val friend = Follower(
                                 myID, item.userId, 0,
-                                time.getDate(), time.getTime()
+                                time.toString(), time.toString()
                             )
                             res = db.insertRequest(friend)
                         }

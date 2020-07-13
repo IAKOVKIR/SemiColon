@@ -12,7 +12,7 @@ import com.example.semicolon.sqlite_database.daos.FollowerDao
 import com.example.semicolon.sqlite_database.daos.UserDao
 import kotlinx.coroutines.*
 
-class RequestsFragmentViewModel(val myID: Int, userDatabase: UserDao, private val followerDatabase: FollowerDao,
+class RequestsFragmentViewModel(private val myID: Int, userDatabase: UserDao, private val followerDatabase: FollowerDao,
                                 application: Application): AndroidViewModel(application) {
 
     private var viewModelJob = Job()

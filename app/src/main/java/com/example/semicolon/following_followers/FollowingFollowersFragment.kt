@@ -16,6 +16,8 @@ import com.example.semicolon.*
 import com.example.semicolon.databinding.FollowingFollowersFragmentBinding
 import com.example.semicolon.following_followers.view_models.FollowingFollowersViewModel
 import com.example.semicolon.following_followers.view_models.FollowingFollowersViewModelFactory
+import com.example.semicolon.following_followers.viewpager_fragments.ListFollowers
+import com.example.semicolon.following_followers.viewpager_fragments.ListFollowing
 import com.example.semicolon.sqlite_database.AppDatabase
 import kotlinx.coroutines.*
 import com.google.android.material.tabs.TabLayoutMediator
@@ -42,8 +44,7 @@ class FollowingFollowersFragment : Fragment() {
 
         // Get the ViewModel
         val viewModelFactory =
-            FollowingFollowersViewModelFactory(
-                myID, followerDataSource)
+            FollowingFollowersViewModelFactory(myID, followerDataSource)
         val viewModel: FollowingFollowersViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FollowingFollowersViewModel::class.java)
 
@@ -113,15 +114,13 @@ class FollowingFollowersFragment : Fragment() {
         return f
     }
 
-    internal inner class ViewPagerAdapter(fr: Fragment, my_id: Int, user_id: Int) : FragmentStateAdapter(fr) {
-
-        private val myID = my_id
-        private val userID = user_id
+    internal inner class ViewPagerAdapter(fr: Fragment, private val my_id: Int, private val user_id: Int) : FragmentStateAdapter(fr) {
 
         override fun createFragment(position: Int): Fragment = when (position) {
-            0, 1 -> getTab(myID, userID, position)
+            0, 1 -> getTab(my_id, user_id, position)
             else -> throw IllegalStateException("Invalid adapter position")
         }
+
         override fun getItemCount(): Int = 2
     }
 }

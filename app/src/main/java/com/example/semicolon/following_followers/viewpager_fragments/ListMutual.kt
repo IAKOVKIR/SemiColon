@@ -1,4 +1,4 @@
-package com.example.semicolon.following_followers
+package com.example.semicolon.following_followers.viewpager_fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -15,10 +15,6 @@ import com.example.semicolon.sqlite_database.User
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
 
-// the fragment initialization parameters
-private const val MY_ID = "my_id"
-private const val USER_ID = "user_id"
-
 class ListMutual : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
@@ -29,8 +25,8 @@ class ListMutual : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            myID = it.getInt(MY_ID)
-            userID = it.getInt(USER_ID)
+            myID = it.getInt("my_id")
+            userID = it.getInt("user_id")
         }
     }
 
@@ -47,9 +43,12 @@ class ListMutual : Fragment() {
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = MutualRecyclerViewAdapter(
-                listUser,
-                listener as OnListFragmentInteractionListener, myID!!)
+            adapter =
+                MutualRecyclerViewAdapter(
+                    listUser,
+                    listener as OnListFragmentInteractionListener,
+                    myID!!
+                )
             setHasFixedSize(true)
         }
 

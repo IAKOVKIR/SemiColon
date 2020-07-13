@@ -1,4 +1,4 @@
-package com.example.semicolon.following_followers
+package com.example.semicolon.following_followers.viewpager_fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -7,17 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
 import com.example.semicolon.databinding.ListFollowersBinding
+import com.example.semicolon.following_followers.viewpager_fragments.view_models.ListFollowersViewModel
+import com.example.semicolon.following_followers.viewpager_fragments.view_models.ListFollowersViewModelFactory
+import com.example.semicolon.sqlite_database.AppDatabase
 import com.example.semicolon.sqlite_database.User
-//import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-//import kotlinx.coroutines.*
-
-// the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
-private const val MY_ID = "my_id"
-private const val USER_ID = "user_id"
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 /**
  * A fragment representing a list of Items.
@@ -33,8 +34,8 @@ class ListFollowers : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            myID = it.getInt(MY_ID)
-            userID = it.getInt(USER_ID)
+            myID = it.getInt("my_id")
+            userID = it.getInt("user_id")
         }
     }
 
@@ -45,30 +46,38 @@ class ListFollowers : Fragment() {
         val binding: ListFollowersBinding = DataBindingUtil.inflate(
             inflater, R.layout.list_followers, container, false)
         val list: RecyclerView = binding.list
-        //val db = DatabaseOpenHelper(requireContext())
         val listUser: ArrayList<User> = ArrayList()
+
+        val application = requireNotNull(this.activity).application
+        val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
+
+        val viewModelFactory = ListFollowersViewModelFactory(myID!!, followerDataSource)
+        val testViewModel =
+            ViewModelProvider(
+                this, viewModelFactory).get(ListFollowersViewModel::class.java)
 
         // Set the adapter
         with(list) {
             layoutManager = LinearLayoutManager(context)
-            adapter = FollowersRecyclerViewAdapter(
-                listUser,
-                listener as OnListFragmentInteractionListener, myID!!)
-            setHasFixedSize(true)
+            adapter =
+                FollowersRecyclerViewAdapter(
+                    listUser,
+                    listener as OnListFragmentInteractionListener,
+                    application,
+                    myID!!
+                )
         }
 
-        /*CoroutineScope(Dispatchers.Default).launch {
-
-            if (listUser.isEmpty())
-                listUser.addAll(withContext(Dispatchers.Default) { db.readAllFollowers(userID!!, 1) })
-
-            CoroutineScope(Dispatchers.Main).launch {
-                with(list) {
-                    adapter!!.notifyDataSetChanged()
+        testViewModel.totalFollowers.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (listUser.isEmpty()) {
+                    listUser.addAll(it)
+                    with(list) {
+                        adapter!!.notifyDataSetChanged()
+                    }
                 }
             }
-
-        }*/
+        })
 
         return binding.root
     }

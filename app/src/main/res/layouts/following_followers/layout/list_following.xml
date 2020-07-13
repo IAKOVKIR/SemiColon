@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.example.semicolon.following_followers.ListFollowing">
+        tools:context="com.example.semicolon.following_followers.viewpager_fragments.ListFollowing">
 
     <LinearLayout
             android:background="@drawable/gray_red"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="LinearLayoutManager"
-            tools:context=".following_followers.ListFollowing"
+            tools:context=".following_followers.viewpager_fragments.ListFollowing"
             tools:listitem="@layout/following_recycler_view_adapter"
             android:layout_marginTop="8dp" />
 
