@@ -8,19 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.semicolon.models.User
+import com.example.semicolon.databinding.FragmentUserSearchBinding
 import com.example.semicolon.sqlite_database.DatabaseOpenHelper
+import com.example.semicolon.sqlite_database.User
 import kotlinx.coroutines.*
 
 // the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
 private const val MY_ID = "my_id"
 private const val USER_ID = "user_id"
-private const val EXCEPTION_ID = "exception_id"
 
 /**
  * A fragment representing a list of Items.
@@ -31,40 +31,18 @@ private const val EXCEPTION_ID = "exception_id"
 class UserSearchFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
-    private var myID: Int? = null
-    private var userID: Int? = null
-    private var exceptionID: Int? = null
-    private var listUser: ArrayList<User> = ArrayList()
-    lateinit var list: RecyclerView
     lateinit var db: DatabaseOpenHelper
-    private var job: Job = Job()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            myID = it.getInt(MY_ID)
-            userID = it.getInt(USER_ID)
-            exceptionID = it.getInt(EXCEPTION_ID)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view: View = inflater.inflate(R.layout.fragment_user_search, container, false)
-
-        //TextViews
-        val backButton: TextView = view.findViewById(R.id.back_button)
-
+        val binding: FragmentUserSearchBinding = DataBindingUtil.inflate(
+                            inflater, R.layout.fragment_user_search, container, false)
         //EditTexts
-        val editText: EditText = view.findViewById(R.id.edit_text)
+        val editText: EditText = binding.editText
 
-        list = view.findViewById(R.id.list)
+        val list: RecyclerView = binding.list
         db = DatabaseOpenHelper(requireContext())
-
-        backButton.setOnClickListener {
-            val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("list_to_user_search", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
+        val listUser: ArrayList<User> = ArrayList()
 
         editText.addTextChangedListener(object : TextWatcher {
 
@@ -79,7 +57,7 @@ class UserSearchFragment : Fragment() {
 
                     CoroutineScope(Dispatchers.Default).launch {
 
-                        listUser.addAll(withContext(Dispatchers.Default) { load(cleanString) })
+                        listUser.addAll(withContext(Dispatchers.Default) { load() })
 
                         CoroutineScope(Dispatchers.Main).launch {
                             with(list) {
@@ -107,9 +85,9 @@ class UserSearchFragment : Fragment() {
             setHasFixedSize(true)
         }
 
-        job = CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Default).launch {
 
-            listUser.addAll(withContext(Dispatchers.Default) { load("") })
+            listUser.addAll(withContext(Dispatchers.Default) { load() })
 
             CoroutineScope(Dispatchers.Main).launch {
                 with(list) {
@@ -119,11 +97,15 @@ class UserSearchFragment : Fragment() {
 
         }
 
-        return view
+        binding.backButton.setOnClickListener {view: View ->
+            view.findNavController().popBackStack()
+        }
+
+        return binding.root
     }
 
-    private fun load(line: String) : ArrayList<User> {
-        return db.readFirstTenUsers(line)
+    private fun load() : ArrayList<User> {
+        return db.readFirstTenUsers()
     }
 
     override fun onAttach(context: Context) {
@@ -137,7 +119,6 @@ class UserSearchFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-        job.cancel()
     }
 
     /**
@@ -149,5 +130,4 @@ class UserSearchFragment : Fragment() {
     interface OnListFragmentInteractionListener {
         fun onListFragmentInteraction(item: User?)
     }
-
 }

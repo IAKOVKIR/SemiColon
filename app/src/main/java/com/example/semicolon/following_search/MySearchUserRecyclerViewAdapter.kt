@@ -11,8 +11,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 import android.graphics.drawable.BitmapDrawable
-import com.example.semicolon.models.Friend
-import com.example.semicolon.models.User
+import com.example.semicolon.sqlite_database.Follower
+import com.example.semicolon.sqlite_database.User
 import kotlinx.android.synthetic.main.following_search_friends_search.view.*
 
 /**
@@ -67,9 +67,9 @@ class MySearchUserRecyclerViewAdapter(
             if (bool == 2) {
                 holder.mFollowUnFollowButton.text = str[2]
                 bool = 3
-                val friend = Friend(
-                    db!!.countFriendTable(), myID, item.userId,
-                    strDate.substring(11, 19), strDate.substring(0, 10), bool
+                val friend = Follower(
+                    db!!.countFriendTable(), myID, item.userId, 0,
+                    strDate, strDate
                 )
                 db!!.insertRequest(friend)
             } else {

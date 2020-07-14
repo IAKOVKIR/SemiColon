@@ -6,48 +6,47 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import com.example.semicolon.models.EventContent
-import com.example.semicolon.models.User
-import com.example.semicolon.following_followers.ListFollowers
-import com.example.semicolon.following_followers.ListFollowing
-import com.example.semicolon.following_followers.ListMutual
-import com.example.semicolon.following_followers.RequestsFragment
+import com.example.semicolon.following_followers.viewpager_fragments.ListFollowers
+import com.example.semicolon.following_followers.viewpager_fragments.ListFollowing
+import com.example.semicolon.following_followers.viewpager_fragments.ListMutual
+import com.example.semicolon.login.LoginActivity
 import com.example.semicolon.semi_settings.*
+import com.example.semicolon.sqlite_database.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_user_home.*
 
+// the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
+private const val MY_ID = "my_id"
+private const val USER_ID = "user_id"
+private const val EVENT_ID = "event_id"
+
 class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteractionListener,
     ListFollowers.OnListFragmentInteractionListener, ListFollowing.OnListFragmentInteractionListener,
-    UserSearchFragment.OnListFragmentInteractionListener, RequestsFragment.OnListFragmentInteractionListener,
-        ListMutual.OnListFragmentInteractionListener, SettingFragment.OnListFragmentInteractionListener
-{
+    UserSearchFragment.OnListFragmentInteractionListener, ListMutual.OnListFragmentInteractionListener,
+    SettingsFragment.OnListFragmentInteractionListener, ListSearchFragment.OnListFragmentInteractionListener {
 
     private var myID: Int? = null
     private lateinit var n: SharedPreferences
 
     override fun onListFragmentInteraction(item: User?) {
-        myID = n.getInt("id", 1)
+        myID = n.getInt("id", -1)
 
-        if (item!!.userId != myID) {
-            val args = Bundle()
-            args.putInt("my_id", myID!!)
-            args.putInt("user_id", item.userId)
-            args.putInt("exception_id", myID!!)
+        val args = Bundle()
+        args.putInt(MY_ID, myID!!)
+        args.putInt(USER_ID, item!!.userId)
 
-            val t = FriendFragment()
-            t.arguments = args
-            startFragment(t, "to_friend")
-        } else
-            startFragment(MainFragment(), "open_main")
+        findNavController(R.id.nav_host).navigate(R.id.friendFragment, args)
     }
 
     //listener for events list
     override fun onListFragmentInteraction(item: EventContent.Event?) {
-        myID = n.getInt("id", 1)
+        myID = n.getInt("id", -1)
 
         val args = Bundle()
-        args.putInt("my_id", myID!!)
-        args.putInt("event_id", item!!.eventId)
+        args.putInt(MY_ID, myID!!)
+        args.putInt(EVENT_ID, item!!.eventId)
 
         val t = EventFragment()
         t.arguments = args
@@ -55,62 +54,17 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     }
 
     override fun onListFragmentInteraction(item: Setting.SettingItem?) {
+        myID = n.getInt("id", -1)
+
+        val args = Bundle()
+        args.putInt(MY_ID, myID!!)
 
         when (item!!.pos) {
-            1 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t = NotificationSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_notifications_settings")
-            }
-            2 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t =
-                    PasswordSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_password_settings")
-            }
-            3 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t =
-                    LanguageSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_language_settings")
-            }
-            4 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t =
-                    HelpSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_help_settings")
-            }
-            5 -> {
-                myID = n.getInt("id", 1)
-
-                val args = Bundle()
-                args.putInt("my_id", myID!!)
-
-                val t =
-                    AboutSettingsFragment()
-                t.arguments = args
-                startFragment(t, "to_about_settings")
-            }
+            1 -> findNavController(R.id.nav_host).navigate(R.id.notificationSettingsFragment, args)
+            2 -> findNavController(R.id.nav_host).navigate(R.id.passwordSettingsFragment, args)
+            3 -> findNavController(R.id.nav_host).navigate(R.id.languageSettingsFragment, args)
+            4 -> findNavController(R.id.nav_host).navigate(R.id.helpSettingsFragment, args)
+            5 -> findNavController(R.id.nav_host).navigate(R.id.aboutSettingsFragment, args)
             else -> logOut()
         }
 
@@ -122,29 +76,36 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         when (item.itemId) {
             R.id.navigation_home -> {
                 //opens main fragment
-                val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)
-                if (currentFragment !is MainFragment)
-                    startFragment(MainFragment(), "open_main")
+                if (findNavController(R.id.nav_host).currentDestination!!.id != R.id.mainFragment) {
+                    findNavController(R.id.nav_host).navigate(R.id.mainFragment)
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
                 //opens event list fragment (ListFragment.kt)
-                val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)
-                if (currentFragment !is ListFragment)
-                    startFragment(ListFragment(), "open_list")
+                if (findNavController(R.id.nav_host).currentDestination!!.id != R.id.listFragment) {
+                    findNavController(R.id.nav_host).navigate(R.id.listFragment)
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                val args = Bundle()
-                args.putString("MyFirstName", n.getString("FName", ""))
-                args.putString("MyLastName", n.getString("LName", ""))
-
-                //opens notifications fragment and sends arguments
-                //findNavController(R.id.nav_host).navigate(R.id.action_global_params_dest, args)
+                val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)
+                if (currentFragment !is ListSearchFragment)
+                    startFragmentArgs(ListSearchFragment(), "open_list_search")
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
+    }
+
+    private fun startFragmentArgs(fragment: Fragment, key: String) {
+        myID = n.getInt("id", 1)
+
+        val args = Bundle()
+        args.putInt(MY_ID, myID!!)
+
+        fragment.arguments = args
+        startFragment(fragment, key)
     }
 
     private fun startFragment(fragment: Fragment, key: String) {
@@ -173,7 +134,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         editor.clear()
         editor.apply()
 
-        val loginIntent = Intent(this, Login::class.java)
+        val loginIntent = Intent(this, LoginActivity::class.java)
         // set the new task and clear flags
         loginIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(loginIntent)

@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import com.example.semicolon.R
+import com.example.semicolon.databinding.SettingsRecyclerViewAdapterBinding
 
-import com.example.semicolon.semi_settings.SettingFragment.OnListFragmentInteractionListener
+import com.example.semicolon.semi_settings.SettingsFragment.OnListFragmentInteractionListener
 import com.example.semicolon.semi_settings.Setting.SettingItem
 
-import kotlinx.android.synthetic.main.fragment_setting.view.*
+import kotlinx.android.synthetic.main.settings_recycler_view_adapter.view.*
 
 /**
  * [RecyclerView.Adapter] that can display a [SettingItem] and makes a call to the
@@ -33,9 +35,9 @@ class SettingsRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_setting, parent, false)
-        return ViewHolder(view)
+        val binding: SettingsRecyclerViewAdapterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+                    R.layout.settings_recycler_view_adapter, parent, false)
+        return ViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

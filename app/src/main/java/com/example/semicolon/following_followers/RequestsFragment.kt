@@ -1,107 +1,64 @@
 package com.example.semicolon.following_followers
 
-//import android.graphics.Bitmap
-//import android.graphics.BitmapFactory
-//import android.graphics.drawable.BitmapDrawable
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.semicolon.R
-import com.example.semicolon.models.User
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
-import kotlinx.coroutines.*
-
-// the fragment initialization parameters
-private const val MY_ID = "my_id"
-private const val USER_ID = "user_id"
-private const val EXCEPTION_ID = "exception_id"
+import com.example.semicolon.databinding.FragmentRequestsBinding
+import com.example.semicolon.following_followers.view_models.RequestsFragmentViewModel
+import com.example.semicolon.following_followers.view_models.RequestsFragmentViewModelFactory
+import com.example.semicolon.sqlite_database.AppDatabase
+import com.example.semicolon.sqlite_database.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 class RequestsFragment : Fragment() {
-    private var listener: OnListFragmentInteractionListener? = null
-    private var myID: Int? = null
-    private var userID: Int? = null
-    private var exceptionID: Int? = null
-    private var listUser: ArrayList<User> = ArrayList()
-    lateinit var list: RecyclerView
-    lateinit var db: DatabaseOpenHelper
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            myID = it.getInt(MY_ID)
-            userID = it.getInt(USER_ID)
-            exceptionID = it.getInt(EXCEPTION_ID)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.followers_requests_list_requests, container, false)
-        val backButton: ImageView = view.findViewById(R.id.back_button)
-        list = view.findViewById(R.id.list)
-        db = DatabaseOpenHelper(requireContext())
+        val binding: FragmentRequestsBinding  = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_requests, container, false)
+        val listUser: ArrayList<User> = ArrayList()
 
-        // Set the adapter
-        with(list) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = RequestsRecyclerViewAdapter(
-                listUser,
-                listener as OnListFragmentInteractionListener, myID!!)
-            setHasFixedSize(true)
-        }
+        val application = requireNotNull(this.activity).application
+        val args = RequestsFragmentArgs.fromBundle(requireArguments())
 
-        CoroutineScope(Dispatchers.Default).launch {
+        val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
 
-            if (listUser.isEmpty())
-                listUser.addAll(withContext(Dispatchers.Default) { load() })
+        val viewModelFactory = RequestsFragmentViewModelFactory(args.myId, followerDataSource, application)
+        val testViewModel =
+            ViewModelProvider(
+                this, viewModelFactory).get(RequestsFragmentViewModel::class.java)
 
-            CoroutineScope(Dispatchers.Main).launch {
-                with(list) {
-                    adapter!!.notifyDataSetChanged()
+        testViewModel.userId.observe(viewLifecycleOwner, Observer { userId ->
+            userId?.let {
+                this.findNavController().navigate(RequestsFragmentDirections.actionRequestsFragmentToFriendFragment(args.myId, userId))
+                testViewModel.onSleepDataQualityNavigated()
+            }
+        })
+
+        val adapter = RequestsRecyclerViewAdapter(args.myId, testViewModel, listUser, application)
+        binding.list.adapter = adapter
+
+        testViewModel.totalRequests.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (listUser.isEmpty()) {
+                    listUser.addAll(it)
+                    adapter.notifyDataSetChanged()
                 }
             }
+        })
 
+        binding.backButton.setOnClickListener {view: View ->
+            view.findNavController().popBackStack()
         }
 
-        backButton.setOnClickListener {
-            val fm: FragmentManager = parentFragmentManager
-            fm.popBackStack("to_followers_requests", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
-
-        return view
-    }
-
-    private fun load() : ArrayList<User> {
-        return db.readAllFollowers(userID!!, 0/*, myID!!*/)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnListFragmentInteractionListener)
-            listener = context
-        else
-            throw RuntimeException("$context must implement OnListFragmentInteractionListener")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-            //job.cancel()
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: User?)
+        return binding.root
     }
 }

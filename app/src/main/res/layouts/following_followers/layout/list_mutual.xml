@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".following_followers.viewpager_fragments.ListMutual">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@drawable/gray_red"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list"
+                android:name="com.example.semicolon.following_followers.ListMutual"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:context=".following_followers.viewpager_fragments.ListMutual"
+                tools:listitem="@layout/mutual_recycler_view_adapter" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

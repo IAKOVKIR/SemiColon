@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        android:id="@+id/main_frag"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/blue_white"
-        tools:context=".MainFragment">
+        tools:context="com.example.semicolon.MainFragment">
+
+    <data>
+        <variable
+                name="mainFragmentViewModel"
+                type="com.example.semicolon.MainFragmentViewModel" />
+    </data>
 
     <LinearLayout
-            android:background="@drawable/gradient_background"
+            android:id="@+id/main_frag"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/blue_white">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+                android:background="@drawable/gradient_background"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <ImageButton
-                    android:id="@+id/settings_button"
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/settings"
-                    android:layout_alignParentEnd="true"
-                    tools:ignore="ContentDescription,RtlSymmetry"
-                    android:layout_alignParentTop="true"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageButton
+                        android:id="@+id/settings_button"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/settings"
+                        android:layout_alignParentEnd="true"
+                        tools:ignore="ContentDescription,RtlSymmetry"
+                        android:layout_alignParentTop="true"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/circleImageView"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="32dp"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageView"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@{mainFragmentViewModel.bitmapDrawable}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="32dp"/>
+
+                <TextView
                     android:id="@+id/name"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
@@ -61,7 +69,7 @@
                     android:textColor="#fff"
                     android:textStyle="bold"
                     android:textSize="19sp"
-                    android:text="@string/username_word"
+                    android:text="@{mainFragmentViewModel.user.username}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -70,16 +78,16 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/gray_red">
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/linear_layout_followers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,7 +99,7 @@
                 android:layout_marginBottom="4dp"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
+                <TextView
                     android:text="@string/word_followers"
                     android:textSize="16sp"
                     android:textColor="@color/BLACK"
@@ -103,18 +111,18 @@
                     android:layout_marginBottom="4dp"
                     android:id="@+id/followers_word"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/followers_number"
-                    android:text="@string/number_zero"
+                    android:text="@{String.valueOf(mainFragmentViewModel.followers)}"
                     android:textSize="20sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/linear_layout_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,7 +136,7 @@
                 android:layout_marginBottom="4dp"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
+                <TextView
                     android:id="@+id/following_word"
                     android:text="@string/word_following"
                     android:textSize="16sp"
@@ -140,18 +148,18 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/following_number"
-                    android:text="@string/number_zero"
+                    android:text="@{String.valueOf(mainFragmentViewModel.following)}"
                     android:textSize="20sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -162,7 +170,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
+                <TextView
                     android:text="@string/word_events"
                     android:textSize="16sp"
                     android:textColor="@color/BLACK"
@@ -174,7 +182,7 @@
                     android:layout_marginBottom="4dp"
                     android:id="@+id/textView5"/>
 
-            <TextView
+                <TextView
                     android:text="@string/number_zero"
                     android:textSize="20sp"
                     android:textColor="@color/BLACK"
@@ -183,29 +191,29 @@
                     android:layout_marginStart="14dp"
                     android:id="@+id/textView7"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-            <ImageView
+                <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/smart_phone"
                     tools:ignore="ContentDescription"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/phone_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -213,24 +221,24 @@
                     android:textSize="16sp"
                     android:layout_marginStart="8dp"
                     android:textColor="@color/WHITE"
-                    android:text="@string/phone_number"/>
+                    android:text="@{mainFragmentViewModel.user.phone}"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-            <ImageView
+                <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/envelope"
                     tools:ignore="ContentDescription"/>
 
-            <TextView
+                <TextView
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -238,10 +246,12 @@
                     android:textSize="16sp"
                     android:layout_marginStart="8dp"
                     android:textColor="@color/WHITE"
-                    android:text="@string/email_gmail"/>
+                    android:text="@{mainFragmentViewModel.user.email}"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</layout>

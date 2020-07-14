@@ -1,5 +1,6 @@
 package com.example.semicolon.sqlite_database
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -75,9 +76,9 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
     }
 
     @Throws(SQLiteConstraintException::class)
-    fun insertRequest(friend: Friend): Boolean {
+    fun insertRequest(follower: Follower): Boolean {
 
-        val check: Int = checkFollower(friend.SenderID, friend.ReceiverID)
+        val check: Int = checkFollower(follower.SenderID, follower.ReceiverID)
 
         if (check == -1) {
             val db: SQLiteDatabase = writableDatabase
@@ -86,11 +87,11 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
             val values = ContentValues()
 
             //values.put(DBContract.UserEntry.FOLLOWER_COLUMN_ID, friend.id)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID, friend.SenderID)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID, friend.ReceiverID)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_DATE, friend.date)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_TIME, friend.time)
-            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION, friend.condition)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID, follower.SenderID)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID, follower.ReceiverID)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION, follower.Condition)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_DATE_ACCEPTED, follower.DateAccepted)
+            values.put(DBContract.UserEntry.FOLLOWER_COLUMN_DATE_CREATED, follower.DateCreated)
 
             db.insert(DBContract.UserEntry.FOLLOWER_TABLE_NAME, null, values)
 
@@ -145,7 +146,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return true
     }
 
-    @Throws(SQLiteConstraintException::class)
+    /*@Throws(SQLiteConstraintException::class)
     fun deleteUser(UserID: Int): Boolean {
 
         val db: SQLiteDatabase = writableDatabase
@@ -158,7 +159,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         db.delete(DBContract.UserEntry.USER_TABLE_NAME, selection, selectionArgs)
 
         return true
-    }
+    }*/
 
     fun findUserByUsernameAndPassword(Username: String, Password: String): User {
         val db: SQLiteDatabase = writableDatabase
@@ -184,7 +185,18 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                 val lastModified: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
                 val dateCreated: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
 
-                users = User(id, username, phone, password, fullName, bioDescription, email, rating, lastModified, dateCreated)
+                users = User(
+                    id,
+                    username,
+                    phone,
+                    password,
+                    fullName,
+                    bioDescription,
+                    email,
+                    rating,
+                    lastModified,
+                    dateCreated
+                )
             }
 
         cursor.close()
@@ -227,6 +239,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return pieceOfData
     }
 
+    @SuppressLint("Recycle")
     fun findUserByID(UserID: Int): User {
         var users = User()
         val db: SQLiteDatabase = writableDatabase
@@ -249,7 +262,18 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                     val lastModified: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
                     val dateCreated: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
 
-                    users = User(id, username, phone, password, fullName, bioDescription, email, rating, lastModified, dateCreated)
+                    users = User(
+                        id,
+                        username,
+                        phone,
+                        password,
+                        fullName,
+                        bioDescription,
+                        email,
+                        rating,
+                        lastModified,
+                        dateCreated
+                    )
                 }
 
         } catch (e: SQLiteException) {
@@ -261,7 +285,8 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
     }
 
-    fun readAllFollowers(UserID: Int, num: Int/*, except: Int*/): ArrayList<User> {
+    @SuppressLint("Recycle")
+    fun readAllFollowers(UserID: Int, num: Int): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
         val users = ArrayList<User>()
@@ -302,6 +327,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun readAllFollowing(SenderID: Int): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -343,13 +369,14 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun readAllEvents(): ArrayList<EventContent.Event> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
         val events = ArrayList<EventContent.Event>()
 
         try {
-            val line = "SELECT * FROM EVENT"
+            val line = "SELECT * FROM EVENT LIMIT 3"
             cursor = db.rawQuery(line, null)
 
             if (cursor.moveToFirst())
@@ -376,14 +403,14 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun readAllMutualFollowers(myID: Int, userID: Int): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$myID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q1 INNER JOIN " +
-                    "(SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.UserID = Q2.UserID"
+            val line = "SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$myID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q1 INNER JOIN (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.UserID = Q2.UserID"
 
             cursor = db.rawQuery(line, null)
 
@@ -425,6 +452,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun readFirstThreeMutualFollowers(myID: Int, userID: Int): ArrayList<String> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -432,7 +460,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
         try {
             val line = "SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$myID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q1 INNER JOIN " +
-                    "(SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.Username = Q2.Username LIMIT 2"
+                    "(SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.Username = Q2.Username"
 
             cursor = db.rawQuery(line, null)
 
@@ -454,6 +482,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun searchAllUsers(except: Int, searchLine: String): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -496,7 +525,52 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
 
     }
 
-    fun readFirstTenUsers(searchLine: String): ArrayList<User> {
+    @SuppressLint("Recycle")
+    fun readFirstSixUsers(): ArrayList<User> {
+        val db: SQLiteDatabase = writableDatabase
+        var cursor: Cursor? = null
+        val users = ArrayList<User>()
+
+        try {
+            val line = "SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER LIMIT 3"
+            cursor = db.rawQuery(line, null)
+        } catch (e: SQLiteException) {
+            db.close()
+            cursor!!.close()
+            return ArrayList()
+        }
+
+        if (cursor.moveToFirst())
+            while (!cursor.isAfterLast) {
+                val id: Int = cursor.getInt(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_ID))
+                val username: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USERNAME))
+                val phoneNum: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_PHONE))
+                val fullName: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_USER_FULL_NAME))
+                val email: String = cursor.getString(cursor.getColumnIndex(DBContract.UserEntry.USER_COLUMN_EMAIL))
+                users.add(
+                    User(
+                        id,
+                        username,
+                        phoneNum,
+                        "",
+                        fullName,
+                        "",
+                        email,
+                        0F,
+                        "",
+                        ""
+                    )
+                )
+                cursor.moveToNext()
+            }
+
+        db.close()
+        cursor!!.close()
+        return users
+    }
+
+    @SuppressLint("Recycle")
+    fun readFirstTenUsers(): ArrayList<User> {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
         val users = ArrayList<User>()
@@ -539,6 +613,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         return users
     }
 
+    @SuppressLint("Recycle")
     fun countFollowers(UserID: Int): Int {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -557,6 +632,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun countFollowing(UserID: Int): Int {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -577,6 +653,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         }
     }
 
+    @SuppressLint("Recycle")
     fun countFollowingRequests(UserID: Int): Int {
         val db: SQLiteDatabase = writableDatabase
         var cursor: Cursor? = null
@@ -667,9 +744,9 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
                     DBContract.UserEntry.FOLLOWER_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID + " INTEGER NOT NULL, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID + " INTEGER NOT NULL, " +
-                    DBContract.UserEntry.FOLLOWER_COLUMN_DATE + " TEXT NOT NULL, " +
-                    DBContract.UserEntry.FOLLOWER_COLUMN_TIME + " TEXT NOT NULL, " +
                     DBContract.UserEntry.FOLLOWER_COLUMN_CONDITION + " INTEGER NOT NULL DEFAULT 0, " +
+                    DBContract.UserEntry.FOLLOWER_COLUMN_DATE_ACCEPTED + " TEXT NOT NULL, " +
+                    DBContract.UserEntry.FOLLOWER_COLUMN_DATE_CREATED + " TEXT NOT NULL, " +
                     "FOREIGN KEY(" + DBContract.UserEntry.FOLLOWER_COLUMN_SENDER_ID + ") REFERENCES " +
                     DBContract.UserEntry.USER_TABLE_NAME + "(" + DBContract.UserEntry.USER_COLUMN_USER_ID + "), " +
                     "FOREIGN KEY(" + DBContract.UserEntry.FOLLOWER_COLUMN_RECEIVER_ID + ") REFERENCES " +

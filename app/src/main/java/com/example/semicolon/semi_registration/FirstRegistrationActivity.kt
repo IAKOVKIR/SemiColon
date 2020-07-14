@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import com.example.semicolon.Login
+import com.example.semicolon.login.LoginActivity
 import com.example.semicolon.R
 
 class FirstRegistrationActivity : Activity() {
@@ -63,7 +63,7 @@ class FirstRegistrationActivity : Activity() {
         }
 
         backButton.setOnClickListener{
-            val intent = Intent(this, Login::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
