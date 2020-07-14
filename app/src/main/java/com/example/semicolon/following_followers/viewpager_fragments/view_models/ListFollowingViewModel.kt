@@ -7,27 +7,27 @@ import com.example.semicolon.sqlite_database.User
 import com.example.semicolon.sqlite_database.daos.FollowerDao
 import kotlinx.coroutines.*
 
-class ListFollowersViewModel(myID: Int, private val followerDatabase: FollowerDao): ViewModel() {
+class ListFollowingViewModel(private val myID: Int, private val followerDatabase: FollowerDao): ViewModel() {
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val _totalFollowers = MutableLiveData<List<User>>()
-    val totalFollowers: LiveData<List<User>> get() = _totalFollowers
+    private val _totalFollowing = MutableLiveData<List<User>>()
+    val totalFollowing: LiveData<List<User>> get() = _totalFollowing
 
     init {
-        findFollowers(myID)
+        findFollowing(myID)
     }
 
-    private fun findFollowers(myId: Int) {
+    private fun findFollowing(myId: Int) {
         uiScope.launch {
-            _totalFollowers.value = getFollowersList(myId)
+            _totalFollowing.value = getFollowingList(myId)
         }
     }
 
-    private suspend fun getFollowersList(myId: Int): List<User> {
+    private suspend fun getFollowingList(myId: Int): List<User> {
         return withContext(Dispatchers.IO) {
-            followerDatabase.readAllFollowers(myId, 1)
+            followerDatabase.readAllFollowing(myId)
         }
     }
 }

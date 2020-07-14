@@ -101,7 +101,7 @@ class FollowersRecyclerViewAdapter(
                     CoroutineScope(Dispatchers.Default).launch {
                         var res = false
 
-                        withContext(Dispatchers.Default) {
+                        withContext(Dispatchers.IO) {
                             followerDataSource.deleteRecord(myID, item.userId)
                             if (followerDataSource.isRecordExist(myID, item.userId) == 0) {
                                 res = true

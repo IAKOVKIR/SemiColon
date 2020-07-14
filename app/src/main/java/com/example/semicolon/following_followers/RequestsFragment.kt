@@ -29,10 +29,9 @@ class RequestsFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val args = RequestsFragmentArgs.fromBundle(requireArguments())
 
-        val userDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).userDao
         val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
 
-        val viewModelFactory = RequestsFragmentViewModelFactory(args.myId, userDataSource, followerDataSource, application)
+        val viewModelFactory = RequestsFragmentViewModelFactory(args.myId, followerDataSource, application)
         val testViewModel =
             ViewModelProvider(
                 this, viewModelFactory).get(RequestsFragmentViewModel::class.java)

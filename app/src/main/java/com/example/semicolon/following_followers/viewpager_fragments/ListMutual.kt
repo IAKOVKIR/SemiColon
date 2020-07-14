@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semicolon.R
 import com.example.semicolon.databinding.ListMutualBinding
+import com.example.semicolon.following_followers.viewpager_fragments.view_models.ListMutualViewModel
+import com.example.semicolon.following_followers.viewpager_fragments.view_models.ListMutualViewModelFactory
+import com.example.semicolon.sqlite_database.AppDatabase
 import com.example.semicolon.sqlite_database.User
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import kotlinx.coroutines.*
 
 class ListMutual : Fragment() {
@@ -20,7 +24,6 @@ class ListMutual : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     private var myID: Int? = null
     private var userID: Int? = null
-    lateinit var db: DatabaseOpenHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +40,15 @@ class ListMutual : Fragment() {
         val binding: ListMutualBinding = DataBindingUtil.inflate(
             inflater, R.layout.list_mutual, container, false)
         val list: RecyclerView = binding.list
-        db = DatabaseOpenHelper(requireContext())
         val listUser: ArrayList<User> = ArrayList()
+
+        val application = requireNotNull(this.activity).application
+        val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
+
+        val viewModelFactory = ListMutualViewModelFactory(myID!!, userID!!, followerDataSource)
+        val testViewModel =
+            ViewModelProvider(
+                this, viewModelFactory).get(ListMutualViewModel::class.java)
 
         // Set the adapter
         with(list) {
@@ -49,27 +59,20 @@ class ListMutual : Fragment() {
                     listener as OnListFragmentInteractionListener,
                     myID!!
                 )
-            setHasFixedSize(true)
         }
 
-        CoroutineScope(Dispatchers.Default).launch {
-
-            if (listUser.isEmpty())
-                listUser.addAll(withContext(Dispatchers.Default) { load() })
-
-            CoroutineScope(Dispatchers.Main).launch {
-                with(list) {
-                    adapter!!.notifyDataSetChanged()
+        testViewModel.totalMutualFollowers.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (listUser.isEmpty()) {
+                    listUser.addAll(it)
+                    with(list) {
+                        adapter!!.notifyDataSetChanged()
+                    }
                 }
             }
-
-        }
+        })
 
         return binding.root
-    }
-
-    private fun load() : ArrayList<User> {
-        return db.readAllMutualFollowers(myID!!, userID!!)
     }
 
     override fun onAttach(context: Context) {

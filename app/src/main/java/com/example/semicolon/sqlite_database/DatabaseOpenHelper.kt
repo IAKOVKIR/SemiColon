@@ -410,8 +410,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context,
         val users = ArrayList<User>()
 
         try {
-            val line = "SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$myID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q1 INNER JOIN " +
-                    "(SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.UserID = Q2.UserID"
+            val line = "SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID = '$myID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q1 INNER JOIN (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN ${DBContract.UserEntry.FOLLOWER_TABLE_NAME} ON USER.UserID = ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.SenderID WHERE ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.ReceiverID = '$userID' AND ${DBContract.UserEntry.FOLLOWER_TABLE_NAME}.Condition = '1') AS Q2 ON Q1.UserID = Q2.UserID"
 
             cursor = db.rawQuery(line, null)
 

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -17,28 +16,21 @@ import com.example.semicolon.databinding.PublicFollowersFollowingFragmentBinding
 import com.example.semicolon.following_followers.viewpager_fragments.ListFollowers
 import com.example.semicolon.following_followers.viewpager_fragments.ListFollowing
 import com.example.semicolon.following_followers.viewpager_fragments.ListMutual
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-
-// the fragment initialization parameters, e.g MY_ID, USER_ID, EXCEPTION_ID and SLIDE_NUMBER
-private const val MY_ID = "my_id"
-private const val USER_ID = "user_id"
 
 class PublicFollowersFollowingFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: PublicFollowersFollowingFragmentBinding = DataBindingUtil.inflate(
-            inflater, R.layout.public_followers_following_fragment, container, false
-        )
+            inflater, R.layout.public_followers_following_fragment, container, false)
 
         val args = PublicFollowersFollowingFragmentArgs.fromBundle(requireArguments())
         val myID: Int = args.myId //myID
         val userID: Int = args.userId //myID
 
         //ViewPager2
-        val viewpager: ViewPager2 = binding.viewpager
-        val tabs: TabLayout = binding.tabs
-        val backButton: TextView = binding.backButton
+        val viewpager = binding.viewpager
+        val tabs = binding.tabs
 
         tabs.apply {
             setBackgroundColor(Color.WHITE)
@@ -71,7 +63,7 @@ class PublicFollowersFollowingFragment : Fragment() {
             }
         }.attach()
 
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             this.findNavController().popBackStack()
         }
 
@@ -80,8 +72,8 @@ class PublicFollowersFollowingFragment : Fragment() {
 
     private fun getTab(my_id: Int, user_id: Int, pos: Int): Fragment {
         val args = Bundle()
-        args.putInt(MY_ID, my_id)
-        args.putInt(USER_ID, user_id)
+        args.putInt("my_id", my_id)
+        args.putInt("user_id", user_id)
         val f = when (pos) {
             0 -> ListMutual()
             1 -> ListFollowers()
@@ -91,13 +83,10 @@ class PublicFollowersFollowingFragment : Fragment() {
         return f
     }
 
-    internal inner class ViewPagerAdapter(fr: Fragment, my_id: Int, user_id: Int) : FragmentStateAdapter(fr) {
-
-        private val myID = my_id
-        private val userID = user_id
+    internal inner class ViewPagerAdapter(fr: Fragment, private val my_id: Int, private val user_id: Int) : FragmentStateAdapter(fr) {
 
         override fun createFragment(position: Int): Fragment = when (position) {
-            0, 1, 2 -> getTab(myID, userID, position)
+            0, 1, 2 -> getTab(my_id, user_id, position)
             else -> throw IllegalStateException("Invalid adapter position")
         }
         override fun getItemCount(): Int = 3

@@ -9,16 +9,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.semicolon.R
 import com.example.semicolon.sqlite_database.daos.FollowerDao
-import com.example.semicolon.sqlite_database.daos.UserDao
 import kotlinx.coroutines.*
 
-class RequestsFragmentViewModel(private val myID: Int, userDatabase: UserDao, private val followerDatabase: FollowerDao,
+class RequestsFragmentViewModel(private val myID: Int, private val followerDatabase: FollowerDao,
                                 application: Application): AndroidViewModel(application) {
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    val totalRequests = userDatabase.getRequestListUsers(myID)
+    val totalRequests = followerDatabase.getRequestListUsers(myID)
 
     private val _userId = MutableLiveData<Int>()
     val userId

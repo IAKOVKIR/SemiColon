@@ -20,12 +20,8 @@ class SplashActivity : Activity() {
 
         val timer = Timer()
         val intent = Intent(this, LoginActivity::class.java)
-        val animFadeIn: Animation = AnimationUtils.loadAnimation(applicationContext,
-            R.anim.fade_in
-        )
-        val animFadeOut: Animation = AnimationUtils.loadAnimation(applicationContext,
-            R.anim.fade_out
-        )
+        val animFadeIn: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
+        val animFadeOut: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_out)
         val finalAnimation = AnimationSet(true)
         val textSemiColon: TextView = findViewById(R.id.label)
 

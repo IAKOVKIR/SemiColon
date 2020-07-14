@@ -22,10 +22,6 @@ import com.example.semicolon.sqlite_database.AppDatabase
 import kotlinx.coroutines.*
 import com.google.android.material.tabs.TabLayoutMediator
 
-// the fragment initialization parameters, e.g MY_ID, USER_ID, EXCEPTION_ID and SLIDE_NUMBER
-private const val MY_ID = "my_id"
-private const val USER_ID = "user_id"
-
 class FollowingFollowersFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -104,8 +100,8 @@ class FollowingFollowersFragment : Fragment() {
 
     private fun getTab(my_id: Int, user_id: Int, pos: Int): Fragment {
         val args = Bundle()
-        args.putInt(MY_ID, my_id)
-        args.putInt(USER_ID, user_id)
+        args.putInt("my_id", my_id)
+        args.putInt("user_id", user_id)
         val f = if (pos == 0)
             ListFollowers()
         else
