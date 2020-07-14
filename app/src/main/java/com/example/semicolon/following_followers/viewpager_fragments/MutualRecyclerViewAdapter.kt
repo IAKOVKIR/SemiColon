@@ -1,5 +1,6 @@
 package com.example.semicolon.following_followers.viewpager_fragments
 
+import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -9,10 +10,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.semicolon.FriendFragment
 import com.example.semicolon.R
 import com.example.semicolon.databinding.MutualRecyclerViewAdapterBinding
+import com.example.semicolon.sqlite_database.AppDatabase
 import com.example.semicolon.sqlite_database.User
-import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.sqlite_database.Follower
 import com.example.semicolon.support_features.Time
 import de.hdodenhof.circleimageview.CircleImageView
@@ -22,15 +24,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * [RecyclerView.Adapter] that can display a [FriendFragment] and makes a call to the
+ * specified [ListMutual.OnListFragmentInteractionListener].
+ */
 class MutualRecyclerViewAdapter(
     private val mValues: ArrayList<User>,
     private val mListener: ListMutual.OnListFragmentInteractionListener?,
+    private val application: Application,
     private val myID: Int
 ) : RecyclerView.Adapter<MutualRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow") //-1, 0, 1
-    lateinit var db: DatabaseOpenHelper
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -44,12 +50,12 @@ class MutualRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: MutualRecyclerViewAdapterBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
                     R.layout.mutual_recycler_view_adapter, parent, false)
-        db = DatabaseOpenHelper(parent.context)
         return ViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
+        val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
         val time = Time()
         var bool = 0
 
@@ -57,11 +63,11 @@ class MutualRecyclerViewAdapter(
 
         if (item.userId != myID) {
             CoroutineScope(Dispatchers.Default).launch {
-
-                withContext(Dispatchers.Default) {
-                    bool = db.checkFollower(myID, item.userId)
+                withContext(Dispatchers.IO) {
+                    if (followerDataSource.isRecordExist(myID, item.userId) == 1) {
+                        bool = followerDataSource.checkFollower(myID, item.userId)
+                    }
                 }
-
                 launch(Dispatchers.Main) {
                     holder.mFollowUnFollowButton.text = str[bool + 1]
                     holder.mFollowUnFollowButton.isEnabled = true
@@ -73,15 +79,16 @@ class MutualRecyclerViewAdapter(
                 if (bool == -1) {
 
                     CoroutineScope(Dispatchers.Default).launch {
-
                         var res = false
 
-                        withContext(Dispatchers.Default) {
+                        withContext(Dispatchers.IO) {
                             val friend = Follower(
-                                myID, item.userId, 0,
-                                time.toString(), time.toString()
-                            )
-                            res = db.insertRequest(friend)
+                                followerDataSource.getMaxId() + 1, myID, item.userId,
+                                0, time.toString(), time.toString())
+                            followerDataSource.insert(friend)
+                            if (followerDataSource.isRecordExistWithCondition(myID, item.userId, 0) == 1) {
+                                res = true
+                            }
                         }
 
                         launch(Dispatchers.Main) {
@@ -91,21 +98,21 @@ class MutualRecyclerViewAdapter(
                             }
                         }
                     }
-
                 } else {
-
                     CoroutineScope(Dispatchers.Default).launch {
-
                         var res = false
 
-                        withContext(Dispatchers.Default) {
-                            res = db.deleteFollowing(myID, item.userId)
+                        withContext(Dispatchers.IO) {
+                            followerDataSource.deleteRecord(myID, item.userId)
+                            if (followerDataSource.isRecordExist(myID, item.userId) == 0) {
+                                res = true
+                            }
                         }
 
                         launch(Dispatchers.Main) {
                             if (res) {
-                                holder.mFollowUnFollowButton.text = str[2]
-                                bool = 1
+                                holder.mFollowUnFollowButton.text = str[0]
+                                bool = -1
                             }
                         }
                     }

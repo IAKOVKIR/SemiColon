@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/mainFragment"
-            android:name="com.example.semicolon.MainFragment"
+            android:name="com.example.semicolon.main_fragments.MainFragment"
             android:label="fragment_main"
             tools:layout="@layout/fragment_main" >
         <action

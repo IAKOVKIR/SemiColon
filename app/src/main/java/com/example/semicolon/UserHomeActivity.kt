@@ -31,7 +31,6 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
     private lateinit var n: SharedPreferences
 
     override fun onListFragmentInteraction(item: User?) {
-        myID = n.getInt("id", -1)
 
         val args = Bundle()
         args.putInt(MY_ID, myID!!)
@@ -121,7 +120,7 @@ class UserHomeActivity : FragmentActivity(), ListFragment.OnListFragmentInteract
         setContentView(R.layout.activity_user_home)
 
         n = getSharedPreferences("myPreferences", Context.MODE_PRIVATE)
-
+        myID = n.getInt("id", 1)
         //add navigation listener
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }

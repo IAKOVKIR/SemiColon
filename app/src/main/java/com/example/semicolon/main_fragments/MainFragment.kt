@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.main_fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,7 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.example.semicolon.R
 import com.example.semicolon.databinding.FragmentMainBinding
+import com.example.semicolon.main_fragments.view_models.MainFragmentViewModel
+import com.example.semicolon.main_fragments.view_models.MainFragmentViewModelFactory
 import com.example.semicolon.sqlite_database.AppDatabase
 import kotlinx.coroutines.*
 
@@ -32,7 +35,8 @@ class MainFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentMainBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_main, container, false)
+            inflater,
+            R.layout.fragment_main, container, false)
 
         val application = requireNotNull(this.activity).application
 
@@ -40,7 +44,13 @@ class MainFragment : Fragment() {
         val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
 
         // Get the ViewModel
-        val viewModelFactory = MainFragmentViewModelFactory(userID, userDataSource, followerDataSource, application)
+        val viewModelFactory =
+            MainFragmentViewModelFactory(
+                userID,
+                userDataSource,
+                followerDataSource,
+                application
+            )
         val viewModel: MainFragmentViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MainFragmentViewModel::class.java)
 
@@ -55,16 +65,24 @@ class MainFragment : Fragment() {
             //followers layout
             linearLayoutFollowers.setOnClickListener {view: View ->
                 view.findNavController().navigate(
-                    MainFragmentDirections
-                        .actionMainFragmentToFollowingFollowersFragment(userID, userID, userID, 0)
+                    MainFragmentDirections.actionMainFragmentToFollowingFollowersFragment(
+                        userID,
+                        userID,
+                        userID,
+                        0
+                    )
                 )
             }
 
             //following layout
             linearLayoutFollowing.setOnClickListener {view: View ->
                 view.findNavController().navigate(
-                    MainFragmentDirections
-                        .actionMainFragmentToFollowingFollowersFragment(userID, userID, userID, 1)
+                    MainFragmentDirections.actionMainFragmentToFollowingFollowersFragment(
+                        userID,
+                        userID,
+                        userID,
+                        1
+                    )
                 )
             }
 

@@ -19,6 +19,12 @@ import com.example.semicolon.sqlite_database.AppDatabase
 import com.example.semicolon.sqlite_database.User
 import kotlinx.coroutines.*
 
+/**
+ * A fragment representing a list of Items.
+ * Activities containing this fragment MUST implement the
+ * [ListMutual.OnListFragmentInteractionListener] interface.
+ */
+
 class ListMutual : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
@@ -57,6 +63,7 @@ class ListMutual : Fragment() {
                 MutualRecyclerViewAdapter(
                     listUser,
                     listener as OnListFragmentInteractionListener,
+                    application,
                     myID!!
                 )
         }

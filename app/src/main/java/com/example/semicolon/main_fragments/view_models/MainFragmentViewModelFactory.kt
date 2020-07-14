@@ -1,4 +1,4 @@
-package com.example.semicolon
+package com.example.semicolon.main_fragments.view_models
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,12 @@ class MainFragmentViewModelFactory(private val myID: Int, private val userDataSo
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainFragmentViewModel::class.java)) {
-            return MainFragmentViewModel(myID, userDataSource, followerDataSource, application) as T
+            return MainFragmentViewModel(
+                myID,
+                userDataSource,
+                followerDataSource,
+                application
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

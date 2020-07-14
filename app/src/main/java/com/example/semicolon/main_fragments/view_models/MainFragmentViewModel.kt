@@ -1,10 +1,11 @@
-package com.example.semicolon
+package com.example.semicolon.main_fragments.view_models
 
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import androidx.lifecycle.*
+import com.example.semicolon.R
 import com.example.semicolon.sqlite_database.*
 import com.example.semicolon.sqlite_database.daos.FollowerDao
 import com.example.semicolon.sqlite_database.daos.UserDao
@@ -61,7 +62,9 @@ class MainFragmentViewModel(myID: Int, private val userDatabase: UserDao, privat
 
     private suspend fun getImage(application: Application): BitmapDrawable {
         return withContext(Dispatchers.Default) {
-            var bitmap: Bitmap = BitmapFactory.decodeResource(application.resources, R.drawable.burns)
+            var bitmap: Bitmap = BitmapFactory.decodeResource(application.resources,
+                R.drawable.burns
+            )
             val dif: Double = bitmap.height.toDouble() / bitmap.width
             bitmap = Bitmap.createScaledBitmap(bitmap, 180, (180 * dif).toInt(), true)
             BitmapDrawable(application.resources, bitmap)

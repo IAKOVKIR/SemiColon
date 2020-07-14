@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * A database that stores SleepNight information.
+ * A database that stores User and Follower information.
  * And a global method to get access to the database.
  *
  * This pattern is pretty much the same for any database,
@@ -29,14 +29,16 @@ abstract class AppDatabase : RoomDatabase() {
     abstract val followerDao: FollowerDao
 
     /**
-     * Define a companion object, this allows us to add functions on the SleepDatabase class.
+     * Define a companion object, this allows us to add functions on the AppDatabase class.
      *
-     * For example, clients can call `SleepDatabase.getInstance(context)` to instantiate
-     * a new SleepDatabase.
+     * For example, clients can call `AppDatabase.getInstance(context)` to instantiate
+     * a new AppDatabase.
      */
     companion object {
 
         private val time = Time()
+
+        //Test entries for USER table
         private val userArray = arrayOf(User(1, "mr_query", "0490506763", "12345678", "Chandra MrQuery",
             "I'll still fuck your bitch", "MrStealYourQuery@gmail.com", 5.0F, time.toString(), time.toString()
         ), User(2, "ice_wallow", "0490000000", "12345678", "Abbas Ice-Wallow", "I'm better than my father",
@@ -61,23 +63,23 @@ abstract class AppDatabase : RoomDatabase() {
             "KingJames@gmail.com", 5.0F, time.toString(), time.toString()
         ))
 
-        //test entries for FRIEND table
+        //test entries for FOLLOWER table
         private val followerArray = arrayOf(
-        Follower(1, 1, 2, 0, time.toString(), time.toString()),
-        Follower(2, 1, 3, 1, time.toString(), time.toString()),
+            Follower(1, 1, 2, 0, time.toString(), time.toString()),
+            Follower(2, 1, 3, 1, time.toString(), time.toString()),
             Follower(3, 2, 3, 0, time.toString(), time.toString()),
-        Follower(4, 3, 1, 1, time.toString(), time.toString()),
-        Follower(5, 1, 4, 1, time.toString(), time.toString()),
-        Follower(6, 2, 4, 1, time.toString(), time.toString()),
-        Follower(7, 3, 4, 0, time.toString(), time.toString()),
-        Follower(8, 4, 3, 0, time.toString(), time.toString()),
-        Follower(9, 5, 3, 0, time.toString(), time.toString()),
-        Follower(10, 6, 3, 0, time.toString(), time.toString()),
-        Follower(11, 7, 3, 0, time.toString(), time.toString()),
-        Follower(12, 8, 3, 0, time.toString(), time.toString()),
-        Follower(13, 9, 3, 0, time.toString(), time.toString()),
-        Follower(14, 10, 3, 0, time.toString(), time.toString()),
-        Follower(15, 11, 3, 0, time.toString(), time.toString()),
+            Follower(4, 3, 1, 1, time.toString(), time.toString()),
+            Follower(5, 1, 4, 1, time.toString(), time.toString()),
+            Follower(6, 2, 4, 1, time.toString(), time.toString()),
+            Follower(7, 3, 4, 0, time.toString(), time.toString()),
+            Follower(8, 4, 3, 0, time.toString(), time.toString()),
+            Follower(9, 5, 3, 0, time.toString(), time.toString()),
+            Follower(10, 6, 3, 0, time.toString(), time.toString()),
+            Follower(11, 7, 3, 0, time.toString(), time.toString()),
+            Follower(12, 8, 3, 0, time.toString(), time.toString()),
+            Follower(13, 9, 3, 0, time.toString(), time.toString()),
+            Follower(14, 10, 3, 0, time.toString(), time.toString()),
+            Follower(15, 11, 3, 0, time.toString(), time.toString()),
             Follower(16, 3, 5, 1, time.toString(), time.toString())
         )
 
@@ -109,6 +111,7 @@ abstract class AppDatabase : RoomDatabase() {
          * https://en.wikipedia.org/wiki/Singleton_pattern
          *
          * @param context The application context Singleton, used to get access to the filesystem.
+         * @param scope Defines a scope for new coroutines.
          */
         fun getInstance(context: Context, scope: CoroutineScope): AppDatabase {
             // Multiple threads can ask for the database at the same time, ensure we only initialize
@@ -140,9 +143,11 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Executes scripts with Room after database has been created.
         private class DbCallback(
             private val scope: CoroutineScope
         ) : RoomDatabase.Callback(){
+            //onCreate method is called after database is created
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
@@ -153,6 +158,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        //inserts all test entries into USER and FOLLOWER tables
         fun populateDb(userDao: UserDao, followerDao: FollowerDao) {
             for (i in userArray)
                 userDao.insert(i)
