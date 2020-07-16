@@ -29,8 +29,8 @@ class FollowingFollowersFragment : Fragment() {
             inflater, R.layout.following_followers_fragment, container, false)
 
         val args = FollowingFollowersFragmentArgs.fromBundle(requireArguments())
-        val myID: Int = args.myId //myID
-        val userID: Int = args.userId //myID
+        //Stores the id of the user that signed in
+        val userId: Int = args.userId
 
         val viewpager = binding.viewpager
         val tabs = binding.tabs
@@ -40,7 +40,7 @@ class FollowingFollowersFragment : Fragment() {
 
         // Get the ViewModel
         val viewModelFactory =
-            FollowingFollowersViewModelFactory(myID, followerDataSource)
+            FollowingFollowersViewModelFactory(userId, followerDataSource)
         val viewModel: FollowingFollowersViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FollowingFollowersViewModel::class.java)
 
@@ -53,7 +53,7 @@ class FollowingFollowersFragment : Fragment() {
             setSelectedTabIndicatorColor(Color.parseColor("#1D98A7"))
         }
 
-        val viewPagerAdapter = ViewPagerAdapter(this, myID, userID)
+        val viewPagerAdapter = ViewPagerAdapter(this, userId)
         var selectedTabPosition = 0
         viewpager.apply {
             adapter = viewPagerAdapter
@@ -86,7 +86,7 @@ class FollowingFollowersFragment : Fragment() {
             requestsButton.setOnClickListener { view: View ->
                 view.findNavController().navigate(
                     FollowingFollowersFragmentDirections
-                        .actionFollowingFollowersFragmentToRequestsFragment(myID, userID)
+                        .actionFollowingFollowersFragmentToRequestsFragment(userId)
                 )
             }
 
@@ -98,10 +98,11 @@ class FollowingFollowersFragment : Fragment() {
         return binding.root
     }
 
-    private fun getTab(my_id: Int, user_id: Int, pos: Int): Fragment {
+    private fun getTab(user_id: Int, pos: Int): Fragment {
         val args = Bundle()
-        args.putInt("my_id", my_id)
         args.putInt("user_id", user_id)
+        args.putInt("selected_user_id", user_id)
+
         val f = if (pos == 0)
             ListFollowers()
         else
@@ -110,10 +111,10 @@ class FollowingFollowersFragment : Fragment() {
         return f
     }
 
-    internal inner class ViewPagerAdapter(fr: Fragment, private val my_id: Int, private val user_id: Int) : FragmentStateAdapter(fr) {
+    internal inner class ViewPagerAdapter(fr: Fragment, private val user_id: Int) : FragmentStateAdapter(fr) {
 
         override fun createFragment(position: Int): Fragment = when (position) {
-            0, 1 -> getTab(my_id, user_id, position)
+            0, 1 -> getTab(user_id, position)
             else -> throw IllegalStateException("Invalid adapter position")
         }
 

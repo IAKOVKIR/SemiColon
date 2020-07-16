@@ -28,14 +28,14 @@ import kotlinx.coroutines.*
 class ListMutual : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
-    private var myID: Int? = null
-    private var userID: Int? = null
+    private var userId: Int? = null
+    private var selectedUserId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            myID = it.getInt("my_id")
-            userID = it.getInt("user_id")
+            userId = it.getInt("user_id")
+            selectedUserId = it.getInt("selected_user_id")
         }
     }
 
@@ -51,7 +51,7 @@ class ListMutual : Fragment() {
         val application = requireNotNull(this.activity).application
         val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
 
-        val viewModelFactory = ListMutualViewModelFactory(myID!!, userID!!, followerDataSource)
+        val viewModelFactory = ListMutualViewModelFactory(userId!!, selectedUserId!!, followerDataSource)
         val testViewModel =
             ViewModelProvider(
                 this, viewModelFactory).get(ListMutualViewModel::class.java)
@@ -64,7 +64,7 @@ class ListMutual : Fragment() {
                     listUser,
                     listener as OnListFragmentInteractionListener,
                     application,
-                    myID!!
+                    userId!!
                 )
         }
 

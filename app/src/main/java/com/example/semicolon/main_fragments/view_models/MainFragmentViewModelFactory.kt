@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.semicolon.sqlite_database.daos.FollowerDao
 import com.example.semicolon.sqlite_database.daos.UserDao
 
+/**
+ * Provides the id for the User, UserDao, FollowerDao and Application to the [MainFragmentViewModel].
+ */
 class MainFragmentViewModelFactory(private val myID: Int, private val userDataSource: UserDao,
                                    private val followerDataSource: FollowerDao, private val application: Application) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")

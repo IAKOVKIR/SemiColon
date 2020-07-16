@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.semicolon.R
 import com.example.semicolon.databinding.FragmentRequestsBinding
@@ -28,22 +27,24 @@ class RequestsFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
         val args = RequestsFragmentArgs.fromBundle(requireArguments())
+        //Stores the id of the user that signed in
+        val userId: Int = args.userId
 
         val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
 
-        val viewModelFactory = RequestsFragmentViewModelFactory(args.myId, followerDataSource, application)
+        val viewModelFactory = RequestsFragmentViewModelFactory(userId, followerDataSource, application)
         val testViewModel =
             ViewModelProvider(
                 this, viewModelFactory).get(RequestsFragmentViewModel::class.java)
 
-        testViewModel.userId.observe(viewLifecycleOwner, Observer { userId ->
-            userId?.let {
-                this.findNavController().navigate(RequestsFragmentDirections.actionRequestsFragmentToFriendFragment(args.myId, userId))
+        testViewModel.userId.observe(viewLifecycleOwner, Observer { selectedUserId ->
+            selectedUserId?.let {
+                this.findNavController().navigate(RequestsFragmentDirections.actionRequestsFragmentToFriendFragment(userId, selectedUserId))
                 testViewModel.onSleepDataQualityNavigated()
             }
         })
 
-        val adapter = RequestsRecyclerViewAdapter(args.myId, testViewModel, listUser, application)
+        val adapter = RequestsRecyclerViewAdapter(userId, testViewModel, listUser, application)
         binding.list.adapter = adapter
 
         testViewModel.totalRequests.observe(viewLifecycleOwner, Observer {
@@ -55,8 +56,8 @@ class RequestsFragment : Fragment() {
             }
         })
 
-        binding.backButton.setOnClickListener {view: View ->
-            view.findNavController().popBackStack()
+        binding.backButton.setOnClickListener {
+            this.findNavController().popBackStack()
         }
 
         return binding.root

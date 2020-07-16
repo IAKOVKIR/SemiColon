@@ -46,12 +46,7 @@
             android:label="following_followers_fragment"
             tools:layout="@layout/following_followers_fragment" >
         <argument
-                android:name="my_id"
-                app:argType="integer" />
-        <argument
                 android:name="user_id"
-                app:argType="integer" />
-        <argument android:name="exception_id"
                 app:argType="integer" />
         <argument
                 android:name="slide_number"
@@ -66,9 +61,6 @@
             android:label="fragment_requests"
             tools:layout="@layout/fragment_requests" >
         <argument
-                android:name="my_id"
-                app:argType="integer" />
-        <argument
                 android:name="user_id"
                 app:argType="integer" />
         <action
@@ -77,17 +69,17 @@
     </fragment>
     <fragment
             android:id="@+id/friendFragment"
-            android:name="com.example.semicolon.FriendFragment"
+            android:name="com.example.semicolon.following_followers.SelectedUserFragment"
             android:label="fragment_friend"
-            tools:layout="@layout/fragment_friend" >
+            tools:layout="@layout/fragment_selected_user" >
         <action
                 android:id="@+id/action_friendFragment_to_publicFollowersFollowingFragment"
                 app:destination="@id/publicFollowersFollowingFragment" />
         <argument
-                android:name="my_id"
+                android:name="user_id"
                 app:argType="integer" />
         <argument
-                android:name="user_id"
+                android:name="selected_user_id"
                 app:argType="integer" />
     </fragment>
     <fragment
@@ -96,10 +88,10 @@
             android:label="public_followers_following_fragment"
             tools:layout="@layout/public_followers_following_fragment" >
         <argument
-                android:name="my_id"
+                android:name="user_id"
                 app:argType="integer" />
         <argument
-                android:name="user_id"
+                android:name="selected_user_id"
                 app:argType="integer" />
         <argument
                 android:name="slide_number"

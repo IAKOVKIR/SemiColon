@@ -19,17 +19,18 @@ import com.example.semicolon.sqlite_database.AppDatabase
 import kotlinx.coroutines.*
 
 /**
- * A simple [Fragment] subclass.
+ * A [Fragment] subclass.
  */
 class MainFragment : Fragment() {
 
-    private var userID: Int = -1
+    //Stores the id of the user that signed in
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val n: SharedPreferences = requireContext().getSharedPreferences("myPreferences", Context.MODE_PRIVATE)
-        userID = n.getInt("id", -1)
+        userId = n.getInt("id", -1)
     }
 
     @SuppressLint("SetTextI18n")
@@ -45,12 +46,8 @@ class MainFragment : Fragment() {
 
         // Get the ViewModel
         val viewModelFactory =
-            MainFragmentViewModelFactory(
-                userID,
-                userDataSource,
-                followerDataSource,
-                application
-            )
+            MainFragmentViewModelFactory(userId, userDataSource, followerDataSource, application)
+
         val viewModel: MainFragmentViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MainFragmentViewModel::class.java)
 
@@ -66,11 +63,7 @@ class MainFragment : Fragment() {
             linearLayoutFollowers.setOnClickListener {view: View ->
                 view.findNavController().navigate(
                     MainFragmentDirections.actionMainFragmentToFollowingFollowersFragment(
-                        userID,
-                        userID,
-                        userID,
-                        0
-                    )
+                        userId, 0)
                 )
             }
 
@@ -78,11 +71,7 @@ class MainFragment : Fragment() {
             linearLayoutFollowing.setOnClickListener {view: View ->
                 view.findNavController().navigate(
                     MainFragmentDirections.actionMainFragmentToFollowingFollowersFragment(
-                        userID,
-                        userID,
-                        userID,
-                        1
-                    )
+                        userId, 1)
                 )
             }
 

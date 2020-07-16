@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.semicolon.FriendFragment
 import com.example.semicolon.R
 import com.example.semicolon.databinding.MutualRecyclerViewAdapterBinding
 import com.example.semicolon.sqlite_database.AppDatabase
@@ -25,14 +24,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * [RecyclerView.Adapter] that can display a [FriendFragment] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [User] and makes a call to the
  * specified [ListMutual.OnListFragmentInteractionListener].
  */
 class MutualRecyclerViewAdapter(
     private val mValues: ArrayList<User>,
     private val mListener: ListMutual.OnListFragmentInteractionListener?,
     private val application: Application,
-    private val myID: Int
+    private val userId: Int
 ) : RecyclerView.Adapter<MutualRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
@@ -56,16 +55,17 @@ class MutualRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: User = mValues[position]
         val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
+        val selectedUserId = item.userId
         val time = Time()
         var bool = 0
 
         holder.mIdView.text = item.username
 
-        if (item.userId != myID) {
+        if (selectedUserId != userId) {
             CoroutineScope(Dispatchers.Default).launch {
                 withContext(Dispatchers.IO) {
-                    if (followerDataSource.isRecordExist(myID, item.userId) == 1) {
-                        bool = followerDataSource.checkFollower(myID, item.userId)
+                    if (followerDataSource.isRecordExist(userId, selectedUserId) == 1) {
+                        bool = followerDataSource.checkFollower(userId, selectedUserId)
                     }
                 }
                 launch(Dispatchers.Main) {
@@ -83,10 +83,10 @@ class MutualRecyclerViewAdapter(
 
                         withContext(Dispatchers.IO) {
                             val friend = Follower(
-                                followerDataSource.getMaxId() + 1, myID, item.userId,
+                                followerDataSource.getMaxId() + 1, userId, selectedUserId,
                                 0, time.toString(), time.toString())
                             followerDataSource.insert(friend)
-                            if (followerDataSource.isRecordExistWithCondition(myID, item.userId, 0) == 1) {
+                            if (followerDataSource.isRecordExistWithCondition(userId, selectedUserId, 0) == 1) {
                                 res = true
                             }
                         }
@@ -103,8 +103,8 @@ class MutualRecyclerViewAdapter(
                         var res = false
 
                         withContext(Dispatchers.IO) {
-                            followerDataSource.deleteRecord(myID, item.userId)
-                            if (followerDataSource.isRecordExist(myID, item.userId) == 0) {
+                            followerDataSource.deleteRecord(userId, selectedUserId)
+                            if (followerDataSource.isRecordExist(userId, selectedUserId) == 0) {
                                 res = true
                             }
                         }

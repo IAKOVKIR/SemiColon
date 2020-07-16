@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * [RecyclerView.Adapter] that can display a [Follower] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [User] and makes a call to the
  * specified [ListFollowers.OnListFragmentInteractionListener].
  */
 class FollowersRecyclerViewAdapter(

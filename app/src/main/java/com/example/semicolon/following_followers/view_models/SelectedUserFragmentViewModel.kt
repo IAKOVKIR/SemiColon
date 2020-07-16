@@ -17,8 +17,8 @@ import com.example.semicolon.sqlite_database.daos.UserDao
 import com.example.semicolon.support_features.Time
 import kotlinx.coroutines.*
 
-class FriendFragmentViewModel(myID: Int, userID: Int, private val userDatabase: UserDao,
-                              private val followerDatabase: FollowerDao, application: Application
+class SelectedUserFragmentViewModel(userId: Int, selectedUserId: Int, private val userDatabase: UserDao,
+                                    private val followerDatabase: FollowerDao, application: Application
 ): AndroidViewModel(application) {
 
     private var viewModelJob = Job()
@@ -57,7 +57,7 @@ class FriendFragmentViewModel(myID: Int, userID: Int, private val userDatabase: 
     val followUnFollowText: LiveData<String> get() = _followUnFollowText
 
     init {
-        checkUser(myID, userID, application)
+        checkUser(userId, selectedUserId, application)
     }
 
     private fun checkUser(myId: Int, userId: Int, application: Application) {
