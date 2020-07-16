@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".FriendFragment">
+        tools:context=".following_followers.SelectedUserFragment">
 
     <data>
         <variable
-                name="friendFragmentViewModel"
-                type="com.example.semicolon.following_followers.view_models.FriendFragmentViewModel" />
+                name="selectedUserFragmentViewModel"
+                type="com.example.semicolon.following_followers.view_models.SelectedUserFragmentViewModel" />
     </data>
 
     <LinearLayout
@@ -40,7 +40,7 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/circleImageView"
-                        android:src="@{friendFragmentViewModel.bitmapDrawable}"
+                        android:src="@{selectedUserFragmentViewModel.bitmapDrawable}"
                         android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center_horizontal"
@@ -55,7 +55,7 @@
 
                 <TextView
                     android:id="@+id/name"
-                    android:text="@{friendFragmentViewModel.user.username}"
+                    android:text="@{selectedUserFragmentViewModel.user.username}"
                     android:textColor="#fff"
                     android:textStyle="bold"
                     android:textSize="19sp"
@@ -70,7 +70,7 @@
 
                 <TextView
                     android:id="@+id/follow_un_follow_button"
-                    android:text="@{friendFragmentViewModel.followUnFollowText}"
+                    android:text="@{selectedUserFragmentViewModel.followUnFollowText}"
                     android:textSize="15sp"
                     android:textColor="@color/WHITE"
                     android:background="@drawable/reg_square"
@@ -86,7 +86,7 @@
 
             <TextView
                 android:id="@+id/followed_by"
-                android:text="@{friendFragmentViewModel.followedByLine}"
+                android:text="@{selectedUserFragmentViewModel.followedByLine}"
                 android:textSize="15sp"
                 android:textColor="@color/WHITE"
                 android:layout_width="match_parent"
@@ -128,7 +128,7 @@
 
                 <TextView
                     android:id="@+id/followers_number"
-                    android:text="@{String.valueOf(friendFragmentViewModel.followers)}"
+                    android:text="@{String.valueOf(selectedUserFragmentViewModel.followers)}"
                     android:textSize="20sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
 
                 <TextView
                     android:id="@+id/following_number"
-                    android:text="@{String.valueOf(friendFragmentViewModel.following)}"
+                    android:text="@{String.valueOf(selectedUserFragmentViewModel.following)}"
                     android:textSize="20sp"
                     android:textColor="@color/BLACK"
                     android:layout_width="wrap_content"
@@ -231,7 +231,7 @@
                     android:id="@+id/phone_number"
                     android:textSize="16sp"
                     android:textColor="@color/WHITE"
-                    android:text="@{friendFragmentViewModel.phoneNumber}"
+                    android:text="@{selectedUserFragmentViewModel.phoneNumber}"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:layout_width="wrap_content"
@@ -257,7 +257,7 @@
                     android:id="@+id/email"
                     android:textSize="16sp"
                     android:textColor="@color/WHITE"
-                    android:text="@{friendFragmentViewModel.user.email}"
+                    android:text="@{selectedUserFragmentViewModel.user.email}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

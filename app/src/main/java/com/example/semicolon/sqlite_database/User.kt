@@ -16,7 +16,9 @@ import com.example.semicolon.models.DBContract
         unique = true)]
 )
 data class User(
+    //Primary key that assigns automatic ids
     @PrimaryKey(autoGenerate = true)
+    //Sets a different name
     @ColumnInfo(name = DBContract.UserEntry.USER_COLUMN_USER_ID)
     val userId: Int,
 
@@ -46,6 +48,8 @@ data class User(
 
     @ColumnInfo(name = DBContract.UserEntry.USER_COLUMN_DATE_CREATED)
     val dateCreated : String) {
+
+    //constructors
     constructor(): this(-1, "-1", "-1", "-1", "-1", "-1", "-1", -1.0F,"-1","-1")
     constructor(username: String, password : String, email: String): this (-1, username, "-1", password, "-1", "-1", email, 5.0F, "-1", "-1")
     constructor(username: String, phone : String, password : String, fullName: String, bioDescription : String, email: String, rating : Float, lastModified : String, dateCreated : String): this(-1, username, phone, password, fullName, bioDescription, email, rating, lastModified, dateCreated)

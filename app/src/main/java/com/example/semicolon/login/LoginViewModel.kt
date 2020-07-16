@@ -7,6 +7,9 @@ import com.example.semicolon.sqlite_database.User
 import com.example.semicolon.sqlite_database.daos.UserDao
 import kotlinx.coroutines.*
 
+/**
+ * ViewModel for [LoginFragment]
+ */
 class LoginViewModel(private val userDatabase: UserDao): ViewModel() {
 
     private var viewModelJob = Job()

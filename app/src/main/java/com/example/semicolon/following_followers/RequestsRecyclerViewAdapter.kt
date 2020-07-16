@@ -20,12 +20,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RequestsRecyclerViewAdapter(private val myID: Int, private val viewModel: RequestsFragmentViewModel,
+class RequestsRecyclerViewAdapter(private val userId: Int, private val viewModel: RequestsFragmentViewModel,
                                   private val mValues: ArrayList<User>, private val application: Application)
     : RecyclerView.Adapter<RequestsRecyclerViewAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(myID, mValues[position], viewModel, application)
+        holder.bind(userId, mValues[position], viewModel, application)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,19 +36,18 @@ class RequestsRecyclerViewAdapter(private val myID: Int, private val viewModel: 
         : RecyclerView.ViewHolder(binding.root){
         private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")
 
-        //val userDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).userDao
-
-        fun bind(myID: Int, item: User, viewModel: RequestsFragmentViewModel, application: Application) {
-            binding.user = item
+        fun bind(userId: Int, item: User, viewModel: RequestsFragmentViewModel, application: Application) {
             binding.username.text = item.username
 
             val time = Time()
             var bool = -1
+            val selectedUserId = item.userId
             val followerDataSource = AppDatabase.getInstance(application, CoroutineScope(Dispatchers.Main)).followerDao
+
             CoroutineScope(Dispatchers.Default).launch {
                 withContext(Dispatchers.IO) {
-                    if (followerDataSource.isRecordExist(myID, item.userId) == 1) {
-                        bool = followerDataSource.checkFollower(myID, item.userId)
+                    if (followerDataSource.isRecordExist(userId, selectedUserId) == 1) {
+                        bool = followerDataSource.checkFollower(userId, selectedUserId)
                     }
                 }
                 launch(Dispatchers.Main) {
@@ -65,10 +64,10 @@ class RequestsRecyclerViewAdapter(private val myID: Int, private val viewModel: 
 
                         withContext(Dispatchers.IO) {
                             val friend = Follower(
-                                followerDataSource.getMaxId() + 1, myID, item.userId,
+                                followerDataSource.getMaxId() + 1, userId, selectedUserId,
                                 0, time.toString(), time.toString())
                             followerDataSource.insert(friend)
-                            if (followerDataSource.isRecordExistWithCondition(myID, item.userId, 0) == 1) {
+                            if (followerDataSource.isRecordExistWithCondition(userId, selectedUserId, 0) == 1) {
                                 res = true
                             }
                         }
@@ -86,8 +85,8 @@ class RequestsRecyclerViewAdapter(private val myID: Int, private val viewModel: 
                         var res = false
 
                         withContext(Dispatchers.Default) {
-                            followerDataSource.deleteRecord(myID, item.userId)
-                            if (followerDataSource.isRecordExist(myID, item.userId) == 0) {
+                            followerDataSource.deleteRecord(userId, selectedUserId)
+                            if (followerDataSource.isRecordExist(userId, selectedUserId) == 0) {
                                 res = true
                             }
                         }
@@ -122,16 +121,16 @@ class RequestsRecyclerViewAdapter(private val myID: Int, private val viewModel: 
             }
 
             binding.constraintLayout.setOnClickListener {
-                viewModel.onUserClicked(item.userId)
+                viewModel.onUserClicked(selectedUserId)
             }
 
             binding.confirmButton.setOnClickListener {
-                viewModel.setNewCondition(item.userId, 1)
+                viewModel.setNewCondition(selectedUserId, 1)
                 confirmOrDecline()
             }
 
             binding.declineButton.setOnClickListener {
-                viewModel.deleteRecord(item.userId)
+                viewModel.deleteRecord(selectedUserId)
                 confirmOrDecline()
             }
         }

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.semicolon.R
 import com.example.semicolon.databinding.FragmentHelpSettingsBinding
 
@@ -23,8 +23,8 @@ class HelpSettingsFragment : Fragment() {
         val binding: FragmentHelpSettingsBinding = DataBindingUtil.inflate(
                             inflater, R.layout.fragment_help_settings, container, false)
 
-        binding.backButton.setOnClickListener {view: View ->
-            view.findNavController().popBackStack()
+        binding.backButton.setOnClickListener {
+            this.findNavController().popBackStack()
         }
 
         return binding.root

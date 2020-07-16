@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.example.semicolon.MainFragment">
+        tools:context="com.example.semicolon.main_fragments.MainFragment">
 
     <data>
         <variable
                 name="mainFragmentViewModel"
-                type="com.example.semicolon.MainFragmentViewModel" />
+                type="com.example.semicolon.main_fragments.view_models.MainFragmentViewModel" />
     </data>
 
     <LinearLayout

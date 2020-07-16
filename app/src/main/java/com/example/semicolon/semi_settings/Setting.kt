@@ -13,14 +13,14 @@ object Setting {
     private val setting_names: Array<String> = arrayOf("Notifications", "Change Password", "Language", "Help", "About", "Log Out")
 
     /**
-     * A map of sample (dummy) items, by ID.
+     * A map of settings items, by ID.
      */
     private val SETTINGS_MAP: MutableMap<String, SettingItem> = HashMap()
 
     private const val COUNT = 6
 
     init {
-        // Add some sample items.
+        // Add settings items.
         for (i: Int in 1..COUNT)
             addSetting(createSettingItem(i))
     }

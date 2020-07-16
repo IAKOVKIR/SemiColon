@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.semicolon.sqlite_database.daos.FollowerDao
 
+/**
+ * Provides the id for the User, FollowerDao and Application to the [RequestsFragmentViewModel].
+ */
 class RequestsFragmentViewModelFactory(private val myID: Int, private val followerDataSource: FollowerDao,
                                        private val application: Application
 ) : ViewModelProvider.Factory {

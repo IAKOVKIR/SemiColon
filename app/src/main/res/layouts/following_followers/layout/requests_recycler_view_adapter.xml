@@ -3,12 +3,6 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-                name="user"
-                type="com.example.semicolon.sqlite_database.User" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout"
             android:orientation="vertical"

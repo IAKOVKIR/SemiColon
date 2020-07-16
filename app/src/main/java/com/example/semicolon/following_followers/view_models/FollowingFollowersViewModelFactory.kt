@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.semicolon.sqlite_database.daos.FollowerDao
 
+/**
+ * Provides the id for the User and FollowerDao to the [FollowingFollowersViewModel].
+ */
 class FollowingFollowersViewModelFactory(private val myID: Int, private val followerDataSource: FollowerDao) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

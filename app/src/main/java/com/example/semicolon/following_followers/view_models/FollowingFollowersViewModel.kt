@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.semicolon.sqlite_database.daos.FollowerDao
 import kotlinx.coroutines.*
 
-class FollowingFollowersViewModel(myID: Int, private val followerDatabase: FollowerDao) : ViewModel() {
+class FollowingFollowersViewModel(userId: Int, private val followerDatabase: FollowerDao) : ViewModel() {
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -15,12 +15,12 @@ class FollowingFollowersViewModel(myID: Int, private val followerDatabase: Follo
     val totalRequests: LiveData<Int> get() = _totalRequests
 
     init {
-        getTotalRequests(myID)
+        getTotalRequests(userId)
     }
 
-    private fun getTotalRequests(myID: Int) {
+    private fun getTotalRequests(userId: Int) {
         uiScope.launch {
-            _totalRequests.value = getRequests(myID)
+            _totalRequests.value = getRequests(userId)
         }
     }
 

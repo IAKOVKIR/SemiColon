@@ -101,7 +101,7 @@ interface FollowerDao {
     @Query("SELECT * FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.ReceiverID WHERE FOLLOWER.SenderID = :SenderID AND FOLLOWER.Condition = '1'")
     fun readAllFollowing(SenderID: Int): List<User>
 
-    @Query("SELECT * FROM (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.ReceiverID WHERE FOLLOWER.SenderID = :myId AND FOLLOWER.Condition = '1') AS Q1 INNER JOIN (SELECT USER.UserID, USER.Username, USER.Phone, USER.UserFullName, USER.Email FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = :userId AND FOLLOWER.Condition = '1') AS Q2 ON Q1.UserID = Q2.UserID")
+    @Query("SELECT * FROM (SELECT * FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.ReceiverID WHERE FOLLOWER.SenderID = :myId AND FOLLOWER.Condition = '1') AS Q1 INNER JOIN (SELECT * FROM USER INNER JOIN FOLLOWER ON USER.UserID = FOLLOWER.SenderID WHERE FOLLOWER.ReceiverID = :userId AND FOLLOWER.Condition = '1') AS Q2 ON Q1.UserID = Q2.UserID")
     fun readAllMutualFollowers(myId: Int, userId: Int): List<User>
 
     /**
