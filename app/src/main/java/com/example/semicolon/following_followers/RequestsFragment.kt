@@ -40,7 +40,7 @@ class RequestsFragment : Fragment() {
         testViewModel.userId.observe(viewLifecycleOwner, Observer { selectedUserId ->
             selectedUserId?.let {
                 this.findNavController().navigate(RequestsFragmentDirections.actionRequestsFragmentToFriendFragment(userId, selectedUserId))
-                testViewModel.onSleepDataQualityNavigated()
+                testViewModel.onSelectedUserNavigated()
             }
         })
 

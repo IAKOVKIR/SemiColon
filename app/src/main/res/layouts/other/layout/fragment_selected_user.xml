@@ -27,12 +27,12 @@
                     android:id="@+id/back_button"
                     android:src="@drawable/heh"
                     android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="6dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="ContentDescription,RtlSymmetry" />
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="6dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="ContentDescription,RtlSymmetry" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

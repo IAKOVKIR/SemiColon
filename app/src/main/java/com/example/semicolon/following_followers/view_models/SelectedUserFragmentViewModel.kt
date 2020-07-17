@@ -9,6 +9,7 @@ import androidx.core.text.HtmlCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.semicolon.R
 import com.example.semicolon.sqlite_database.Follower
 import com.example.semicolon.sqlite_database.User
@@ -17,43 +18,95 @@ import com.example.semicolon.sqlite_database.daos.UserDao
 import com.example.semicolon.support_features.Time
 import kotlinx.coroutines.*
 
+/**
+ * ViewModel for MainFragment.
+ *
+ * @param userId The id of the current user
+ * @param selectedUserId The id of the selected user
+ */
 class SelectedUserFragmentViewModel(userId: Int, selectedUserId: Int, private val userDatabase: UserDao,
                                     private val followerDatabase: FollowerDao, application: Application
 ): AndroidViewModel(application) {
 
+    /**
+     * viewModelJob allows us to cancel all coroutines started by this ViewModel.
+     */
     private var viewModelJob = Job()
+
+    /**
+     * A [CoroutineScope] keeps track of all coroutines started by this ViewModel.
+     *
+     * Because we pass it [viewModelJob], any coroutine started in this uiScope can be cancelled
+     * by calling `viewModelJob.cancel()`
+     *
+     * By default, all coroutines started in uiScope will launch in [Dispatchers.Main] which is
+     * the main thread on Android. This is a sensible default because most coroutines started by
+     * a [ViewModel] update the UI after performing some processing.
+     */
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    /*
-        Variable bool contains one of three conditions of request:
-        "1" - you follow the user
-        "0" - "your request is in progress"
-        "-1" - "you do not follow the user"
-        */
+    /** Variable bool contains one of three conditions of request:
+     * '1' - you follow the user
+     * '0' - your request is in progress
+     * '-1' - you do not follow the user
+     */
+
     //Array str contains 3 of these conditions
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")//-1, 0, 1
+    //The condition of relationship between the selected user and the current one
     private var bool = -1
     val time = Time()
 
+    /**
+     * Contains an object of User that was selected
+     *
+     * This is `private` because we don't want to expose the ability to set [MutableLiveData] to
+     * the SelectedUserFragment.
+     */
     private var _user = MutableLiveData<User?>()
+    //getter
     val user: LiveData<User?> get() = _user
 
+    /**
+     * A Bitmap drawable of selected User's picture
+     */
     private var _bitmapDrawable = MutableLiveData<BitmapDrawable>()
+    //getter
     val bitmapDrawable: LiveData<BitmapDrawable> get() = _bitmapDrawable
 
+    /**
+     * Contains User's formatted phone number
+     */
     private var _phoneNumber = MutableLiveData<String>()
+    //getter
     val phoneNumber: LiveData<String> get() = _phoneNumber
 
+    /**
+     * Contains the number of User's followers
+     */
     private var _followers = MutableLiveData<Int>()
+    //getter
     val followers: LiveData<Int> get() = _followers
 
+    /**
+     * Contains the number of users that the current User follows
+     */
     private var _following = MutableLiveData<Int>()
+    //getter
     val following: LiveData<Int> get() = _following
 
+    /**
+     * Formatted text that displays first 2 usernames of users that follow selected user and are followed by a current user
+     */
     private var _followedByLine = MutableLiveData<Spanned>()
+    //getter
     val followedByLine: LiveData<Spanned> get() = _followedByLine
 
+    /**
+     * displays the condition of relationship between selected and current users
+     */
     private var _followUnFollowText = MutableLiveData<String>()
+    //getter
     val followUnFollowText: LiveData<String> get() = _followUnFollowText
 
     init {
@@ -165,7 +218,6 @@ class SelectedUserFragmentViewModel(userId: Int, selectedUserId: Int, private va
     private suspend fun deleteRequest(myId: Int, userId: Int): Boolean {
         return withContext(Dispatchers.IO) {
             followerDatabase.deleteRecord(myId, userId)
-
             followerDatabase.isRecordExistWithCondition(myId, userId, 0) == 0
         }
     }
