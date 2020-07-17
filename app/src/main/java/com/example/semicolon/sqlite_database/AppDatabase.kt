@@ -39,17 +39,18 @@ abstract class AppDatabase : RoomDatabase() {
         private val time = Time()
 
         //Test entries for USER table
-        private val userArray = arrayOf(User(1, "mr_query", "0490506763", "12345678", "Chandra MrQuery",
-            "I'll still fuck your bitch", "MrStealYourQuery@gmail.com", 5.0F, time.toString(), time.toString()
-        ), User(2, "ice_wallow", "0490000000", "12345678", "Abbas Ice-Wallow", "I'm better than my father",
-            "BetterThanFather@gmail.com", 2.8F, time.toString(), time.toString()
-        ), User(3, "karama", "0490000001", "12345678", "Carl Karama", "Mr.President",
-            "CallMePresident@gmail.com", 5.0F, time.toString(), time.toString()
-        ), User(4, "merin", "0490000002", "12345678", "Matt Merin", "Always on the beat",
-            "MattMerinOnTheBeat@gmail.com", 5.0F, time.toString(), time.toString()
-        ), User(5, "ay_sir", "0490000003", "12345678", "John Carlos", "Aye, sir",
-            "JohnCarlos@gmail.com", 5.0F, time.toString(), time.toString()
-        ), User(6, "beverly", "0490000004", "12345678", "Patrick Beverly", "PB", "beverly@gmail.com",
+        private val userArray = arrayOf(User(1, "choksondik", "0490506763", "12345678", "Diane Choksondik",
+            "My last name is 'Choksondik', not 'chokes on dick'!!!", "Choksondik@gmail.com",
+            5.0F, time.toString(), time.toString()
+        ), User(2, "ice_wallow", "0490000000", "12345678", "Mr Ice-Wallow", "I do not swallow!!!",
+            "donotswallow@gmail.com", 2.8F, time.toString(), time.toString()
+        ), User(3, "kiro", "0490000001", "12345678", "Kirill Iakovlev", "I'll sleep in your garage",
+            "iakov@gmail.com", 5.0F, time.toString(), time.toString()
+        ), User(4, "jbarca", "0490000002", "12345678", "Jacob Barca", "Founder of the App",
+            "jbarca@gmail.com", 5.0F, time.toString(), time.toString()
+        ), User(5, "rushton", "0490000003", "12345678", "Nicholas Rushton", "drunk",
+            "rushton@gmail.com", 5.0F, time.toString(), time.toString()
+        ), User(6, "gmaz", "0490000004", "12345678", "Courtney Gmaz", "Quick BJ - 15$", "gmaz@gmail.com",
             5.0F, time.toString(), time.toString()
         ), User(7, "dwade", "0490000005", "12345678", "Dwyane Wade", "flash", "wade@gmail.com",
             5.0F, time.toString(), time.toString()

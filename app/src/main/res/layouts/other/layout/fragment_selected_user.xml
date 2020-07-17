@@ -42,9 +42,9 @@
                         android:id="@+id/circleImageView"
                         android:src="@{selectedUserFragmentViewModel.bitmapDrawable}"
                         android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="4dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
                     android:layout_marginStart="4dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="32dp"
@@ -224,6 +224,31 @@
             <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:contentDescription="email icon"
+                    tools:ignore="HardcodedText" />
+
+            <TextView
+                    android:id="@+id/bio"
+                    android:textSize="16sp"
+                    android:textColor="@color/WHITE"
+                    android:text="@{selectedUserFragmentViewModel.user.bioDescription}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:src="@drawable/smart_phone"
                     tools:ignore="ContentDescription"/>
 
@@ -262,11 +287,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp" />
-
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
 
 </layout>
