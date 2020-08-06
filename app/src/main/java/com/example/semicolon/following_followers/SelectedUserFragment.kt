@@ -23,13 +23,9 @@ class SelectedUserFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            val args = FriendFragmentArgs.fromBundle(
-                requireArguments()
-            )
-            userID = args.userId
-            selectedUserID = args.selectedUserId
-        }
+        val args = SelectedUserFragmentArgs.fromBundle(requireArguments())
+        userID = args.userId
+        selectedUserID = args.selectedUserId
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,7 +62,7 @@ class SelectedUserFragment : Fragment() {
 
         binding.followedBy.setOnClickListener {
             this.findNavController().navigate(
-                FriendFragmentDirections.actionFriendFragmentToPublicFollowersFollowingFragment(
+                SelectedUserFragmentDirections.actionFriendFragmentToPublicFollowersFollowingFragment(
                     userID!!,
                     selectedUserID!!,
                     0
@@ -76,7 +72,7 @@ class SelectedUserFragment : Fragment() {
 
         binding.linearLayoutFollowers.setOnClickListener {
             this.findNavController().navigate(
-                FriendFragmentDirections.actionFriendFragmentToPublicFollowersFollowingFragment(
+                SelectedUserFragmentDirections.actionFriendFragmentToPublicFollowersFollowingFragment(
                     userID!!,
                     selectedUserID!!,
                     1
@@ -86,7 +82,7 @@ class SelectedUserFragment : Fragment() {
 
         binding.linearLayoutFollowing.setOnClickListener {
             this.findNavController().navigate(
-                FriendFragmentDirections.actionFriendFragmentToPublicFollowersFollowingFragment(
+                SelectedUserFragmentDirections.actionFriendFragmentToPublicFollowersFollowingFragment(
                     userID!!,
                     selectedUserID!!,
                     2
