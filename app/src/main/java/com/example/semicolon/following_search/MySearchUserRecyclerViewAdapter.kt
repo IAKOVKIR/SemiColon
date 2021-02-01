@@ -16,7 +16,7 @@ import com.example.semicolon.sqlite_database.User
 import kotlinx.android.synthetic.main.following_search_friends_search.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [Friend] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [Follower] and makes a call to the
  * specified [ListSearchUser.OnListFragmentInteractionListener].
  */
 class MySearchUserRecyclerViewAdapter(

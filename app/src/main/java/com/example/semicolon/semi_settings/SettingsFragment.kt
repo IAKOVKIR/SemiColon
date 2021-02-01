@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.semicolon.R
@@ -33,7 +32,7 @@ class SettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding: FragmentSettingsBinding = DataBindingUtil.inflate(
                     inflater, R.layout.fragment_settings, container, false)
 
@@ -43,7 +42,7 @@ class SettingsFragment : Fragment() {
         binding.list.adapter = adapter
 
         // Add an Observer on the state variable for Navigating when one of the list items is clicked.
-        settingsViewModel.settingId.observe(viewLifecycleOwner, Observer { selectedSettingId ->
+        settingsViewModel.settingId.observe(viewLifecycleOwner, { selectedSettingId ->
             selectedSettingId?.let {
 
                 when(selectedSettingId) {

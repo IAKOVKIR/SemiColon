@@ -39,7 +39,7 @@ class ListSearchUser : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.following_search_list_search, container, false)
         val list: RecyclerView = view.findViewById(R.id.list)
         val textLine: EditText = view.findViewById(R.id.search)

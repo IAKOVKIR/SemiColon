@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.semicolon.R
 import com.example.semicolon.databinding.ListFollowingBinding
@@ -43,7 +42,7 @@ class ListFollowing : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding: ListFollowingBinding = DataBindingUtil.inflate(
             inflater, R.layout.list_following, container, false)
         val list: RecyclerView = binding.list
@@ -69,7 +68,7 @@ class ListFollowing : Fragment() {
                 )
         }
 
-        testViewModel.totalFollowing.observe(viewLifecycleOwner, Observer {
+        testViewModel.totalFollowing.observe(viewLifecycleOwner, {
             it?.let {
                 if (listUser.isEmpty()) {
                     listUser.addAll(it)

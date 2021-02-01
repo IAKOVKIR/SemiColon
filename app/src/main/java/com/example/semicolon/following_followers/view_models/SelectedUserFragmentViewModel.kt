@@ -55,7 +55,7 @@ class SelectedUserFragmentViewModel(userId: Int, selectedUserId: Int, private va
     private val str: Array<String> = arrayOf("follow", "in progress", "unfollow")//-1, 0, 1
     //The condition of relationship between the selected user and the current one
     private var bool = -1
-    val time = Time()
+    private val time = Time()
 
     /**
      * Contains an object of User that was selected

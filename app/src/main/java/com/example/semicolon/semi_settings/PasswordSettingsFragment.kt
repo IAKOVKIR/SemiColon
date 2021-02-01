@@ -26,7 +26,7 @@ class PasswordSettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val binding: FragmentPasswordSettingsBinding = DataBindingUtil.inflate(
                             inflater, R.layout.fragment_password_settings, container, false)
@@ -37,7 +37,7 @@ class PasswordSettingsFragment : Fragment() {
 
         //onClickListener
         binding.submitButton.setOnClickListener {
-            val password: String? = db.getUsersData(myID, DBContract.UserEntry.USER_COLUMN_PASSWORD)
+            val password: String = db.getUsersData(myID, DBContract.UserEntry.USER_COLUMN_PASSWORD)
             val curPas: String = binding.currentPassword.text.toString()
             val newPas: String = binding.newPassword.text.toString()
 

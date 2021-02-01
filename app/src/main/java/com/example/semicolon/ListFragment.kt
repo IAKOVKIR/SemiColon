@@ -31,7 +31,7 @@ class ListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding: FragmentItemListBinding = DataBindingUtil.inflate(
                     inflater, R.layout.fragment_item_list, container, false)
         db = DatabaseOpenHelper(requireContext())

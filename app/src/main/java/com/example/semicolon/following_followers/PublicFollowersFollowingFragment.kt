@@ -20,7 +20,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class PublicFollowersFollowingFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: PublicFollowersFollowingFragmentBinding = DataBindingUtil.inflate(
             inflater, R.layout.public_followers_following_fragment, container, false)
 

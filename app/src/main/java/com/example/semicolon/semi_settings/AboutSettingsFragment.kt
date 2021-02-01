@@ -19,7 +19,7 @@ class AboutSettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val binding: FragmentAboutSettingsBinding = DataBindingUtil.inflate(
                     inflater, R.layout.fragment_about_settings, container, false)

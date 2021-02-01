@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.semicolon.R
@@ -20,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 
 class RequestsFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentRequestsBinding  = DataBindingUtil.inflate(
             inflater, R.layout.fragment_requests, container, false)
         val listUser: ArrayList<User> = ArrayList()
@@ -37,7 +36,7 @@ class RequestsFragment : Fragment() {
             ViewModelProvider(
                 this, viewModelFactory).get(RequestsFragmentViewModel::class.java)
 
-        testViewModel.userId.observe(viewLifecycleOwner, Observer { selectedUserId ->
+        testViewModel.userId.observe(viewLifecycleOwner, { selectedUserId ->
             selectedUserId?.let {
                 this.findNavController().navigate(RequestsFragmentDirections.actionRequestsFragmentToFriendFragment(userId, selectedUserId))
                 testViewModel.onSelectedUserNavigated()
@@ -47,7 +46,7 @@ class RequestsFragment : Fragment() {
         val adapter = RequestsRecyclerViewAdapter(userId, testViewModel, listUser, application)
         binding.list.adapter = adapter
 
-        testViewModel.totalRequests.observe(viewLifecycleOwner, Observer {
+        testViewModel.totalRequests.observe(viewLifecycleOwner, {
             it?.let {
                 if (listUser.isEmpty()) {
                     listUser.addAll(it)

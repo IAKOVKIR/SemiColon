@@ -39,11 +39,11 @@ abstract class AppDatabase : RoomDatabase() {
         private val time = Time()
 
         //Test entries for USER table
-        private val userArray = arrayOf(User(1, "choksondik", "0490506763", "12345678", "Diane Choksondik",
-            "My last name is 'Choksondik', not 'chokes on dick'!!!", "Choksondik@gmail.com",
+        private val userArray = arrayOf(User(1, "dir", "0490506763", "12345678", "Diane Dir",
+            "Hello", "Choksondik@gmail.com",
             5.0F, time.toString(), time.toString()
-        ), User(2, "ice_wallow", "0490000000", "12345678", "Mr Ice-Wallow", "I do not swallow!!!",
-            "donotswallow@gmail.com", 2.8F, time.toString(), time.toString()
+        ), User(2, "john", "0490000000", "12345678", "John Barca", "",
+            "john@gmail.com", 2.8F, time.toString(), time.toString()
         ), User(3, "kiro", "0490000001", "12345678", "Kirill Iakovlev", "I'll sleep in your garage",
             "iakov@gmail.com", 5.0F, time.toString(), time.toString()
         ), User(4, "jbarca", "0490000002", "12345678", "Jacob Barca", "Founder of the App",

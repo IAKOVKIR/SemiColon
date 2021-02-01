@@ -60,16 +60,14 @@ class RequestsRecyclerViewAdapter(private val userId: Int, private val viewModel
                 if (bool == -1) {
 
                     CoroutineScope(Dispatchers.Default).launch {
-                        var res = false
+                        var res: Boolean
 
                         withContext(Dispatchers.IO) {
                             val friend = Follower(
                                 followerDataSource.getMaxId() + 1, userId, selectedUserId,
                                 0, time.toString(), time.toString())
                             followerDataSource.insert(friend)
-                            if (followerDataSource.isRecordExistWithCondition(userId, selectedUserId, 0) == 1) {
-                                res = true
-                            }
+                            res = followerDataSource.isRecordExistWithCondition(userId, selectedUserId, 0) == 1
                         }
 
                         launch(Dispatchers.Main) {
@@ -82,13 +80,11 @@ class RequestsRecyclerViewAdapter(private val userId: Int, private val viewModel
 
                 } else {
                     CoroutineScope(Dispatchers.Default).launch {
-                        var res = false
+                        var res: Boolean
 
                         withContext(Dispatchers.Default) {
                             followerDataSource.deleteRecord(userId, selectedUserId)
-                            if (followerDataSource.isRecordExist(userId, selectedUserId) == 0) {
-                                res = true
-                            }
+                            res = followerDataSource.isRecordExist(userId, selectedUserId) == 0
                         }
 
                         launch (Dispatchers.Main) {

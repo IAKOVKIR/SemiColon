@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,7 +41,7 @@ class ListFollowers : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding: ListFollowersBinding = DataBindingUtil.inflate(
             inflater, R.layout.list_followers, container, false)
         val list: RecyclerView = binding.list
@@ -68,7 +67,7 @@ class ListFollowers : Fragment() {
                 )
         }
 
-        testViewModel.totalFollowers.observe(viewLifecycleOwner, Observer {
+        testViewModel.totalFollowers.observe(viewLifecycleOwner, {
             it?.let {
                 if (listUser.isEmpty()) {
                     listUser.addAll(it)

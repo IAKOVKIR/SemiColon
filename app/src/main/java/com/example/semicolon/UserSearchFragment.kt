@@ -18,10 +18,6 @@ import com.example.semicolon.sqlite_database.DatabaseOpenHelper
 import com.example.semicolon.sqlite_database.User
 import kotlinx.coroutines.*
 
-// the fragment initialization parameters, e.g MY_ID, USER_ID and EXCEPTION_ID
-private const val MY_ID = "my_id"
-private const val USER_ID = "user_id"
-
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
@@ -33,7 +29,7 @@ class UserSearchFragment : Fragment() {
     private var listener: OnListFragmentInteractionListener? = null
     lateinit var db: DatabaseOpenHelper
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         val binding: FragmentUserSearchBinding = DataBindingUtil.inflate(
                             inflater, R.layout.fragment_user_search, container, false)

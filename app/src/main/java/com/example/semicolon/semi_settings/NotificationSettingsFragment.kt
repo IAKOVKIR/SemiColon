@@ -18,7 +18,7 @@ class NotificationSettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         val binding: FragmentNotificationSettingsBinding = DataBindingUtil.inflate(
                             inflater, R.layout.fragment_notification_settings, container, false)

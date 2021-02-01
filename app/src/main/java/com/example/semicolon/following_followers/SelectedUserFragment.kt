@@ -28,7 +28,7 @@ class SelectedUserFragment : Fragment() {
         selectedUserID = args.selectedUserId
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         val binding: FragmentSelectedUserBinding = DataBindingUtil.inflate(
             inflater,

@@ -42,7 +42,7 @@ class ListSearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.fragment_item_list_search, container, false)
 
         val tabLayout: TabLayout = view.findViewById(R.id.tabs)

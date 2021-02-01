@@ -34,7 +34,7 @@ class MainFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding: FragmentMainBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_main, container, false)

@@ -15,7 +15,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,7 +48,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val loginBinding: FragmentLoginBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_login, container, false)
 
@@ -89,7 +88,7 @@ class LoginFragment : Fragment() {
             loginViewModel.checkUser(fEnter.text.toString(), sEnter.text.toString())
         }
 
-        loginViewModel.user.observe(viewLifecycleOwner, Observer { user ->
+        loginViewModel.user.observe(viewLifecycleOwner, { user ->
             if (user != null) {
                 //saves user's id, phone number and password in SharedPreferences
                 rememberMe(user)
